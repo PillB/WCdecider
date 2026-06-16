@@ -27,7 +27,11 @@ else
 fi
 
 echo "[2/5] Enable GitHub Pages (GitHub Actions source)"
-gh api -X PUT "repos/${OWNER}/${REPO}/pages" -f build_type=workflow 2>/dev/null || true
+if ! gh api "repos/${OWNER}/${REPO}/pages" >/dev/null 2>&1; then
+  gh api --method POST "repos/${OWNER}/${REPO}/pages" --input - <<< '{"build_type":"workflow"}'
+else
+  gh api -X PUT "repos/${OWNER}/${REPO}/pages" -f build_type=workflow 2>/dev/null || true
+fi
 
 echo "[3/5] Wait for deploy workflow"
 gh run watch --exit-status || true
