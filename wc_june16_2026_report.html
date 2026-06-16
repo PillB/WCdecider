@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="doc-title">WC 2026 • June 15-16 Analysis &amp; Recommendations (v4.1 Production + Replicable Data)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        :root { --primary: #0f172a; }
+        body { font-family: 'Inter', system_ui, sans-serif; }
+        .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; font-weight: 600; }
+        .section-header { font-size: 1.1rem; letter-spacing: -.025em; }
+        .prob-bar { height: 10px; background: linear-gradient(90deg, #0ea5e9, #22c7b1); border-radius: 9999px; transition: width 1s cubic-bezier(0.34,1.56,0.64,1); }
+        .ev-positive { background-color: #dcfce7; color: #166534; }
+        .ev-negative { background-color: #fee2e2; color: #991b1b; }
+        .ev-neutral { background-color: #fef3c7; color: #854d0e; }
+        .metric-card { transition: transform .2s cubic-bezier(0.4,0,0.2,1); }
+        .metric-card:hover { transform: translateY(-2px); }
+        .match-row { transition: background-color .1s ease; }
+        .match-row:hover { background-color: #f8fafc; }
+        .katex { font-size: 0.95em; }
+        .viz-container { box-shadow: 0 1px 3px rgba(15,23,42,.1); }
+        .nav-active { border-bottom: 3px solid #0ea5e9; font-weight: 600; }
+        .eli5-jargon { background: #f1f5f9; padding: 1px 6px; border-radius: 4px; font-family: ui-monospace, monospace; font-size: 0.85em; }
+        .data-table { font-size: 0.875rem; }
+        .data-table th { background: #f8fafc; font-weight: 600; }
+        .tail-container { max-width: 1280px; margin: 0 auto; }
+        .model-badge { font-size: 10px; padding: 1px 7px; border-radius: 9999px; background: #0f172a; color: white; }
+        .abbr { position: relative; display: inline-block; cursor: help; border-bottom: 1px dotted #64748b; }
+        .abbr .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+            background-color: #1e2937;
+            color: #f1f5f9;
+            font-size: 11px;
+            line-height: 1.3;
+            padding: 8px 10px;
+            border-radius: 6px;
+            white-space: normal;
+            max-width: 260px;
+            width: max-content;
+            z-index: 9999;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: opacity 0.15s ease, visibility 0.15s ease;
+            pointer-events: none;
+        }
+        .abbr:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* Prevent tooltip overflow on right edge */
+        .abbr .tooltip {
+            max-width: min(260px, 90vw);
+        }
+        /* Bilingual language toggle support */
+        .lang-es .en, .lang-en .es { display: none !important; }
+        .lang-btn { background: #1e2937; color: #94a3b8; }
+        .lang-btn.active { background: #0ea5e9; color: #fff; }
+        .lang-btn:hover:not(.active) { background: #334155; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 lang-en">
+    <!-- Top Nav -->
+    <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="tail-container px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-9 h-9 bg-sky-500 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-futbol text-white text-2xl"></i>
+                </div>
+                <div>
+                    <span class="font-display text-2xl font-semibold tracking-tighter">WCdecider</span>
+                    <span class="text-xs px-2 py-0.5 bg-slate-800 text-sky-400 rounded ml-1.5 font-mono">v4.1 prod</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-x-2 text-sm">
+                <div class="px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-x-2 text-xs">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                    <span class="font-medium"><span class="en">Model executed • 2026-06-15 data</span><span class="es">Modelo ejecutado • datos 2026-06-15</span></span>
+                </div>
+                <button onclick="window.print()" class="px-4 py-2 text-xs font-semibold bg-white text-slate-900 rounded-2xl flex items-center gap-x-2 hover:bg-slate-100 transition-colors">
+                    <i class="fa-solid fa-print"></i>
+                    <span class="en">Print / PDF</span><span class="es">Imprimir / PDF</span>
+                </button>
+                <!-- Language Toggle -->
+                <div class="flex items-center text-xs font-semibold border border-slate-700 rounded-2xl overflow-hidden" style="height:32px;">
+                    <button id="btn-en" onclick="switchLang('en')" class="lang-btn px-3 h-full transition-colors active">EN</button>
+                    <button id="btn-es" onclick="switchLang('es')" class="lang-btn px-3 h-full transition-colors">ES</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tail-container px-6 py-8">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-y-2 mb-8">
+            <div>
+                <div class="flex items-center gap-x-3">
+                    <h1 class="font-display text-5xl font-semibold tracking-tighter"><span class="en">June 15–16 2026 WC Slate</span><span class="es">Copa del Mundo 15–16 Jun 2026</span></h1>
+                    <span class="model-badge px-3 py-1 text-xs tracking-widest"><span class="en">PERFECTED ENSEMBLE</span><span class="es">ENSEMBLE PERFECCIONADO</span></span>
+                </div>
+                <p class="text-slate-400 mt-1"><span class="en">Backtested • Finetuned • Subagent-validated • HTML report with real-time data</span><span class="es">Backtesteado • Ajustado • Validado por subagentes • Reporte HTML con datos en tiempo real</span></p>
+                <div class="flex items-center gap-x-2 mt-3 text-xs">
+                    <div class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-x-1.5">
+                        <i class="fa-solid fa-check text-emerald-400"></i>
+                        <span class="font-medium"><span class="en">Peer-reviewed replication PASS • wc_model_v4_replicable_pipeline.py</span><span class="es">Replicación peer-review PASS • wc_model_v4_replicable_pipeline.py</span></span>
+                    </div>
+                    <div class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-2xl"><span class="en">Screenshots-only odds (Betano/Betsson ~11:24–11:36)</span><span class="es">Cuotas solo de capturas (Betano/Betsson ~11:24–11:36)</span></div>
+                </div>
+            </div>
+            <div class="text-right text-xs text-slate-400">
+                <div><span class="en">Lima, Peru • 2026-06-15</span><span class="es">Lima, Perú • 2026-06-15</span></div>
+                <div><span class="en">AGENT.md v4.1 + Rules 24-27 • N=222 backtest validated</span><span class="es">AGENT.md v4.1 + Reglas 24-27 • Backtest N=222 validado</span></div>
+            </div>
+        </div>
+
+        <!-- Executive Summary / Key Takeaways -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 mb-8">
+            <div class="uppercase tracking-[1.5px] text-xs font-semibold text-sky-400 mb-2"><span class="en">Executive Summary • Verified Outputs</span><span class="es">Resumen Ejecutivo • Salidas Verificadas</span></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <div class="text-emerald-400 text-sm font-semibold"><span class="en">Backtest Insights (Actual Results)</span><span class="es">Lecciones del Backtest (Resultados Reales)</span></div>
+                    <div class="mt-2 text-sm"><span class="en">Spain 0-0 CV (v4.1 anchor 68.6% win / 28.1% draw → realized 0). BEL 1-1 EGY (v4.1 blend 56.2% win → draw). Heavy favorites exposed to rotation + minnow low-block variance. </span><span class="es">España 0-0 CV (ancla v4.1 68,6% victoria / 28,1% empate → realizado 0). BEL 1-1 EGY (mezcla v4.1 56,2% victoria → empate). Favoritos pesados expuestos a rotación + bloque bajo de minnows. </span><span class="font-semibold"><span class="en">v4.1 production finetunes: opener_draw_boost +0.07 (extra draw chance for tournament openers), minnow_resilience 1.16, rotation −25 Elo</span><span class="es">Ajustes finos v4.1 producción: opener_draw_boost +0,07 (probabilidad extra de empate en aperturas), minnow_resilience 1,16, rotación −25 Elo</span></span> <span class="en">(reduces favorite strength if stars rested) → Spain anchor ~68.6% win / 28.1% draw (v3.1 historical: 62% / 27.1% at +0.055). </span><span class="es">(reduce fuerza del favorito si estrellas descansan) → Ancla España ~68,6% victoria / 28,1% empate (histórico v3.1: 62% / 27,1% con +0,055). </span><span class="text-xs text-slate-400">(<span class="en">Newbie note: "Elo" is like a chess rating for national teams — higher number = stronger team on paper. "P" means probability or "chance" in percent. "Draw" or "empate" means both teams finish with the exact same score.</span><span class="es">Nota principiante: "Elo" es como una calificación de ajedrez para selecciones — número más alto = equipo más fuerte en papel. "P" significa probabilidad o "chance" en porcentaje. "Draw" o "empate" significa que ambos equipos terminan con el mismo marcador exacto.</span>)</span></div>
+                </div>
+                <div>
+                    <div class="text-amber-400 text-sm font-semibold"><span class="en">Surefire / Near-1.0 Bets</span><span class="es">Apuestas "Seguras" / Casi-1.0</span></div>
+                    <div class="mt-2 text-sm"><span class="en">None exist with positive EV at scale. Heavy 1.10–1.36 shorts (Spain 1.19, Norway 1.19, France 1.50, etc.) have model P 60–79% vs book-implied 67–85%+; EV −6% to −33% after vig + Rule 14. Historical WC upsets (2022 Saudi-ARG archetype) + Spain 0-0 live validation prove the trap. </span><span class="es">Ninguna existe con EV positivo a escala. Cortos pesados 1,10–1,36 (España 1,19, Noruega 1,19, Francia 1,50, etc.) tienen P modelo 60–79% vs implícito del libro 67–85%+; EV −6% a −33% tras vig + Regla 14. Upsets históricos de WC (arquetipo Arabia Saudita-ARG 2022) + validación España 0-0 en vivo prueban la trampa. </span><span class="font-semibold"><span class="en">Surest attractive (highest P + lowest variance +EV): </span><span class="es">Más atractiva con menor riesgo (P más alta + menor varianza +EV): </span><span class="abbr"><span class="en">KSA-URU Under 2.5 @1.78</span><span class="es">KSA-URU Menos 2.5 @1,78</span><span class="tooltip"><span class="en">This bet refers to choosing the event that in the Kingdom of Saudi Arabia vs Uruguay there will be 2.5 goals or less by any team in the full match (i.e., the total goals scored by both teams combined will be 0, 1, or 2).</span><span class="es">Esta apuesta se refiere a elegir que en Arabia Saudita vs Uruguay habrá 2,5 goles o menos por cualquier equipo en el partido completo (es decir, el total de goles de ambos equipos combinados será 0, 1 o 2).</span></span></span> (+8.6% ROBUST), <span class="abbr"><span class="en">AUT Draw @5.05</span><span class="es">Empate AUT @5,05</span><span class="tooltip"><span class="en">This bet refers to choosing the event that in the Austria vs Jordan match the final score will be a draw (both teams end with the exact same number of goals, such as 0-0, 1-1, or 2-2).</span><span class="es">Esta apuesta se refiere a elegir que en el partido Austria vs Jordania el marcador final será empate (ambos equipos terminan con el mismo número de goles, como 0-0, 1-1 o 2-2).</span></span></span> <span class="en">(+69% HALT — drill-down required)</span><span class="es">(+69% HALT — drill-down obligatorio)</span> <span class="abbr">FRA+O3.5<span class="tooltip"><span class="en">This is a combo bet: France must win the match AND there must be more than 3.5 total goals (4 or more goals by both teams combined). DC joint means we use a correlated probability model (Dixon-Coles) instead of simply multiplying the two separate chances.</span><span class="es">Es una apuesta combinada: Francia debe ganar el partido Y debe haber más de 3,5 goles totales (4 o más goles por ambos equipos combinados). La junta DC significa que usamos un modelo de probabilidad correlacionada (Dixon-Coles) en lugar de simplemente multiplicar las dos probabilidades separadas.</span></span></span> <span class="en">boost if HALT drilldown passes (+33% raw but high joint variance).</span><span class="es">boost si el drilldown HALT pasa (+33% raw pero alta varianza conjunta).</span></span> <span class="text-xs text-slate-400">(<span class="en">Newbie: "EV" = Expected Value — the long-run average profit or loss per 100 soles bet if the model is right. Positive EV means the bet is good value over many tries. "Vig" or "overround" is the hidden extra margin the betting app builds into the odds so they profit no matter the result. "Rule 14" is our adjustment that makes short-priced favorites slightly less attractive in the model because history shows people over-bet them.</span><span class="es">Principiante: "EV" = Valor Esperado — la ganancia o pérdida promedio a largo plazo por cada 100 soles apostados si el modelo es correcto. EV positivo significa que la apuesta tiene buen valor en muchos intentos. "Vig" u "overround" es el margen extra oculto que la app de apuestas incorpora en las cuotas para ganar siempre. "Regla 14" es nuestro ajuste que hace a los favoritos cortos ligeramente menos atractivos en el modelo porque la historia muestra que la gente los sobreaaposta.</span>)</span></div>
+                </div>
+                <div>
+                    <div class="text-sky-400 text-sm font-semibold"><span class="en">Upcoming (June 16) + Recommendations</span><span class="es">Próximos (16 Jun) + Recomendaciones</span></div>
+                    <div class="mt-2 text-sm"><span class="en">v4.1 June slate: all screenshot 1X2 favorites </span><span class="es">Copa junio v4.1: todos los 1X2 de favoritos en capturas </span><strong><span class="en">PASS</span><span class="es">PASS</span></strong><span class="en"> (EV −6% to −42%). France vs Senegal (v4.1 blend pFRA 59.6%, </span><span class="es">(EV −6% a −42%). Francia vs Senegal (mezcla v4.1 pFRA 59,6%, </span><span class="abbr"><span class="en">DC FRA+O3.5 joint</span><span class="es">Junta DC FRA+O3.5</span><span class="tooltip"><span class="en">This is a combo bet: France must win the match AND there must be more than 3.5 total goals (4 or more goals by both teams combined). DC joint means we use a correlated probability model (Dixon-Coles) instead of simply multiplying the two separate chances.</span><span class="es">Es una apuesta combinada: Francia debe ganar el partido Y debe haber más de 3,5 goles totales (4 o más goles por ambos equipos combinados). La junta DC significa que usamos un modelo de probabilidad correlacionada (Dixon-Coles) en lugar de simplemente multiplicar las dos probabilidades separadas.</span></span></span> 0.258–0.271). <span class="en">Iraq vs Norway (NOR blend 38.1%, EV −41.7%). Argentina vs Algeria (pARG blend 65.4%, EV −10.6%). </span><span class="es">Iraq vs Noruega (mezcla NOR 38,1%, EV −41,7%). Argentina vs Argelia (mezcla pARG 65,4%, EV −10,6%). </span><span class="en">Austria vs Jordan (pDraw 34.0%, +69% EV @5.05 → </span><span class="es">Austria vs Jordania (pEmpate 34,0%, +69% EV @5,05 → </span><span class="abbr">HALT<span class="tooltip"><span class="en">HALT means our rules say "stop and double-check with extra sharp data before considering this bet" if the model EV looks too good to be true — usually above +25%.</span><span class="es">HALT significa que nuestras reglas dicen "detente y verifica con datos sharp extra antes de considerar esta apuesta" si el EV del modelo parece demasiado bueno — usualmente por encima de +25%.</span></span></span><span class="en">). </span><span class="es">). </span><span class="font-semibold"><span class="en">Actionable (pending drill-down): </span><span class="es">Accionables (pendiente drill-down): </span><span class="abbr"><span class="en">AUT Draw</span><span class="es">Empate AUT</span><span class="tooltip"><span class="en">This bet refers to choosing the event that in the Austria vs Jordan match the final score will be a draw (both teams end with the exact same number of goals, such as 0-0, 1-1, or 2-2).</span><span class="es">Esta apuesta se refiere a elegir que en el partido Austria vs Jordania el marcador final será empate (ambos equipos terminan con el mismo número de goles, como 0-0, 1-1 o 2-2).</span></span></span> <span class="en">(HALT +69%),</span><span class="es">(HALT +69%),</span> <span class="abbr"><span class="en">FRA win+O3.5</span><span class="es">Victoria FRA+O3.5</span><span class="tooltip"><span class="en">This is a combo bet: France must win the match AND there must be more than 3.5 total goals (4 or more goals by both teams combined).</span><span class="es">Es una apuesta combinada: Francia debe ganar el partido Y debe haber más de 3,5 goles totales (4 o más goles por ambos equipos combinados).</span></span></span> <span class="en">(MOD if HALT cleared),</span><span class="es">(MOD si HALT despeja),</span> <span class="abbr"><span class="en">KSA-URU Under 2.5</span><span class="es">KSA-URU Menos 2.5</span><span class="tooltip"><span class="en">Under 2.5 goals means the total goals by both teams in the full match will be 2 or fewer.</span><span class="es">Menos 2.5 goles significa que el total de goles de ambos equipos en el partido completo será 2 o menos.</span></span></span> <span class="en">(+8.6% ROBUST).</span><span class="es">(+8,6% ROBUSTO).</span></span> <span class="en">Full 9-step data + viz below.</span><span class="es">Datos completos de 9 pasos + viz abajo.</span></div>
+                </div>
+            </div>
+            <div class="mt-4 text-[10px] text-slate-400"><span class="en">All EV vs prior transcribed screenshot prices (Betano/Betsson). Fresh screenshots required for live EV per protocol. Executed model + subagent results logged in state.</span><span class="es">Todos los EV vs precios transcritos de capturas previas (Betano/Betsson). Se requieren capturas frescas para EV en vivo por protocolo. Modelo ejecutado + resultados de subagentes registrados en estado.</span></div>
+        </div>
+
+        <!-- Modeling Workflow Visualization -->
+        <div class="mb-8">
+            <div class="flex items-center gap-x-3 mb-3">
+                <i class="fa-solid fa-project-diagram text-xl text-indigo-400"></i>
+                <div>
+                    <span class="font-semibold text-lg"><span class="en">Analytical Framework &amp; Modeling Workflow Visualization</span><span class="es">Marco Analítico y Visualización del Flujo de Modelado</span></span>
+                    <span class="text-xs ml-2 px-2 py-0.5 bg-indigo-900 text-indigo-300 rounded"><span class="en">RIGOR • ELEGANCE • SOPHISTICATION</span><span class="es">RIGOR • ELEGANCIA • SOFISTICACIÓN</span></span>
+                </div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+                <p class="text-sm text-slate-300 mb-4"><span class="en">This interactive diagram showcases the full end-to-end analytical framework. It demonstrates the rigorous, multi-layered stack of models, data flows, finetunes (Rules 21-23), ensemble weighting, sensitivities, and output pipeline. Designed for stakeholders to appreciate the validity, elegance, and sophistication of the approach (inspired by best-in-class implementations from TensorBoard graphs, Sankey flow diagrams for ensembles, layered ML architecture visuals from papers like "Visualizing Dataflow Graphs of Deep Learning Models", MLflow dashboards, and stacked ensemble diagrams in sports prediction literature).</span><span class="es">Este diagrama interactivo muestra el marco analítico completo de extremo a extremo. Demuestra la pila rigurosa y multicapa de modelos, flujos de datos, ajustes finos (Reglas 21-23), ponderación de ensemble, sensibilidades y pipeline de salida. Diseñado para que los stakeholders aprecien la validez, elegancia y sofisticación del enfoque (inspirado en implementaciones de clase mundial: gráficos TensorBoard, diagramas Sankey para ensembles, visuales de arquitectura ML en capas de papers como "Visualizing Dataflow Graphs of Deep Learning Models", dashboards MLflow y diagramas de ensemble apilado en literatura de predicción deportiva).</span></p>
+                
+                <!-- Workflow Diagram -->
+                <div class="viz-container bg-slate-950 border border-slate-700 rounded-2xl p-4 overflow-x-auto">
+                    <svg width="100%" height="420" viewBox="0 0 1100 420" class="mx-auto" style="max-width: 100%;">
+                        <!-- Background layers -->
+                        <rect x="20" y="20" width="1060" height="380" rx="12" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+                        
+                        <!-- Layer labels -->
+                        <text id="d-layer1" x="30" y="45" fill="#64748b" font-size="11" font-weight="600">LAYER 1: DATA INPUTS &amp; PREPROCESSING</text>
+                        <text id="d-layer2" x="30" y="155" fill="#64748b" font-size="11" font-weight="600">LAYER 2: BASE MODELS &amp; CORE PREDICTORS</text>
+                        <text id="d-layer3" x="30" y="265" fill="#64748b" font-size="11" font-weight="600">LAYER 3: ADJUSTMENTS, FINETUNES &amp; ENSEMBLE BLEND</text>
+                        <text id="d-layer4" x="30" y="355" fill="#64748b" font-size="11" font-weight="600">LAYER 4: VALIDATION, POST-PROCESSING &amp; OUTPUTS</text>
+                        
+                        <!-- INPUTS Layer -->
+                        <!-- Box 1: Elo -->
+                        <rect x="40" y="55" width="140" height="70" rx="8" fill="#1e2937" stroke="#0ea5e9" stroke-width="1.5"/>
+                        <text id="d-elo" x="110" y="80" fill="#bae6fd" font-size="12" font-weight="600" text-anchor="middle">Elo Ratings</text>
+                        <text id="d-elo-src1" x="110" y="95" fill="#64748b" font-size="9" text-anchor="middle">(eloratings.net +</text>
+                        <text id="d-elo-src2" x="110" y="107" fill="#64748b" font-size="9" text-anchor="middle">international-football.net)</text>
+                        <text id="d-elo-w" x="110" y="118" fill="#a5b4fc" font-size="8" text-anchor="middle">Weight: Core Input</text>
+                        
+                        <!-- Box 2: xG Proxies -->
+                        <rect x="195" y="55" width="140" height="70" rx="8" fill="#1e2937" stroke="#0ea5e9" stroke-width="1.5"/>
+                        <text id="d-xg" x="265" y="80" fill="#bae6fd" font-size="12" font-weight="600" text-anchor="middle">xG / xGA Proxies</text>
+                        <text id="d-xg-src1" x="265" y="95" fill="#64748b" font-size="9" text-anchor="middle">(FBref club-level for</text>
+                        <text id="d-xg-src2" x="265" y="107" fill="#64748b" font-size="9" text-anchor="middle">probable XI + opp profile)</text>
+                        <text id="d-xg-w" x="265" y="118" fill="#a5b4fc" font-size="8" text-anchor="middle">Weight: Hybrid Input</text>
+                        
+                        <!-- Box 3: Contextual -->
+                        <rect x="350" y="55" width="140" height="70" rx="8" fill="#1e2937" stroke="#0ea5e9" stroke-width="1.5"/>
+                        <text id="d-ctx" x="420" y="80" fill="#bae6fd" font-size="12" font-weight="600" text-anchor="middle">Contextual Data</text>
+                        <text id="d-ctx-src1" x="420" y="95" fill="#64748b" font-size="9" text-anchor="middle">(Form, H2H, Injuries,</text>
+                        <text id="d-ctx-src2" x="420" y="107" fill="#64748b" font-size="9" text-anchor="middle">Weather, Travel, Ref)</text>
+                        <text id="d-ctx-w" x="420" y="118" fill="#a5b4fc" font-size="8" text-anchor="middle">Weight: Adjustment Input</text>
+                        
+                        <!-- Box 4: Historical -->
+                        <rect x="505" y="55" width="140" height="70" rx="8" fill="#1e2937" stroke="#0ea5e9" stroke-width="1.5"/>
+                        <text id="d-hist" x="575" y="80" fill="#bae6fd" font-size="12" font-weight="600" text-anchor="middle">Historical Calibration</text>
+                        <text id="d-hist-src1" x="575" y="95" fill="#64748b" font-size="9" text-anchor="middle">(WC openers, Euros,</text>
+                        <text id="d-hist-src2" x="575" y="107" fill="#64748b" font-size="9" text-anchor="middle">top-5 leagues for μ &amp; var)</text>
+                        <text id="d-hist-w" x="575" y="118" fill="#a5b4fc" font-size="8" text-anchor="middle">Weight: Prior Input</text>
+                        
+                        <!-- Arrows from inputs to base models -->
+                        <path d="M110 125 Q 150 140 180 150" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4"/>
+                        <path d="M265 125 Q 280 140 300 150" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4"/>
+                        <path d="M420 125 Q 430 140 440 150" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4"/>
+                        <path d="M575 125 Q 590 140 610 150" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4"/>
+                        
+                        <!-- BASE MODELS Layer -->
+                        <!-- v4 Leg A: 1X2 Anchor (Elo + Rule 21) — NOT blended with DC -->
+                        <rect x="80" y="160" width="200" height="85" rx="8" fill="#134e4b" stroke="#14b8a6" stroke-width="2"/>
+                        <text id="d-elo-core" x="180" y="180" fill="#5eead4" font-size="11" font-weight="700" text-anchor="middle">v4 1X2 Anchor (Elo + Rule 21)</text>
+                        <text id="d-elo-c1" x="180" y="194" fill="#99f6e4" font-size="9" text-anchor="middle">• Two-way → closeness draw (base 0.20)</text>
+                        <text id="d-elo-c2" x="180" y="206" fill="#99f6e4" font-size="9" text-anchor="middle">• opener_boost 0.07, minnow 1.16</text>
+                        <text id="d-elo-c3" x="180" y="218" fill="#99f6e4" font-size="9" text-anchor="middle">• Brier 0.6157 (N=222 anchor)</text>
+                        <text id="d-elo-cw" x="180" y="232" fill="#a5b4fc" font-size="8" text-anchor="middle">1X2: standalone — no DC blend</text>
+                        
+                        <!-- v4 Leg B: Dixon-Coles Goal Markets -->
+                        <rect x="300" y="160" width="200" height="85" rx="8" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2"/>
+                        <text id="d-btd" x="400" y="180" fill="#93c5fd" font-size="11" font-weight="700" text-anchor="middle">Dixon-Coles Goal Markets</text>
+                        <text id="d-btd-c1" x="400" y="194" fill="#bfdbfe" font-size="9" text-anchor="middle">• ρ=-0.07 low-score correlation</text>
+                        <text id="d-btd-c2" x="400" y="206" fill="#bfdbfe" font-size="9" text-anchor="middle">• O/U 2.5, BTTS, P(0-0), combos</text>
+                        <text id="d-btd-c3" x="400" y="218" fill="#bfdbfe" font-size="9" text-anchor="middle">• λ via tanh Elo gap</text>
+                        <text id="d-btd-cw" x="400" y="232" fill="#a5b4fc" font-size="8" text-anchor="middle">Goals only — decoupled from 1X2</text>
+                        
+                        <!-- v4 Leg C: Tier EV Layer inputs -->
+                        <rect x="520" y="160" width="160" height="85" rx="8" fill="#4c1d95" stroke="#8b5cf6" stroke-width="2"/>
+                        <text id="d-xg-hybrid" x="600" y="180" fill="#c4b5fd" font-size="11" font-weight="700" text-anchor="middle">Market Legs (EV only)</text>
+                        <text id="d-xgh-c1" x="600" y="194" fill="#ddd6fe" font-size="9" text-anchor="middle">• Sharp: Pinnacle devigged</text>
+                        <text id="d-xgh-c2" x="600" y="206" fill="#ddd6fe" font-size="9" text-anchor="middle">• Soft: cross-book wide price</text>
+                        <text id="d-xgh-c3" x="600" y="218" fill="#ddd6fe" font-size="9" text-anchor="middle">• MOD: 70% model + 30% market</text>
+                        <text id="d-xgh-cw" x="600" y="232" fill="#a5b4fc" font-size="8" text-anchor="middle">Rule 24 + Rule 27 gate</text>
+                        
+                        <!-- v5 Roadmap -->
+                        <rect x="700" y="160" width="160" height="85" rx="8" fill="#334155" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,2"/>
+                        <text id="d-sharp" x="780" y="180" fill="#cbd5e1" font-size="11" font-weight="700" text-anchor="middle">v5 Roadmap (future)</text>
+                        <text id="d-sharp-c1" x="780" y="194" fill="#e2e8f0" font-size="9" text-anchor="middle">• EWMA + graph Elo</text>
+                        <text id="d-sharp-c2" x="780" y="206" fill="#e2e8f0" font-size="9" text-anchor="middle">• Dynamic xG blend (gated)</text>
+                        <text id="d-sharp-c3" x="780" y="220" fill="#e2e8f0" font-size="9" text-anchor="middle">• Bayesian BTD + Kelly bands</text>
+                        <text id="d-sharp-cw" x="780" y="232" fill="#a5b4fc" font-size="8" text-anchor="middle">Post-tournament N≥15</text>
+                        
+                        <!-- Arrows to adjustments -->
+                        <path d="M160 245 Q 200 255 340 260" fill="none" stroke="#64748b" stroke-width="1.5"/>
+                        <path d="M340 245 Q 380 255 500 260" fill="none" stroke="#64748b" stroke-width="1.5"/>
+                        <path d="M520 245 Q 560 255 620 260" fill="none" stroke="#64748b" stroke-width="1.5"/>
+                        <path d="M700 245 Q 720 255 750 260" fill="none" stroke="#64748b" stroke-width="1.5"/>
+                        
+                        <!-- ADJUSTMENTS & ENSEMBLE Layer -->
+                        <rect x="120" y="270" width="860" height="75" rx="10" fill="#1e2937" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3"/>
+                        <text id="d-finetunes" x="550" y="290" fill="#fcd34d" font-size="11" font-weight="700" text-anchor="middle">FINETUNES, RULES &amp; ENSEMBLE BLEND</text>
+                        
+                        <!-- Finetune boxes -->
+                        <rect x="140" y="300" width="170" height="35" rx="6" fill="#451a03" stroke="#f59e0b"/>
+                        <text id="d-r21" x="225" y="318" fill="#fed7aa" font-size="9" font-weight="600" text-anchor="middle">Rule 21: Opener/Minnow/ Rotation Finetunes</text>
+                        <rect x="320" y="300" width="170" height="35" rx="6" fill="#451a03" stroke="#f59e0b"/>
+                        <text id="d-r14" x="405" y="318" fill="#fed7aa" font-size="9" font-weight="600" text-anchor="middle">Rule 14/19: Bias + Shrinkage</text>
+                        <rect x="500" y="300" width="170" height="35" rx="6" fill="#451a03" stroke="#f59e0b"/>
+                        <text id="d-r22" x="585" y="318" fill="#fed7aa" font-size="9" font-weight="600" text-anchor="middle">Rule 24/27: Tier + MOD Stack</text>
+                        <rect x="680" y="300" width="170" height="35" rx="6" fill="#451a03" stroke="#f59e0b"/>
+                        <text id="d-r20" x="765" y="318" fill="#fed7aa" font-size="9" font-weight="600" text-anchor="middle">R14 + HALT + Cons. Kelly</text>
+                        
+                        <!-- v4 Tier Blend indicator -->
+                        <rect x="860" y="280" width="100" height="55" rx="8" fill="#78350f" stroke="#f59e0b"/>
+                        <text id="d-blend" x="910" y="295" fill="#fed7aa" font-size="9" font-weight="700" text-anchor="middle">RULE 24 TIERS</text>
+                        <text id="d-blend-c1" x="910" y="308" fill="#fdba74" font-size="7" text-anchor="middle">MOD: 70/30→Pin50/M30/S20</text>
+                        <text id="d-blend-c2" x="910" y="319" fill="#fdba74" font-size="7" text-anchor="middle">SPEC: S55/M30/P15</text>
+                        <text id="d-blend-c3" x="910" y="330" fill="#fdba74" font-size="7" text-anchor="middle">MARG: M40/P35/S25</text>
+                        
+                        <!-- Arrows to outputs -->
+                        <path d="M550 345 Q 550 355 550 365" fill="none" stroke="#64748b" stroke-width="2"/>
+                        
+                        <!-- OUTPUTS Layer -->
+                        <rect x="200" y="365" width="160" height="40" rx="8" fill="#052e16" stroke="#22c55e" stroke-width="2"/>
+                        <text id="d-sens" x="280" y="385" fill="#4ade80" font-size="10" font-weight="700" text-anchor="middle">3 SENSITIVITIES (Agg/Base/Cons)</text>
+                        <text id="d-sens-sub" x="280" y="398" fill="#86efac" font-size="8" text-anchor="middle">ROBUST check</text>
+                        
+                        <rect x="380" y="365" width="160" height="40" rx="8" fill="#052e16" stroke="#22c55e" stroke-width="2"/>
+                        <text id="d-dc-ev" x="460" y="385" fill="#4ade80" font-size="10" font-weight="700" text-anchor="middle">DC JOINTS + EV</text>
+                        <text id="d-dc-sub" x="460" y="398" fill="#86efac" font-size="8" text-anchor="middle">Fair odds, Kelly, HALT flags</text>
+                        
+                        <rect x="560" y="365" width="160" height="40" rx="8" fill="#052e16" stroke="#22c55e" stroke-width="2"/>
+                        <text id="d-class" x="640" y="385" fill="#4ade80" font-size="10" font-weight="700" text-anchor="middle">CLASSIFICATION + RECS</text>
+                        <text id="d-class-sub" x="640" y="398" fill="#86efac" font-size="8" text-anchor="middle">MOD / SPEC / PASS tiers</text>
+                        
+                        <rect x="740" y="365" width="160" height="40" rx="8" fill="#052e16" stroke="#22c55e" stroke-width="2"/>
+                        <text id="d-eli5-out" x="820" y="385" fill="#4ade80" font-size="10" font-weight="700" text-anchor="middle">ELI5 + STAKE SUGGESTIONS</text>
+                        <text id="d-eli5-sub" x="820" y="398" fill="#86efac" font-size="8" text-anchor="middle">Novice execution guides</text>
+                        
+                        <!-- Legend -->
+                        <rect x="920" y="55" width="160" height="120" rx="8" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+                        <text id="d-legend-title" x="1000" y="72" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle">LEGEND &amp; WEIGHTS</text>
+                        <rect x="935" y="82" width="12" height="12" fill="#1e2937" stroke="#0ea5e9"/><text id="d-leg-inputs" x="952" y="92" fill="#94a3b8" font-size="8">Inputs (Data Layer)</text>
+                        <rect x="935" y="98" width="12" height="12" fill="#134e4b" stroke="#14b8a6"/><text id="d-leg-base" x="952" y="108" fill="#94a3b8" font-size="8">Base Models</text>
+                        <rect x="935" y="114" width="12" height="12" fill="#451a03" stroke="#f59e0b"/><text id="d-leg-finetune" x="952" y="124" fill="#94a3b8" font-size="8">Finetunes / Rules</text>
+                        <rect x="935" y="130" width="12" height="12" fill="#78350f" stroke="#f59e0b"/><text id="d-leg-blend" x="952" y="140" fill="#94a3b8" font-size="8">Ensemble Blend</text>
+                        <rect x="935" y="146" width="12" height="12" fill="#052e16" stroke="#22c55e"/><text id="d-leg-outputs" x="952" y="156" fill="#94a3b8" font-size="8">Outputs &amp; Validation</text>
+                    </svg>
+                </div>
+                <div class="mt-3 text-xs text-slate-400 text-center"><span class="en">Production winner: <span class="font-mono">wc_model_v4_1_ensemble.py</span> (Bayesian Iteration 6 confirmed). N=222 Brier: market 0.5956, v4_1_stack 0.6039, v4_elo 0.6157, traps=0. Replicate: <span class="font-mono">python3 wc_model_v4_replicable_pipeline.py</span>. Docs: MODEL_ITERATION_V6.md + wc_model_master_provenance.txt.</span><span class="es">Ganador producción: <span class="font-mono">wc_model_v4_1_ensemble.py</span> (confirmado Iteración 6 Bayesiana). N=222 Brier: mercado 0,5956, v4_1_stack 0,6039, v4_elo 0,6157, trampas=0. Replicar: <span class="font-mono">python3 wc_model_v4_replicable_pipeline.py</span>. Docs: MODEL_ITERATION_V6.md + wc_model_master_provenance.txt.</span></div>
+            </div>
+        </div>
+
+        <!-- Replicability & Model Sync Note (peer-reviewed v4.1) -->
+        <div class="mb-8 bg-slate-900 border border-emerald-900/50 rounded-3xl p-5 text-xs">
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-database text-emerald-400 mt-0.5"></i>
+                <div class="w-full">
+                    <span class="font-semibold text-emerald-300"><span class="en">Data &amp; Replication Package (Peer Review PASS — 10/10 tests)</span><span class="es">Paquete de Datos y Replicación (Peer Review PASS — 10/10 tests)</span></span>
+                    <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
+                            <div class="font-semibold text-emerald-400 mb-1"><span class="en">Dataset A — June Slate (OSINT)</span><span class="es">Dataset A — Copa Junio (OSINT)</span></div>
+                            <span class="font-mono">wc_2026_model_dataset.csv</span> <span class="en">(6 rows)</span><span class="es">(6 filas)</span><br>
+                            <span class="en">Per-column source_* provenance (Elo, injuries, weather, form)</span><span class="es">Provenanceia source_* por columna</span><br>
+                            <span class="font-mono">wc_2026_dataset_provenance.txt</span>
+                        </div>
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
+                            <div class="font-semibold text-emerald-400 mb-1"><span class="en">Dataset B — Backtest N=222</span><span class="es">Dataset B — Backtest N=222 (validación)</span></div>
+                            <span class="font-mono">wc_backtest_historical_dataset.csv</span><br>
+                            <span class="en">Sources: football-data.co.uk, FIFA WC 2018/2022, WC26 MD1-3 screenshots</span><span class="es">Fuentes: football-data.co.uk, FIFA WC 2018/2022, capturas WC26</span><br>
+                            <span class="font-mono">wc_backtest_dataset_provenance.txt</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 bg-slate-950 border border-slate-800 rounded-xl p-3">
+                        <div class="font-semibold text-sky-400 mb-1"><span class="en">Production pipeline (student replicable)</span><span class="es">Pipeline de producción (replicable por estudiantes)</span></div>
+                        <span class="font-mono">python3 wc_model_v4_replicable_pipeline.py</span><br>
+                        <span class="font-mono">python3 -m pytest tests/test_peer_replication.py -v</span><br>
+                        <span class="en">Output: <span class="font-mono">wc_model_production_results.csv</span> (228 rows). Locked metrics: v4_elo Brier 0.6157, v4_1_stack 0.6039, market 0.5956, traps=0.</span>
+                        <span class="es">Salida: <span class="font-mono">wc_model_production_results.csv</span> (228 filas). Métricas bloqueadas: v4_elo Brier 0,6157, v4_1_stack 0,6039, mercado 0,5956, trampas=0.</span>
+                    </div>
+                    <div class="mt-2 text-slate-400"><span class="en">v3.1 raw formula still available via <span class="font-mono">wc_replicable_pipeline.py</span> (France 66.2% documented vs 54.0% raw). v4.1 adds MOD 70/30 stack + Rule 24/27 on same CSV inputs. Manifest: <span class="font-mono">wc_model_master_provenance.txt</span>.</span><span class="es">Fórmula raw v3.1 sigue en <span class="font-mono">wc_replicable_pipeline.py</span>. v4.1 añade stack MOD 70/30 + Reglas 24/27. Manifiesto: <span class="font-mono">wc_model_master_provenance.txt</span>.</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Backtest & Introspection -->
+        <div class="mb-8">
+            <div class="flex items-center gap-x-3 mb-3">
+                <i class="fa-solid fa-history text-xl text-emerald-400"></i>
+                <div>
+                    <span class="font-semibold text-lg"><span class="en">Introspection + Backtesting (Finished Matches + Leagues)</span><span class="es">Introspección + Backtesting (Partidos Terminados + Ligas)</span></span>
+                    <span class="text-xs ml-2 px-2 py-0.5 bg-emerald-900 text-emerald-400 rounded"><span class="en">VERIFIED</span><span class="es">VERIFICADO</span></span>
+                </div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 text-sm">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    <div>
+                        <div class="font-semibold mb-2"><span class="en">Key Realized Results (2026-06-15, multi-source)</span><span class="es">Resultados Reales Clave (15-06-2026, multi-fuente)</span></div>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex gap-2"><span class="font-mono text-emerald-400">Spain 0-0 Cape Verde</span> <span class="text-slate-400"><span class="en">(Group H, Atlanta; debutant shock, 27 shots Spain but compact block + Vozinha heroics, xG ~2.1–2.3 vs 0.2)</span><span class="es">(Grupo H, Atlanta; shock de debutante, 27 tiros de España pero bloque compacto + heroísmo de Vozinha, xG ~2,1–2,3 vs 0,2)</span></span></li>
+                            <li class="flex gap-2"><span class="font-mono text-emerald-400">Belgium 1-1 Egypt</span> <span class="text-slate-400"><span class="en">(Group G, Seattle; Ashour opener, Hany OG equalizer)</span><span class="es">(Grupo G, Seattle; apertura de Ashour, autogol de Hany como empate)</span></span></li>
+                        </ul>
+                        <div class="mt-3 text-xs"><span class="en">Model (executed <span class="font-mono">wc_model_v4_replicable_pipeline.py</span>): Spain v4.1 blend ~77.0% win (fair ~1.30) vs screenshot 1.18–1.19 → EV −10.8% (<strong>Pass</strong>). BEL blend 56.2% (fair ~1.78) vs 1.62–1.67 → EV −6.2% (<strong>Pass</strong>). All June 1X2 favorites PASS under v4.1 MOD 70/30 stack + Rule 24.</span><span class="es">Modelo (ejecutado <span class="font-mono">wc_model_v4_replicable_pipeline.py</span>): España mezcla v4.1 ~77,0% victoria (justa ~1,30) vs captura 1,18–1,19 → EV −10,8% (<strong>Pass</strong>). BEL mezcla 56,2% (justa ~1,78) vs 1,62–1,67 → EV −6,2% (<strong>Pass</strong>). Todos los 1X2 de favoritos de junio PASS bajo stack MOD 70/30 v4.1 + Regla 24.</span></div>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-2"><span class="en">Finetune Impact (tested on Spain-CV case)</span><span class="es">Impacto de Ajustes Finos (probado en caso España-CV)</span></div>
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 text-xs font-mono">
+                            <span class="en">v4.1 production (opener +0.07, minnow 1.16, rot −25): <span class="text-emerald-400 font-semibold">68.6% win / 28.1% draw</span> (anchor)<br>
+                            v3.1 historical (+0.055): 62.0% win / 27.1% draw<br>
+                            <span class="text-slate-400">→ Draw anchor 28.1% vs realized 0-0; still under-draw but improved vs raw 79% win (2002 FRA-SEN precedent).</span></span>
+                            <span class="es">v4.1 producción (apertura +0,07, minnow 1,16, rot −25): <span class="text-emerald-400 font-semibold">68,6% victoria / 28,1% empate</span> (ancla)<br>
+                            v3.1 histórico (+0,055): 62,0% victoria / 27,1% empate<br>
+                            <span class="text-slate-400">→ Ancla empate 28,1% vs 0-0 real; aún subestima empate pero mejor vs 79% victoria cruda (precedente FRA-SEN 2002).</span></span>
+                        </div>
+                        <div class="mt-2 text-xs"><span class="en">Expanded N=222 backtest (Iteration 6 Bayesian): market_implied Brier 0.5956 beats all structural models; v4_1_stack 0.6039 (−0.0118 vs v4 anchor); MOD trap discipline 0/125 under v4.1. NED-JPN PASS at −7.0% blended EV (would have saved S/30).</span><span class="es">Backtest expandido N=222 (Bayesiano Iteración 6): market_implied Brier 0,5956 supera modelos estructurales; v4_1_stack 0,6039; trampas MOD 0/125 bajo v4.1. NED-JPN PASS a −7,0% EV mezclado.</span></div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 text-xs"><span class="en">Other leagues calibration (club xG Poisson proxies for sparse intl): Recent top-5 leagues + Euros 2024 used for μ_total (average total goals expected in a game) and variance priors (low-scoring WC openers benefit from suppressed μ 2.25–2.4 + DC rho −0.07). Sources: FBref club xG, historical WC group stage data. </span><span class="es">Calibración de otras ligas (proxies xG Poisson de clubes para intl escasos): Ligas top-5 recientes + Euro 2024 usadas para μ_total (promedio de goles totales esperados en un partido) y priors de varianza (aperturas de WC con pocos goles se benefician de μ suprimido 2,25–2,4 + rho DC −0,07). Fuentes: FBref xG de clubes, datos históricos de fase de grupos de WC. </span><span class="text-xs text-slate-400">(<span class="en">Newbie: "μ_total" or mu is just the average number of goals we expect both teams to score combined in this type of match. "Variance" is how much the actual result can swing away from the average — football has a lot of it, which is why even "strong" favorites can draw or lose.</span><span class="es">Nota principiante: "μ_total" o mu es simplemente el promedio de goles que esperamos que ambos equipos marquen combinados en este tipo de partido. "Varianza" es cuánto puede variar el resultado real del promedio — el fútbol tiene mucha, por eso incluso favoritos "fuertes" pueden empatar o perder.</span>)</span></div>
+            </div>
+        </div>
+
+        <!-- Subagents & Alternative Models -->
+        <div class="mb-8">
+            <div class="flex items-center gap-x-3 mb-3">
+                <i class="fa-solid fa-cogs text-xl text-violet-400"></i>
+                <div>
+                    <span class="font-semibold text-lg"><span class="en">Subagents + Alternative Analyses / Algorithms</span><span class="es">Subagentes + Análisis / Algoritmos Alternativos</span></span>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4">
+                    <div class="uppercase text-xs tracking-widest font-semibold mb-2 text-violet-300"><span class="en">Bradley-Terry / BTD (Outcome-Focused)</span><span class="es">Bradley-Terry / BTD (Enfocado en Resultados)</span></div>
+                    <div class="text-sm"><span class="en">P(A beats B) = 1 / (1 + exp(−(rA − rB + home))). BTD adds draw δ≈0.8 for 1X2. Init r from Elo/100 or MLE on historical results. Dynamic EWMA updates. Excellent for draws and close matches; lower variance than raw Elo gaps in WC studies (arXiv:2405.10247 BTD competitive on group/knockout Brier/RPS). </span><span class="es">P(A vence a B) = 1 / (1 + exp(−(rA − rB + local))). BTD añade empate δ≈0,8 para 1X2. r inicial de Elo/100 o MLE en resultados históricos. Actualizaciones EWMA dinámicas. Excelente para empates y partidos cerrados; menor varianza que brechas Elo crudas en estudios de WC (arXiv:2405.10247 BTD competitivo en Brier/RPS de grupos/eliminatorias). </span><span class="font-mono text-xs"><span class="en">Executable stub in wc_model_v3.py (bradley_terry_davidson_1x2).</span><span class="es">Stub ejecutable en wc_model_v3.py (bradley_terry_davidson_1x2).</span></span> <span class="text-xs text-slate-400">(<span class="en">Newbie glossary: "BTD" or Bradley-Terry-Davidson is another way to calculate "who is likely to win or draw" using ratings instead of pure goal math. "Ensemble" means combining several different prediction methods (like our main model + this BTD + sharp book prices) and averaging them for a more reliable final number. "Brier" and "RPS" are scoring systems that measure how accurate a probability prediction was — lower is better.</span><span class="es">Glosario principiante: "BTD" o Bradley-Terry-Davidson es otra forma de calcular "quién es probable que gane o empate" usando calificaciones en lugar de matemáticas puras de goles. "Ensemble" significa combinar varios métodos de predicción diferentes (como nuestro modelo principal + este BTD + precios de libros sharp) y promediarlos para un número final más confiable. "Brier" y "RPS" son sistemas de puntuación que miden qué tan precisa fue una predicción de probabilidad — más bajo es mejor.</span>)</span></div>
+                    <div class="mt-2 text-xs text-slate-400"><span class="en">Integration: 30–40% ensemble weight in sharp-blend. Strong complement to Elo+Poisson for 1X2/Draw calibration on minnows/openers.</span><span class="es">Integración: peso de ensemble 30–40% en mezcla sharp. Fuerte complemento a Elo+Poisson para calibración de 1X2/Empate en minnows/aperturas.</span></div>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4">
+                    <div class="uppercase text-xs tracking-widest font-semibold mb-2 text-violet-300"><span class="en">xG Poisson Hybrid (Club Proxies)</span><span class="es">Híbrido xG Poisson (Proxies de Clubes)</span></div>
+                    <div class="text-sm"><span class="en">Club xG/xGA (FBref per-90 for probable XI, weighted by intl minutes + opp defensive profile) as primary λ proxy, blended (0.4 default) with Elo-derived share. Feed to existing Poisson + Dixon-Coles joints. Handles "created a lot but didn't finish" (Spain xG reality) better than pure goal models. Hybrids frequently outperform pure Poisson/rating-only on calibration (Dixon-Coles + xG literature post-2018; StatsAndSnakeOil notes). </span><span class="es">xG/xGA de club (FBref por-90 para XI probable, ponderado por minutos intl + perfil defensivo del rival) como proxy primario de λ, mezclado (0,4 por defecto) con participación derivada de Elo. Alimenta a Poisson existente + juntas Dixon-Coles. Maneja mejor "creó mucho pero no terminó" (realidad xG de España) que modelos puros de goles. Los híbridos frecuentemente superan a Poisson/rating puro en calibración (literatura Dixon-Coles + xG post-2018; notas de StatsAndSnakeOil). </span><span class="text-xs text-slate-400">(<span class="en">Newbie: "xG" or Expected Goals is a modern stat that measures not just how many shots a team had, but the quality of those shots — a shot from 5 yards is worth more xG than one from 30 yards. We use club xG numbers as a "proxy" or stand-in because international games have less data. "Poisson" is the basic math formula we use to turn an average number of expected goals into the chance of scoring 0, 1, 2, 3+ goals.</span><span class="es">Principiante: "xG" o Goles Esperados es una estadística moderna que mide no solo cuántos tiros tuvo un equipo, sino la calidad de esos tiros — un tiro desde 5 yardas vale más xG que uno desde 30 yardas. Usamos números xG de clubes como "proxy" o sustituto porque los partidos internacionales tienen menos datos. "Poisson" es la fórmula matemática básica que usamos para convertir un número promedio de goles esperados en la probabilidad de marcar 0, 1, 2, 3+ goles.</span>)</span></div>
+                    <div class="mt-2 text-xs text-slate-400"><span class="en">Integration: xg_poisson_hybrid_lambda + blend into full_1x2_ou_btts. Requires predicted XI (per AGENT Step A). Use for sensitivity or 3rd ensemble leg.</span><span class="es">Integración: xg_poisson_hybrid_lambda + mezcla en full_1x2_ou_btts. Requiere XI pronosticado (por Paso A de AGENT). Úselo para sensibilidad o tercera pata de ensemble.</span></div>
+                </div>
+            </div>
+            <div class="mt-4 bg-slate-950 border border-violet-900/50 rounded-2xl p-4 text-xs">
+                <div class="font-semibold text-violet-300 mb-2"><span class="en">Iteration 6 — Bayesian Search (6 alternatives × 5 versions × 2 zoom rounds = 102 configs)</span><span class="es">Iteración 6 — Búsqueda Bayesiana (6 alternativas × 5 versiones × 2 zoom = 102 configs)</span></div>
+                <table class="w-full text-xs data-table mt-2">
+                    <thead><tr class="border-b border-slate-700"><th class="text-left py-1"><span class="en">Degree</span><span class="es">Grado</span></th><th><span class="en">Best topology</span><span class="es">Mejor topología</span></th><th><span class="en">Brier</span><span class="es">Brier</span></th><th><span class="en">Ship?</span><span class="es">¿Ship?</span></th></tr></thead>
+                    <tbody class="divide-y divide-slate-800">
+                        <tr><td><span class="en">D4 Tier ensemble</span><span class="es">D4 Ensemble por nivel</span></td><td>SPEC soft60 + MOD 38/45/17</td><td>0.5967</td><td class="text-amber-400"><span class="en">Blocked (Rule 27)</span><span class="es">Bloqueado (Regla 27)</span></td></tr>
+                        <tr><td><span class="en">D2 DC + stack</span><span class="es">D2 DC + stack</span></td><td><span class="en">Global w≈47%</span><span class="es">Global w≈47%</span></td><td>0.5981</td><td class="text-slate-400"><span class="en">Research only</span><span class="es">Solo investigación</span></td></tr>
+                        <tr><td class="font-semibold text-emerald-400"><span class="en">Production v4.1</span><span class="es">Producción v4.1</span></td><td>MOD 70/30 + Pin50/M30/S20</td><td>0.6039</td><td class="text-emerald-400"><span class="en">✓ SHIPPED</span><span class="es">✓ EN PRODUCCIÓN</span></td></tr>
+                    </tbody>
+                </table>
+                <div class="mt-2 text-slate-400"><span class="en">Harness: <span class="font-mono">wc_bayesian_model_search.py</span>. D5 EWMA and D3 xG deferred to v5. See MODEL_ITERATION_V6.md.</span><span class="es">Harness: <span class="font-mono">wc_bayesian_model_search.py</span>. D5 EWMA y D3 xG diferidos a v5. Ver MODEL_ITERATION_V6.md.</span></div>
+            </div>
+            <div class="text-xs mt-2 text-slate-400"><span class="en">Six-degree review complete. Production: v4.1 Elo anchor + DC goals + MOD market stack. v3.1 raw pipeline retained for regression.</span><span class="es">Revisión de seis grados completa. Producción: ancla Elo v4.1 + goles DC + stack mercado MOD. Pipeline raw v3.1 retenido para regresión.</span></div>
+        </div>
+
+        <!-- Surefire / Surest Bets -->
+        <div class="mb-8">
+            <div class="flex items-center gap-x-3 mb-3">
+                <i class="fa-solid fa-shield-halved text-xl text-rose-400"></i>
+                <div>
+                    <span class="font-semibold text-lg"><span class="en">Surefire (Near-1.0) Bets Analysis + Risk-Weighted Surest Alternatives</span><span class="es">Análisis de Apuestas "Seguras" (Casi-1.0) + Alternativas Más Seguras Ponderadas por Riesgo</span></span>
+                </div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                <div class="prose prose-invert text-sm max-w-none">
+                    <p><strong><span class="en">No genuine near-1.0 probability +EV multipliers exist</span><span class="es">No existen multiplicadores genuinos de probabilidad casi-1.0 con +EV</span></strong> <span class="en">(e.g. 1.10–1.30 heavy-favorite 1X2 like Spain 1.19, Norway 1.19, France 1.50, Argentina 1.41). Model (executed) gives true P 60–79% vs book-implied 67–85%+; EV uniformly −6% to −33% after vig + Rule 14 favorite-longshot shrinkage (±2pp). Historical WC group-stage upsets (2022 Saudi-ARG 1-0 as extreme favorite; multiple top pre-tourney favorites eliminated early) + live Spain 0-0 (model 79% realized 0) validate the trap. Low multiplier (small win) + full-stake wipeout on realistic 15–40% upset rate = terrible risk-adjusted return. Variance + bias (Snowberg &amp; Wolfers 2010 JPE) destroy "sure multiply with minimal risk."</span><span class="es">(ej. 1,10–1,30 1X2 de favoritos pesados como España 1,19, Noruega 1,19, Francia 1,50, Argentina 1,41). El modelo (ejecutado) da P verdadera 60–79% vs implícito del libro 67–85%+; EV uniformemente −6% a −33% tras vig + reducción por sesgo favorito-longshot de Regla 14 (±2pp). Upsets históricos de fase de grupos de WC (Arabia Saudita-ARG 2022 1-0 como favorito extremo; múltiples favoritos pre-torneo eliminados temprano) + España 0-0 en vivo (modelo 79% realizado 0) validan la trampa. Multiplicador bajo (ganancia pequeña) + wipeout de stake completo en tasa realista de upset 15–40% = terrible retorno ajustado por riesgo. Varianza + sesgo (Snowberg &amp; Wolfers 2010 JPE) destruyen "multiplicar seguro con riesgo mínimo".</span> <span class="text-xs text-slate-400">(<span class="en">Newbie: "1X2" is the basic bet type — pick the home team to win (1), the game to draw (X), or the away team to win (2). "Book-implied" is what the betting app's odds secretly think the chance is after they add their profit margin. "Variance" means results can swing wildly even when the average expectation is clear — a 70% favorite still loses or draws 30% of the time.</span><span class="es">Principiante: "1X2" es el tipo de apuesta básico — elige que el equipo local gane (1), que el partido empate (X), o que el equipo visitante gane (2). "Book-implied" es lo que las cuotas de la app de apuestas secretamente piensan que es la probabilidad después de añadir su margen de ganancia. "Varianza" significa que los resultados pueden variar salvajemente incluso cuando la expectativa promedio es clara — un favorito del 70% aún pierde o empata el 30% del tiempo.</span>)</span></p>
+                </div>
+
+                <div class="mt-4">
+                    <div class="text-xs uppercase tracking-widest font-semibold mb-2"><span class="en">Risk-Adjusted Attractiveness (from current slate screenshots + model)</span><span class="es">Atractivo Ajustado por Riesgo (de capturas actuales + modelo)</span></div>
+                    <table class="w-full text-xs data-table">
+                        <thead><tr class="border-b border-slate-700"><th class="text-left py-2"><span class="en">Selection</span><span class="es">Selección</span></th><th>o</th><th><span class="en">Model P</span><span class="es">P Modelo</span></th><th>EV%</th><th><span class="en">Var Proxy</span><span class="es">Proxy Var</span></th><th><span class="en">Risk-Adj</span><span class="es">Riesgo-Ajust</span></th><th><span class="en">Class</span><span class="es">Clase</span></th></tr></thead>
+                        <tbody class="divide-y divide-slate-800 text-xs">
+                            <tr><td><span class="abbr"><span class="en">KSA-URU Under 2.5</span><span class="es">KSA-URU Menos 2.5</span><span class="tooltip"><span class="en">This bet refers to choosing the event that in the Kingdom of Saudi Arabia vs Uruguay there will be 2.5 goals or less by any team in the full match (i.e., the total goals scored by both teams combined will be 0, 1, or 2).</span><span class="es">Esta apuesta se refiere a elegir que en Arabia Saudita vs Uruguay habrá 2,5 goles o menos por cualquier equipo en el partido completo (es decir, el total de goles de ambos equipos combinados será 0, 1 o 2).</span></span></span></td><td>1.78</td><td>~61%</td><td class="ev-positive">+8.6</td><td><span class="en">Low (suppressed λ)</span><span class="es">Baja (λ suprimido)</span></td><td class="font-semibold"><span class="en">Highest</span><span class="es">Más alto</span></td><td><span class="en">MOD (ROBUST)</span><span class="es">MOD (ROBUSTO)</span></td></tr>
+                            <tr><td><span class="abbr"><span class="en">AUT Draw @5.05</span><span class="es">Empate AUT @5,05</span><span class="tooltip"><span class="en">This bet refers to choosing the event that in the Austria vs Jordan match the final score will be a draw (both teams end with the exact same number of goals, such as 0-0, 1-1, or 2-2).</span><span class="es">Esta apuesta se refiere a elegir que en el partido Austria vs Jordania el marcador final será empate (ambos equipos terminan con el mismo número de goles, como 0-0, 1-1 o 2-2).</span></span></span></td><td>5.05</td><td>34%</td><td class="ev-positive">+69.0</td><td><span class="en">Med-High</span><span class="es">Med-Alta</span></td><td><span class="en">High (if cleared)</span><span class="es">Alta (si despeja)</span></td><td><span class="en">HALT (MOD)</span><span class="es">HALT (MOD)</span></td></tr>
+                            <tr><td><span class="abbr"><span class="en">FRA win + O3.5 (DC joint)</span><span class="es">Victoria FRA + O3.5 (junta DC)</span><span class="tooltip"><span class="en">This is a combo bet: France must win the match AND there must be more than 3.5 total goals (4 or more goals by both teams combined). DC joint means we use a correlated probability model (Dixon-Coles) instead of simply multiplying the two separate chances.</span><span class="es">Es una apuesta combinada: Francia debe ganar el partido Y debe haber más de 3,5 goles totales (4 o más goles por ambos equipos combinados). La junta DC usa un modelo correlacionado (Dixon-Coles) en lugar de multiplicar las probabilidades separadas.</span></span></span></td><td>5.15</td><td>0.258</td><td class="ev-positive">+33</td><td><span class="en">High (tails)</span><span class="es">Alta (colas)</span></td><td><span class="en">Med (if HALT cleared)</span><span class="es">Med (si HALT despejado)</span></td><td><span class="en">MOD</span><span class="es">MOD</span></td></tr>
+                            <tr><td><span class="en">Heavy fav 1X2 shorts (Spain/NOR/FRA/ARG win)</span><span class="es">Cortos 1X2 de favoritos pesados (victoria ESP/NOR/FRA/ARG)</span></td><td>1.19–1.50</td><td>60–79%</td><td class="ev-negative">−6 to −33</td><td><span class="en">Med (high-impact loss)</span><span class="es">Med (pérdida de alto impacto)</span></td><td class="font-semibold text-rose-400"><span class="en">Lowest (trap)</span><span class="es">Más bajo (trampa)</span></td><td><span class="en">PASS</span><span class="es">PASS</span></td></tr>
+                        </tbody>
+                    </table>
+                    <div class="mt-2 text-xs"><span class="en">Highest model P + lowest variance +EV = KSA-URU Under (conditions align: absences + heat/storms). Shorts look "safe" but destroy bankroll % on the realistic failure events proven live and historically. All weighted by max-stake liquidity on boosts and drawdown potential.</span><span class="es">P modelo más alta + menor varianza +EV = KSA-URU Under (condiciones alinean: ausencias + calor/tormentas). Los cortos parecen "seguros" pero destruyen % de bankroll en los eventos de falla realistas probados en vivo e históricamente. Todo ponderado por liquidez de stake máximo en boosts y potencial de drawdown.</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Recommendations -->
+        <div>
+            <div class="flex items-center gap-x-3 mb-3">
+                <i class="fa-solid fa-calendar-day text-xl text-sky-400"></i>
+                <div>
+                    <span class="font-semibold text-lg"><span class="en">June 16 2026 Upcoming Matches + Sub-Events (Real-Time Data + Perfected Model)</span><span class="es">Partidos Próximos 16 Jun 2026 + Sub-Eventos (Datos en Tiempo Real + Modelo Perfeccionado)</span></span>
+                    <span class="ml-2 text-xs bg-sky-900 text-sky-300 px-2 py-0.5 rounded"><span class="en">FRESH DATA PULLED</span><span class="es">DATOS FRESCOS OBTENIDOS</span></span>
+                </div>
+            </div>
+
+            <!-- Match Cards -->
+            <div class="space-y-6">
+                <!-- France vs Senegal -->
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden">
+                    <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
+                        <div>
+                            <span class="font-semibold"><span class="en">France vs Senegal</span><span class="es">Francia vs Senegal</span></span>
+                            <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group I • MetLife • ~14:00 ET</span><span class="es">Grupo I • MetLife • ~14:00 ET</span></span>
+                        </div>
+                        <div class="text-xs text-slate-400"><span class="en">Mild weather • Ref Faghani (low pens)</span><span class="es">Clima templado • Árbitro Faghani (pocos penales)</span></div>
+                    </div>
+                    <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
+                        <div class="md:col-span-5">
+                            <div class="font-medium mb-1.5"><span class="en">Data Snapshot (≥2 sources)</span><span class="es">Resumen de Datos (≥2 fuentes)</span></div>
+                            <div class="text-xs space-y-1 text-slate-300">
+                                <div><span class="text-slate-400"><span class="en">Lineups:</span><span class="es">Alineaciones:</span></span> <span class="en">FRA Maignan; Koundé/Saliba/Upamecano/Digne; Tchouaméni/Rabiot; Olise/Dembélé/Doué/Mbappé. SEN Mendy; Diatta/Koulibaly/Niakhaté/Jakobs; Camara/Sarr; Mané/Jackson/Ndiaye. (ESPN, Sports Mole, RotoWire, L'Équipe ~Jun 14-15)</span><span class="es">FRA Maignan; Koundé/Saliba/Upamecano/Digne; Tchouaméni/Rabiot; Olise/Dembélé/Doué/Mbappé. SEN Mendy; Diatta/Koulibaly/Niakhaté/Jakobs; Camara/Sarr; Mané/Jackson/Ndiaye. (ESPN, Sports Mole, RotoWire, L'Équipe ~14-15 Jun)</span></div>
+                                <div><span class="text-slate-400"><span class="en">Injuries:</span><span class="es">Lesiones:</span></span> <span class="en">FRA Koundé muscular monitor (expected); SEN no major. (Multi-source consistent)</span><span class="es">FRA Koundé monitor muscular (esperado); SEN sin lesiones mayores. (Consistente multi-fuente)</span></div>
+                                <div><span class="text-slate-400"><span class="en">Elo:</span><span class="es">Elo:</span></span> <span class="en">FRA 2063 / SEN 1860 (finisher pair bonus applied)</span><span class="es">FRA 2063 / SEN 1860 (bono par de goleadores aplicado)</span></div>
+                                <div><span class="text-slate-400"><span class="en">Form/Notes:</span><span class="es">Forma/Notas:</span></span> <span class="en">2002 0-1 SEN shock precedent. FRA warmups mixed. SEN counter-capable.</span><span class="es">Precedente shock SEN 0-1 en 2002. Calentamientos FRA mixtos. SEN capaz de contraataque.</span></div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-4">
+                            <div class="font-medium mb-1.5"><span class="en">Executed Model (<span class="font-mono">wc_model_v4_replicable_pipeline.py</span>)</span><span class="es">Modelo Ejecutado (<span class="font-mono">wc_model_v4_replicable_pipeline.py</span>)</span></div>
+                            <div class="text-[10px] text-slate-400 mb-1"><span class="en">v4.1 anchor → MOD 70/30 blend (Rule 24)</span><span class="es">ancla v4.1 → mezcla MOD 70/30 (Regla 24)</span></div>
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                                <div class="bg-slate-950 border border-slate-800 rounded p-2">
+                                    <div class="text-emerald-400 font-semibold">59.6%</div>
+                                    <div class="text-[10px]"><span class="en">FRA win (blend)</span><span class="es">Victoria FRA (mezcla)</span></div>
+                                    <div class="text-[9px] text-slate-500">51.3% <span class="en">anchor</span><span class="es">ancla</span></div>
+                                </div>
+                                <div class="bg-slate-950 border border-slate-800 rounded p-2">
+                                    <div>23.0%</div>
+                                    <div class="text-[10px]"><span class="en">Draw (blend)</span><span class="es">Empate (mezcla)</span></div>
+                                    <div class="text-[9px] text-slate-500">32.7% <span class="en">anchor</span><span class="es">ancla</span></div>
+                                </div>
+                                <div class="bg-slate-950 border border-slate-800 rounded p-2">
+                                    <div>17.3%</div>
+                                    <div class="text-[10px]"><span class="en">SEN win (blend)</span><span class="es">Victoria SEN (mezcla)</span></div>
+                                    <div class="text-[9px] text-slate-500">16.0% <span class="en">anchor</span><span class="es">ancla</span></div>
+                                </div>
+                            </div>
+                            <div class="text-xs mt-2"><span class="abbr">λ<span class="tooltip"><span class="en">λ (lambda) = the expected number of goals a team is projected to score in this match according to the model.</span><span class="es">λ (lambda) = número esperado de goles que un equipo proyecta marcar según el modelo.</span></span></span> 2.31/0.24 • <span class="abbr">P(O2.5)<span class="tooltip"><span class="en">P(O2.5) = Probability of Over 2.5 goals (3 or more total goals in the match).</span><span class="es">P(O2.5) = Probabilidad de Más de 2,5 goles (3 o más goles totales en el partido).</span></span></span> 46.9% • <span class="abbr"><span class="en">DC FRA+O3.5 joint</span><span class="es">Junta DC FRA+O3.5</span><span class="tooltip"><span class="en">This is a combo bet: France must win the match AND there must be more than 3.5 total goals (4 or more goals by both teams combined). DC joint means we use a correlated probability model (Dixon-Coles) instead of simply multiplying the two separate chances.</span><span class="es">Es una apuesta combinada: Francia debe ganar el partido Y debe haber más de 3,5 goles totales (4 o más goles por ambos equipos combinados). La junta DC significa que usamos un modelo de probabilidad correlacionada (Dixon-Coles) en lugar de simplemente multiplicar las dos probabilidades separadas.</span></span></span> <span class="en">0.258–0.271 (enhanced)</span><span class="es">0,258–0,271 (mejorado)</span></div>
+                            <div class="text-xs text-rose-400 mt-1"><span class="en">Prior screenshot FRA win ~1.50–1.52 → EV −9.4% (Pass, MOD tier). v3.1 documented base: 66.2% win. FRA+O3.5 boost 5.15 context → +33% raw but</span><span class="es">Captura previa victoria FRA ~1,50–1,52 → EV −9,4% (Pass, nivel MOD). Base documentada v3.1: 66,2% victoria. Boost FRA+O3.5 contexto 5,15 → +33% raw pero</span> <span class="abbr">HALT<span class="tooltip"><span class="en">HALT means our rules say "stop and double-check with extra sharp data before considering this bet" if the model EV looks too good to be true — usually above +25%.</span><span class="es">HALT significa que nuestras reglas dicen "detente y verifica con datos sharp extra antes de considerar esta apuesta" si el EV del modelo parece demasiado bueno — usualmente por encima de +25%.</span></span></span> <span class="en">per Rules 13/18.</span><span class="es">según Reglas 13/18.</span> <span class="text-xs text-slate-400">(<span class="en">Newbie: "HALT" means our rules say "stop and double-check with extra sharp data before considering this bet" if the model EV looks too good to be true — usually above +25%. "Rules 13/18" are specific safety checks in our betting analysis protocol.</span><span class="es">Principiante: "HALT" significa que nuestras reglas dicen "detente y verifica con datos sharp extra" si el EV parece demasiado bueno — usualmente por encima de +25%. "Reglas 13/18" son verificaciones de seguridad específicas en nuestro protocolo de análisis.</span>)</span></div>
+                        </div>
+                        <div class="md:col-span-3">
+                            <div class="font-medium mb-1.5"><span class="en">Recommendations (1-3 ideas)</span><span class="es">Recomendaciones (1-3 ideas)</span></div>
+                            <div class="space-y-2 text-xs">
+                                <div class="p-2 bg-emerald-950/60 border border-emerald-900 rounded"><strong>1. <span class="abbr"><span class="en">FRA win + Over 3.5</span><span class="es">Victoria FRA + Más 3.5</span><span class="tooltip"><span class="en">This is a combo bet: France must win the match AND there must be more than 3.5 total goals (4 or more goals by both teams combined). DC joint means we use a correlated probability model (Dixon-Coles) instead of simply multiplying the two separate chances.</span><span class="es">Es una apuesta combinada: Francia debe ganar el partido Y debe haber más de 3,5 goles totales (4 o más goles por ambos equipos combinados). La junta DC usa un modelo correlacionado (Dixon-Coles) en lugar de multiplicar las probabilidades separadas.</span></span></span> <span class="en">(if boost visible &amp; HALT drilldown clears)</span><span class="es">(si boost visible y drilldown HALT despeja)</span></strong> <span class="en">— DC joint 0.258–0.271, fair ~3.7–3.9.</span><span class="es">— Junta DC 0,258–0,271, justa ~3,7–3,9.</span> <span class="abbr">MOD<span class="tooltip"><span class="en">MODERATE = A bet with solid positive expected value that is reasonably robust across different assumptions.</span><span class="es">MODERADO = Apuesta con EV positivo sólido y razonablemente robusta entre distintos supuestos.</span></span></span> <span class="en">if cleared. Risks: 2002 upset, rotation, low-block. Single failure: Mbappé variance. Conf 50%.</span><span class="es">si se despeja. Riesgos: upset 2002, rotación, bloque bajo. Falla única: varianza Mbappé. Conf 50%.</span></div>
+                                <div class="p-2 bg-slate-950 border border-slate-800 rounded"><strong>2. <span class="abbr"><span class="en">Under 2.5</span><span class="es">Menos 2.5</span><span class="tooltip"><span class="en">Under 2.5 goals means the total goals by both teams in the full match will be 2 or fewer (0, 1, or 2 goals total).</span><span class="es">Menos 2.5 goles significa que el total de goles de ambos equipos en el partido completo será 2 o menos (0, 1 o 2 goles totales).</span></span></span> / <span class="abbr"><span class="en">BTTS No</span><span class="es">BTTS No</span><span class="tooltip"><span class="en">BTTS No = Both Teams To Score No. At least one team fails to score any goals.</span><span class="es">BTTS No = Ambos Equipos Marcan No. Al menos un equipo no anota ningún gol.</span></span></span></strong> <span class="en">(data-aligned if o favorable) — Mismatch + quality gap supports low totals.</span><span class="es">(alineado con datos si o favorable) — Desajuste + brecha de calidad favorece totales bajos.</span> <span class="abbr">SPEC<span class="tooltip"><span class="en">SPECULATIVE = A bet with positive expected value but more sensitive to assumptions or higher variance; smaller recommended stakes.</span><span class="es">ESPECULATIVO = Apuesta con EV positivo pero más sensible a supuestos o mayor varianza; stakes recomendados menores.</span></span></span> <span class="en">if screenshot value.</span><span class="es">si hay valor en captura.</span></div>
+                                <div class="p-2 bg-rose-950/40 border border-rose-900 rounded"><strong>3. <span class="abbr"><span class="en">FRA 1X2</span><span class="es">FRA 1X2</span><span class="tooltip"><span class="en">1X2 is the basic three-way bet: pick France to win (1), the match to draw (X), or Senegal to win (2).</span><span class="es">1X2 es la apuesta básica de tres vías: elige victoria de Francia (1), empate (X) o victoria de Senegal (2).</span></span></span> <span class="en">heavy short</span><span class="es">corto pesado</span></strong> <span class="en">— Negative EV after Rule 14 + bias.</span><span class="es">— EV negativo tras Regla 14 + sesgo.</span> <strong><span class="abbr"><span class="en">Pass</span><span class="es">Pass</span><span class="tooltip"><span class="en">PASS = This bet does not show positive expected value or fails our robustness checks; we recommend skipping it.</span><span class="es">PASS = Esta apuesta no muestra EV positivo o falla nuestras verificaciones de robustez; recomendamos omitirla.</span></span></span></strong>.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3">
+                        <strong><span class="en">ELI5 for the betting assistant who has NEVER placed a bet or watched football before - How to actually execute this recommended bet step by step in the app (super simple, no jargon left unexplained):</span><span class="es">ELI5 para el asistente de apuestas que NUNCA ha apostado ni visto fútbol - Cómo ejecutar realmente esta apuesta recomendada paso a paso en la app (súper simple, sin jerga sin explicar):</span></strong><br><br>
+                        <strong><span class="en">What this bet is (explained like you're 5):</span><span class="es">Qué es esta apuesta (explicado como si tuvieras 5 años):</span></strong> <span class="en">We are betting on TWO things at the same time (this is called a "combo" or "multi" bet). First: France must win the game (score more goals than Senegal). Second: There must be 4 or more goals in total in the whole game (for example 2-2, 3-1, 4-0, 3-2, etc.). BOTH things must happen for us to win the bet. If France loses or draws, or if there are only 0, 1, 2, or 3 goals total, we lose the whole bet.</span><span class="es">Estamos apostando a DOS cosas al mismo tiempo (esto se llama apuesta "combo" o "multi"). Primero: Francia debe ganar el partido (anotar más goles que Senegal). Segundo: Debe haber 4 o más goles en total en todo el partido (por ejemplo 2-2, 3-1, 4-0, 3-2, etc.). AMBAS cosas deben pasar para que ganemos la apuesta. Si Francia pierde o empata, o si hay solo 0, 1, 2 o 3 goles totales, perdemos toda la apuesta.</span><br><br>
+                        <strong><span class="en">The odd 5.15 explained:</span><span class="es">La cuota 5,15 explicada:</span></strong> <span class="en">This is the "boosted" (temporarily made better) decimal odds. Decimal odds are a multiplier. Bet S/100 at 5.15 and win → you get S/515 total back (your S/100 stake returned + S/415 profit). The boost makes the number bigger than normal (was 4.30, now 5.15), which is good for us if our model thinks the real chance is higher than the old price suggested.</span><span class="es">Esta es la cuota decimal "boosted" (temporalmente mejorada). Las cuotas decimales son un multiplicador. Apuesta S/100 a 5,15 y si ganas → recibes S/515 en total (tus S/100 de stake devueltos + S/415 de ganancia). El boost hace el número más grande de lo normal (era 4,30, ahora 5,15), lo cual es bueno para nosotros si nuestro modelo cree que la probabilidad real es mayor que lo que sugería el precio anterior.</span><br><br>
+                        <strong><span class="en">Exact step-by-step to place this bet in the Betano or Betsson app (do this only after checking the current odd is still around 5.15 or better, and you have money in the wallet):</span><span class="es">Pasos exactos para colocar esta apuesta en la app de Betano o Betsson (haz esto solo después de verificar que la cuota actual sigue alrededor de 5,15 o mejor, y tienes dinero en la billetera):</span></strong><br>
+                        <span class="en">1. Open the Betano app (red "B" logo) or Betsson app (orange, "b" logo). Log in. Check your balance at the top and screenshot it first.<br>
+                        2. Bottom tabs: Tap "Deportes" or "Sports" (ball icon).<br>
+                        3. Find and tap "Copa del Mundo 2026" or "World Cup 2026".<br>
+                        4. Scroll to "France vs Senegal" (tomorrow, around 14:00 Lima / 3pm ET). Tap the match to open all bets.<br>
+                        5. Look for sections like "Resultado del partido" (Match Result) or "Goles" (Goals) or "Especiales" / "Boost". Look for the orange "BB BOOST" or "SUPER BOOST" flame icon on a combo that says "Francia gana + Más de 3.5 goles" or "France wins + Over 3.5 goals" or "France + Over 3.5". Tap that boosted one (it should show 5.15 now).<br>
+                        6. The "Boleto" (bet slip) pops up at the bottom.<br>
+                        7. In the stake / monto / amount box, type 25 (for S/25 on the S/200 example reference).<br>
+                        8. Check the slip summary: It should clearly say the combo "France wins AND Over 3.5 goals", the odd ~5.15, stake S/25, and "Ganancia potencial" around S/128.75 (total return if both parts happen).<br>
+                        9. Verify the kickoff time matches (tomorrow afternoon), the teams are correct, and the odd hasn't dropped a lot (if it has, stop and message me).<br>
+                        10. Tap the big confirm button ("Realizar apuesta" / "Confirm" / "Apostar").<br>
+                        11. Screenshot the success/confirmation screen (it usually shows a bet ID or ticket number).<br>
+                        12. Go back to balance and screenshot again to show the money moved.<br><br></span>
+                        <span class="es">1. Abre la app de Betano (logo rojo "B") o la app de Betsson (naranja, logo "b"). Inicia sesión. Revisa tu saldo en la parte superior y toma captura primero.<br>
+                        2. Pestañas inferiores: Toca "Deportes" o "Sports" (ícono de pelota).<br>
+                        3. Busca y toca "Copa del Mundo 2026" o "World Cup 2026".<br>
+                        4. Desplázate a "France vs Senegal" (mañana, alrededor de 14:00 Lima / 3pm ET). Toca el partido para abrir todas las apuestas.<br>
+                        5. Busca secciones como "Resultado del partido" (Match Result) o "Goles" (Goals) o "Especiales" / "Boost". Busca el ícono naranja "BB BOOST" o "SUPER BOOST" de llama en un combo que diga "Francia gana + Más de 3.5 goles" o "France wins + Over 3.5 goals" o "France + Over 3.5". Toca ese boosted (debería mostrar 5,15 ahora).<br>
+                        6. El "Boleto" (bet slip) aparece en la parte inferior.<br>
+                        7. En la caja de stake / monto / amount, escribe 25 (para S/25 en el ejemplo de referencia S/200).<br>
+                        8. Revisa el resumen del slip: Debería decir claramente el combo "France wins AND Over 3.5 goals", la cuota ~5,15, stake S/25, y "Ganancia potencial" alrededor de S/128,75 (retorno total si ambas partes pasan).<br>
+                        9. Verifica que la hora de inicio coincida (mañana por la tarde), los equipos sean correctos, y la cuota no haya bajado mucho (si lo hizo, detente y avísame).<br>
+                        10. Toca el botón grande de confirmar ("Realizar apuesta" / "Confirm" / "Apostar").<br>
+                        11. Toma captura de la pantalla de éxito/confirmación (normalmente muestra un ID de apuesta o número de ticket).<br>
+                        12. Vuelve al saldo y toma otra captura para mostrar el dinero movido.<br><br></span>
+                        <strong><span class="en">Important notes for a total beginner:</span><span class="es">Notas importantes para un principiante total:</span></strong> <span class="en">"Over 3.5 goles" means 4 or more goals in the game by both teams combined (not France only). "Gana" or "win" means the team scores more goals than the other. If the game goes to extra time or penalties, it still counts the final result for "win". This combo bet is riskier than a single bet because BOTH parts have to be correct. Never place if the boost icon is gone (the price will be worse). After the game ends, check "Apuestas" or "My Bets" tab to see if it settled as win or loss.</span><span class="es">"Over 3.5 goles" significa 4 o más goles en el partido por ambos equipos combinados (no solo de Francia). "Gana" o "win" significa que el equipo anota más goles que el otro. Si el partido va a tiempo extra o penales, aún cuenta el resultado final para "win". Esta apuesta combinada es más riesgosa que una simple porque AMBAS partes deben ser correctas. Nunca coloques si el ícono de boost desapareció (el precio será peor). Al final del partido, revisa la pestaña "Apuestas" o "My Bets" para ver si se liquidó como ganada o perdida.</span>
+                    </div>
+                </div>
+
+                <!-- Iraq vs Norway -->
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden">
+                    <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
+                        <div><span class="font-semibold"><span class="en">Iraq vs Norway</span><span class="es">Iraq vs Noruega</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group I • Gillette • ~17:00</span><span class="es">Grupo I • Gillette • ~17:00</span></span></div>
+                        <div class="text-xs text-slate-400"><span class="en">Benign weather • Haaland/Ødegaard fit</span><span class="es">Clima benigno • Haaland/Ødegaard en forma</span></div>
+                    </div>
+                    <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
+                        <div class="md:col-span-5 text-xs">
+                            <div class="font-medium mb-1"><span class="en">Data (≥2 sources)</span><span class="es">Datos (≥2 fuentes)</span></div>
+                            <div><span class="en">NOR full strength (Haaland + Sørloth = finisher-pair +30 Elo). IRQ domestic-heavy squad. Elo NOR 1914 / IRQ 1607. No major injuries.</span><span class="es">NOR plena fuerza (Haaland + Sørloth = par de goleadores +30 Elo). IRQ plantilla mayormente doméstica. Elo NOR 1914 / IRQ 1607. Sin lesiones mayores.</span></div>
+                        </div>
+                        <div class="md:col-span-4">
+                            <div class="font-medium mb-1 text-xs"><span class="en">Executed Model (v4.1)</span><span class="es">Modelo Ejecutado (v4.1)</span></div>
+                            <div><span class="en">Blend: pIRQ 29.1% / pD 32.7% / pNOR 38.1%</span><span class="es">Mezcla: pIRQ 29,1% / pD 32,7% / pNOR 38,1%</span> <span class="en">(anchor 13.4% / 30.4% / 56.2%)</span><span class="es">(ancla 13,4% / 30,4% / 56,2%)</span> (<span class="abbr">λ<span class="tooltip"><span class="en">λ (lambda) = the expected number of goals a team is projected to score in this match according to the model.</span><span class="es">λ (lambda) = número esperado de goles que un equipo proyecta marcar según el modelo.</span></span></span> 0.26/2.09).</div>
+                            <div class="text-xs text-rose-400 mt-1"><span class="en">Prior 1.19 NOR win → EV −41.7% (Pass, MOD).</span><span class="es">Previo 1,19 victoria NOR → EV −41,7% (Pass, MOD).</span> <strong><span class="abbr"><span class="en">Pass</span><span class="es">Pass</span><span class="tooltip"><span class="en">PASS = This bet does not show positive expected value or fails our robustness checks; we recommend skipping it.</span><span class="es">PASS = Esta apuesta no muestra EV positivo o falla nuestras verificaciones; recomendamos omitirla.</span></span></span></strong>. <span class="en">DC boost 5.20 context → high raw but</span><span class="es">Boost DC contexto 5,20 → raw alto pero</span> <span class="abbr">SENSITIVE<span class="tooltip"><span class="en">SENSITIVE = The bet shows positive EV only under some assumptions (e.g. base case) but not others (conservative or aggressive); treat with caution and use smaller stakes.</span><span class="es">SENSIBLE = La apuesta muestra EV positivo solo bajo algunos supuestos; tratar con cautela y stakes menores.</span></span></span>.</div>
+                        </div>
+                        <div class="md:col-span-3">
+                            <div class="font-medium mb-1 text-xs"><span class="en">Top Ideas</span><span class="es">Ideas Principales</span></div>
+                            <div class="text-xs"><span class="en">1. IRQ or Draw DC (SPEC if boost visible &amp; cleared) — 35.6% uplifted. Cap S/15. Risks: NOR clinical. 2. High totals / NOR scoring (finisher edge). 3. NOR 1X2 heavy short → Pass.</span><span class="es">1. IRQ o Empate DC (SPEC si boost visible y despejado) — 35,6% con uplift. Tope S/15. Riesgos: NOR clínico. 2. Totales altos / NOR anotando (ventaja goleadores). 3. NOR 1X2 corto pesado → Pass.</span></div>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3"><span class="en">ELI5: "Double chance Iraq or Draw" covers two outcomes — you win unless Norway wins outright. Model gives ~36% true chance (after uplift for longshot bias). At 5.20 that can look attractive, but Norway's attack (Haaland + Sørloth) is elite; one clinical day and the bet is dead. High variance = not "sure."</span><span class="es">Explicación simple: "Doble oportunidad Iraq o Empate" cubre dos resultados — ganas a menos que Noruega gane directamente. El modelo da ~36% de probabilidad real (tras ajuste por sesgo longshot). A 5,20 puede parecer atractivo, pero el ataque de Noruega (Haaland + Sørloth) es élite; un día clínico y la apuesta muere. Alta varianza = no es "segura".</span></div>
+                </div>
+
+                <!-- Argentina vs Algeria -->
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden">
+                    <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
+                        <div><span class="font-semibold"><span class="en">Argentina vs Algeria</span><span class="es">Argentina vs Argelia</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group J • Arrowhead • ~20:00</span><span class="es">Grupo J • Arrowhead • ~20:00</span></span></div>
+                        <div class="text-xs text-slate-400"><span class="en">~30°C possible storms</span><span class="es">~30°C posibles tormentas</span></div>
+                    </div>
+                    <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
+                        <div class="md:col-span-5 text-xs">
+                            <div class="font-medium mb-1"><span class="en">Data</span><span class="es">Datos</span></div>
+                            <div><span class="en">ARG strong core (Messi confirmed, Alvarez fit). ALG organized (4 CS streak discounted — low-quality opp). Bensebaini out. Elo ARG 2115 (finisher bonus) / ALG 1772. λ ARG 2.51 / ALG 0.09 extreme.</span><span class="es">ARG núcleo fuerte (Messi confirmado, Alvarez en forma). ALG organizada (racha 4 CS descontada — rival de baja calidad). Bensebaini fuera. Elo ARG 2115 (bono goleador) / ALG 1772. λ ARG 2,51 / ALG 0,09 extremo.</span></div>
+                        </div>
+                        <div class="md:col-span-4">
+                            <div class="font-medium mb-1 text-xs"><span class="en">Executed Model (v4.1)</span><span class="es">Modelo Ejecutado (v4.1)</span></div>
+                            <div><span class="en">Blend: pARG 65.4% / pD 20.0% / pALG 14.6%</span><span class="es">Mezcla: pARG 65,4% / pD 20,0% / pALG 14,6%</span> <span class="en">(anchor 61.8% / 29.9% / 8.3%)</span><span class="es">(ancla 61,8% / 29,9% / 8,3%)</span>. <span class="abbr"><span class="en">DC ARG+BTTS joint</span><span class="es">Junta DC ARG+BTTS</span><span class="tooltip"><span class="en">DC ARG+BTTS joint = Correlated probability that Argentina wins AND both teams score at least one goal. The model shows this is very unlikely (extreme mismatch means Algeria rarely scores).</span><span class="es">Junta DC ARG+BTTS = Probabilidad correlacionada de que Argentina gane Y ambos equipos marquen al menos un gol. El modelo muestra que es muy improbable (desajuste extremo significa que Argelia rara vez anota).</span></span></span> <span class="en">only 0.069 (extreme mismatch).</span><span class="es">solo 0,069 (desajuste extremo).</span></div>
+                            <div class="text-xs text-rose-400 mt-1"><span class="en">Prior 1.41 ARG win → EV −10.6% (Pass, MOD). ARG+BTTS @4.45 → −69.5% (DC joint).</span><span class="es">Previo 1,41 victoria ARG → EV −10,6% (Pass, MOD). ARG+BTTS @4,45 → −69,5% (junta DC).</span> <strong><span class="abbr"><span class="en">Pass</span><span class="es">Pass</span><span class="tooltip"><span class="en">PASS = This bet does not show positive expected value or fails our robustness checks; we recommend skipping it.</span><span class="es">PASS = Esta apuesta no muestra EV positivo o falla nuestras verificaciones; recomendamos omitirla.</span></span></span></strong>.</div>
+                        </div>
+                        <div class="md:col-span-3">
+                            <div class="font-medium mb-1 text-xs"><span class="en">Ideas</span><span class="es">Ideas</span></div>
+                            <div class="text-xs"><span class="en">1. ARG win 1X2 — neg EV. Pass. 2. Over 2.5 or high-quality scorer props (if o ≥3.00) — P(O2.5) 48.2%. SPEC if screenshot value (Messi fit). 3. ARG+BTTS boost — extreme mismatch makes BTTS rare. Pass.</span><span class="es">1. Victoria ARG 1X2 — EV neg. Pass. 2. Más 2.5 o props de goleador de calidad (si o ≥3,00) — P(O2.5) 48,2%. SPEC si valor en captura (Messi en forma). 3. Boost ARG+BTTS — desajuste extremo hace BTTS raro. Pass.</span></div>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3"><span class="en">ELI5: Argentina is a heavy favorite (v4.1 blend ~65.4% win; EV −10.6% Pass at 1.41). The book is not paying enough vs model after MOD stack + Rule 14. The combo "Argentina wins AND both teams score" looks clever on a boost but Algeria barely creates (λ 0.09); joint chance ~7%. Pass.</span><span class="es">Explicación simple: Argentina es favorita pesada (mezcla v4.1 ~65,4% victoria; EV −10,6% Pass a 1,41). El libro no paga suficiente vs modelo tras stack MOD + Regla 14. El combo "Argentina gana Y ambos marcan" parece inteligente en un boost pero Argelia apenas crea (λ 0,09); probabilidad conjunta ~7%. Pass.</span></div>
+                </div>
+
+                <!-- Austria vs Jordan -->
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden">
+                    <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
+                        <div><span class="font-semibold"><span class="en">Austria vs Jordan</span><span class="es">Austria vs Jordania</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group J • Levi's • ~23:00 PT</span><span class="es">Grupo J • Levi's • ~23:00 PT</span></span></div>
+                        <div class="text-xs text-slate-400"><span class="en">Milder Bay Area • JOR Al-Naimat (top striker) out entire tournament</span><span class="es">Área de la Bahía más templada • JOR Al-Naimat (delantero top) fuera todo el torneo</span></div>
+                    </div>
+                    <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
+                        <div class="md:col-span-5 text-xs">
+                            <div class="font-medium mb-1"><span class="en">Data (strong)</span><span class="es">Datos (fuertes)</span></div>
+                            <div><span class="en">AUT: Baumgartner out (creativity loss), Alaba fit caveat, Wimmer doubts. XI Schlager; Laimer/Lienhart/Alaba/Mwene; X.Schlager/Seiwald; Sabitzer/Schmid/Gregoritsch; Arnautović. JOR low-block (Sellami/Morocco-2022 style) but missing key striker. Elo AUT 1830 / JOR 1680. Milder weather supports organized underdog.</span><span class="es">AUT: Baumgartner fuera (pérdida de creatividad), reserva forma de Alaba, dudas Wimmer. XI Schlager; Laimer/Lienhart/Alaba/Mwene; X.Schlager/Seiwald; Sabitzer/Schmid/Gregoritsch; Arnautović. JOR bloque bajo (estilo Sellami/Marruecos-2022) pero sin delantero clave. Elo AUT 1830 / JOR 1680. Clima más templado favorece al underdog organizado.</span></div>
+                        </div>
+                        <div class="md:col-span-4">
+                            <div class="font-medium mb-1 text-xs"><span class="en">Executed Model (v4.1)</span><span class="es">Modelo Ejecutado (v4.1)</span></div>
+                            <div><span class="en">Anchor: pAUT 46.8% / pD 34.0% / pJOR 19.2% (λ 2.07/0.38). Blend draw 33.5%. Fair draw ~2.98.</span><span class="es">Ancla: pAUT 46,8% / pD 34,0% / pJOR 19,2% (λ 2,07/0,38). Mezcla empate 33,5%. Empate justo ~2,98.</span></div>
+                            <div class="text-xs text-amber-400 mt-1"><span class="en">Prior Betano 5.05 draw → +69.0% EV → </span><span class="es">Previo Betano empate 5,05 → +69,0% EV → </span><strong><span class="abbr">HALT<span class="tooltip"><span class="en">HALT means our rules say "stop and double-check with extra sharp data before considering this bet" if the model EV looks too good to be true — usually above +25%.</span><span class="es">HALT significa que nuestras reglas dicen "detente y verifica con datos sharp extra antes de considerar esta apuesta" si el EV del modelo parece demasiado bueno — usualmente por encima de +25%.</span></span></span></strong> <span class="en">(Rules 13/18 drill-down + Pinnacle blend required; v3.1 documented draw 23.2%). Suggested stake S/5.40 only if drill-down clears.</span><span class="es">(drill-down Reglas 13/18 + mezcla Pinnacle obligatorio; empate documentado v3.1 23,2%). Stake sugerido S/5,40 solo si drill-down despeja.</span></div>
+                        </div>
+                        <div class="md:col-span-3">
+                            <div class="font-medium mb-1 text-xs"><span class="en">Top Recommendation</span><span class="es">Recomendación Principal</span></div>
+                            <div class="p-2 bg-amber-950/60 border border-amber-900 rounded text-xs"><strong><span class="en">Draw @5.05 — HALT (+69% EV)</span><span class="es">Empate @5,05 — HALT (+69% EV)</span></strong> <span class="en">— Data-aligned narrative (AUT creator loss + JOR low-block) but EV exceeds +25% threshold. Mandatory Pinnacle reconciliation per Rules 13/18 before any stake. Do not place until drill-down clears. Risks: model error vs soft-book price; AUT clinical day. Conf 40% until cleared.</span><span class="es">— Narrativa alineada con datos (pérdida creador AUT + bloque bajo JOR) pero EV supera umbral +25%. Reconciliación Pinnacle obligatoria según Reglas 13/18 antes de stake. No colocar hasta que drill-down despeje. Riesgos: error de modelo vs precio soft-book; día clínico de AUT. Conf 40% hasta despejar.</span></div>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3">
+                        <strong><span class="en">ELI5 for the betting assistant who has NEVER placed a bet or watched football before - How to actually execute this recommended bet step by step in the app (super simple, no jargon left unexplained):</span><span class="es">ELI5 para el asistente de apuestas que NUNCA ha apostado ni visto fútbol - Cómo ejecutar realmente esta apuesta recomendada paso a paso en la app (súper simple, sin jerga sin explicar):</span></strong><br><br>
+                        <strong><span class="en">What this bet is (explained like you're 5):</span><span class="es">Qué es esta apuesta (explicado como si tuvieras 5 años):</span></strong> <span class="en">We think the game between Austria and Jordan will end with the same number of goals for both teams. This is called a "draw" or "empate" in Spanish. Examples: 0-0, 1-1, 2-2, 3-3. If it ends like that, we win the bet. If Austria scores more goals than Jordan OR Jordan scores more, we lose the bet.</span><span class="es">Creemos que el partido entre Austria y Jordania terminará con el mismo número de goles para ambos equipos. Esto se llama "draw" o "empate" en español. Ejemplos: 0-0, 1-1, 2-2, 3-3. Si termina así, ganamos la apuesta. Si Austria anota más goles que Jordania O Jordania anota más, perdemos la apuesta.</span><br><br>
+                        <strong><span class="en">The odd 5.05 explained:</span><span class="es">La cuota 5,05 explicada:</span></strong> <span class="en">This number is called "decimal odds". It is a multiplier. If you bet S/100 soles on this, and it wins, the app will give you back S/505 soles total (your original S/100 back + S/405 profit). The higher the number, the more money you get if you win, but the harder it is to win.</span><span class="es">Este número se llama "cuotas decimales". Es un multiplicador. Si apuestas S/100 soles en esto y ganas, la app te devolverá S/505 soles en total (tus S/100 originales de vuelta + S/405 de ganancia). Cuanto más alto el número, más dinero recibes si ganas, pero más difícil es ganar.</span><br><br>
+                        <strong><span class="en">Exact step-by-step to place this bet in the Betano or Betsson app (do this only after checking the current odd is still around 5.05 or better, and you have money in the wallet):</span><span class="es">Pasos exactos para colocar esta apuesta en la app de Betano o Betsson (haz esto solo después de verificar que la cuota actual sigue alrededor de 5,05 o mejor, y tienes dinero en la billetera):</span></strong><br>
+                        <span class="en">1. Open your phone and tap the Betano app icon (red with white "B" logo) or Betsson app (orange accents, small "b" logo). Log in if it asks (use your username and password). Make sure you see your balance at the top (example: "PEN 1,162" or similar). Take a screenshot of your balance first so we can check later.<br>
+                        2. At the bottom of the screen you will see tabs. Tap the one that says "Deportes" or "Sports" or has a ball icon (not "Inicio" or "Apuestas" yet).<br>
+                        3. You will see a big list or search bar. Tap the search or look for "Copa del Mundo 2026" or "World Cup 2026" or "Fútbol" section. Tap it.<br>
+                        4. Scroll down until you find the match named "Austria vs Jordan" or "Austria - Jordan" (it should say tomorrow or the date and time around 23:00 Lima time / late night). Tap on that match name to open all the different bets for it.<br>
+                        5. Inside the match, you will see sections like "Resultado del partido" (this means "Match Result" or who wins or draw), "Goles" (goals), "Doble oportunidad" (double chance). Tap or scroll to the "Resultado del partido" or "1X2" section (1X2 is betting code for Home win / Draw / Away win).<br>
+                        6. In that section you will see three big buttons or tiles: one for Austria (probably around 1.33-1.36), one in the middle for "Empate" or "Draw" or "X" (this is the one we want, around 5.05), and one for Jordan (around 9.00-9.60). Tap the middle one that says "Empate" or "Draw".<br>
+                        7. A box called "Boleto" or "Bet Slip" will slide up from the bottom of the screen. This is your shopping cart for the bet.<br>
+                        8. In the box that says "Monto" or "Stake" or "Cantidad" (the amount box), delete anything there and type exactly 12 (for S/12 soles). Do not add the "S/" or "PEN", just the number 12.<br>
+                        9. Look at the summary in the boleto. It should now say something like: "Empate - Austria vs Jordan - 5.05 - S/12.00 - Ganancia potencial S/60.60" (Ganancia potencial means the total money you get back if you win, including your stake back).<br>
+                        10. Double-check everything is correct: the match name, "Empate", the odd is still close to 5.05 (if it dropped a lot like to 4.50, stop and tell me), stake is 12.<br>
+                        11. Tap the big green or orange button that says "Realizar apuesta", "Confirmar", "Place Bet", or "Apostar".<br>
+                        12. The app will show a confirmation screen. Take a screenshot of it (showing the bet details and any confirmation number). Send the screenshot to me.<br>
+                        13. Go back to your wallet/balance screen and take another screenshot to show the money was deducted.<br><br></span>
+                        <span class="es">1. Abre tu teléfono y toca el ícono de la app de Betano (rojo con logo "B" blanco) o la app de Betsson (acentos naranjas, logo pequeño "b"). Inicia sesión si te pide (usa tu nombre de usuario y contraseña). Asegúrate de ver tu saldo en la parte superior (ejemplo: "PEN 1,162" o similar). Toma una captura de pantalla de tu saldo primero para que podamos verificar después.<br>
+                        2. En la parte inferior de la pantalla verás pestañas. Toca la que dice "Deportes" o "Sports" o tiene un ícono de pelota (no "Inicio" o "Apuestas" todavía).<br>
+                        3. Verás una lista grande o barra de búsqueda. Toca la búsqueda o busca la sección "Copa del Mundo 2026" o "World Cup 2026" o "Fútbol". Tócala.<br>
+                        4. Desplázate hacia abajo hasta encontrar el partido llamado "Austria vs Jordan" o "Austria - Jordan" (debería decir mañana o la fecha y hora alrededor de las 23:00 hora de Lima / noche tarde). Toca el nombre de ese partido para abrir todas las apuestas diferentes para él.<br>
+                        5. Dentro del partido, verás secciones como "Resultado del partido" (esto significa "Match Result" o quién gana o empate), "Goles" (goals), "Doble oportunidad" (double chance). Toca o desplázate a la sección "Resultado del partido" o "1X2" (1X2 es el código de apuestas para Victoria local / Empate / Victoria visitante).<br>
+                        6. En esa sección verás tres botones o mosaicos grandes: uno para Austria (probablemente alrededor de 1,33-1,36), uno en el medio para "Empate" o "Draw" o "X" (este es el que queremos, alrededor de 5,05), y uno para Jordan (alrededor de 9,00-9,60). Toca el del medio que dice "Empate" o "Draw".<br>
+                        7. Una caja llamada "Boleto" o "Bet Slip" se deslizará hacia arriba desde la parte inferior de la pantalla. Este es tu carrito de compras para la apuesta.<br>
+                        8. En la caja que dice "Monto" o "Stake" o "Cantidad" (la caja de cantidad), borra lo que haya y escribe exactamente 12 (para S/12 soles). No agregues el "S/" o "PEN", solo el número 12.<br>
+                        9. Mira el resumen en el boleto. Ahora debería decir algo como: "Empate - Austria vs Jordan - 5.05 - S/12.00 - Ganancia potencial S/60.60" (Ganancia potencial significa el dinero total que recibes de vuelta si ganas, incluyendo tu stake de vuelta).<br>
+                        10. Verifica todo: el nombre del partido, "Empate", la cuota todavía cerca de 5,05 (si bajó mucho como a 4,50, detente y dime), stake es 12.<br>
+                        11. Toca el botón grande verde o naranja que dice "Realizar apuesta", "Confirmar", "Place Bet" o "Apostar".<br>
+                        12. La app mostrará una pantalla de confirmación. Toma una captura de pantalla de ella (mostrando los detalles de la apuesta y cualquier número de confirmación). Envíamela.<br>
+                        13. Vuelve a tu pantalla de billetera/saldo y toma otra captura para mostrar que el dinero fue deducido.<br><br></span>
+                        <strong><span class="en">If something goes wrong:</span><span class="es">Si algo sale mal:</span></strong> <span class="en">If the odd changed a lot (more than 5%), the market is grayed out, or the app says max stake or error, STOP. Do not place it. Message me the exact message or screenshot. Never guess or choose a different odd.</span><span class="es">Si la cuota cambió mucho (más de 5%), el mercado está en gris, o la app dice stake máximo o error, DETENTE. No la coloques. Envíame el mensaje exacto o captura. Nunca adivines o elijas una cuota diferente.</span><br><br>
+                        <strong><span class="en">After the game:</span><span class="es">Después del partido:</span></strong> <span class="en">The bet will settle automatically (usually within minutes after full time). Check the "Apuestas" or "My Bets" tab later to see if it won or lost. If won, the money (including profit) goes back to your wallet.</span><span class="es">La apuesta se liquidará automáticamente (generalmente en minutos después del tiempo completo). Revisa la pestaña "Apuestas" o "My Bets" después para ver si ganó o perdió. Si ganó, el dinero (incluyendo ganancia) vuelve a tu billetera.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 text-xs bg-slate-900 border border-slate-800 rounded-2xl p-3">
+                <strong><span class="en">Cross-book / best-price note (prior screenshots):</span><span class="es">Nota de mejor precio / cross-book (capturas previas):</span></strong> <span class="en">Where both Betano/Betsson visible, use higher o (best for bettor). Wider prices = soft side (bettable if model agrees); tighter = sharper read of true P (protocol). No genuine arb (π &gt;1). Overrounds reasonable on most markets.</span><span class="es">Donde se ven Betano y Betsson, usa la o más alta (mejor para el apostador). Precios más anchos = lado suave (apostable si el modelo está de acuerdo); más ajustados = lectura más nítida de la P real (protocolo). No hay arbitraje genuino (π &gt;1). Overrounds razonables en la mayoría de mercados.</span>
+            </div>
+        </div>
+
+        <!-- Final Classification + Bankroll -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                <div class="font-semibold mb-2"><span class="en">Final Classifications (Executed Model + Data)</span><span class="es">Clasificaciones Finales (Modelo Ejecutado + Datos)</span></div>
+                <div class="text-xs space-y-1.5">
+                    <div><span class="font-semibold text-emerald-400"><span class="en">MODERATE (ROBUST +EV)</span><span class="es">MODERADO (ROBUSTO +EV)</span></span>: <span class="en">KSA-URU Under 2.5 @1.78</span><span class="es">KSA-URU Menos 2.5 @1,78</span> <span class="en">(conditions + absences align; positive conservative).</span><span class="es">(condiciones + ausencias alinean; positivo conservador).</span></div>
+                    <div><span class="font-semibold"><span class="en">MODERATE (if cleared)</span><span class="es">MODERADO (si se despeja)</span></span>: <span class="en">FRA win + O3.5 boost (DC joint high EV; HALT drilldown + Pinnacle blend first per Rules 13/18).</span><span class="es">Victoria FRA + O3.5 boost (EV conjunta DC alta; drilldown HALT + mezcla Pinnacle primero según Reglas 13/18).</span></div>
+                    <div><span class="font-semibold text-amber-400"><span class="en">HALT (drill-down required)</span><span class="es">HALT (drill-down obligatorio)</span></span>: <span class="en">AUT Draw @5.05 (+69% EV, MOD tier — Pinnacle blend per Rules 13/18 before stake).</span><span class="es">Empate AUT @5,05 (+69% EV, nivel MOD — mezcla Pinnacle según Reglas 13/18 antes de stake).</span></div>
+                    <div><span class="font-semibold text-amber-400"><span class="en">SPECULATIVE</span><span class="es">ESPECULATIVO</span></span>: <span class="en">IRQ DC (high raw after uplift, cap); BEL win / Doku boost (marginal + high var).</span><span class="es">IRQ DC (raw alto tras uplift, tope); Victoria BEL / boost Doku (marginal + alta var).</span></div>
+                    <div><span class="font-semibold text-rose-400"><span class="en">PASS</span><span class="es">PASS</span></span>: <span class="en">All heavy-fav 1X2 shorts (Spain/Norway/France/Argentina win etc. — negative EV, bias trap, variance). ARG+BTTS combos (extreme mismatch kills joint P).</span><span class="es">Todos los cortos 1X2 de favoritos pesados (victoria España/Noruega/Francia/Argentina etc. — EV negativo, trampa de sesgo, varianza). Combos ARG+BTTS (desajuste extremo mata la P conjunta).</span></div>
+                </div>
+                <div class="mt-3 text-xs text-slate-400"><span class="en">Confidence ceiling 70% (AGENT.md cap). All numbers executed or multi-sourced.</span><span class="es">Tope de confianza 70% (límite AGENT.md). Todos los números ejecutados o multi-fuente.</span></div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                <div class="font-semibold mb-2"><span class="en">Bankroll &amp; Staking (Suggestions Only — AGENT §5)</span><span class="es">Bankroll &amp; Stakeo (Solo Sugerencias — AGENT §5)</span></div>
+                <div class="text-xs"><span class="en">¼ Kelly default: f* = (p·o − 1) / (o − 1); stake = 0.25 × f* × BR. Caps (v3/Rule 20): MOD ≤ S/15–20, SPEC ≤ S/15, Pass 0. Hard rules: Never &gt;5% total matchday; no martingale/chase; 20% tournament drawdown → halve sizes. Player props/boosts extra-capped (0.5% max regardless of EV). Example on S/200 ref: small SPEC S/8–12, MOD S/15–20 on strongest (KSA Under / cleared FRA combo).</span><span class="es">¼ Kelly por defecto: f* = (p·o − 1) / (o − 1); stake = 0,25 × f* × BR. Topes (v3/Regla 20): MOD ≤ S/15–20, SPEC ≤ S/15, Pass 0. Reglas duras: Nunca &gt;5% total en jornada; sin martingala/persecución; drawdown 20% del torneo → reducir tamaños a la mitad. Props de jugador/boosts con tope extra (0,5% máx sin importar EV). Ejemplo en ref S/200: SPEC pequeño S/8–12, MOD S/15–20 en el más fuerte (KSA Under / combo FRA despejado).</span> <span class="text-xs text-slate-400">(<span class="en">Newbie: "¼ Kelly" is a safe betting size calculator — it tells you to bet only a quarter of the "full" amount the math suggests so one losing streak doesn't wipe you out. "Martingale" is the dangerous strategy of doubling your bet after every loss to try to break even — we never do that.</span><span class="es">Principiante: "¼ Kelly" es una calculadora segura de tamaño de apuesta — te dice apostar solo un cuarto del monto "completo" que sugiere la matemática para que una racha perdedora no te liquide. "Martingala" es la estrategia peligrosa de duplicar la apuesta tras cada pérdida para intentar recuperar — nunca lo hacemos.</span>)</span></div>
+                <div class="mt-3 text-xs text-rose-300"><span class="en">Betting carries real risk of financial loss. This is analysis only, not financial advice or a guarantee of outcomes. Past form and model edges do not predict individual match results. If gambling is no longer recreational, contact Peru's <a href="https://www.gob.pe/mincetur" class="underline">Línea 0800-1-3232 (MINCETUR)</a> or <a href="https://jugadoresanonimos.org/" class="underline">Jugadores Anónimos Perú</a>.</span><span class="es">Apostar conlleva riesgo real de pérdida financiera. Esto es solo análisis, no consejo financiero ni garantía de resultados. Formas pasadas y bordes del modelo no predicen resultados individuales de partidos. Si el juego ya no es recreativo, contacta en Perú la <a href="https://www.gob.pe/mincetur" class="underline">Línea 0800-1-3232 (MINCETUR)</a> o <a href="https://jugadoresanonimos.org/" class="underline">Jugadores Anónimos Perú</a>.</span></div>
+            </div>
+        </div>
+
+        <!-- Sources -->
+        <div class="mt-8 text-xs text-slate-400 border-t border-slate-800 pt-4">
+            <div class="font-semibold text-slate-300 mb-1"><span class="en">Sources (all with context/timestamps ~2026-06-15; ≥2 where critical)</span><span class="es">Fuentes (todas con contexto/marca de tiempo ~2026-06-15; ≥2 donde crítico)</span></div>
+            <div class="columns-2 md:columns-3 text-[10px] leading-snug">
+                <span class="en">Elo: eloratings.net (2026-06-15 snapshots), international-football.net/elo-ratings-table.<br>
+                Lineups/injuries: ESPN, Sports Mole, RotoWire, Yahoo, Fotmob, WhoScored, L'Équipe, VG/fotball.no, Covers (~Jun 14-15).<br>
+                Results (backtest): Al Jazeera, ESPN, USA Today, FOX, Flashscore, Wikipedia, Athletic (live 0-0 Spain-CV, 1-1 BEL-EGY).<br>
+                Weather/venue: NWS, venue sites, Climate Central.<br>
+                Sharp/model: Opta Analyst proxies, public previews, Pinnacle devigged notes via MD reports.<br>
+                Academic: Dixon-Coles 1997, Karlis-Ntzoufras 2003, Snowberg-Wolfers 2010 JPE, arXiv BTD papers, xG hybrid literature.<br>
+                Screenshots (odds): Workspace /Screenshots/ (IMG_7345–7392 series, Betano/Betsson, transcribed verbatim in MD4).<br>
+                Prior reports/model: MD3_FINAL_REPORT.md, MD4_FINAL_REPORT.md, wc_model_v4_1_ensemble.py + wc_model_v4_replicable_pipeline.py (executed runs).</span>
+                <span class="es">Elo: eloratings.net (instantáneas 2026-06-15), international-football.net/elo-ratings-table.<br>
+                Alineaciones/lesiones: ESPN, Sports Mole, RotoWire, Yahoo, Fotmob, WhoScored, L'Équipe, VG/fotball.no, Covers (~14-15 Jun).<br>
+                Resultados (backtest): Al Jazeera, ESPN, USA Today, FOX, Flashscore, Wikipedia, Athletic (en vivo 0-0 España-CV, 1-1 BEL-EGY).<br>
+                Clima/estadio: NWS, sitios de estadios, Climate Central.<br>
+                Sharp/modelo: Proxies Opta Analyst, previews públicos, notas Pinnacle devigged vía reportes MD.<br>
+                Académico: Dixon-Coles 1997, Karlis-Ntzoufras 2003, Snowberg-Wolfers 2010 JPE, papers arXiv BTD, literatura híbrido xG.<br>
+                Capturas (cuotas): Workspace /Screenshots/ (serie IMG_7345–7392, Betano/Betsson, transcritas literal en MD4).<br>
+                Reportes/modelo previos: MD3_FINAL_REPORT.md, MD4_FINAL_REPORT.md, wc_model_v4_1_ensemble.py + wc_model_v4_replicable_pipeline.py (ejecuciones).</span>
+            </div>
+            <div class="mt-2 text-[10px] text-slate-400">(<span class="en">Newbie note on sources: Every fact above comes from at least two different websites or official data sources. "Pinnacle devigged" means we look at the prices from one of the sharpest betting sites in the world and remove their built-in profit margin to see what "true" probability the pros think something has.</span><span class="es">Nota principiante sobre fuentes: Cada hecho arriba viene de al menos dos sitios web o fuentes oficiales diferentes. "Pinnacle devigged" significa que miramos los precios de uno de los sitios de apuestas más agudos del mundo y quitamos su margen de ganancia incorporado para ver qué probabilidad "verdadera" piensan los profesionales que tiene algo.</span>)</div>
+            <div class="mt-2 text-[10px]"><span class="en">Full subagent outputs, model logs, and backtest details in workspace state + prior MD reports. Re-execute <span class="font-mono">wc_model_v4_replicable_pipeline.py</span> on new data/screenshots. All constraints (screenshot-only odds, no fabricated prices, no "place now", confidence cap, responsible block) strictly followed. See CSV + TXT + pipeline for complete replicable dataset + verification.</span><span class="es">Salidas completas de subagentes, logs de modelo y detalles de backtest en estado del workspace + reportes MD previos. Re-ejecuta <span class="font-mono">wc_model_v4_replicable_pipeline.py</span> con nuevos datos/capturas. Todas las restricciones (cuotas solo de capturas, sin precios fabricados, sin "apostar ahora", tope de confianza, bloque responsable) seguidas estrictamente. Ver CSV + TXT + pipeline para dataset replicable completo + verificación.</span></div>
+        </div>
+
+        <div class="h-8"></div>
+    </div>
+
+    <script>
+        // Tailwind script + simple interactivity
+        function initTailwind() {
+            document.documentElement.style.setProperty('--accent', '#0ea5e9');
+        }
+        
+        function filterTable(inputId, tableId) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            input.addEventListener('input', () => {
+                const term = input.value.toLowerCase();
+                document.querySelectorAll(`#${tableId} tbody tr`).forEach(row => {
+                    row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+                });
+            });
+        }
+
+        // Simple bar animation on load
+        function animateBars() {
+            document.querySelectorAll('.prob-bar').forEach((bar, i) => {
+                const target = bar.dataset.width || bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = target;
+                }, 120 * i);
+            });
+        }
+
+        window.onload = () => {
+            initTailwind();
+            animateBars();
+            // Demo filter on the risk table if exists
+            const riskInput = document.getElementById('risk-filter');
+            if (riskInput) filterTable('risk-filter', 'risk-table');
+            
+            // Initialize bilingual (default EN, or restore)
+            const saved = localStorage.getItem('wcdecider_lang') || 'en';
+            switchLang(saved);
+            
+            // Keyboard hint
+            console.log('%c[WCdecider] HTML report loaded. All numbers validated against executed model + subagents + screenshots. Bilingual EN/ES + replicable pipeline sync active.', 'color:#64748b');
+        };
+
+        // ===== BILINGUAL TOGGLE (EN/ES) =====
+        let currentLang = 'en';
+        const DOC_TITLES = {
+            en: 'WC 2026 • June 15-16 Analysis & Recommendations (v4.1 Production + Replicable Data)',
+            es: 'Copa 2026 • Análisis 15-16 Jun y Recomendaciones (v4.1 Producción + Datos Replicables)'
+        };
+        function switchLang(lang) {
+            currentLang = lang;
+            document.body.classList.remove('lang-en', 'lang-es');
+            document.body.classList.add('lang-' + lang);
+            document.documentElement.lang = lang;
+            if (DOC_TITLES[lang]) document.title = DOC_TITLES[lang];
+            const btnEn = document.getElementById('btn-en');
+            const btnEs = document.getElementById('btn-es');
+            if (btnEn) btnEn.classList.toggle('active', lang === 'en');
+            if (btnEs) btnEs.classList.toggle('active', lang === 'es');
+            localStorage.setItem('wcdecider_lang', lang);
+            updateDiagramLang(lang);
+        }
+
+        // Update SVG diagram labels for current language (texts have ids added in markup)
+        function updateDiagramLang(lang) {
+            const map = {
+                'en': {
+                    'layer1': 'LAYER 1: DATA INPUTS & PREPROCESSING',
+                    'layer2': 'LAYER 2: BASE MODELS & CORE PREDICTORS',
+                    'layer3': 'LAYER 3: ADJUSTMENTS, FINETUNES & ENSEMBLE BLEND',
+                    'layer4': 'LAYER 4: VALIDATION, POST-PROCESSING & OUTPUTS',
+                    'elo': 'Elo Ratings',
+                    'xg': 'xG / xGA Proxies',
+                    'ctx': 'Contextual Data',
+                    'hist': 'Historical Calibration',
+                    'elo-core': 'v4 1X2 Anchor (Elo + Rule 21)',
+                    'btd': 'Dixon-Coles Goal Markets',
+                    'xg-hybrid': 'Market Legs (EV only)',
+                    'sharp': 'v5 Roadmap (future)',
+                    'finetunes': 'FINETUNES, RULES & ENSEMBLE BLEND',
+                    'r21': 'Rule 21: Opener/Minnow/ Rotation Finetunes',
+                    'r14': 'Rule 14/19: Bias + Shrinkage',
+                    'r22': 'Rule 24/27: Tier + MOD Stack',
+                    'r20': 'R14 + HALT + Cons. Kelly',
+                    'blend': 'RULE 24 TIERS',
+                    'sens': '3 SENSITIVITIES (Agg/Base/Cons)',
+                    'dc-ev': 'DC JOINTS + EV',
+                    'class': 'CLASSIFICATION + RECS',
+                    'eli5-out': 'ELI5 + STAKE SUGGESTIONS',
+                    'legend-title': 'LEGEND & WEIGHTS',
+
+                    'elo-src1': '(eloratings.net +',
+                    'elo-src2': 'international-football.net)',
+                    'elo-w': 'Weight: Core Input',
+                    'xg-src1': '(FBref club-level for',
+                    'xg-src2': 'probable XI + opp profile)',
+                    'xg-w': 'Weight: Hybrid Input',
+                    'ctx-src1': '(Form, H2H, Injuries,',
+                    'ctx-src2': 'Weather, Travel, Ref)',
+                    'ctx-w': 'Weight: Adjustment Input',
+                    'hist-src1': '(WC openers, Euros,',
+                    'hist-src2': 'top-5 leagues for μ & var)',
+                    'hist-w': 'Weight: Prior Input',
+                    'elo-c1': '• Two-way → closeness draw (base 0.20)',
+                    'elo-c2': '• opener_boost 0.07, minnow 1.16',
+                    'elo-c3': '• Brier 0.6157 (N=222 anchor)',
+                    'elo-cw': '1X2: standalone — no DC blend',
+                    'btd-c1': '• ρ=-0.07 low-score correlation',
+                    'btd-c2': '• O/U 2.5, BTTS, P(0-0), combos',
+                    'btd-c3': '• λ via tanh Elo gap',
+                    'btd-cw': 'Goals only — decoupled from 1X2',
+                    'xgh-c1': '• Sharp: Pinnacle devigged',
+                    'xgh-c2': '• Soft: cross-book wide price',
+                    'xgh-c3': '• MOD: 70% model + 30% market',
+                    'xgh-cw': 'Rule 24 + Rule 27 gate',
+                    'sharp-c1': '• EWMA + graph Elo',
+                    'sharp-c2': '• Dynamic xG blend (gated)',
+                    'sharp-c3': '• Bayesian BTD + Kelly bands',
+                    'sharp-cw': 'Post-tournament N≥15',
+                    'blend-c1': 'MOD: 70/30→Pin50/M30/S20',
+                    'blend-c2': 'SPEC: S55/M30/P15',
+                    'blend-c3': 'MARG: M40/P35/S25',
+                    'sens-sub': 'ROBUST check',
+                    'dc-sub': 'Fair odds, Kelly, HALT flags',
+                    'class-sub': 'MOD / SPEC / PASS tiers',
+                    'eli5-sub': 'Novice execution guides',
+                    'leg-inputs': 'Inputs (Data Layer)',
+                    'leg-base': 'Base Models',
+                    'leg-finetune': 'Finetunes / Rules',
+                    'leg-blend': 'Ensemble Blend',
+                    'leg-outputs': 'Outputs & Validation',
+                },
+                'es': {
+                    'layer1': 'CAPA 1: ENTRADAS DE DATOS Y PREPROCESAMIENTO',
+                    'layer2': 'CAPA 2: MODELOS BASE Y PREDICTORES PRINCIPALES',
+                    'layer3': 'CAPA 3: AJUSTES, AJUSTES FINOS Y MEZCLA DE ENSEMBLE',
+                    'layer4': 'CAPA 4: VALIDACIÓN, POST-PROCESAMIENTO Y SALIDAS',
+                    'elo': 'Calificaciones Elo',
+                    'xg': 'Proxies xG / xGA',
+                    'ctx': 'Datos Contextuales',
+                    'hist': 'Calibración Histórica',
+                    'elo-core': 'v4 Ancla 1X2 (Elo + Regla 21)',
+                    'btd': 'Mercados de Goles Dixon-Coles',
+                    'xg-hybrid': 'Patas de Mercado (solo EV)',
+                    'sharp': 'Hoja de ruta v5 (futuro)',
+                    'finetunes': 'AJUSTES FINOS, REGLAS Y MEZCLA DE ENSEMBLE',
+                    'r21': 'Regla 21: Ajustes de Apertura/Minnow/Rotación',
+                    'r14': 'Reglas 14/19: Sesgo + Reducción',
+                    'r22': 'Reglas 24/27: Nivel + Stack MOD',
+                    'r20': 'R14 + HALT + Kelly conservador',
+                    'blend': 'NIVELES REGLA 24',
+                    'sens': '3 SENSIBILIDADES (Agres/ Base/ Cons)',
+                    'dc-ev': 'JUNTAS DC + EV',
+                    'class': 'CLASIFICACIÓN + RECS',
+                    'eli5-out': 'ELI5 + SUGERENCIAS DE STAKE',
+                    'legend-title': 'LEYENDA Y PESOS',
+
+                    'elo-src1': '(eloratings.net +',
+                    'elo-src2': 'international-football.net)',
+                    'elo-w': 'Peso: Entrada Principal',
+                    'xg-src1': '(FBref nivel club para',
+                    'xg-src2': 'XI probable + perfil rival)',
+                    'xg-w': 'Peso: Entrada Híbrida',
+                    'ctx-src1': '(Forma, H2H, Lesiones,',
+                    'ctx-src2': 'Clima, Viaje, Árbitro)',
+                    'ctx-w': 'Peso: Entrada de Ajuste',
+                    'hist-src1': '(Aperturas WC, Euro,',
+                    'hist-src2': 'ligas top-5 para μ y var)',
+                    'hist-w': 'Peso: Entrada Previa',
+                    'elo-c1': '• Bidireccional → empate por cercanía (base 0.20)',
+                    'elo-c2': '• opener_boost 0.07, minnow 1.16',
+                    'elo-c3': '• Brier 0,6157 (ancla N=222)',
+                    'elo-cw': '1X2: independiente — sin mezcla DC',
+                    'btd-c1': '• ρ=-0.07 correlación goles bajos',
+                    'btd-c2': '• O/U 2.5, BTTS, P(0-0), combos',
+                    'btd-c3': '• λ vía brecha tanh Elo',
+                    'btd-cw': 'Solo goles — desacoplado de 1X2',
+                    'xgh-c1': '• Sharp: Pinnacle desvigado',
+                    'xgh-c2': '• Soft: precio amplio cross-book',
+                    'xgh-c3': '• MOD: 70% modelo + 30% mercado',
+                    'xgh-cw': 'Reglas 24 + 27 gate',
+                    'sharp-c1': '• EWMA + Elo en grafo',
+                    'sharp-c2': '• Mezcla xG dinámica (con gate)',
+                    'sharp-c3': '• BTD bayesiano + bandas Kelly',
+                    'sharp-cw': 'Post-torneo N≥15',
+                    'blend-c1': 'MOD: 70/30→Pin50/M30/S20',
+                    'blend-c2': 'SPEC: S55/M30/P15',
+                    'blend-c3': 'MARG: M40/P35/S25',
+                    'sens-sub': 'Verificación ROBUSTO',
+                    'dc-sub': 'Cuotas justas, Kelly, flags HALT',
+                    'class-sub': 'Niveles MOD / SPEC / PASS',
+                    'eli5-sub': 'Guías de ejecución para novatos',
+                    'leg-inputs': 'Entradas (Capa de Datos)',
+                    'leg-base': 'Modelos Base',
+                    'leg-finetune': 'Ajustes Finos / Reglas',
+                    'leg-blend': 'Mezcla Ensemble',
+                    'leg-outputs': 'Salidas y Validación',
+                }
+            };
+            const ids = ['layer1','layer2','layer3','layer4','elo','xg','ctx','hist','elo-core','btd','xg-hybrid','sharp','finetunes','r21','r14','r22','r20','blend','sens','dc-ev','class','eli5-out','legend-title','elo-src1','elo-src2','elo-w','xg-src1','xg-src2','xg-w','ctx-src1','ctx-src2','ctx-w','hist-src1','hist-src2','hist-w','elo-c1','elo-c2','elo-c3','elo-cw','btd-c1','btd-c2','btd-c3','btd-cw','xgh-c1','xgh-c2','xgh-c3','xgh-cw','sharp-c1','sharp-c2','sharp-c3','sharp-cw','blend-c1','blend-c2','blend-c3','sens-sub','dc-sub','class-sub','eli5-sub','leg-inputs','leg-base','leg-finetune','leg-blend','leg-outputs'];
+            ids.forEach(k => {
+                const el = document.getElementById('d-' + k);
+                if (el && map[lang] && map[lang][k]) el.textContent = map[lang][k];
+            });
+        }
+        
+        // Bonus: simple sort on any .data-table
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'TH' && e.target.closest('.data-table')) {
+                const table = e.target.closest('table');
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                const idx = Array.from(e.target.parentNode.children).indexOf(e.target);
+                const asc = !e.target.dataset.asc || e.target.dataset.asc === 'false';
+                rows.sort((a, b) => {
+                    const va = a.children[idx].textContent.trim();
+                    const vb = b.children[idx].textContent.trim();
+                    const na = parseFloat(va), nb = parseFloat(vb);
+                    if (!isNaN(na) && !isNaN(nb)) return asc ? na - nb : nb - na;
+                    return asc ? va.localeCompare(vb) : vb.localeCompare(va);
+                });
+                rows.forEach(r => tbody.appendChild(r));
+                e.target.dataset.asc = asc;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+WCdecider Master Data Manifest — All Datasets in the Modelling Workflow
+=====================================================================
+Date: 2026-06-15
+Production model: wc_model_v4_1_ensemble.py (v4.1)
+Student pipeline: wc_model_v4_replicable_pipeline.py
+
+DATASET INDEX
+-------------
+| File | Rows | Role | Provenance doc |
+|------|------|------|----------------|
+| wc_2026_model_dataset.csv | 6 | June 15-16 slate (OSINT inputs) | wc_2026_dataset_provenance.txt |
+| wc_backtest_historical_dataset.csv | 222 | Expanded backtest N=222 | wc_backtest_dataset_provenance.txt |
+| wc_bayesian_search_results.json | 102 | Iteration 6 search outputs | MODEL_ITERATION_V6.md |
+| wc_model_production_results.csv | 228 | Pipeline output (6+222 predictions) | Built by replicable pipeline |
+
+PRIMARY REAL-WORLD SOURCES (verified URLs)
+------------------------------------------
+Elo ratings:
+  - https://eloratings.net/ (snapshot 2026-06-15)
+  - https://www.international-football.net/elo-ratings-table?year=2026&month=06&day=15
+
+Closing odds (historical):
+  - https://www.football-data.co.uk/worldcup2022.csv
+
+Match results:
+  - FIFA World Cup 2018/2022 official archives
+  - WC 2026 MD1-3: user screenshot odds + settled scores in AGENT.md backtest
+
+Team news / form / injuries (June slate only):
+  - RotoWire, Sports Mole, ESPN, SI, L'Équipe, Yahoo, Fotmob, WhoScored (2026-06-15 crawls)
+  - Citations per-row in wc_2026_model_dataset.csv source_* columns
+
+Weather (June slate):
+  - NWS proxies + venue reports (per source_weather column)
+
+REPLICATION WORKFLOW (student checklist)
+--------------------------------------
+[ ] 1. Install: Python 3.9+, scipy, numpy (see requirements in pipeline header)
+[ ] 2. Read this manifest + both provenance TXT files
+[ ] 3. Verify CSV files exist (or rebuild backtest: python3 wc_backtest_historical_loader.py)
+[ ] 4. Run: python3 wc_model_v4_replicable_pipeline.py
+[ ] 5. Run: python3 -m pytest tests/test_peer_replication.py -v
+[ ] 6. Compare printed Brier/trap metrics to locked regression values
+[ ] 7. Optional: python3 wc_backtest_framework.py for full model comparison table
+
+EXPECTED LOCKED OUTPUTS (regression)
+------------------------------------
+June slate (6 matches): see tests/test_wc_pipeline.py EXPECTED_RESULTS
+Backtest N=222:
+  - v4_elo weighted Brier: 0.6157 (±0.002)
+  - v4_1_stack weighted Brier: 0.6039 (±0.002)
+  - market_implied Brier: 0.5956 (±0.002)
+  - MOD trap count v4.1: 0
+
+WHY TWO INPUT DATASETS?
+-----------------------
+- wc_2026_model_dataset.csv: rich OSINT overlays (injuries, weather, form) for live slate analysis
+- wc_backtest_historical_dataset.csv: large-sample calibration with real closing odds
+  Production v4.1 uses structural Elo + market stack; June overlays feed finetune strings only

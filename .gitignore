@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.remember/
+*.log
+.env
+.venv/
+venv/
+site/
+wc_bayesian_search_results.json
+model_run_june16.txt

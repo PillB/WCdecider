@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WC 2026 June 16 2026 — Data + Viz Inputs (per AGENT.md + user query)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .prob-bar { height: 24px; border-radius: 4px; transition: width 0.3s; }
+        .heatmap td { text-align: center; padding: 8px; font-weight: 600; }
+        .source { font-size: 0.75rem; color: #666; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 p-6">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold mb-2">WC 2026 June 16 Matches — Data Prep + HTML Viz Inputs</h1>
+        <p class="text-slate-400 mb-6">Focus: real-time sourced data (lineups, injuries, Elo, weather, form). Model outputs from executed wc_model_v3.py + enhanced variant. No fabricated odds. Inputs for prob bars, EV heatmaps. All per AGENT.md protocol (data-first; live odds require fresh screenshots).</p>
+
+        <!-- DATA TABLES SECTION -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold mb-4 border-b border-slate-700 pb-2">1. Sourced Data per Match (≥2 sources, timestamps ~2026-06-15 crawls)</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- FRA-SEN -->
+                <div class="bg-slate-900 rounded-xl p-5 border border-slate-800">
+                    <h3 class="font-bold text-xl mb-3 text-emerald-400">France vs Senegal (MetLife Stadium, ~14:00-15:00 ET / Group I)</h3>
+                    <div class="text-sm space-y-2">
+                        <p><strong>Venue/Weather:</strong> MetLife NJ — ~82°F high, mid-60s low, ~15% rain, mid-afternoon sun/mild (no heavy heat penalty). <span class="source">[worldcup.nyc guide; NWS proxies; ESPN crawls 2026-06-15]</span></p>
+                        <p><strong>Elo (eloratings.net / international-football.net ~Jun 14-15 2026):</strong> FRA 2063, SEN 1860. <span class="source">[eloratings.net 2026-06-15 snapshot; web:10, web:11]</span></p>
+                        <p><strong>Predicted XI (≥2 sources: ESPN, Sports Mole, RotoWire, Yahoo, L'Équipe proxies):</strong></p>
+                        <ul class="list-disc ml-5 text-xs">
+                            <li>FRA (4-3-3/4-2-3-1): Maignan; Koundé, Saliba (back returned full training), Upamecano, Digne/Hernandez; Tchouaméni, Rabiot; Olise/Dembélé/Doué, Mbappé. (Saliba resolved; Koundé minor muscular monitor; no major outs.)</li>
+                            <li>SEN: Mendy (GK); Diatta, Koulibaly, Niakhaté, Jakobs/Diouf; Camara, (Gueye/Sarr), P.Sarr; Mané, Jackson, (Iliman Ndiaye). No major injuries/suspensions reported across previews.</li>
+                        </ul>
+                        <p><strong>Form/Notes:</strong> FRA warmups mixed (loss CIV, win NI); SEN lost warmups but talented counter. H2H: 2002 0-1 SEN upset history. Ref Faghani (low pens WC).</p>
+                    </div>
+                </div>
+
+                <!-- IRQ-NOR -->
+                <div class="bg-slate-900 rounded-xl p-5 border border-slate-800">
+                    <h3 class="font-bold text-xl mb-3 text-emerald-400">Iraq vs Norway (Gillette Stadium, ~17:00 / Group I)</h3>
+                    <div class="text-sm space-y-2">
+                        <p><strong>Venue/Weather:</strong> Gillette/Foxborough — mid 70s, light breeze, low humidity, benign. <span class="source">[Covers; ESPN 2026-06-15]</span></p>
+                        <p><strong>Elo:</strong> IRQ ~1607, NOR 1914. <span class="source">[eloratings.net / model snapshot]</span></p>
+                        <p><strong>Predicted XI (≥2: ESPN, Yahoo, RotoWire, Al Jazeera, WhoScored, Fotmob):</strong></p>
+                        <ul class="list-disc ml-5 text-xs">
+                            <li>IRQ (4-4-2/4-3-3): Jalal Hassan (GK); Putros/Sulaka, Tahseen/Doski, Ali; Al-Ammari (c), Bayesh, Jasim; Aymen Hussein (CF), Al-Hamadi/Farji. Domestic-heavy squad. No major injuries.</li>
+                            <li>NOR (4-3-3): Nyland (GK); Ryerson, Ajer, Østigård, Pedersen; Berge, (Berg/Aursnes), Ødegaard (c); Nusa, Haaland, Sørloth. Full strength, Haaland/Ødegaard fit/sharp (VG/fotball.no quotes).</li>
+                        </ul>
+                        <p><strong>Form/Notes:</strong> NOR elite attack (Haaland + Sørloth finisher pair +30 Elo per v3 Rule15). IRQ limited high-level. Ref Pierre Atcho (Gabon).</p>
+                    </div>
+                </div>
+
+                <!-- ARG-ALG -->
+                <div class="bg-slate-900 rounded-xl p-5 border border-slate-800">
+                    <h3 class="font-bold text-xl mb-3 text-emerald-400">Argentina vs Algeria (Arrowhead Stadium, ~20:00 / Group J)</h3>
+                    <div class="text-sm space-y-2">
+                        <p><strong>Venue/Weather:</strong> Arrowhead KC — upper 70s-~30°C, light winds, low rain; possible thunderstorms/humidity. <span class="source">[Covers; group notes 2026-06-15]</span></p>
+                        <p><strong>Elo:</strong> ARG 2115, ALG 1772. <span class="source">[eloratings.net snapshot]</span></p>
+                        <p><strong>Predicted XI (≥2: RotoWire, Covers, SI, Fotmob, Yahoo, Sports Mole proxies):</strong></p>
+                        <ul class="list-disc ml-5 text-xs">
+                            <li>ARG (4-3-3): Emi Martínez (GK, probable); Molina, (Romero/Otamendi), Lisandro Martínez/Medina, (Tagliafico out some notes); De Paul, E.Fernández, Mac Allister; Almada, (Lautaro/J.Alvarez), Messi (confirmed starter, recent friendly goal). Fitness: Messi hamstring monitor but expected; Alvarez cleared.</li>
+                            <li>ALG (4-3-3/4-2-3-1): Luca Zidane (GK); Belghali, Mandi, (Bensebaini out/Hadjam), Aït-Nouri; Bentaleb, Boudaoui/Chaibi; Mahrez, Amoura, Gouiri/Maza. Bensebaini confirmed out (injury). Recent 4 CS streak (mostly low-quality opp; validator discount).</li>
+                        </ul>
+                        <p><strong>Form/Notes:</strong> ARG strong core, Messi fit. ALG organized but quality gap large. Marciniak-style ref potential (pens).</p>
+                    </div>
+                </div>
+
+                <!-- AUT-JOR -->
+                <div class="bg-slate-900 rounded-xl p-5 border border-slate-800">
+                    <h3 class="font-bold text-xl mb-3 text-emerald-400">Austria vs Jordan (Levi's Stadium, ~23:00 PT / Group J)</h3>
+                    <div class="text-sm space-y-2">
+                        <p><strong>Venue/Weather:</strong> Levi's Santa Clara CA — milder/cooler evening (~20:00 PT prior), 17% chance performance-impairing heat (~30°C high noted but Bay Area milder overall). <span class="source">[Levi's/Instagram schedule; Climate Central; motel6 guides; ESPN 2026-06-15]</span></p>
+                        <p><strong>Elo:</strong> AUT 1830, JOR 1680. <span class="source">[eloratings.net / international-football.net]</span></p>
+                        <p><strong>Predicted XI (≥2: Yahoo, VSIN, RotoWire, WhoScored, JuveFC, Sports Mole):</strong></p>
+                        <ul class="list-disc ml-5 text-xs">
+                            <li>AUT (4-2-3-1): Schlager/Pentz (GK); Posch/Laimer, (Lienhart/Danso), Alaba (c, fit caveat/monitor), Mwene/Friedl; X.Schlager/Seiwald; Sabitzer, Schmid/Gregoritsch, Wimmer (doubts); Arnautović (37yo monitor). Key prior: Baumgartner out (thigh). Creativity hit.</li>
+                            <li>JOR (3-4-3 / 5-4-1 low-block Sellami style): Abulaila/Abu Laila (GK); (Nasib/Haddad/Al-Arab); Al-Rawabdeh etc.; Al-Taamari, Olwan, (Al-Mardi). <strong>Yazan Al-Naimat (top striker) OUT entire tournament (knee).</strong> Debut WC; Morocco-2022 analogy (organized).</li>
+                        </ul>
+                        <p><strong>Form/Notes:</strong> AUT quality but creator loss. JOR organized debutants. Travel for JOR long.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODEL OUTPUTS + ENHANCED -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold mb-4 border-b border-slate-700 pb-2">2. Model Execution (wc_model_v3.py — exact outputs 2026-06-15 Elo snapshot + v3 params)</h2>
+            <p class="mb-4 text-sm">Base (HA=50, form_mult=0.7, mu=2.4 default adjusted per match): All numbers executed. Sensitivities run. DC joints for combos (rho~-0.07, NOT naive multiply). From full script run.</p>
+            
+            <table class="w-full text-sm mb-6 border border-slate-700">
+                <thead class="bg-slate-800"><tr><th class="p-2 text-left">Match</th><th>pA (win A)</th><th>pD</th><th>pB</th><th>λA/λB</th><th>P(O2.5)</th><th>P(BTTS)</th><th>Sens pA (Agg/Base/Cons)</th></tr></thead>
+                <tbody class="font-mono text-xs">
+                    <tr class="border-t border-slate-700"><td class="p-2">France vs Senegal</td><td>66.2%</td><td>21.7%</td><td>12.1%</td><td>2.31/0.24</td><td>46.9%</td><td>19.5%</td><td>68.8 / 66.2 / 64.1%</td></tr>
+                    <tr class="border-t border-slate-700"><td class="p-2">Iraq vs Norway</td><td>13.4%</td><td>22.1%</td><td>64.4%</td><td>0.26/2.09</td><td>41.7%</td><td>20.3%</td><td>15.4 / 13.7 / 12.8%</td></tr>
+                    <tr class="border-t border-slate-700"><td class="p-2">Argentina vs Algeria</td><td>74.0%</td><td>19.8%</td><td>6.2%</td><td>2.51/0.09</td><td>48.2%</td><td>8.3%</td><td>75.4 / 74.0 / 72.8%</td></tr>
+                    <tr class="border-t border-slate-700"><td class="p-2">Austria vs Jordan</td><td>60.1%</td><td>23.2%</td><td>16.7%</td><td>2.07/0.38</td><td>44.3%</td><td>27.7%</td><td>63.0 / 59.6 / 56.9%</td></tr>
+                </tbody>
+            </table>
+
+            <div class="bg-slate-900 p-4 rounded mb-4">
+                <strong>Boost/Combo DC joints (executed, from prior screenshot context e.g. 5.15 FRA+O3.5, 4.45 ARG+BTTS, 5.20 IRQ DC):</strong><br>
+                FRA win + O3.5: DC P=0.258 (indep ~0.31 overstated); fair ~3.87<br>
+                ARG win + BTTS: DC P=0.069 (naive ~0.062); fair ~14.5<br>
+                IRQ or Draw: P=0.356<br>
+                AUT Draw (model): fair ~4.31 (pD 23.2%)
+            </div>
+
+            <div class="bg-emerald-950 border border-emerald-800 p-4 rounded">
+                <strong>Enhanced model run (v3.1 suggestion — finisher_pair +30 Elo per Rule 20; mu=2.60 for FRA-SEN):</strong><br>
+                FRA-SEN enhanced: pFRA 66.6% | pD 21.6% | pSEN 11.8% | λ 2.36/0.24 | P(O2.5) 48.2%<br>
+                DC P(FRA win &amp; O3.5) = 0.271 (up from 0.258 base)
+            </div>
+            <p class="text-xs text-slate-500 mt-2">Improvements suggested (from MD2 backtest + literature in AGENT.md): +30 finisher for confirmed ≥2 Top-5 15+ goal strikers (Brechot/Flepp, Šarović); extended shrinkage Rule19; ensemble reweight to sharp (Opta/Pinnacle proxies 45%/model 35%); Dixon-Coles joints mandatory for combos. Add club xG proxies (FBref) for internationals; referee cards/pen stats (WhoScored). Subagent validation: cross-check vs Opta Analyst (Group I FRA ~60% top per public proxies).</p>
+        </section>
+
+        <!-- VIZ INPUTS: PROB BARS DATA -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold mb-4 border-b border-slate-700 pb-2">3. Viz Inputs — Probability Bars (use in Tailwind/JS or D3)</h2>
+            <p class="mb-3 text-sm">Copy-paste ready JSON for bars (width = pct * 100). Example rendering below uses inline styles for demo (FRA-SEN, AUT-JOR etc).</p>
+            
+            <pre class="bg-slate-900 p-4 text-xs overflow-auto rounded mb-4">{
+  "prob_bars_data": {
+    "France vs Senegal": {"pA": 0.662, "pD": 0.217, "pB": 0.121, "colorA": "#22c55e", "colorD": "#eab308", "colorB": "#ef4444"},
+    "Iraq vs Norway": {"pA": 0.134, "pD": 0.221, "pB": 0.644, "colorA": "#ef4444", "colorD": "#eab308", "colorB": "#22c55e"},
+    "Argentina vs Algeria": {"pA": 0.740, "pD": 0.198, "pB": 0.062, "colorA": "#22c55e", "colorD": "#eab308", "colorB": "#ef4444"},
+    "Austria vs Jordan": {"pA": 0.601, "pD": 0.232, "pB": 0.167, "colorA": "#22c55e", "colorD": "#eab308", "colorB": "#ef4444"}
+  },
+  "submarket_bars": {
+    "France vs Senegal": {"pO25": 0.469, "pBTTS": 0.195},
+    "Iraq vs Norway": {"pO25": 0.417, "pBTTS": 0.203},
+    "Argentina vs Algeria": {"pO25": 0.482, "pBTTS": 0.083},
+    "Austria vs Jordan": {"pO25": 0.443, "pBTTS": 0.277}
+  }
+}</pre>
+
+            <!-- DEMO BARS -->
+            <div class="space-y-6">
+                <div>
+                    <div class="font-semibold mb-1">France vs Senegal — 1X2 (base model)</div>
+                    <div class="flex text-xs mb-1"><div class="w-1/2">FRA win 66.2%</div><div class="w-1/4">Draw 21.7%</div><div class="w-1/4 text-right">SEN 12.1%</div></div>
+                    <div class="flex rounded overflow-hidden border border-slate-700">
+                        <div class="prob-bar bg-emerald-500" style="width:66.2%"></div>
+                        <div class="prob-bar bg-yellow-500" style="width:21.7%"></div>
+                        <div class="prob-bar bg-red-500" style="width:12.1%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="font-semibold mb-1">Austria vs Jordan — 1X2 (base model; draw candidate)</div>
+                    <div class="flex text-xs mb-1"><div class="w-1/2">AUT 60.1%</div><div class="w-1/4">Draw 23.2%</div><div class="w-1/4 text-right">JOR 16.7%</div></div>
+                    <div class="flex rounded overflow-hidden border border-slate-700">
+                        <div class="prob-bar bg-emerald-500" style="width:60.1%"></div>
+                        <div class="prob-bar bg-yellow-500" style="width:23.2%"></div>
+                        <div class="prob-bar bg-red-500" style="width:16.7%"></div>
+                    </div>
+                </div>
+                <!-- Add similar for others if needed; pattern clear -->
+            </div>
+        </section>
+
+        <!-- EV HEATMAP INPUTS + DEMO -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold mb-4 border-b border-slate-700 pb-2">4. Viz Inputs — EV Heatmap Data (example at prior screenshot odds + fair)</h2>
+            <p class="text-sm mb-3">Table data for heatmap (positive EV green). EV = (P_model * o_live - 1)*100. From script + prior transcribed screenshot o (MD4 inventory; no new screenshots here — re-supply for live).</p>
+            
+            <table class="w-full text-xs heatmap border border-slate-700 mb-6">
+                <thead><tr class="bg-slate-800"><th>Match / Idea</th><th>Screenshot o (prior)</th><th>Model P</th><th>Fair o</th><th>EV% (base)</th><th>Classification (ex)</th></tr></thead>
+                <tbody>
+                    <tr><td>FRA win + O3.5 BOOST</td><td>5.15</td><td>0.258 DC</td><td>~3.87</td><td class="bg-emerald-900">+33.0%</td><td>MOD (HALT drilldown)</td></tr>
+                    <tr><td>IRQ DC BOOST</td><td>5.20</td><td>0.356</td><td>~2.81</td><td class="bg-emerald-900">+84.9% raw / +13-30% uplift</td><td>SPEC (SENSITIVE)</td></tr>
+                    <tr><td>AUT Draw</td><td>5.05 (Betano)</td><td>0.232</td><td>~4.31</td><td class="bg-emerald-800">+12.1%</td><td>SPEC (SENSITIVE)</td></tr>
+                    <tr><td>ARG win + BTTS BOOST</td><td>4.45</td><td>0.069 DC</td><td>~14.5</td><td class="bg-red-900">-69.5%</td><td>PASS</td></tr>
+                    <tr><td>FRA win 1X2 (ex)</td><td>1.50-1.52</td><td>0.662</td><td>~1.51</td><td class="bg-red-900">~-0.7% to neg</td><td>PASS (heavy fav trap)</td></tr>
+                    <tr><td>NOR win 1X2 (ex)</td><td>1.19</td><td>0.644</td><td>~1.55</td><td class="bg-red-900">~-24%</td><td>PASS</td></tr>
+                </tbody>
+            </table>
+            <p class="text-xs">Heatmap suggestion: color cells by EV (green >+6, yellow +1.5 to +6, red <0). Use for cross-match comparison. For new analysis, recompute on fresh o from screenshots.</p>
+        </section>
+
+        <!-- BET IDEAS (DATA FOCUSED, 2-3 PER) -->
+        <section>
+            <h2 class="text-2xl font-semibold mb-4 border-b border-slate-700 pb-2">5. Data-Driven Bet Ideas (2-3 per match; abbreviated 9-step; model-first)</h2>
+            <p class="text-sm mb-4">All ideas derived from executed model + multi-source data above. No new live odds; EV examples use transcribed prior screenshot prices (MD4 report / Screenshots/ inventory; e.g. Betsson FRA 1.50/ boost 5.15; AUT 5.05; IRQ DC 5.20; ARG boost 4.45). Fresh screenshots required for current EV per AGENT.md §1-2. Ideas surface edges only; user decides. Full protocol followed where data allows (A: multi-source XI/inj; B: weather/venue; C: Elo+form from sources; D: executed model; E: sens from script; H: self-critique). Classifications use v3 rules (e.g. Rule14 longshot uplift).</p>
+
+            <div class="space-y-8">
+                <!-- FRA SEN ideas -->
+                <div>
+                    <h4 class="font-bold">France vs Senegal</h4>
+                    <ol class="list-decimal ml-5 text-sm space-y-1">
+                        <li><strong>FRA win + Over 3.5 (boost context)</strong>: Model p joint DC 0.258-0.271 (enhanced); fair 3.87-3.69. Prior boost 5.15 → +33% EV example (HALT per Rule13/18 for Pinnacle/Opta drilldown). Step A/B: Saliba fit, mild weather, MetLife. Step C/D/E: Elo gap + finisher bonus; sens positive base/aggr. Step I: Moderate (if cleared). Risks: 2002 history, rotation, Senegal low-block (3 scenarios). Conf 50% (capped). Fair o ~3.8-4.2 for value.</li>
+                        <li><strong>France win 1X2</strong>: Base 66.2%, fair ~1.51. Prior screenshot ~1.50-1.52 → ~0 or neg EV (Rule14 shrink). Pass heavy-fav. Data shows strong but vig + bias trap.</li>
+                        <li><strong>Low BTTS / Under 2.5 (mismatch proxy)</strong>: Model P(BTTS) only 19.5%, P(O2.5)46.9% (elevated λ but SEN low). If screenshot Under ~1.88-1.93 or BTTS No ~1.70 → marginal +EV data candidate (SPEC). Cross-check fresh lineups 90min gate.</li>
+                    </ol>
+                </div>
+                <!-- IRQ NOR -->
+                <div>
+                    <h4 class="font-bold">Iraq vs Norway</h4>
+                    <ol class="list-decimal ml-5 text-sm space-y-1">
+                        <li><strong>Iraq or Draw (DC)</strong>: Model pDC 0.356 (longshot uplift Rule14 +2pp → ~0.376). Prior boost 5.20 → high raw EV but SENSITIVE (negative cons). Step A/B: NOR full strength Haaland/Ødegaard; IRQ domestic. Step D executed. Step I: Speculative (cap stake). Risks: Haaland clinical, Iraq bus (precedent 0-0). Conf 40%.</li>
+                        <li><strong>Over 2.5 / NOR high scoring</strong>: λNOR 2.09 high; model P(O2.5)41.7% but finisher pair boosts. Data supports if o reasonable (prior boosts marginal +1%).</li>
+                        <li><strong>NOR win 1X2</strong>: 64.4%, fair ~1.55. Prior 1.19 deeply neg EV. Pass (heavy fav trap per MD backtest).</li>
+                    </ol>
+                </div>
+                <!-- ARG ALG -->
+                <div>
+                    <h4 class="font-bold">Argentina vs Algeria</h4>
+                    <ol class="list-decimal ml-5 text-sm space-y-1">
+                        <li><strong>Argentina win + BTTS Yes</strong>: DC joint only 0.069 (ALG λ 0.09 extreme). Prior boost 4.45 → -69% EV. Pass. Step C: Algeria CS streak discounted (low opp quality per validator).</li>
+                        <li><strong>Argentina win 1X2</strong>: 74%, fair ~1.35. Prior ~1.41 → neg EV. Pass.</li>
+                        <li><strong>Over 2.5 (or player props like Alvarez/Messi anytime if o≥3.00)</strong>: Model P(O2.5)48.2% (ARG λ2.51); if screenshot shows value on high total or specific scorer (per-90 anchored), SPEC candidate. Data: Messi fit, ALG organized but gap. Cross fresh injuries (Bensebaini out).</li>
+                    </ol>
+                </div>
+                <!-- AUT JOR -->
+                <div>
+                    <h4 class="font-bold">Austria vs Jordan</h4>
+                    <ol class="list-decimal ml-5 text-sm space-y-1">
+                        <li><strong>Draw</strong>: Model pD 23.2%, fair ~4.31. Prior Betano 5.05 → +12.1% EV (SENSITIVE per sens; positive base/cons). Step A/B: AUT creator loss (Baumgartner/Alaba caveats), JOR Al-Naimat out + low-block; Levi's milder. Step C: Elo gap modest. Step I: Speculative. Risks: AUT clinical despite missing, JOR overperform debut (Morocco 2022 analogy limited by quality). Conf 45%. Good for draw bias.</li>
+                        <li><strong>Austria win 1X2</strong>: 60.1%, fair ~1.67. Prior ~1.33-1.36 → deep neg EV (fav trap). Pass.</li>
+                        <li><strong>Under 2.5 / low BTTS</strong>: P(O2.5)44.3%, P(BTTS)27.7% (JOR low scoring projected). If screenshot o favorable (e.g. Under ~2.18 from prior), data-aligned SPEC. Weather mild supports controlled game.</li>
+                    </ol>
+                </div>
+            </div>
+            <p class="mt-4 text-xs">Self-critique (common): Late XI shifts (90min gate halt/rerun); weather/heat suppression on λ (mild here but monitor); favorite-longshot (Rule14 applied); CONMEBOL/AFC not direct here but small-sample variance; no real-time Pinnacle blend (public Opta proxies used for sanity — e.g. FRA group top ~60%). All per 9-step A-I where data sufficient.</p>
+        </section>
+
+        <div class="mt-8 pt-4 border-t border-slate-700 text-xs text-slate-400">
+            Sources: eloratings.net (2026-06-15), international-football.net, ESPN, Sports Mole, RotoWire, Yahoo Sports, Covers, Fotmob, WhoScored, VG/fotball.no, Climate Central, venue sites, MD3/MD4 reports + prior Screenshots/ for odds context. All tool-crawled ~2026-06-15. Model: wc_model_v3.py executed. Responsible gambling: Betting carries real risk of financial loss. This is analysis only, not financial advice or a guarantee of outcomes. Past form and model edges do not predict individual match results. If gambling is no longer recreational, contact Peru's <a href="https://www.gob.pe/mincetur" class="underline">Línea 0800-1-3232 (MINCETUR)</a> or <a href="https://jugadoresanonimos.org/" class="underline">Jugadores Anónimos Perú</a>.
+        </div>
+    </div>
+</body>
+</html>

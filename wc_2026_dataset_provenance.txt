@@ -1,0 +1,64 @@
+WC 2026 Model Dataset Provenance and Processing Steps
+==================================================
+
+This TXT provides full instructions for replicating the dataset(s) used in the v3.1+ model (wc_model_v3.py and full pipeline). The main dataset is "wc_2026_model_dataset.csv" (match-level inputs for the June 15-16 2026 slate, including backtest matches and upcoming).
+
+The Elo values are from a prebuilt snapshot (not built row-by-row from OSINT in this run). See below for provenance.
+
+For variables built from OSINT (lineups, injuries, weather, form, actual results): each has explicit "source_XXX" columns in the CSV. Replicate by following the exact sources and dates below (web searches with recency=day or specific 2026-06-15 crawls as in prior subagent/tool results).
+
+PREBUILT COMPONENT (Elo Ratings):
+- The ELO dict in the pipeline script and the elo_a/elo_b columns in CSV are from the snapshot used in wc_model_v3.py.
+- Provenance (exact from script comments and prior tool results):
+  - Primary: eloratings.net (as of 2026-06-15 snapshot): Spain 2157, Argentina 2115, France 2063, Belgium 1894, Uruguay 1892, Austria 1830, Iran 1772, Egypt 1696, KSA 1576, Senegal 1860, Jordan 1680, Iraq 1607, New Zealand 1562, Cape Verde 1578, Algeria 1772, Norway 1914, and backtest fillers (AUS 1777, TUR 1911, etc.).
+  - Secondary cross-check: international-football.net/elo-ratings-table?year=2026&month=06&day=15 (matches the values used).
+  - Citations in code: https://eloratings.net/ (2026-06-15), https://www.international-football.net/elo-ratings-table?year=2026&month=06&day=15
+- If rebuilding the Elo snapshot: Use the websites directly on or near 2026-06-15. The values are stable for the analysis window. No row-by-row OSINT per team in this dataset (prebuilt for efficiency per AGENT.md Tier-1 requirement for Elo within 48h).
+
+CSV STRUCTURE AND HOW TO REPLICATE EACH COLUMN (from actual sources):
+- match: Identifier (e.g., "Spain vs Cape Verde 2026-06-15"). No source needed.
+- team_a / team_b: Team codes (ESP, CPV, etc.). Standard.
+- elo_a / elo_b: From prebuilt snapshot above. Source column points to the two sites.
+- source_elo_a / source_elo_b: "eloratings.net / international-football.net 2026-06-15 snapshot"
+- home_adv: 0 for neutral WC venues (per AGENT.md for non-host or multi-host format). Source: AGENT.md v3 protocol (host advantage only for US/CAN/MEX home; these are neutral or adjusted).
+- form_adjust_a: Small overlay from previews (e.g., 0.0 or 8.0 for BEL attacking form). 
+  - Source: "RotoWire, SI, Sports Mole 2026-06-15 previews (rotation noted)", "Previews (BEL strong attacking form, 18 goals in recent 5 per sources)", etc. Exact strings from web_search tool results ~2026-06-15.
+- source_form_a: The preview sites listed (multi-source ≥2 per AGENT Step C).
+- injury_adjust_a: Negative for outs (e.g., -25 for rotation, -8 for Debast). 
+  - Source: Exact from subagent/web: "RotoWire, SI, Sports Mole, ESPN 2026-06-15 (Debast leg out, Doku fitness scare resolved...)", "ESPN, RotoWire, L'Équipe... (Kounde muscular monitor...)", "Yahoo, VSIN, RotoWire... (AUT Baumgartner out... JOR Al-Naimat... out)".
+- source_injury_a: The listed preview/news sites (≥2 sources).
+- weather_adjust: Small negative for heat/humidity/storms (e.g., -0.05 or 0.0). 
+  - Source: "NWS proxies, previews (Seattle... record heat...)", "NWS proxies, venue (MetLife NJ, mild...)", "NWS proxies, venue (Arrowhead KC, upper 70s-30C, possible storms)".
+- source_weather: "NWS proxies, venue reports, previews" or specific.
+- mu_total: Group stage default 2.4 or adjusted (2.35 heat, 2.55 quality, 2.6 high ARG).
+  - Source: "v3 group stage default per AGENT.md §8 calibration + MD1 avg goals backtest (2.0 observed, adjusted to 2.4)", "v3 heat-adjusted for venue + MD reports", "v3 quality-adjusted (Mendy GK discount per Rule 16...)".
+- source_mu: As above (AGENT.md + backtest MD reports).
+- actual_result: For backtest matches only (e.g., "0-0", "1-1"). "N/A (upcoming)" for others.
+  - Source: "Al Jazeera liveblog, ESPN, USA Today, FOX, Wikipedia Group H, Athletic 2026-06-15 (full-time reports, xG...)", similar for BEL-EGY.
+- source_result: The live report sites (multi-source).
+- processing_notes: Free text explaining the exact v3.1 adjustments applied for this match (e.g., "Applied Rule 21 finetunes... per backtest introspection on Spain-CV shock... See expected_lambdas and three_way_1x2 in pipeline.").
+  - This column + the TXT below = the "column instructions and txt instruction" for replication.
+- finetune_applied: Which Rules (e.g., "Rule 21 opener/minnow/rotation; Rule 14 bias if applicable").
+
+PROCESSING STEPS TAKEN (exact order and reasoning - for students to replicate):
+1. Collect Elo snapshot (prebuilt per AGENT.md Tier-1: must be within 48h; chosen eloratings + international-football for 2026-06-15 stability and cross-check. Reasoning: Raw Elo gaps drive the two-way win prob formula; snapshot ensures no post-match contamination for backtests).
+2. For each match, pull ≥2 sources for lineups/injuries/form (RotoWire + Sports Mole + ESPN etc. ~2026-06-15). Assign small numeric overlays (e.g., -25 Elo equivalent for key creator out/rotation). Reasoning: Per AGENT Step A/B/C (team news, travel/venue, stats baseline). Overlays capped ±40 per protocol to avoid over-fitting.
+3. Pull weather (NWS proxies + venue reports). Assign small adjust (negative for heat >32C or storms suppressing tempo). Reasoning: Protocol Step B (weather forecast; heat index reduces expected goals ~5-10% per peer-reviewed). Mild venues get 0.0.
+4. Set mu_total per v3 (2.4 default, adjusted for heat/quality/mismatch per backtest MD1-2 lessons and AGENT §8/13). Reasoning: MD1 averaged 2.0; heat/storms suppress; high-quality sides higher. Dixon-Coles refs for correlation.
+5. Apply finetunes (Rule 21: opener_draw_boost +0.055, minnow_resilience 1.16, rotation -25 for Spain-CV style cases). Reasoning: Backtest on actual 0-0 and historical shocks showed raw Elo over-optimism on heavy favorites vs organized debutants/low-blocks. Improves draw calibration without breaking non-opener cases.
+6. Run core functions (two_way, three_way_1x2 with boost, expected_lambdas with resilience, compute_ou_bt_ts, DC joints for combos). 3 sensitivities. Ensemble blend (model + sharp + soft per v3). EV vs screenshot o. Reasoning: Exact AGENT.md formulas (Elo formula, draw d, lambda tanh, Poisson, DC rho~-0.07 for joints per Rule 17). Sensitivities per Step E. EV per Step F. Rule 14 uplift for longshots.
+7. For backtest matches: Compare to actual result (sourced). Note variance (e.g., Spain high xG but 0 goals). Reasoning: Honest self-critique (Step H); calibrate finetunes.
+8. Output probs, EV, classifications. Log sources/processing in CSV columns and this TXT.
+
+REPLICATION INSTRUCTIONS (for subagent or student):
+- Load wc_2026_model_dataset.csv.
+- For each row, use elo_a/elo_b + home_adv + form_adjust_a + injury_adjust_a + weather_adjust + mu_total to call the model functions (copy from the pipeline script).
+- Apply the finetune_applied (parse the string: if "Rule 21" then use opener_draw_boost=0.055, minnow_resilience=1.16, etc.).
+- Compute p_win etc. Compare to report numbers (e.g., France p_win ~66.2%).
+- For prebuilt Elo: Use the values in the CSV (provenance in this TXT).
+- If using the full Python pipeline script (below), it loads the CSV, applies exactly these steps, and prints the replicated probs/EV.
+- All sources are real web results from the tool calls (web_search with 2026-06-15 context). No invention.
+
+If replicating from scratch (no CSV): Follow the source_ columns exactly (visit the sites on equivalent dates, extract the numbers, apply the processing_notes). The snapshot nature of Elo is intentional (per AGENT.md: "dated within 48h").
+
+This ensures full replicability and validity.

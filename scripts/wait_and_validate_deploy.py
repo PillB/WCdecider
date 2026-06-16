@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+"""Wait for GitHub Pages propagation then run Playwright deployed-site tests."""
+
+from __future__ import annotations
+
+import os
+import subprocess
+import sys
+import time
+from urllib.request import urlopen
+from urllib.error import URLError, HTTPError
+
+
+def normalize_url(url: str) -> str:
+    url = url.strip()
+    if not url:
+        raise ValueError("DEPLOY_URL is empty")
+    if not url.endswith("/"):
+        url += "/"
+    return url
+
+
+def wait_for_live(url: str, timeout_sec: int = 300, interval: int = 10) -> None:
+    deadline = time.time() + timeout_sec
+    last_err = None
+    while time.time() < deadline:
+        try:
+            with urlopen(url, timeout=15) as resp:
+                body = resp.read(8000).decode("utf-8", errors="replace")
+                if resp.status == 200 and "WCdecider" in body and "v4.1" in body:
+                    print(f"[wait] Live OK: {url} ({len(body)} bytes sampled)")
+                    return
+                last_err = f"status={resp.status}, missing markers"
+        except (URLError, HTTPError, TimeoutError) as e:
+            last_err = str(e)
+        print(f"[wait] Not ready yet ({last_err}); retry in {interval}s...")
+        time.sleep(interval)
+    raise RuntimeError(f"Deploy URL not live after {timeout_sec}s: {url} — last: {last_err}")
+
+
+def main() -> int:
+    url = normalize_url(os.environ.get("DEPLOY_URL", ""))
+    print(f"[validate] DEPLOY_URL={url}")
+    wait_for_live(url)
+    env = {**os.environ, "DEPLOY_URL": url}
+    cmd = [
+        sys.executable, "-m", "pytest",
+        "tests/test_deployed_site.py",
+        "-v", "--tb=short",
+    ]
+    return subprocess.call(cmd, env=env)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
