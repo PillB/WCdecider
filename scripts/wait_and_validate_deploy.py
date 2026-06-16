@@ -38,8 +38,19 @@ def wait_for_live(url: str, timeout_sec: int = 300, interval: int = 10) -> None:
     raise RuntimeError(f"Deploy URL not live after {timeout_sec}s: {url} — last: {last_err}")
 
 
+def resolve_deploy_url() -> str:
+    url = os.environ.get("DEPLOY_URL", "").strip()
+    if url:
+        return normalize_url(url)
+    repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    if repo and "/" in repo:
+        owner, name = repo.split("/", 1)
+        return normalize_url(f"https://{owner}.github.io/{name}/")
+    raise ValueError("Set DEPLOY_URL or GITHUB_REPOSITORY for deployed validation")
+
+
 def main() -> int:
-    url = normalize_url(os.environ.get("DEPLOY_URL", ""))
+    url = resolve_deploy_url()
     print(f"[validate] DEPLOY_URL={url}")
     wait_for_live(url)
     env = {**os.environ, "DEPLOY_URL": url}

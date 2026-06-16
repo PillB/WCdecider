@@ -89,4 +89,5 @@ jobs:
       - name: Validate deployed site (retry until live)
         env:
           DEPLOY_URL: ${{ needs.deploy.outputs.page_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: python3 scripts/wait_and_validate_deploy.py
