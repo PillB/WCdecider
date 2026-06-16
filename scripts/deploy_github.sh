@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-OWNER="${GITHUB_OWNER:-pabloillescas}"
+OWNER="${GITHUB_OWNER:-PillB}"
 REPO="${GITHUB_REPO:-WCdecider}"
 DEPLOY_URL="https://${OWNER}.github.io/${REPO}/"
 

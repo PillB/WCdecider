@@ -4,7 +4,7 @@ Screenshot-driven FIFA World Cup 2026 betting analysis with a replicable v4.1 El
 
 ## Live report
 
-After deploy: **https://pabloillescas.github.io/WCdecider/**
+After deploy: **https://pillb.github.io/WCdecider/**
 
 ## Local
 
@@ -26,5 +26,5 @@ pytest tests/ -v
 Deployed-site validation:
 
 ```bash
-DEPLOY_URL=https://pabloillescas.github.io/WCdecider/ pytest tests/test_deployed_site.py -v
+DEPLOY_URL=https://pillb.github.io/WCdecider/ pytest tests/test_deployed_site.py -v
 ```

@@ -2,7 +2,7 @@
 """
 Playwright validation against the deployed GitHub Pages site.
 
-Set DEPLOY_URL (e.g. https://pabloillescas.github.io/WCdecider/)
+Set DEPLOY_URL (e.g. https://pillb.github.io/WCdecider/)
 Run: DEPLOY_URL=https://... python3 -m pytest tests/test_deployed_site.py -v
 """
 
