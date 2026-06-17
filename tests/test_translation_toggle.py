@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Playwright audit: EN/ES translation toggle on wc_june16_2026_report.html
+Playwright audit: EN/ES translation toggle on latest report (wc_june17_21_full_report.html; older versions archived)
 
 Ensures all user-facing visible text changes when switching languages.
 Run: python3 tests/test_translation_toggle.py
@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
-REPORT = ROOT / "wc_june16_2026_report.html"
+REPORT = ROOT / "index.html"  # latest in root; old ones in archived/
 
 # Text that legitimately stays the same across languages (brand names, codes, numbers, URLs)
 ALLOWLIST_PATTERNS = [

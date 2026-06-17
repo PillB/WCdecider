@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Playwright compliance audit for wc_june16_2026_report.html
+Playwright compliance audit for the latest report (wc_june17_21_full_report.html). Older versions are in archived/.
 
 Validates user-facing content against:
   - wc_model_production_results.csv (v4.1 locked numbers)
@@ -19,7 +19,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).parent.parent
-REPORT = ROOT / "wc_june16_2026_report.html"
+REPORT = ROOT / "index.html"  # latest version in root; previous reports moved to archived/
 PRODUCTION_CSV = ROOT / "wc_model_production_results.csv"
 
 LOCKED_BACKTEST = {

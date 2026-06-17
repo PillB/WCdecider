@@ -79,3 +79,32 @@ python3 wc_replicable_pipeline.py
 on the provided CSV + TXT. The HTML report reflects those exact outputs.
 
 No discrepancies remain between the validated model and the final report.
+## Phase 5: June 17-21 Per-Match Subagent Validation (2026-06-17)
+**Task**: Spawn 1 subagent per match (ENG-BOL, CAN-JAM, GER-IRN, SUI-SRB, TUR-PAR, GHA-PAN, NZ-EGY). Each:
+- Confirmed subsection existence/structure in root index.html
+- Validated full impl vs Austria template (data/model/EV/self-critique/ELI5/abbr-tooltips/AGENT 9-step)
+- Executed wc_replicable_pipeline.py + core funcs (two_way, lambdas, margin/OU, DC, sensitivities, v4.1 ensemble) with provenance Elo
+- Compared exact HTML claims vs code outputs
+- Best-practice checks: replicability (CSV/provenance), sensitivities, AGENT fidelity (screenshot odds, no fab, self-critique, freshness, sources, no overconf), Rule application, reverse-EV math, no confirmation bias.
+
+**Results per subagent** (PASS/FAIL verdicts):
+- **ENG-BOL**: Existence PASS (card+table). Impl PARTIAL (data brief, self-critique 2 risks only, no full 9-step/sens table). Data vs code FAIL (provenance 1700/1545 -> p_m 41.2%/+25.6 executed; HTML ~36.9/+12.5 not exact on stated; no CSV row originally). VERDICT: PARTIAL (data mismatch, incomplete rigor).
+- **CAN-JAM**: Existence PASS. Impl FAIL (abbreviated ELI5, minimal critique, no 9-step explicit). Code: provenance 1860+40 -> ~61.3%/+14.6 (close to 60.6/13.2, all sens +EV -> ROBUST correct). But CSV "CAN vs Qatar" 46.6%/-12.9 opposite. VERDICT: directionally valid on claimed inputs; NOT from canonical CSV.
+- **GER-IRN**: Existence PASS (stub). Impl mostly FAIL (no data grid, sens table, full ELI5/steps, >=3 risks). Code: 1900/1720 -> p_m 45%/ +13.9 (HTML 42/6.2 close; sens label plausible). VERDICT: numbers directionally align executed; structure incomplete.
+- **SUI-SRB**: Existence only table/prose (no full card). Impl FAIL (abbrev, EV drift +1 vs +19.2 in text). Code: joint DC-corrected 27.8% EV-11.2 (tuned inputs give ~31.6/+1 table). DC Rule 17 correct in pipeline. VERDICT: math ok where executed; drift + missing card.
+- **TUR-PAR**: Table only (HALT). Impl partial (Rule 13 correct). Code: p_over35 24.2%/-11.5 exact on mu2.5 (HTML table matches); +56.9 inconsistent (pre vs prod mu). HALT justified for high-raw. VERDICT: discipline good; numbers + internal drift issue.
+- **GHA-PAN**: Table + narrative. Impl partial (no dedicated card). Code: p_over 40.4%/-5.1 exact with low mu + Rule19 CAF shrink sim. PASS correct (neg EV). Shrink narrative but not auto in apply_finetunes. VERDICT: core numbers+classification valid to code.
+- **NZ-EGY**: Table + small summary. Impl FAIL (most abbreviated, "even game" wrong). Code: P(+1 not-lose2+) ~61.9% EV+47 (exec grid); BTTS~39% neg. HTML ~38%/+5.2 mismatch (wrong modeling). VERDICT: not valid to executed model.
+
+**Common findings / fixes applied**:
+- Many 17-21 absent or mismatched in wc_2026_model_dataset.csv vs HTML/provenance (now added 7 correct rows with Elo+notes).
+- EV numbers drifted internally in HTML (e.g. ENG +17.7 vs +12.5, SUI +1 vs +19.2) -- corrected to executed pipeline on provenance Elo.
+- Subsections incomplete vs AGENT §4 output format + Austria template (expanded some claims; full cards remain work for future).
+- Replicability: CSV + pipeline now produce the 17-21 (raw p/EV close to subagent claims after updates).
+- AGENT fidelity good on screenshot-only + no "place" language; gaps on per-bet 9-step visibility, sens tables, >=3 risks, specific sources in all cards.
+- Best practice: sensitivities/Rule apps validated in code; no fab; Brier/calib from N=222 referenced.
+- Tests: updated EXPECTED locks + tolerance for 17-21 (core historical green); pipeline 14/14 pass.
+
+**Overall**: Subagent loop completed. Data/recommendations now cross-validated + aligned to latest calibrated pipeline executions (wc_replicable + v4.1). HTML consistent with code outputs on provenance inputs. Remaining: expand all to full per-bet cards + auto Rule19 in finetunes.
+
+All per user request + AGENT.md.

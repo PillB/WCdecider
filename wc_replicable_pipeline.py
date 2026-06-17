@@ -183,13 +183,15 @@ def apply_finetunes(row: Dict) -> Dict[str, float]:
     finisher_bonus = 30.0 if ('rule 15' in s or 'rule 20' in s or 'finisher' in s) else 0.0
     gk_discount = -25.0 if ('rule 16' in s or 'gk' in s) else 0.0
     rule14_uplift = True if 'rule 14' in s else False   # applied later on p for longshots
+    caf_shrink = -60.0 if 'rule 19' in s else 0.0   # CAF shrinkage on team A per processing_notes "CAF -60 Elo sim" for GHA etc.
     return {
         'opener_draw_boost': opener_boost,
         'minnow_resilience_mult': minnow_mult,
         'rotation_penalty': rot_penalty,
         'finisher_bonus': finisher_bonus,
         'gk_discount': gk_discount,
-        'rule14_uplift': rule14_uplift
+        'rule14_uplift': rule14_uplift,
+        'caf_shrink': caf_shrink
     }
 
 def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]:
@@ -209,19 +211,25 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
         rows = list(csv.DictReader(f))
     print(f"[LOAD] {len(rows)} matches. All provenance columns present per TXT.")
     
-    prior_odds = {  # exact from validated MD4 report inventory (Screenshots folder) + current 17-21 CSV matches
+    prior_odds = {  # exact from validated MD4 report inventory (Screenshots folder) + current 17-21 CSV matches (updated for provenance Elo + executed p/EV)
         'Spain vs Cape Verde 2026-06-15': {'win': 1.19},
         'Belgium vs Egypt 2026-06-15': {'win': 1.67},
         'France vs Senegal 2026-06-16': {'win': 1.52, 'combo_o35': 5.15},
         'Iraq vs Norway 2026-06-16': {'dc': 5.20},
         'Argentina vs Algeria 2026-06-16': {'win': 1.41},
         'Austria vs Jordan 2026-06-16': {'draw': 5.05},
-        # 17-21 current CSV matches (from Screenshots/ IMG_74xx and later; recommendations only for upcoming)
-        'USA vs Australia 2026-06-19': {'win': 1.60},
-        'Brazil vs Haiti 2026-06-19': {'win': 1.12},
-        'Canada vs Qatar 2026-06-18': {'handicap_minus1': 1.87},   # primary rec from report
-        'Netherlands vs Sweden 2026-06-20': {'combo': 3.05},       # NED + Over 2.5 boost
-        'Tunisia vs Japan 2026-06-20': {'win': 1.52}               # JPN side
+        # 17-21 current (provenance Elo from CSV, screenshot odds; recommendations validated vs replicable pipeline executions)
+        # NOTE: handicap_minus1 uses p_margin2 (win by 2+ for -1 Asian/3-way handicap)
+        # combo uses DC-adjusted joint p_not_loss * p_over * 0.92 (Rule 17)
+        # over35 uses p_over35 (Poisson)
+        # handicap_plus1 uses custom 1 - P(lose by 2+) computed via Poisson grid for +1 handicap
+        'England vs Bolivia 2026-06-17': {'handicap_minus1': 3.05},
+        'Canada vs Jamaica 2026-06-17': {'handicap_minus1': 1.87},
+        'Germany vs Iran 2026-06-18': {'handicap_minus1': 2.53},
+        'Switzerland vs Serbia 2026-06-19': {'combo': 3.20},
+        'Turkey vs Paraguay 2026-06-20': {'over35': 3.65},
+        'Ghana vs Panama 2026-06-21': {'dc': 1.33},  # note: replicated p_dc ~68% (after caf shrink) or use o35; report used older p~40% for over; EV neg either way -> PASS
+        'New Zealand vs Egypt 2026-06-21': {'handicap_plus1': 2.38}
     }
     
     results = []
@@ -235,8 +243,8 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
         
         ft = apply_finetunes(row)
         
-        # Apply finisher/GK as additional Elo overlay (as documented in processing_notes)
-        Ea_adj = Ea + ft['finisher_bonus'] + ft['gk_discount']
+        # Apply finisher/GK/CAF as additional Elo overlay (as documented in processing_notes)
+        Ea_adj = Ea + ft['finisher_bonus'] + ft['gk_discount'] + ft['caf_shrink']
         Eb_adj = Eb
         
         p_tw = two_way_win_prob(Ea_adj, Eb_adj, Ha=Ha, Fa=Fa + ft['rotation_penalty'])
@@ -256,6 +264,19 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
         p_margin2 = compute_margin_prob(la, lb, margin=2)  # for -1 handicaps
         p_over35 = 1.0 - sum(poisson.pmf(k, la + lb) for k in range(4))  # O3.5+
         
+        # Compute P(not lose by 2+) for +1 handicap (NZ style): 1 - P(B wins by 2 or more)
+        # This is the correct modeling for Asian/3-way +1 handicap: you win if your team loses by 1, wins, or draws.
+        def compute_plus1_prob(la: float, lb: float) -> float:
+            p = 0.0
+            maxg = 10
+            for i in range(0, maxg + 1):  # goals for A (NZ)
+                for j in range(0, maxg + 1):  # goals for B (EGY)
+                    if j < i + 2:  # not (B wins by 2+)
+                        p += poisson.pmf(i, la) * poisson.pmf(j, lb)
+            return min(1.0, p)
+        
+        p_plus1 = compute_plus1_prob(la, lb)
+        
         ev = None
         model_p_for_sel = None
         sel_key = None
@@ -266,12 +287,20 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
                 o = pod['handicap_minus1']
                 model_p_for_sel = p_margin2
                 sel_key = 'handicap_minus1'
+            elif 'handicap_plus1' in pod:
+                o = pod['handicap_plus1']
+                model_p_for_sel = p_plus1
+                sel_key = 'handicap_plus1'
             elif 'combo' in pod:
                 o = pod['combo']
-                # NED + Over style: use p_win * p_over with mild DC adjustment for correlation
+                # Use p_not_loss * p_over with mild correlation correction per Rule 17 / Dixon-Coles spirit
                 p_not_loss = pA + d
                 model_p_for_sel = min(0.98, p_not_loss * ou['p_over_25'] * 0.92)
                 sel_key = 'combo'
+            elif 'over35' in pod:
+                o = pod['over35']
+                model_p_for_sel = p_over35
+                sel_key = 'over35'
             elif 'win' in pod:
                 o = pod['win']
                 model_p_for_sel = pA
@@ -303,6 +332,7 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
             'source_elo_a': row.get('source_elo_a', ''),
             'p_margin2': float(round(p_margin2, 3)),
             'p_over35': float(round(p_over35, 3)),
+            'p_plus1': float(round(p_plus1, 3)),
             'sel_key': sel_key,
             'model_p_for_sel': round(model_p_for_sel * 100, 1) if model_p_for_sel else None
         }
