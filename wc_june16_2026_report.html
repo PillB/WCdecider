@@ -9,7 +9,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
         :root { --primary: #0f172a; }
-        body { font-family: 'Inter', system_ui, sans-serif; }
+        body { font-family: 'Inter', system_ui, sans-serif; overflow-x: hidden; }
         .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; font-weight: 600; }
         .section-header { font-size: 1.1rem; letter-spacing: -.025em; }
         .prob-bar { height: 10px; background: linear-gradient(90deg, #0ea5e9, #22c7b1); border-radius: 9999px; transition: width 1s cubic-bezier(0.34,1.56,0.64,1); }
@@ -24,11 +24,12 @@
         .viz-container { box-shadow: 0 1px 3px rgba(15,23,42,.1); }
         .nav-active { border-bottom: 3px solid #0ea5e9; font-weight: 600; }
         .eli5-jargon { background: #f1f5f9; padding: 1px 6px; border-radius: 4px; font-family: ui-monospace, monospace; font-size: 0.85em; }
-        .data-table { font-size: 0.875rem; }
+        .data-table { font-size: 0.875rem; table-layout: fixed; word-wrap: break-word; } .data-table td, .data-table th { max-width: 100%; overflow-wrap: break-word; }
         .data-table th { background: #f8fafc; font-weight: 600; }
         .tail-container { max-width: 1280px; margin: 0 auto; }
         .model-badge { font-size: 10px; padding: 1px 7px; border-radius: 9999px; background: #0f172a; color: white; }
         .abbr { position: relative; display: inline-block; cursor: help; border-bottom: 1px dotted #64748b; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
+.abbr .tooltip { max-width: min(280px, 85vw); left: 0; transform: none; }
         .abbr .tooltip {
             visibility: hidden;
             opacity: 0;
@@ -704,7 +705,7 @@
         <div class="mt-8 text-xs text-slate-400 border-t border-slate-800 pt-4">
             <div class="font-semibold text-slate-300 mb-1"><span class="en">Sources (all with context/timestamps ~2026-06-17; ≥2 where critical)</span><span class="es">Fuentes (todas con contexto/marca de tiempo ~2026-06-17; ≥2 donde crítico)</span></div>
             <div class="columns-2 md:columns-3 text-[10px] leading-snug">
-                <span class="en">Elo: eloratings.net (2026-06-15 snapshots), international-football.net/elo-ratings-table.<br>
+                <span class="en">Elo: eloratings.net (2026-06-17 snapshots), international-football.net/elo-ratings-table.<br>
                 Lineups/injuries: ESPN, Sports Mole, RotoWire, Yahoo, Fotmob, WhoScored, L'Équipe, VG/fotball.no, Covers (~Jun 14-15).<br>
                 Results (backtest): Al Jazeera, ESPN, USA Today, FOX, Flashscore, Wikipedia, Athletic (live 0-0 Spain-CV, 1-1 BEL-EGY).<br>
                 Weather/venue: NWS, venue sites, Climate Central.<br>
@@ -712,7 +713,7 @@
                 Academic: Dixon-Coles 1997, Karlis-Ntzoufras 2003, Snowberg-Wolfers 2010 JPE, arXiv BTD papers, xG hybrid literature.<br>
                 Screenshots (odds): Workspace /Screenshots/ (IMG_7345–7392 series, Betano/Betsson, transcribed verbatim in MD4).<br>
                 Prior reports/model: MD3_FINAL_REPORT.md, MD4_FINAL_REPORT.md, wc_model_v4_1_ensemble.py + wc_model_v4_replicable_pipeline.py (executed runs).</span>
-                <span class="es">Elo: eloratings.net (instantáneas 2026-06-15), international-football.net/elo-ratings-table.<br>
+                <span class="es">Elo: eloratings.net (instantáneas 2026-06-17), international-football.net/elo-ratings-table.<br>
                 Alineaciones/lesiones: ESPN, Sports Mole, RotoWire, Yahoo, Fotmob, WhoScored, L'Équipe, VG/fotball.no, Covers (~14-15 Jun).<br>
                 Resultados (backtest): Al Jazeera, ESPN, USA Today, FOX, Flashscore, Wikipedia, Athletic (en vivo 0-0 España-CV, 1-1 BEL-EGY).<br>
                 Clima/estadio: NWS, sitios de estadios, Climate Central.<br>
