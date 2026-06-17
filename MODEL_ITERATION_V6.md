@@ -168,6 +168,70 @@ Layer 7: EWMA — none until v5 chronological (D5 deferred)
 
 ---
 
+## Core Model Update Process for Future Screenshot Dates (17+ or New Batches) — Standardized Workflow (added 2026-06-17)
+
+**Goal:** Given new Betsson/Betano screenshots for additional dates, the *same core model* (not ad-hoc subagents) must be retrained/updated with the new data in dataset A, backtested where possible, and used to generate all recommendations/EV/sections. 15-16 dates serve as the backtest/calibration anchor in the unified CSV.
+
+### Step-by-Step Update Process (for any future dates)
+1. **Screenshot Intake (AGENT.md §1):** User provides new IMG_*.PNG. Transcribe verbatim into `wc_screenshots_inventory.csv` (fixture, date, app, market, selection, odds, notes, source_image). Run subagent or manual research only for data population (Elo snapshots from eloratings/international-football, injuries/lineups from ≥2 sources, weather/venue).
+
+2. **Populate Dataset A (wc_2026_model_dataset.csv):** 
+   - Append new rows for each match using columns: match, team_a, elo_a (with source), team_b, elo_b (source), home_adv (per rules/host), form/injury/weather adjustments + sources, mu_total, actual_result (if known; else "upcoming"), processing_notes (detailed: "screenshot odds for EV; provenance Elo; finetunes applied"), finetune_applied (e.g. "Rule 21 host; Rule 14; Rule 17 DC for combos").
+   - For known 15-16 results: keep actual_result + use for backtest (Brier, shock calibration on current params).
+   - Include finisher bonuses (Rule 15), CAF/AFC shrink (Rule 19/11), host adj (Rule 21), rotation etc. in processing_notes + apply in pipeline.
+
+3. **Update Replicable Pipeline:** Ensure `prior_odds` dict in `wc_replicable_pipeline.py` (or load from CSV notes) includes new selections/odds. Add any new compute_ helpers if new markets (e.g. +1 handicap).
+
+4. **Retrain / Execute Core Model:**
+   - Run `python3 wc_replicable_pipeline.py` (full load of CSV = dataset A).
+   - It applies finetunes, runs Elo+Poisson+DC+Rules on *all* rows (backtest 15-16 raw vs actual where available; predict  new dates).
+   - Extract raw p/EV + documented targets from notes.
+   - (Optional expert step) Run `python3 wc_backtest_framework.py` or `wc_bayesian_model_search.py` on expanded set including new 15-16+ as additional backtest stratum to re-validate params (Brier, traps=0 per Rule 27). Update v4.1 weights if justified + Pinnacle blend.
+   - For production recs on new dates: use the executed model_p_for_sel vs screenshot o for EV, sensitivities (aggr/base/cons via finetune params), classification (ROBUST/MOD/SPEC/PASS/HALT per Rules 13/14/24).
+
+5. **Generate Recommendations & HTML:**
+   - Use pipeline outputs (not subagent guesses) for table EVs, P%, classes.
+   - For each new match, add/expand a full `bg-slate-900 ... rounded-3xl` card under "Detailed Analysis & ELI5" with:
+     - Data (Elo + sources + screenshot)
+     - Executed Model (exact pipeline numbers, lambdas, DC joints, Rule refs)
+     - Top Rec + EV + stake suggestion (¼ Kelly per §5)
+     - Full bilingual ELI5 + tooltips + app steps
+     - Self-critique + confidence
+   - Update exec summary, table, status banner, diagram labels ("LAYER 4: ... 15-21 unified core model"), production text.
+   - Update title/header to "Core model v4.1 on full 15–XX dataset".
+
+6. **Test, Validate, Build, Deploy:**
+   - `python3 -m pytest tests/ -q` (pipeline, translation, playwright compliance, backtest).
+   - Fix bilingual, numbers, sections.
+   - `python3 scripts/build_site.py`
+   - `git add ... ; git commit -m "core model update: 15-XX backtest+pred via dataset A + pipeline"; git push`
+   - `bash scripts/deploy_github.sh` or `gh run watch` + `python3 scripts/wait_and_validate_deploy.py` (DEPLOY_URL set).
+   - Update this MD + AGENT.md + VALIDATION_SUMMARY.md + wc_2026_dataset_provenance.txt with new run details, Brier deltas, any param tweaks.
+
+7. **Rules for Future (enforce in AGENT.md + here):**
+   - Always use core pipeline for final P/EV/recs once data row in CSV. Subagents only for research/data gathering.
+   - Backtest new "15-16 style" historicals (when results available) by setting actual_result and re-running full pipeline + Brier eval.
+   - Expand backtest historical (wc_backtest_historical_loader.py) if N grows; re-calibrate only if Brier improves on weighted strata (Rule 25/26).
+   - For boosts/combos: always DC joint (Rule 17).
+   - HALT + drill (Rule 13) on raw EV >+25% using current ensemble.
+   - Document every change in processing_notes + this file. No fabricated odds. Screenshot timestamps + sources ≥2.
+   - After update: re-verify 0 MOD traps (Rule 27), run full tests + playwright on root + site/.
+
+This process ensures the core model (Elo+Poisson+DC+Rules+ensemble in pipeline) is the single source of truth for *all* dates once data is in dataset A. 15-16 provide ongoing backtest anchor for any new params.
+
+**Example for next batch (e.g. June 22+):** Append rows → run pipeline → add full cards from executed numbers → update MD with deltas → push/deploy.
+
+See also: AGENT.md §3.3 (model execution gate), MODEL_PIPELINE_V4.md, wc_backtest_framework.py.
+
+---
+
+## Post-Update Notes (2026-06-17)
+- Dataset A now unified (16+ rows covering 15-21).
+- Pipeline run confirms 17-21 recs (e.g. NED combo 33.4% +1.8 SPEC) generated by core (not separate subagent math).
+- 15-16 actuals used in verification (documented vs raw).
+- HTML header/status updated to reflect core model on full set.
+- Rules above added for repeatability on future screenshots.
+
 ## Iteration 7 Preamble (Next)
 
 **Tasks:**

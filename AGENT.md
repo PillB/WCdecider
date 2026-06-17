@@ -557,3 +557,22 @@ Any change to MOD-tier ensemble weights or pre-stack ratio requires:
 - EV/staking: Rule 24 tier-conditional ensemble on **screenshot** odds only
 - Stake: conservative Kelly hook (Degree 6, ±3pp draw bands)
 
+---
+
+## Core Model Retraining & Update Rule for New Dates / Screenshots (2026-06-17 addition)
+
+**Core principle (as ML/AI expert):** The *same replicable core model* (Elo+Poisson+DC in `wc_replicable_pipeline.py` + v4.1 ensemble) is used for backtesting (15-16 actual results in dataset A = wc_2026_model_dataset.csv) *and* for generating all 17-21 (and future) predictions/EV/recommendations. Subagents/research only populate data rows (Elo, adjustments, screenshot odds); final numbers always from pipeline execution on the unified CSV.
+
+### Mandatory Update Process (repeatable for any future screenshot batch)
+1. **Intake + Research:** Add to `wc_screenshots_inventory.csv`. Research per AGENT §3 (Elo sources dated, ≥2 previews for injuries/lineups/form, weather). 
+2. **Dataset A Extension:** Append rows to `wc_2026_model_dataset.csv` with full provenance columns + processing_notes describing Elo, finetunes (Rule 14/15/17/19/21/24 etc.), screenshot odds. For historicals (when results known): set `actual_result` and use for Brier/shock backtest of current params.
+3. **Core Execution:** `python3 wc_replicable_pipeline.py` (runs on *all* rows uniformly). Use outputs for table EVs, P%, classes, card details. (15-16: compare raw vs actual for calibration; 17-XX: use for recs.)
+4. **Backtest Inclusion:** When adding new "15-16 style" matches with results, include in expanded backtest (update `wc_backtest_historical_dataset.csv` or current slate eval). Re-check Brier/traps=0 (Rule 25/27). Only tweak params (e.g. opener_boost) if improves on WC strata.
+5. **Report + Validation:** Add full bilingual bg-slate-900 cards (Data+Executed Model+ELI5) for new matches. Update header/status ("Core model v4.1 on full 15–XX"), exec summary, table. Run full `pytest tests/` (pipeline, translation, playwright compliance). `python3 scripts/build_site.py`.
+6. **Docs Update:** Append to this AGENT.md + MODEL_ITERATION_V*.md (new deltas, Rule applications) + provenance TXT. Document "Core model retrained with new data in dataset A; used for predictions".
+7. **Deploy:** Commit/push → `bash scripts/deploy_github.sh` (or gh workflow) → validate live.
+
+**For any future dates:** Same process. Core model always the single source after CSV row added. This ensures consistent, replicable, backtest-anchored predictions (no "15-16 only core, later subagents").
+
+See MODEL_ITERATION_V6.md for detailed process + example. Production always uses latest executed pipeline numbers vs screenshot odds.
+

@@ -56,14 +56,17 @@ def browser_page(deploy_url: str):
         browser = p.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1400, "height": 900})
         page.goto(deploy_url, wait_until="networkidle", timeout=120_000)
-        page.wait_for_timeout(500)
+        page.wait_for_selector("#btn-en", timeout=10000)
+        page.wait_for_timeout(300)
         yield page, deploy_url
         browser.close()
 
 
 def _switch(page, lang: str) -> str:
-    page.click("#btn-en" if lang == "en" else "#btn-es")
-    page.wait_for_timeout(300)
+    btn = page.locator(f"#btn-{'en' if lang == 'en' else 'es'}")
+    btn.wait_for(state="visible", timeout=10000)
+    btn.click()
+    page.wait_for_timeout(500)
     return page.evaluate("() => document.body.innerText")
 
 
@@ -127,7 +130,8 @@ class TestDeployedGitHubPages:
 
     def test_alternate_report_path(self, browser_page, deploy_url: str):
         page, base = browser_page
-        alt = urljoin(base, "wc_june16_2026_report.html")
+        # Current deployed canonical report (built by scripts/build_site.py)
+        alt = urljoin(base, "wc_june17_21_full_report.html")
         resp = page.goto(alt, wait_until="networkidle", timeout=120_000)
         assert resp and resp.ok
         assert "v4.1 prod" in page.content()
