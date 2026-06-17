@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 # One-shot: create repo (if needed), push main, wait for Pages, Playwright validate.
+# 
+# Per AGENT.md Automated Update Protocol: This is the deploy + live validation step.
+# Run after build and full local tests (including playwright compliance for correct layout of *all* matches).
+# Must succeed with 0 failures in test_deployed_site.py (all matches implemented, bilingual, no 404s, toggle works).
+# See AGENT.md for the complete automatic process: new screenshots → research/CSV → core model retrain/pipeline rerun → website sections increment + recs update → tests → this script → live validate.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 

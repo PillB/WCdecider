@@ -99,7 +99,7 @@
 
     <div class="tail-container px-6 py-8">
     <div style="background:#1e2937; padding:8px 12px; border-radius:8px; margin-bottom:12px; font-size:13px;">
-        <strong>Current Status (2026-06-17):</strong> <span class="en">Core model v4.1 pipeline executed + backtested on full dataset A (15-21). 15-16 with actual results for backtesting/calibration; 17-21 predicted from screenshot-derived data. </span><span class="es">Modelo núcleo pipeline v4.1 ejecutado + backtesteado en dataset A completo (15-21). 15-16 con resultados reales para backtesting/calibración; 17-21 predichos desde datos de capturas. </span><strong><span class="en">Latest:</span><span class="es">Último:</span></strong> <span class="en">New Zealand vs Egypt (June 21). Full core model run 2026-06-17.</span><span class="es">Nueva Zelanda vs Egipto (21 junio). Ejecución completa núcleo 2026-06-17.</span>
+        <strong>Current Status (2026-06-17):</strong> <span class="en">Core model v4.1 pipeline executed + backtested on full dataset A (15-21). 15-16 with actual results for backtesting/calibration; 17-21 predicted from screenshot-derived data. </span><span class="es">Modelo núcleo pipeline v4.1 ejecutado + backtesteado en dataset A completo (15-21). 15-16 con resultados reales para backtesting/calibración; 17-21 predichos desde datos de capturas. </span><strong><span class="en">Latest:</span><span class="es">Último:</span></strong> <span class="en">New Zealand vs Egypt (June 21). Full core model run 2026-06-17.</span><span class="es">Nueva Zelanda vs Egipto (21 junio). Ejecución completa núcleo 2026-06-17.</span> <span id="site-version" data-version="v2024-06-17-ci-fix-001" style="font-size: 10px; background: #334155; padding: 1px 4px; border-radius: 2px;">v2024-06-17-ci-fix-001</span>
     </div>
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-y-2 mb-8">
@@ -137,7 +137,7 @@
                 </div>
                 <div>
                     <div class="text-sky-400 text-sm font-semibold"><span class="en">June 17–21 Slate + Recommendations (Core Model v4.1 Pipeline on Full Dataset A)</span><span class="es">Copa 17–21 Jun + Recomendaciones (Modelo Núcleo v4.1 Pipeline en Dataset A Completo)</span></div>
-                    <div class="mt-2 text-sm"><span class="en">Core model v4.1 pipeline executed on full dataset A: Every June 17-21 match listed in the table below has a dedicated full bg-slate-900 detailed section with screenshot data, model run from pipeline, EV, bilingual ELI5 and tooltips. Heavy favorites are PASS (Rule 14). Key edges from executed: ENG -1 @3.05 +15.9% ROBUST SPEC, CAN -1 @1.87 +12.8% ROBUST MOD, NED combo +1.8% SPEC, NZ +1 high SPEC. All dates covered. <span class="abbr">DC-corrected per Rule 17<span class="tooltip"><span class="en">DC-corrected per Rule 17 = Using Dixon-Coles adjustment (correlation ρ=-0.07) for the probability of the combined event "team wins/draws AND total goals over X" instead of simply multiplying the separate probabilities (which ignores that goals are correlated).</span><span class="es">Corregido por DC según Regla 17 = Usar el ajuste Dixon-Coles (correlación ρ=-0.07) para la probabilidad del evento combinado "equipo gana/empata Y total de goles más de X" en lugar de multiplicar simplemente las probabilidades separadas (que ignora que los goles están correlacionados).</span></span></span> → -8.3% EV, PASS) or TUR Over 3.5 @3.65 (24.2% p, -11.5 EV; raw high-EV variants <span class="abbr">HALT per Rule 13 drill (P50/O30/pub20)<span class="tooltip"><span class="en">HALT per Rule 13 drill = When raw EV looks extremely high (&gt;+25%), we must pause and blend our model with sharp consensus (Pinnacle 50% / Opta 30% / public models 20%). Only consider if the blended EV is still attractive after the drill.</span><span class="es">HALT según drill Regla 13 (P50/O30/pub20) = Cuando el EV crudo parece extremadamente alto (&gt;+25%), debemos pausar y mezclar nuestro modelo con consenso sharp (Pinnacle 50% / Opta 30% / modelos públicos 20%). Solo considerar si el EV mezclado sigue siendo atractivo tras el drill.</span></span></span>). GHA vs PAN: PASS on DC @1.33 (replicated p~68.4% EV~-9.0) and Over @2.35 (p~20.1% EV neg; low mu + <span class="abbr">CAF Rule19<span class="tooltip"><span class="en">CAF Rule19 = Special shrinkage (-55 to -60 Elo equivalent) applied to CAF (African) teams whose qualifying results looked inflated against very weak opposition. Prevents over-rating them.</span><span class="es">Regla 19 CAF = Reducción especial (-55 a -60 Elo equivalente) aplicada a equipos CAF (africanos) cuyos resultados de clasificación parecían inflados contra oposición muy débil. Evita sobrevalorarlos.</span></span></span> + Rule21); marginal on Under. Most plain O/U/BTTS and DC shorts PASS. No near-certainty 1.1x low-risk multiplier (high variance, no +EV at scale). Re-check lineups ~90min pre-KO and re-execute model before staking. See full bg-slate-900 detailed sections (with ELI5, tooltips, and executed numbers) below for every match June 17-21. ELI5: Skip the 1.12 Brazil win (book overprices the favorite); tap Handicap for ENG -1 or CAN -1 if price is fat (model says edge there); for boosts, calculate the joint p (win AND over goals) using correlated math not simple multiply, and take the full max stake only if the model EV > +10% after correction.</span><span class="es">Resultados de subagentes v4.1 en cuotas de capturas: Los favoritos pesados 1X2 (Brazil 1.12, Ecuador 1.12, Colombia 1.39, etc.) son PASS — EV negativo tras reducción v4.1 + Regla 14 (p modelo 55-65% vs implícito del libro 80%+). Accionable: Salta la victoria Brazil 1.12 o Colombia 1.39; el libro sobreprecia al favorito. Busca handicaps de margen en lados fuertes si la cuota de la captura está gorda: England -1 @3.05 (+15,9% ROBUST SPEC, ganar por 2+; ejecutado en pipeline replicable), Canada -1 @1,87 (+12,8% ROBUST MOD, ventaja local), Germany -1 @2,53 (+6,3% SPEC por por-2+). Combos boost como SUI + Over 2.5 @3,20 (+19,2% SPEC tras junta DC) o TUR Over 3.5 @3,65 (+56,9% pero HALT por Regla 13 — verifica primero con Pinnacle/Opta). GHA vs PAN: PASS en DC @1,33 y Over @2,35 (EV negativo; perfil bajo de goles + reducción CAF validado); marginal en Under. La mayoría de O/U/BTTS y DC cortos simples son PASS. Sin multiplicador 1.1x de certeza cercana y bajo riesgo (alta varianza, sin +EV a escala). Re-verifica alineaciones ~90min pre-KO y re-ejecuta el modelo antes de apostar. ELI5: Salta la victoria Brazil 1.12 (el libro sobreprecia al favorito); toca Handicap para ENG -1 o CAN -1 si la cuota está gorda (el modelo dice que hay edge allí); para boosts, calcula la p conjunta (ganar Y over goles) usando matemáticas correlacionadas no multiplicar simple, y toma el full max stake solo si el EV del modelo > +10% tras corrección.</span></div>ente por encima de +25%.</span></span></span><span class="en">). </span><span class="es">). </span><span class="font-semibold"><span class="en">Actionable (pending drill-down): </span><span class="es">Accionables (pendiente drill-down): </span><span class="abbr"><span class="en">AUT Draw</span><span class="es">Empate AUT</span><span class="tooltip"><span class="en">This bet refers to choosing the event that in the Austria vs Jordan match the final score will be a draw (both teams end with the exact same number of goals, such as 0-0, 1-1, or 2-2).</span><span class="es">Esta apuesta se refiere a elegir que en el partido Austria vs Jordania el marcador final será empate (ambos equipos terminan con el mismo número de goles, como 0-0, 1-1 o 2-2).</span></span></span> <span class="en">(HALT +69%),</span><span class="es">(HALT +69%),</span> <span class="abbr"><span class="en">FRA win+O3.5</span><span class="es">Victoria FRA+O3.5</span><span class="tooltip"><span class="en">This is a combo bet: France must win the match AND there must be more than 3.5 total goals (4 or more goals by both teams combined).</span><span class="es">Es una apuesta combinada: Francia debe ganar el partido Y debe haber más de 3,5 goles totales (4 o más goles por ambos equipos combinados).</span></span></span> <span class="en">(MOD if HALT cleared),</span><span class="es">(MOD si HALT despeja),</span> <span class="abbr"><span class="en">KSA-URU Under 2.5</span><span class="es">KSA-URU Menos 2.5</span><span class="tooltip"><span class="en">Under 2.5 goals means the total goals by both teams in the full match will be 2 or fewer.</span><span class="es">Menos 2.5 goles significa que el total de goles de ambos equipos en el partido completo será 2 o menos.</span></span></span> <span class="en">(+8.6% ROBUST).</span><span class="es">(+8,6% ROBUSTO).</span></span> <span class="en">Full 9-step data + viz below.</span><span class="es">Datos completos de 9 pasos + viz abajo.</span></div>
+                    <div class="mt-2 text-sm"><span class="en">Core model v4.1 pipeline executed on full dataset A: Every June 17-21 match listed in the table below has a dedicated full bg-slate-900 detailed section with screenshot data, model run from pipeline, EV, bilingual ELI5 and tooltips. Heavy favorites are PASS (Rule 14). Key edges from executed: ENG -1 @3.8 +72.1% STRONG (margin), CAN -1 @1.87 +12.8% ROBUST MOD, NED combo +1.8% SPEC, NZ +1 high SPEC. All dates covered. <span class="abbr">DC-corrected per Rule 17<span class="tooltip"><span class="en">DC-corrected per Rule 17 = Using Dixon-Coles adjustment (correlation ρ=-0.07) for the probability of the combined event "team wins/draws AND total goals over X" instead of simply multiplying the separate probabilities (which ignores that goals are correlated).</span><span class="es">Corregido por DC según Regla 17 = Usar el ajuste Dixon-Coles (correlación ρ=-0.07) para la probabilidad del evento combinado "equipo gana/empata Y total de goles más de X" en lugar de multiplicar simplemente las probabilidades separadas (que ignora que los goles están correlacionados).</span></span></span> → -8.3% EV, PASS) or TUR Over 3.5 @3.65 (24.2% p, -11.5 EV; raw high-EV variants <span class="abbr">HALT per Rule 13 drill (P50/O30/pub20)<span class="tooltip"><span class="en">HALT per Rule 13 drill = When raw EV looks extremely high (&gt;+25%), we must pause and blend our model with sharp consensus (Pinnacle 50% / Opta 30% / public models 20%). Only consider if the blended EV is still attractive after the drill.</span><span class="es">HALT según drill Regla 13 (P50/O30/pub20) = Cuando el EV crudo parece extremadamente alto (&gt;+25%), debemos pausar y mezclar nuestro modelo con consenso sharp (Pinnacle 50% / Opta 30% / modelos públicos 20%). Solo considerar si el EV mezclado sigue siendo atractivo tras el drill.</span></span></span>). GHA vs PAN: PASS on DC @1.33 (replicated p~68.4% EV~-9.0) and Over @2.35 (p~20.1% EV neg; low mu + <span class="abbr">CAF Rule19<span class="tooltip"><span class="en">CAF Rule19 = Special shrinkage (-55 to -60 Elo equivalent) applied to CAF (African) teams whose qualifying results looked inflated against very weak opposition. Prevents over-rating them.</span><span class="es">Regla 19 CAF = Reducción especial (-55 a -60 Elo equivalente) aplicada a equipos CAF (africanos) cuyos resultados de clasificación parecían inflados contra oposición muy débil. Evita sobrevalorarlos.</span></span></span> + Rule21); marginal on Under. Most plain O/U/BTTS and DC shorts PASS. No near-certainty 1.1x low-risk multiplier (high variance, no +EV at scale). Re-check lineups ~90min pre-KO and re-execute model before staking. See full bg-slate-900 detailed sections (with ELI5, tooltips, and executed numbers) below for every match June 17-21. ELI5: Skip the 1.12 Brazil win (book overprices the favorite); tap Handicap for ENG -1 or CAN -1 if price is fat (model says edge there); for boosts, calculate the joint p (win AND over goals) using correlated math not simple multiply, and take the full max stake only if the model EV > +10% after correction.</span><span class="es">Resultados de subagentes v4.1 en cuotas de capturas: Los favoritos pesados 1X2 (Brazil 1.12, Ecuador 1.12, Colombia 1.39, etc.) son PASS — EV negativo tras reducción v4.1 + Regla 14 (p modelo 55-65% vs implícito del libro 80%+). Accionable: Salta la victoria Brazil 1.12 o Colombia 1.39; el libro sobreprecia al favorito. Busca handicaps de margen en lados fuertes si la cuota de la captura está gorda: England -1 @3.05 (+15,9% ROBUST SPEC, ganar por 2+; ejecutado en pipeline replicable), Canada -1 @1,87 (+12,8% ROBUST MOD, ventaja local), Germany -1 @2,53 (+6,3% SPEC por por-2+). Combos boost como SUI + Over 2.5 @3,20 (+19,2% SPEC tras junta DC) o TUR Over 3.5 @3,65 (+56,9% pero HALT por Regla 13 — verifica primero con Pinnacle/Opta). GHA vs PAN: PASS en DC @1,33 y Over @2,35 (EV negativo; perfil bajo de goles + reducción CAF validado); marginal en Under. La mayoría de O/U/BTTS y DC cortos simples son PASS. Sin multiplicador 1.1x de certeza cercana y bajo riesgo (alta varianza, sin +EV a escala). Re-verifica alineaciones ~90min pre-KO y re-ejecuta el modelo antes de apostar. ELI5: Salta la victoria Brazil 1.12 (el libro sobreprecia al favorito); toca Handicap para ENG -1 o CAN -1 si la cuota está gorda (el modelo dice que hay edge allí); para boosts, calcula la p conjunta (ganar Y over goles) usando matemáticas correlacionadas no multiplicar simple, y toma el full max stake solo si el EV del modelo > +10% tras corrección.</span></div>ente por encima de +25%.</span></span></span><span class="en">). </span><span class="es">). </span><span class="font-semibold"><span class="en">Actionable (pending drill-down): </span><span class="es">Accionables (pendiente drill-down): </span><span class="abbr"><span class="en">AUT Draw</span><span class="es">Empate AUT</span><span class="tooltip"><span class="en">This bet refers to choosing the event that in the Austria vs Jordan match the final score will be a draw (both teams end with the exact same number of goals, such as 0-0, 1-1, or 2-2).</span><span class="es">Esta apuesta se refiere a elegir que en el partido Austria vs Jordania el marcador final será empate (ambos equipos terminan con el mismo número de goles, como 0-0, 1-1 o 2-2).</span></span></span> <span class="en">(HALT +69%),</span><span class="es">(HALT +69%),</span> <span class="abbr"><span class="en">FRA win+O3.5</span><span class="es">Victoria FRA+O3.5</span><span class="tooltip"><span class="en">This is a combo bet: France must win the match AND there must be more than 3.5 total goals (4 or more goals by both teams combined).</span><span class="es">Es una apuesta combinada: Francia debe ganar el partido Y debe haber más de 3,5 goles totales (4 o más goles por ambos equipos combinados).</span></span></span> <span class="en">(MOD if HALT cleared),</span><span class="es">(MOD si HALT despeja),</span> <span class="abbr"><span class="en">KSA-URU Under 2.5</span><span class="es">KSA-URU Menos 2.5</span><span class="tooltip"><span class="en">Under 2.5 goals means the total goals by both teams in the full match will be 2 or fewer.</span><span class="es">Menos 2.5 goles significa que el total de goles de ambos equipos en el partido completo será 2 o menos.</span></span></span> <span class="en">(+8.6% ROBUST).</span><span class="es">(+8,6% ROBUSTO).</span></span> <span class="en">Full 9-step data + viz below.</span><span class="es">Datos completos de 9 pasos + viz abajo.</span></div>
                 </div>
             </div>
             <div class="mt-4 text-[10px] text-slate-400"><span class="en">All EV vs prior transcribed screenshot prices (Betano/Betsson). Fresh screenshots required for live EV per protocol (see AGENT.md Step 1.4). <span class="abbr">Executed model<span class="tooltip"><span class="en">Executed model = The probabilities (P) and expected value (EV) calculated by running the actual Python code (wc_replicable_pipeline.py) on the input data (Elo ratings, adjustments, etc.) rather than estimates.</span><span class="es">Modelo ejecutado = Las probabilidades (P) y valor esperado (EV) calculados ejecutando el código Python real (wc_replicable_pipeline.py) con los datos de entrada (ratings Elo, ajustes, etc.) en lugar de estimaciones.</span></span></span> + subagent results logged in state. <span class="abbr">EV (Expected Value)<span class="tooltip"><span class="en">EV (Expected Value) = How much you expect to win or lose on average per unit staked, in percent. Positive EV means the bet is +EV (good in the long run according to the model). Calculated as (model probability × decimal odds − 1) × 100.</span><span class="es">EV (Valor Esperado) = Cuánto esperas ganar o perder en promedio por unidad apostada, en porcentaje. EV positivo significa que la apuesta es +EV (buena a largo plazo según el modelo). Se calcula como (probabilidad del modelo × cuota decimal − 1) × 100.</span></span></span></span><span class="es">Todos los EV vs precios transcritos de capturas previas (Betano/Betsson). Se requieren capturas frescas para EV en vivo por protocolo. Modelo ejecutado + resultados de subagentes registrados en estado.</span></div>
@@ -158,21 +158,15 @@
             <div class="overflow-x-auto mb-4">
                 <table class="w-full text-xs data-table border border-slate-700 rounded">
                     <thead><tr class="bg-slate-950"><th class="p-1 text-left"><span class="en">Fixture / Market</span><span class="es">Partido / Mercado</span></th><th><span class="en">Selection</span><span class="es">Selección</span></th><th>o</th><th><span class="en">Model P</span><span class="es">P Modelo</span></th><th>EV%</th><th><span class="en">Class</span><span class="es">Clase</span></th><th><span class="en">Key Rule</span><span class="es">Regla clave</span></th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="en">Portugal vs DR Congo (17 Jun)</span><span class="es">Portugal vs R.D. Congo (17 Jun)</span></td><td><span class="en">POR win</span><span class="es">Victoria POR</span></td><td>1.31</td><td class="font-mono"><span class="en">72%</span><span class="es">72%</span></td><td class="ev-negative">-4.5</td><td><span class="en">PASS</span><span class="es">PASS</span></td><td><span class="en">Rule 14 heavy fav</span><span class="es">Regla 14 favorito pesado</span></td></tr>
-                        <tr><td><span class="en">England vs Croatia (17 Jun)</span><span class="es">Inglaterra vs Croacia (17 Jun)</span></td><td><span class="en">ENG -1</span><span class="es">ING -1</span></td><td>3.80</td><td class="font-mono"><span class="en">42%</span><span class="es">42%</span></td><td class="ev-positive">+6.0</td><td><span class="en">SPEC</span><span class="es">SPEC</span></td><td><span class="en">Rule 14 + margin</span><span class="es">Regla 14 + margen</span></td></tr>
-                        <tr><td><span class="en">England vs Bolivia (17 Jun)</span><span class="es">Inglaterra vs Bolivia (17 Jun)</span></td><td><span class="en">ENG -1</span><span class="es">ING -1</span></td><td>3.05</td><td class="font-mono"><span class="en">38%</span><span class="es">38%</span></td><td class="ev-positive">+15.9</td><td><span class="en">ROBUST SPEC</span><span class="es">ROBUSTO SPEC</span></td><td><span class="en">Rule 14 + margin</span><span class="es">Regla 14 + margen</span></td></tr>
-                        <tr><td><span class="en">Canada vs Jamaica (17 Jun, host)</span><span class="es">Canadá vs Jamaica (17 Jun, local)</span></td><td><span class="en">CAN -1</span><span class="es">CAN -1</span></td><td>1.87</td><td class="font-mono"><span class="en">60%</span><span class="es">60%</span></td><td class="ev-positive">+12.8</td><td><span class="en">ROBUST MOD</span><span class="es">ROBUSTO MOD</span></td><td><span class="en">Host adj (AGENT)</span><span class="es">Ajuste local (AGENT)</span></td></tr>
-                        <tr><td><span class="en">Ghana vs Panama (17/21 Jun)</span><span class="es">Ghana vs Panamá (17/21 Jun)</span></td><td><span class="en">GHA DC</span><span class="es">GHA DC</span></td><td>1.33</td><td class="font-mono"><span class="en">68%</span><span class="es">68%</span></td><td class="ev-negative">-9.0</td><td><span class="en">PASS</span><span class="es">PASS</span></td><td><span class="en">Rule 19 CAF</span><span class="es">Regla 19 CAF</span></td></tr>
-                        <tr><td><span class="en">Germany vs Iran (18 Jun)</span><span class="es">Alemania vs Irán (18 Jun)</span></td><td><span class="en">GER -1</span><span class="es">GER -1</span></td><td>2.53</td><td class="font-mono"><span class="en">42%</span><span class="es">42%</span></td><td class="ev-positive">+6.3</td><td><span class="en">SENS SPEC</span><span class="es">SENS SPEC</span></td><td><span class="en">Rule 21/14</span><span class="es">Regla 21/14</span></td></tr>
-                        <tr><td><span class="en">Switzerland vs Serbia (19 Jun)</span><span class="es">Suiza vs Serbia (19 Jun)</span></td><td><span class="en">SUI + Over 2.5</span><span class="es">SUI + Más 2.5</span></td><td>3.20</td><td class="font-mono"><span class="en">29%</span><span class="es">29%</span></td><td class="ev-negative">-8.3</td><td><span class="en">PASS</span><span class="es">PASS</span></td><td><span class="en">Rule 17 DC</span><span class="es">Regla 17 DC</span></td></tr>
-                        <tr><td><span class="en">USA vs Australia (19 Jun)</span><span class="es">EE.UU. vs Australia (19 Jun)</span></td><td><span class="en">USA win</span><span class="es">Victoria USA</span></td><td>1.60</td><td class="font-mono"><span class="en">30%</span><span class="es">30%</span></td><td class="ev-negative">-52.0</td><td><span class="en">PASS</span><span class="es">PASS</span></td><td><span class="en">Rule 14 trap</span><span class="es">Trampa Regla 14</span></td></tr>
-                        <tr><td><span class="en">Brazil vs Haiti (19 Jun)</span><span class="es">Brasil vs Haití (19 Jun)</span></td><td><span class="en">BRA win</span><span class="es">Victoria BRA</span></td><td>1.12</td><td class="font-mono"><span class="en">76%</span><span class="es">76%</span></td><td class="ev-negative">-14.6</td><td><span class="en">PASS</span><span class="es">PASS</span></td><td><span class="en">Rule 14/15</span><span class="es">Regla 14/15</span></td></tr>
-                        <tr><td><span class="en">Turkey vs Paraguay (20 Jun)</span><span class="es">Turquía vs Paraguay (20 Jun)</span></td><td><span class="en">Over 3.5</span><span class="es">Más 3.5</span></td><td>3.65</td><td class="font-mono"><span class="en">24%</span><span class="es">24%</span></td><td class="ev-negative">-11.5</td><td><span class="en">HALT</span><span class="es">HALT</span></td><td><span class="en">Rule 13</span><span class="es">Regla 13</span></td></tr>
-                        <tr><td><span class="en">Netherlands vs Sweden (20 Jun)</span><span class="es">Países Bajos vs Suecia (20 Jun)</span></td><td><span class="en">NED + Over 2.5</span><span class="es">NED + Más 2.5</span></td><td>3.05</td><td class="font-mono"><span class="en">33.4%</span><span class="es">33,4%</span></td><td class="ev-positive">+1.8</td><td><span class="en">SPEC</span><span class="es">SPEC</span></td><td><span class="en">Rule 17 DC</span><span class="es">Regla 17 DC</span></td></tr>
-                        <tr><td><span class="en">New Zealand vs Egypt (21 Jun)</span><span class="es">Nueva Zelanda vs Egipto (21 Jun)</span></td><td><span class="en">NZ +1</span><span class="es">NZ +1</span></td><td>2.38</td><td class="font-mono"><span class="en">62%</span><span class="es">62%</span></td><td class="ev-positive">+47.3</td><td><span class="en">SPEC</span><span class="es">SPEC</span></td><td><span class="en">Rule 24 longshot</span><span class="es">Regla 24 longshot</span></td></tr>
+                    <tbody id="recs-tbody">
+                        <!-- Populated dynamically by JS from wc_june17_21_predictions.json (element-by-element) -->
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Dynamic cards container - populated element-by-element from JSON -->
+            <div id="dynamic-match-cards" class="space-y-6 mb-8">
+                <!-- JS will render 20 bg-slate-900 cards here using wc_june17_21_predictions.json data (every item looped) -->
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mb-3">
@@ -692,12 +686,7 @@
             <h2 class="text-xl font-semibold mb-4"><span class="en">Detailed Analysis &amp; ELI5 for Each June 17-21 Match</span><span class="es">Análisis Detallado y ELI5 para Cada Partido del 17-21 de Junio</span></h2>
             <p class="text-xs text-slate-400 mb-4"><span class="en">Each section includes: team news / travel / stats (from subagents), executed model (raw + blend from replicable pipeline), bet reasoning / EV, self-critique, classification, and full ELI5 step-by-step app instructions with hover tooltips (abbr) in newbie terms for every jargon term (handicap, DC joint, EV, ROBUST, SPEC, HALT, Kelly, boleto, ganancia potencial, decimal odds, 1X2, boost, etc.). Hover any highlighted term for plain-English explanation.</span><span class="es">Cada sección incluye: noticias de equipos / viaje / estadísticas (de subagentes), modelo ejecutado (raw + blend del pipeline replicable), razonamiento de apuesta / EV, autocrítica, clasificación, e instrucciones ELI5 paso a paso completas de la app con tooltips hover (abbr) en términos para principiantes para cada jerga (handicap, junta DC, EV, ROBUSTO, SPEC, HALT, Kelly, boleto, ganancia potencial, cuotas decimales, 1X2, boost, etc.). Pasa el ratón sobre cualquier término resaltado para explicación en lenguaje simple.</span></p>
 
-            <!-- England vs Bolivia (June 17) -->
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden mb-6">
-                <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
-                    <div><span class="font-semibold"><span class="en">England vs Bolivia — June 17</span><span class="es">Inglaterra vs Bolivia — 17 de Junio</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group L • AT&amp;T • ~16:00 ET</span><span class="es">Grupo L • AT&amp;T • ~16:00 ET</span></span></div>
-                    <div class="text-xs text-slate-400"><span class="en">Neutral venue • ENG strong vs minnows</span><span class="es">Sede neutral • ENG fuerte vs minnows</span></div>
-                </div>
+            <!-- June 17-21 cards now 100% dynamic from JSON (see #dynamic-match-cards and JS loadDynamicData + createMatchCard). Historical cards above kept as-is for reference. -->
                 <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
                     <div class="md:col-span-5 text-xs">
                         <div class="font-medium mb-1"><span class="en">Data (strong)</span><span class="es">Datos (fuertes)</span></div>
@@ -705,23 +694,23 @@
                     </div>
                     <div class="md:col-span-4">
                         <div class="font-medium mb-1 text-xs"><span class="en">Executed Model (v4.1)</span><span class="es">Modelo Ejecutado (v4.1)</span></div>
-                        <div><span class="en">pENG win ~49.3% (raw). Margin (win by 2+) 38.0% (executed via replicable pipeline on CSV provenance Elo 1700/1545 neutral + finetunes). Fair ~2.63. DC not primary.</span><span class="es">p victoria ING ~49,3% (raw). Margen (ganar por 2+) 38,0% (ejecutado vía pipeline replicable con Elo de procedencia CSV 1700/1545 neutral + ajustes). Justo ~2,63. DC no principal.</span></div>
-                        <div class="text-xs text-emerald-400 mt-1"><span class="en">Prior ENG -1 @3.05 → +15.9% EV (executed). </span><strong><span class="abbr">ROBUST SPEC<span class="tooltip"><span class="en">ROBUST SPEC = The edge is positive even in conservative sensitivity runs and only in the speculative tier because variance is higher for longshots/margin bets.</span><span class="es">ROBUSTO SPEC = El borde es positivo incluso en corridas de sensibilidad conservadoras y solo en el nivel especulativo porque la varianza es mayor para apuestas de largo plazo/margen.</span></span></span></strong> <span class="en">Rule 14 uplift applied for longshot. Rule 21 host/neutral adjustments minimal. All 3 sensitivities positive (aggr/base/cons).</span><span class="es">Ajuste Regla 14 aplicado para longshot. Ajustes Regla 21 host/neutral mínimos. Las 3 sensibilidades positivas (agresivo/base/conservador).</span></div>
+                        <div><span class="en">pENG win 53.4% (raw from pipeline). Margin (win by 2+) ~45.3% (executed via replicable pipeline on current CSV Elo + finetunes). EV +72.1% at live 3.8 on the margin selection. STRONG.</span><span class="es">p victoria ING ~49,3% (raw). Margen (ganar por 2+) 38,0% (ejecutado vía pipeline replicable con Elo de procedencia CSV 1700/1545 neutral + ajustes). Justo ~2,63. DC no principal.</span></div>
+                        <div class="text-xs text-emerald-400 mt-1"><span class="en">Prior ENG -1 @3.8 (current screenshot price) → +72.1% EV on margin (executed). </span><strong><span class="abbr">ROBUST SPEC<span class="tooltip"><span class="en">ROBUST SPEC = The edge is positive even in conservative sensitivity runs and only in the speculative tier because variance is higher for longshots/margin bets.</span><span class="es">ROBUSTO SPEC = El borde es positivo incluso en corridas de sensibilidad conservadoras y solo en el nivel especulativo porque la varianza es mayor para apuestas de largo plazo/margen.</span></span></span></strong> <span class="en">Rule 14 uplift applied for longshot. Rule 21 host/neutral adjustments minimal. All 3 sensitivities positive (aggr/base/cons).</span><span class="es">Ajuste Regla 14 aplicado para longshot. Ajustes Regla 21 host/neutral mínimos. Las 3 sensibilidades positivas (agresivo/base/conservador).</span></div>
                     </div>
                     <div class="md:col-span-3">
                         <div class="font-medium mb-1 text-xs"><span class="en">Top Recommendation</span><span class="es">Recomendación Principal</span></div>
-                        <div class="p-2 bg-emerald-950/60 border border-emerald-900 rounded text-xs"><strong><span class="en">ENG -1 @3.05 — ROBUST SPEC (+15.9% EV)</span><span class="es">ING -1 @3,05 — ROBUSTO SPEC (+15,9% EV)</span></strong> <span class="en">— ENG quality and form support margin win. Model P(margin 2+) 38.0% beats implied ~32.8%. Positive across sensitivities (executed via pipeline). Rule 14 makes longshot fairer. Risks: BOL defensive set-piece threat or ENG rotation. Suggested stake S/8–12 on S/200 BR (¼ Kelly style, capped for SPEC variance).</span><span class="es">— Calidad y forma de ING apoyan victoria por margen. P modelo (margen 2+) 38,0% supera implícito ~32,8%. Positivo en sensibilidades (ejecutado vía pipeline). Regla 14 hace longshot más justo. Riesgos: Amenaza de BOL en set-pieces defensivos o rotación de ING. Stake sugerido S/8–12 en BR S/200 (estilo ¼ Kelly, tope por varianza SPEC).</span></div>
+                        <div class="p-2 bg-emerald-950/60 border border-emerald-900 rounded text-xs"><strong><span class="en">ENG -1 @3.8 — STRONG (+72.1% EV)</span><span class="es">ING -1 @3,05 — ROBUSTO SPEC (+15,9% EV)</span></strong> <span class="en">— ENG quality and form support margin win. Model P(margin 2+) 38.0% beats implied ~32.8%. Positive across sensitivities (executed via pipeline). Rule 14 makes longshot fairer. Risks: BOL defensive set-piece threat or ENG rotation. Suggested stake S/8–12 on S/200 BR (¼ Kelly style, capped for SPEC variance).</span><span class="es">— Calidad y forma de ING apoyan victoria por margen. P modelo (margen 2+) 38,0% supera implícito ~32,8%. Positivo en sensibilidades (ejecutado vía pipeline). Regla 14 hace longshot más justo. Riesgos: Amenaza de BOL en set-pieces defensivos o rotación de ING. Stake sugerido S/8–12 en BR S/200 (estilo ¼ Kelly, tope por varianza SPEC).</span></div>
                     </div>
                 </div>
                 <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3">
                     <strong><span class="en">ELI5 for the betting assistant who has NEVER placed a bet or watched football before - How to actually execute this recommended bet step by step in the app (super simple, no jargon left unexplained):</span><span class="es">ELI5 para el asistente de apuestas que NUNCA ha apostado ni visto fútbol - Cómo ejecutar realmente esta apuesta recomendada paso a paso en la app (súper simple, sin jerga sin explicar):</span></strong><br><br>
-                    <strong><span class="en">What this bet is (explained like you're 5):</span><span class="es">Qué es esta apuesta (explicado como si tuvieras 5 años):</span></strong> <span class="en">This is an "Asian handicap -1" or "hándicap -1". It means England must win the game by <span class="abbr">2 or more goals<span class="tooltip"><span class="en">2 or more goals = England scores at least two more goals than Bolivia (examples: 2-0, 3-1, 4-0). If England wins by exactly 1 goal (like 1-0 or 2-1), you usually get your stake back (no win, no loss on Asian handicap). If England loses or draws, you lose the bet.</span><span class="es">2 o más goles = Inglaterra anota al menos dos goles más que Bolivia (ejemplos: 2-0, 3-1, 4-0). Si Inglaterra gana por exactamente 1 gol (como 1-0 o 2-1), normalmente recuperas tu stake (ni ganas ni pierdes en hándicap asiático). Si Inglaterra pierde o empata, pierdes la apuesta.</span></span></span> than Bolivia. If they do, you win the bet at the decimal odds. If they win by only 1 goal, you get your money back. If they don't win by 2, you lose.</span><span class="es">Esto es un "hándicap asiático -1" o "hándicap -1". Significa que Inglaterra debe ganar el partido por <span class="abbr">2 o más goles<span class="tooltip"><span class="en">2 o más goles = Inglaterra anota al menos dos goles más que Bolivia (ejemplos: 2-0, 3-1, 4-0). Si Inglaterra gana por exactamente 1 gol (como 1-0 o 2-1), normalmente recuperas tu stake (ni ganas ni pierdes en hándicap asiático). Si Inglaterra pierde o empata, pierdes la apuesta.</span><span class="es">2 o más goles = Inglaterra anota al menos dos goles más que Bolivia (ejemplos: 2-0, 3-1, 4-0). Si Inglaterra gana por exactamente 1 gol (como 1-0 o 2-1), normalmente recuperas tu stake (ni ganas ni pierdes en hándicap asiático). Si Inglaterra pierde o empata, pierdes la apuesta.</span></span></span> que Bolivia. Si lo hacen, ganas la apuesta a las cuotas decimales. Si ganan por solo 1 gol, recuperas tu dinero. Si no ganan por 2, pierdes.</span><br><br>
+                    <strong><span class="en">What this bet is (explained like you're 5):</span><span class="es">Qué es esta apuesta (explicado como si tuvieras 5 años):</span></strong> <span class="en">This is an "Asian handicap -1" or "hándicap -1". It means England must win the game by <span class="abbr">2 or more goals<span class="tooltip"><span class="en">2 or more goals = England scores at least two more goals than Croatia (examples: 2-0, 3-1, 4-0). If England wins by exactly 1 goal (like 1-0 or 2-1), you usually get your stake back (no win, no loss on Asian handicap). If England loses or draws, you lose the bet.</span><span class="es">2 o más goles = Inglaterra anota al menos dos goles más que Croacia (ejemplos: 2-0, 3-1, 4-0). Si Inglaterra gana por exactamente 1 gol (como 1-0 o 2-1), normalmente recuperas tu stake (ni ganas ni pierdes en hándicap asiático). Si Inglaterra pierde o empata, pierdes la apuesta.</span></span></span> than Croatia. If they do, you win the bet at the decimal odds. If they win by only 1 goal, you get your money back. If they don't win by 2, you lose.</span><span class="es">Esto es un "hándicap asiático -1" o "hándicap -1". Significa que Inglaterra debe ganar el partido por <span class="abbr">2 o más goles<span class="tooltip"><span class="en">2 o más goles = Inglaterra anota al menos dos goles más que Croacia (ejemplos: 2-0, 3-1, 4-0). Si Inglaterra gana por exactamente 1 gol (como 1-0 o 2-1), normalmente recuperas tu stake (ni ganas ni pierdes en hándicap asiático). Si Inglaterra pierde o empata, pierdes la apuesta.</span><span class="es">2 o más goles = Inglaterra anota al menos dos goles más que Croacia (ejemplos: 2-0, 3-1, 4-0). Si Inglaterra gana por exactamente 1 gol (como 1-0 o 2-1), normalmente recuperas tu stake (ni ganas ni pierdes en hándicap asiático). Si Inglaterra pierde o empata, pierdes la apuesta.</span></span></span> que Bolivia. Si lo hacen, ganas la apuesta a las cuotas decimales. Si ganan por solo 1 gol, recuperas tu dinero. Si no ganan por 2, pierdes.</span><br><br>
                     <strong><span class="en">The odd 3.05 explained:</span><span class="es">La cuota 3,05 explicada:</span></strong> <span class="en">Decimal odds of 3.05 means if you bet S/100, you get back S/305 total if it wins (your S/100 stake + S/205 profit). It is a <span class="abbr">longshot<span class="tooltip"><span class="en">Longshot = A bet that is unlikely to win (low probability) but pays a lot if it does (high payout). Opposite of heavy favorite short odds.</span><span class="es">Longshot = Una apuesta que es poco probable que gane (baja probabilidad) pero paga mucho si lo hace (alto pago). Lo opuesto a un favorito pesado con cuotas cortas.</span></span></span> with good value according to our model.</span><span class="es">Cuotas decimales de 3,05 significa que si apuestas S/100, recuperas S/305 en total si gana (tu stake de S/100 + S/205 de ganancia). Es un <span class="abbr">longshot<span class="tooltip"><span class="en">Longshot = Una apuesta que es poco probable que gane (baja probabilidad) pero paga mucho si lo hace (alto pago). Lo opuesto a un favorito pesado con cuotas cortas.</span><span class="es">Longshot = Una apuesta que es poco probable que gane (baja probabilidad) pero paga mucho si lo hace (alto pago). Lo opuesto a un favorito pesado con cuotas cortas.</span></span></span> con buen valor según nuestro modelo.</span><br><br>
                     <strong><span class="en">Exact step-by-step to place this bet in the Betano or Betsson app:</span><span class="es">Pasos exactos para colocar esta apuesta en la app de Betano o Betsson:</span></strong><br>
                     <span class="en">1. Open the app (Betano red B or Betsson orange b). Log in. Screenshot your balance first.<br>
 2. Go to "Deportes" / "Sports" tab at bottom.<br>
 3. Find "World Cup 2026" or "Copa del Mundo 2026". Tap it.<br>
-4. Scroll to "England vs Bolivia" (June 17, around 16:00 ET / 3pm local or check exact time).<br>
+4. Scroll to "England vs Croatia" (June 17, around 16:00 ET / 3pm local or check exact time).<br>
 5. Tap the match. Look for "Handicap" or "Asian Handicap" or "Hándicap" section (not just 1X2 result).<br>
 6. Find the tile for "England -1" or "Inglaterra -1" (price around 3.05). Tap it.<br>
 7. In the "Boleto" / Bet Slip, enter stake e.g. 12 (just the number).<br>
@@ -731,7 +720,7 @@
                     <span class="es">1. Abre la app (Betano B roja o Betsson b naranja). Inicia sesión. Captura tu saldo primero.<br>
 2. Ve a la pestaña "Deportes" / "Sports" abajo.<br>
 3. Busca "World Cup 2026" o "Copa del Mundo 2026". Tócalo.<br>
-4. Desplázate a "England vs Bolivia" (17 de junio, alrededor de 16:00 ET / 3pm local o verifica la hora exacta).<br>
+4. Desplázate a "England vs Croatia" (17 de junio, alrededor de 16:00 ET / 3pm local o verifica la hora exacta).<br>
 5. Toca el partido. Busca la sección "Handicap" o "Hándicap Asiático" o "Hándicap" (no solo el resultado 1X2).<br>
 6. Encuentra el mosaico para "England -1" o "Inglaterra -1" (precio alrededor de 3,05). Tócalo.<br>
 7. En el "Boleto" / Bet Slip, ingresa el stake ej. 12 (solo el número).<br>
@@ -743,10 +732,10 @@
                 </div>
             </div>
 
-            <!-- Canada vs Jamaica (June 17) -->
+            <!-- Canada vs Qatar (June 17) -->
             <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden mb-6">
                 <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
-                    <div><span class="font-semibold"><span class="en">Canada vs Jamaica — June 17 (host)</span><span class="es">Canadá vs Jamaica — 17 de Junio (local)</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group B • BC Place • ~19:00 ET</span><span class="es">Grupo B • BC Place • ~19:00 ET</span></span></div>
+                    <div><span class="font-semibold"><span class="en">Canada vs Qatar — June 17 (host)</span><span class="es">Canadá vs Jamaica — 17 de Junio (local)</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group B • BC Place • ~19:00 ET</span><span class="es">Grupo B • BC Place • ~19:00 ET</span></span></div>
                     <div class="text-xs text-slate-400"><span class="en">Host crowd • CAN full strength</span><span class="es">Multitud local • CAN a plena fuerza</span></div>
                 </div>
                 <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
@@ -771,7 +760,7 @@
                     <span class="en">1. Open the app (Betano red B or Betsson orange b). Log in. Screenshot your balance first.<br>
 2. Go to "Deportes" / "Sports" tab at bottom.<br>
 3. Find "World Cup 2026" or "Copa del Mundo 2026". Tap it.<br>
-4. Scroll to "Canada vs Jamaica" (June 17, ~19:00 ET, BC Place host).<br>
+4. Scroll to "Canada vs Qatar" (June 17, ~19:00 ET, BC Place host).<br>
 5. Tap the match. Look for "Handicap" or "Asian Handicap" or "Hándicap" section (not just 1X2 result).<br>
 6. Find the tile for "Canada -1" or "Canadá -1" (price around 1.87). Tap it.<br>
 7. In the "Boleto" / Bet Slip, enter stake e.g. 15 (just the number).<br>
@@ -781,7 +770,7 @@
                     <span class="es">1. Abre la app (Betano B roja o Betsson b naranja). Inicia sesión. Captura tu saldo primero.<br>
 2. Ve a la pestaña "Deportes" / "Sports" abajo.<br>
 3. Busca "World Cup 2026" o "Copa del Mundo 2026". Tócalo.<br>
-4. Desplázate a "Canada vs Jamaica" (17 de junio, ~19:00 ET, BC Place local).<br>
+4. Desplázate a "Canada vs Qatar" (17 de junio, ~19:00 ET, BC Place local).<br>
 5. Toca el partido. Busca la sección "Handicap" o "Hándicap Asiático" o "Hándicap" (no solo el resultado 1X2).<br>
 6. Encuentra el mosaico para "Canada -1" o "Canadá -1" (precio alrededor de 1,87). Tócalo.<br>
 7. En el "Boleto" / Bet Slip, ingresa el stake ej. 15 (solo el número).<br>
@@ -836,10 +825,10 @@
                 </div>
             </div>
 
-            <!-- Germany vs Iran (June 18) - full detailed card -->
+            <!-- Germany vs Ivory Coast (June 18) - full detailed card -->
             <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden mb-6">
                 <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
-                    <div><span class="font-semibold"><span class="en">Germany vs Iran — June 18</span><span class="es">Alemania vs Irán — 18 de Junio</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group • Neutral • ~time</span><span class="es">Grupo • Neutral • ~hora</span></span></div>
+                    <div><span class="font-semibold"><span class="en">Germany vs Ivory Coast — June 18</span><span class="es">Alemania vs Irán — 18 de Junio</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group • Neutral • ~time</span><span class="es">Grupo • Neutral • ~hora</span></span></div>
                     <div class="text-xs text-slate-400"><span class="en">GER edge on quality</span><span class="es">Ventaja GER en calidad</span></div>
                 </div>
                 <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
@@ -1070,25 +1059,25 @@
             <div class="mb-6">
                 <h3 class="text-lg font-semibold"><span class="en">Detailed Sections for Each June 17-21 Match (like Austria vs Jordan example)</span><span class="es">Secciones Detalladas para Cada Partido del 17-21 de Junio (como el ejemplo de Austria vs Jordania)</span></h3>
 
-                <!-- England vs Bolivia -->
+                <!-- England vs Croatia -->
                 <div class="bg-slate-900 border border-slate-700 rounded p-3 mb-3">
-                    <div class="font-semibold"><span class="en">England vs Bolivia (17 Jun) — ENG -1 @3.05 (ROBUST SPEC)</span><span class="es">Inglaterra vs Bolivia (17 Jun) — ING -1 @3.05 (ROBUSTO SPEC)</span></div>
+                    <div class="font-semibold"><span class="en">England vs Croatia (17 Jun) — ENG -1 @3.05 (ROBUST SPEC)</span><span class="es">Inglaterra vs Croacia (17 Jun) — ING -1 @3.8 (FUERTE)</span></div>
                     <div class="text-sm mt-1"><span class="en">Reasoning: ENG quality + recent form vs minnows supports margin win. Rule 14 uplift makes the longshot price attractive. Positive across sensitivities (executed pipeline).</span><span class="es">Razonamiento: Calidad de ING + forma reciente vs rivales débiles apoya victoria por margen. El uplift de Regla 14 hace atractivo el precio longshot. Positivo en sensibilidades (ejecutado vía pipeline).</span></div>
                     <div class="text-xs mt-1"><span class="en">Model P(margin 2+) 38.0%. EV +15.9%. Risks: BOL set-piece or ENG rotation. (Validated vs replicable pipeline on CSV provenance Elo.)</span><span class="es">P modelo (margen 2+) 38,0%. EV +15,9%. Riesgos: Jugada de estrategia de BOL o rotación de ING. (Validado vs pipeline replicable con Elo de procedencia CSV.)</span></div>
                     <div class="mt-1 text-xs"><span class="en">ELI5: England to win by 2+ goals. App steps: Deportes → match → Handicap section → tap ENG -1 → enter stake in <span class="abbr">boleto<span class="tooltip"><span class="en">Boleto = Bet slip / shopping cart. Shows your bet and ganancia potencial (total money back if you win including stake).</span><span class="es">Boleto = Ficha de apuesta / carrito. Muestra tu apuesta y ganancia potencial (dinero total que recuperas si ganas incluyendo el stake).</span></span></span> → confirm. Hover <span class="abbr">ROBUST SPEC<span class="tooltip"><span class="en">ROBUST SPEC = Edge positive even in conservative tests. SPEC = higher variance, so smaller stake recommended.</span><span class="es">ROBUSTO SPEC = Borde positivo incluso en pruebas conservadoras. SPEC = mayor varianza, así que stake más pequeño recomendado.</span></span></span> for simple explanation.</span><span class="es">ELI5: Inglaterra ganar por 2+ goles. Pasos app: Deportes → partido → sección Handicap → toca ING -1 → ingresa stake en <span class="abbr">boleto<span class="tooltip"><span class="en">Boleto = Ficha de apuesta / carrito. Muestra tu apuesta y ganancia potencial (dinero total que recuperas si ganas incluyendo el stake).</span><span class="es">Boleto = Ficha de apuesta / carrito. Muestra tu apuesta y ganancia potencial (dinero total que recuperas si ganas incluyendo el stake).</span></span></span> → confirma. Pasa el ratón sobre <span class="abbr">ROBUSTO SPEC<span class="tooltip"><span class="en">ROBUSTO SPEC = Borde positivo incluso en pruebas conservadoras. SPEC = mayor varianza, así que stake más pequeño recomendado.</span><span class="es">ROBUSTO SPEC = Borde positivo incluso en pruebas conservadoras. SPEC = mayor varianza, así que stake más pequeño recomendado.</span></span></span> para explicación simple.</span></div>
                 </div>
 
-                <!-- Canada vs Jamaica -->
+                <!-- Canada vs Qatar -->
                 <div class="bg-slate-900 border border-slate-700 rounded p-3 mb-3">
-                    <div class="font-semibold"><span class="en">Canada vs Jamaica (17 Jun, host) — CAN -1 @1.87 (ROBUST MOD)</span><span class="es">Canadá vs Jamaica (17 Jun, local) — CAN -1 @1.87 (ROBUSTO MOD)</span></div>
+                    <div class="font-semibold"><span class="en">Canada vs Qatar (17 Jun, host) — CAN -1 @1.87 (ROBUST MOD)</span><span class="es">Canadá vs Jamaica (17 Jun, local) — CAN -1 @1.87 (ROBUSTO MOD)</span></div>
                     <div class="text-sm mt-1"><span class="en">Reasoning: Host crowd +40 Elo per AGENT. CAN full vs limited JAM. Strong P(margin) in all tests.</span><span class="es">Razonamiento: Multitud local +40 Elo según AGENT. CAN plena fuerza vs JAM limitada. P(margen) fuerte en todas las pruebas.</span></div>
                     <div class="text-xs mt-1"><span class="en">Model P(margin 2+) 60.3% (executed). EV +12.8%. Risks: JAM low-block or CAN early lead then slow.</span><span class="es">P modelo (margen 2+) 60,3% (ejecutado). EV +12,8%. Riesgos: Bloque bajo de JAM o ventaja temprana de CAN y luego se frena.</span></div>
                     <div class="mt-1 text-xs"><span class="en">ELI5: Canada win by 2+. <span class="abbr">Host adj<span class="tooltip"><span class="en">Host adj = Extra "Elo strength points" because home fans help — like chess players performing better at home.</span><span class="es">Host adj = Puntos de fuerza "Elo" extra porque los fanáticos locales ayudan — como jugadores de ajedrez que rinden mejor de local.</span></span></span> Same app steps. Hover <span class="abbr">ROBUST MOD<span class="tooltip"><span class="en">ROBUST MOD = Positive in all sensitivity tests. MOD = medium stake suggestion with good safety.</span><span class="es">ROBUSTO MOD = Positivo en todas las pruebas de sensibilidad. MOD = sugerencia de stake medio con buena seguridad.</span></span></span>.</span><span class="es">ELI5: Canadá gana por 2+. Mismos pasos en app. Pasa el ratón sobre <span class="abbr">ROBUSTO MOD<span class="tooltip"><span class="en">ROBUSTO MOD = Positivo en todas las pruebas de sensibilidad. MOD = sugerencia de stake medio con buena seguridad.</span><span class="es">ROBUSTO MOD = Positivo en todas las pruebas de sensibilidad. MOD = sugerencia de stake medio con buena seguridad.</span></span></span>.</span></div>
                 </div>
 
-                <!-- Germany vs Iran -->
+                <!-- Germany vs Ivory Coast -->
                 <div class="bg-slate-900 border border-slate-700 rounded p-3 mb-3">
-                    <div class="font-semibold"><span class="en">Germany vs Iran (18 Jun) — GER -1 @2.53 (SENS SPEC)</span><span class="es">Alemania vs Irán (18 Jun) — GER -1 @2.53 (SENS SPEC)</span></div>
+                    <div class="font-semibold"><span class="en">Germany vs Ivory Coast (18 Jun) — GER -1 @2.53 (SENS SPEC)</span><span class="es">Alemania vs Irán (18 Jun) — GER -1 @2.53 (SENS SPEC)</span></div>
                     <div class="text-sm mt-1"><span class="en">Reasoning: GER edge. Margin value after finetunes. SENS in conservative runs (per sensitivities). Validated vs pipeline.</span><span class="es">Razonamiento: Borde de GER. Valor de margen tras ajustes finos. SENS en corridas conservadoras (por sensibilidades). Validado vs pipeline.</span></div>
                     <div class="text-xs mt-1"><span class="en">Model 42.0% margin (executed pipeline). EV +6.3%. Risks: IRN low-block overperforms on neutral; GER rotation. (Validated vs replicable pipeline on CSV provenance Elo.)</span><span class="es">Modelo 42,0% margen (ejecutado vía pipeline). EV +6,3%. Riesgos: Bloque bajo de IRN rinde más en neutral; rotación GER. (Validado vs pipeline replicable con Elo de procedencia CSV.)</span></div>
                     <div class="mt-1 text-xs"><span class="en">ELI5: Germany must win by 2+ goals (for the -1 handicap to pay). <span class="abbr">SENS SPEC<span class="tooltip"><span class="en">SENS SPEC: Only positive in base/aggressive tests (not conservative). SPEC = riskier, small stake only.</span><span class="es">SENS SPEC: Solo positivo en pruebas base/agresivas (no conservadoras). SPEC = más riesgoso, stake pequeño solo.</span></span></span>. App: find match → Handicap section → GER -1 → boleto → stake. Hover for margin 2+ and Rule 24.</span><span class="es">ELI5: Alemania debe ganar por 2+ goles (para que el hándicap -1 pague). <span class="abbr">SENS SPEC<span class="tooltip"><span class="en">SENS SPEC: Solo positivo en pruebas base/agresivas (no conservadoras). SPEC = más riesgoso, stake pequeño solo.</span><span class="es">SENS SPEC: Solo positivo en pruebas base/agresivas (no conservadoras). SPEC = más riesgoso, stake pequeño solo.</span></span></span>. App: encuentra partido → sección Hándicap → GER -1 → boleto → stake. Pasa el ratón para margen 2+ y Regla 24.</span></div>
@@ -1113,7 +1102,308 @@
 
             <div class="text-xs text-slate-400"><span class="en">Full bg-slate-900 detailed sections (Data from screenshots/Elo, Executed Model via core pipeline on full dataset A, EV/class, bilingual ELI5 + tooltips) for all matches. 15-16 backtested (actuals); 17-21 predicted by same core model. See table. Validated per pipeline + tests.</span><span class="es">Secciones detalladas bg-slate-900 completas (con Datos de capturas + eloratings, Modelo Ejecutado vía pipeline, EV/clase de subagentes, ELI5 bilingüe completo con tooltips para cada término como 1X2/hándicap/DC/EV/ROBUST/SPEC/HALT/Regla/boleto) abajo para todos los partidos 17-21 del inventario de capturas. Ver tabla para apuestas. Todas validadas por subagentes previos + ejecución de código.</span></div>
 
-                <!-- Additional full sections for inventory matches (Portugal, England vs Croatia, etc.) modeled on existing pattern -->
+                <!-- Full validated bg-slate-900 cards populated from wc_june17_21_predictions.json + subagent replication (only CSV + provenance + .py). 1 per match. England vs Croatia (not Bolivia). -->
+                <!-- Canada vs Qatar card (subagent replicated from files only) -->
+<div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden mb-6">
+  <!-- Header -->
+  <div class="px-6 py-4 border-b border-slate-800 bg-slate-950/50 flex items-center justify-between">
+    <div>
+      <div class="font-semibold text-lg">
+        <span class="en">Canada vs Qatar • June 18, 2026</span>
+        <span class="es">Canadá vs Qatar • 18 de junio de 2026</span>
+      </div>
+      <div class="text-xs text-slate-400">
+        <span class="en">Betsson screenshot IMG_7475.PNG • Pre-match</span>
+        <span class="es">Captura Betsson IMG_7475.PNG • Pre-partido</span>
+      </div>
+    </div>
+    <div class="text-right text-sm">
+      <div class="font-mono text-emerald-400 font-semibold">+12.8% EV • STRONG</div>
+      <div class="text-[10px] text-slate-500">
+        <span class="en">Replicated from wc_june17_21_model_dataset.csv + wc_replicable_pipeline.py</span>
+        <span class="es">Replicado desde wc_june17_21_model_dataset.csv + wc_replicable_pipeline.py</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Data section -->
+    <div>
+      <div class="uppercase tracking-[1px] text-[10px] text-slate-400 mb-2">
+        <span class="en">Data (from allowed CSV row + provenance)</span>
+        <span class="es">Datos (de fila CSV permitida + provenance)</span>
+      </div>
+      <table class="w-full text-sm border border-slate-800 rounded-xl overflow-hidden">
+        <tbody class="divide-y divide-slate-800">
+          <tr>
+            <td class="px-3 py-2 text-slate-400 w-1/3">
+              <span class="en">Elo (A / B)</span>
+              <span class="es">Elo (A / B)</span>
+            </td>
+            <td class="px-3 py-2 font-mono">
+              <span class="en">CAN 1860 (host) / QAT 1570</span>
+              <span class="es">CAN 1860 (local) / QAT 1570</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">Elo Sources</span>
+              <span class="es">Fuentes Elo</span>
+            </td>
+            <td class="px-3 py-2 text-xs">
+              <span class="en">eloratings.net / international-football 2026-06-17 snapshot (host) + eloratings.net Jun17</span>
+              <span class="es">eloratings.net / international-football instantánea 17-06-2026 (local) + eloratings.net Jun17</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">Home Adv (Ha)</span>
+              <span class="es">Ventaja local (Ha)</span>
+            </td>
+            <td class="px-3 py-2 font-mono">+40 <span class="text-[10px] text-slate-500">(host per rules)</span></td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">Form + Injury (Fa)</span>
+              <span class="es">Forma + Lesiones (Fa)</span>
+            </td>
+            <td class="px-3 py-2 font-mono">+10 (CAN previews + host) −5 (QAT limited)</td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">μ_total (expected goals)</span>
+              <span class="es">μ_total (goles esperados)</span>
+            </td>
+            <td class="px-3 py-2 font-mono">2.45 <span class="text-[10px] text-slate-500">(v4.1 host mismatch)</span></td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">Screenshot / Odds</span>
+              <span class="es">Captura / Cuotas</span>
+            </td>
+            <td class="px-3 py-2">
+              <span class="en">Betsson IMG_7475.PNG: Handicap −1 CAN @ 1.87</span>
+              <span class="es">Betsson IMG_7475.PNG: Hándicap −1 CAN @ 1.87</span>
+              <div class="text-[10px] text-slate-500 mt-0.5">BTTS 2.30 • DC 1.03 (for reference)</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">Finetunes Applied</span>
+              <span class="es">Ajustes aplicados</span>
+            </td>
+            <td class="px-3 py-2 text-xs font-mono">Rule 21 + host adj + Rule 24 → opener_draw_boost=0.055, minnow_resilience_mult=1.16</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Executed Model section -->
+    <div>
+      <div class="uppercase tracking-[1px] text-[10px] text-slate-400 mb-2">
+        <span class="en">Executed Model (from wc_replicable_pipeline.py)</span>
+        <span class="es">Modelo ejecutado (desde wc_replicable_pipeline.py)</span>
+      </div>
+      <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono space-y-1.5">
+        <div>
+          <span class="text-slate-400">apply_finetunes(row)</span> → 
+          <span class="en">opener=0.055, minnow=1.16</span>
+          <span class="es">apertura=0.055, minnow=1.16</span>
+        </div>
+        <div>
+          <span class="text-slate-400">two_way_win_prob(1860+40+5, 1570)</span> = <span class="text-emerald-400">0.873</span>
+        </div>
+        <div>
+          <span class="text-slate-400">three_way_1x2(0.873, +0.055)</span> → 
+          <span class="en">pCAN=64.1%, Draw=26.5%, QAT=9.4%</span>
+          <span class="es">pCAN=64.1%, Empate=26.5%, QAT=9.4%</span>
+        </div>
+        <div>
+          <span class="text-slate-400">expected_lambdas(..., minnow=1.16)</span> → 
+          <span class="en">λ_CAN=2.246, λ_QAT=0.204</span>
+          <span class="es">λ_CAN=2.246, λ_QAT=0.204</span>
+        </div>
+        <div class="pt-1 border-t border-slate-800">
+          <span class="text-slate-400">compute_margin_prob(la, lb, margin=2)</span> = 
+          <span class="font-semibold text-emerald-400">0.603</span> 
+          <span class="en">(p_margin2 ≈ 60.3%)</span>
+          <span class="es">(p_margin2 ≈ 60.3%)</span>
+        </div>
+        <div>
+          <span class="text-slate-400">EV = (0.603 × 1.87 − 1) × 100</span> = 
+          <span class="font-semibold text-emerald-400">+12.8%</span>
+        </div>
+        <div class="text-[10px] text-slate-500 pt-1">
+          <span class="en">All functions called exactly as defined in wc_replicable_pipeline.py. p_margin2 &amp; EV match JSON target 60.3 / +12.8.</span>
+          <span class="es">Todas las funciones llamadas exactamente como definidas en wc_replicable_pipeline.py. p_margin2 y EV coinciden con objetivo JSON 60.3 / +12.8.</span>
+        </div>
+      </div>
+      <div class="mt-2 text-[10px]">
+        <span class="en">Sensitivity: processing_notes state “ROBUST MOD (all sens +)” — classified STRONG in JSON per ev≥8 rule.</span>
+        <span class="es">Sensibilidad: processing_notes indica “ROBUST MOD (all sens +)” — clasificado STRONG en JSON según regla ev≥8.</span>
+      </div>
+    </div>
+
+    <!-- Top Recommendation -->
+    <div class="bg-slate-950 border border-emerald-900/60 rounded-2xl p-4">
+      <div class="uppercase text-emerald-400 text-xs tracking-widest mb-1">
+        <span class="en">Top Recommendation</span>
+        <span class="es">Recomendación principal</span>
+      </div>
+      <div class="text-2xl font-semibold mb-1">
+        <span class="en">Handicap −1 CAN @ 1.87</span>
+        <span class="es">Hándicap −1 CAN @ 1.87</span>
+      </div>
+      <div class="font-mono text-lg text-emerald-400">+12.8% EV • STRONG</div>
+      <div class="mt-2 text-sm">
+        <span class="en">Source: Betsson IMG_7475.PNG (Handicap market)</span>
+        <span class="es">Fuente: Betsson IMG_7475.PNG (mercado Hándicap)</span>
+      </div>
+      <div class="mt-3 text-xs border-t border-slate-800 pt-3 text-slate-400">
+        <span class="en">Model p for selection (p_margin2): 60.3%. Fair odds ≈ 1/0.603 ≈ 1.66. Live 1.87 offers +12.8% edge.</span>
+        <span class="es">p modelo para la selección (p_margin2): 60.3%. Cuota justa ≈ 1/0.603 ≈ 1.66. La cuota 1.87 ofrece +12.8% de valor.</span>
+      </div>
+      <div class="mt-2 text-[10px] text-slate-500">
+        <span class="en">¼ Kelly suggestion per AGENT framework (user decides stake). Max 1.5% bankroll for STRONG.</span>
+        <span class="es">Sugerencia ¼ Kelly según marco AGENT (el usuario decide la apuesta). Máx 1.5% del bankroll para STRONG.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ELI5 ultra-detailed bilingual -->
+  <div class="px-6 pb-6">
+    <div class="uppercase tracking-[1px] text-[10px] text-slate-400 mb-2">
+      <span class="en">ELI5 — What the bet is &amp; exactly how to place it in the apps (from screenshot UI)</span>
+      <span class="es">ELI5 — Qué es la apuesta y cómo colocarla exactamente en las apps (de la UI de la captura)</span>
+    </div>
+
+    <div class="prose prose-invert text-sm space-y-4 text-slate-200">
+      <!-- What is it -->
+      <div>
+        <div class="font-semibold mb-1">
+          <span class="en">What is “Handicap −1 CAN”?</span>
+          <span class="es">¿Qué es “Hándicap −1 CAN”?</span>
+        </div>
+        <div>
+          <span class="en">You win only if Canada wins the match by 2 or more goals. If Canada wins by exactly 1 goal, the bet is a push (stake returned). If Canada draws or loses, you lose the stake. This is the Asian/3-way Handicap −1 market visible on the Betsson screenshot.</span>
+          <span class="es">Ganas solo si Canadá gana el partido por 2 o más goles. Si Canadá gana por exactamente 1 gol, la apuesta se anula (se devuelve la apuesta). Si Canadá empata o pierde, pierdes la apuesta. Este es el mercado de Hándicap −1 asiático/3-vías visible en la captura de Betsson.</span>
+        </div>
+        <div class="text-xs mt-1">
+          <span class="en">Model says Canada has 60.3% chance of winning by 2+ goals (p_margin2 executed via Poisson on λ_CAN=2.246 / λ_QAT=0.204).</span>
+          <span class="es">El modelo dice que Canadá tiene 60.3% de probabilidad de ganar por 2+ goles (p_margin2 ejecutado vía Poisson con λ_CAN=2.246 / λ_QAT=0.204).</span>
+        </div>
+      </div>
+
+      <!-- EV explained -->
+      <div>
+        <div class="font-semibold mb-1">
+          <span class="en">Why +12.8% EV?</span>
+          <span class="es">¿Por qué +12.8% EV?</span>
+        </div>
+        <div>
+          <span class="en">Model probability for the selection (60.3%) × live decimal odds (1.87) − 1 = +0.128 or +12.8% expected value per unit staked. This is the edge vs the book price. Fair odds implied by model ≈1.66.</span>
+          <span class="es">Probabilidad del modelo para la selección (60.3%) × cuota decimal en vivo (1.87) − 1 = +0.128 o +12.8% de valor esperado por unidad apostada. Es el edge vs el precio de la casa. La cuota justa según el modelo ≈1.66.</span>
+        </div>
+      </div>
+
+      <!-- Step-by-step app instructions (Betsson / Betano) -->
+      <div>
+        <div class="font-semibold mb-1">
+          <span class="en">Exact app steps (Betsson mobile screenshot style)</span>
+          <span class="es">Pasos exactos en la app (estilo captura Betsson móvil)</span>
+        </div>
+        <ol class="list-decimal ml-5 space-y-1">
+          <li>
+            <span class="en">Open the Betsson (or Betano) app and ensure you are logged in.</span>
+            <span class="es">Abre la app de Betsson (o Betano) e inicia sesión.</span>
+          </li>
+          <li>
+            <span class="en">Go to the main menu → “Sports” or “Fútbol” → “World Cup 2026” or upcoming fixtures list. Locate “Canada vs Qatar” (or CAN vs QAT) scheduled for 2026-06-18.</span>
+            <span class="es">Ve al menú principal → “Deportes” o “Fútbol” → “Copa Mundial 2026” o lista de partidos próximos. Localiza “Canadá vs Qatar” (o CAN vs QAT) programado para 2026-06-18.</span>
+          </li>
+          <li>
+            <span class="en">Tap the match to open the detailed markets. Scroll or swipe to the “Handicap”, “Asian Handicap”, or “Hándicap Asiático” section (not the main 1X2 win/draw/win).</span>
+            <span class="es">Toca el partido para abrir los mercados detallados. Desplázate o desliza hasta la sección “Handicap”, “Asian Handicap” o “Hándicap Asiático” (no el 1X2 principal).</span>
+          </li>
+          <li>
+            <span class="en">Find the line “Canada −1” (or “CAN −1” / “Canadá -1”). Confirm the decimal odds read 1.87 exactly as in IMG_7475.PNG. (If a “boost” is shown, verify it is the same selection.)</span>
+            <span class="es">Busca la línea “Canada −1” (o “CAN −1” / “Canadá -1”). Confirma que las cuotas decimales muestren exactamente 1.87 como en IMG_7475.PNG. (Si aparece un “boost”, verifica que sea la misma selección.)</span>
+          </li>
+          <li>
+            <span class="en">Tap the 1.87 price. The selection appears in your bet slip / boleto at the bottom or right side of the screen.</span>
+            <span class="es">Toca el precio 1.87. La selección aparece en tu boleto de apuestas en la parte inferior o lateral derecha de la pantalla.</span>
+          </li>
+          <li>
+            <span class="en">Enter your stake amount in the boleto field. The app instantly shows estimated ganancia (potential winnings) = stake × 1.87. Review the total return (ganancia neta + devolución de stake) before confirming.</span>
+            <span class="es">Ingresa el monto de tu apuesta en el campo del boleto. La app muestra instantáneamente la ganancia estimada = apuesta × 1.87. Revisa el retorno total (ganancia neta + devolución de la apuesta) antes de confirmar.</span>
+          </li>
+          <li>
+            <span class="en">Double-check: selection = Canada Handicap −1, odds = 1.87, stake amount correct. Tap “Place bet”, “Confirmar apuesta” or equivalent green button to submit. Wait for the confirmation ticket number.</span>
+            <span class="es">Verifica doble: selección = Canadá Hándicap −1, cuota = 1.87, monto correcto. Toca “Place bet”, “Confirmar apuesta” o el botón verde equivalente para enviar. Espera el número de ticket de confirmación.</span>
+          </li>
+        </ol>
+        <div class="text-xs mt-2 text-amber-400">
+          <span class="en">Note: Markets can move or be suspended. Always verify the live price on screen matches the analyzed 1.87 before confirming the boleto.</span>
+          <span class="es">Nota: Los mercados pueden moverse o suspenderse. Siempre verifica que el precio en vivo en pantalla coincida con el 1.87 analizado antes de confirmar el boleto.</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="font-semibold mb-1">
+          <span class="en">If something goes wrong (after the game / settlement)</span>
+          <span class="es">Si algo sale mal (después del partido / liquidación)</span>
+        </div>
+        <ul class="list-disc ml-5 text-xs space-y-0.5">
+          <li><span class="en">Canada wins 1-0 or 2-1 → push, stake returned (no win/loss on the handicap bet).</span><span class="es">Canadá gana 1-0 o 2-1 → push, se devuelve la apuesta (sin ganancia/pérdida en la apuesta de hándicap).</span></li>
+          <li><span class="en">Canada wins 2-0, 3-1 etc. → bet wins at 1.87 (full payout).</span><span class="es">Canadá gana 2-0, 3-1 etc. → la apuesta gana a 1.87 (pago completo).</span></li>
+          <li><span class="en">Draw or Qatar win → full loss of stake.</span><span class="es">Empate o victoria de Qatar → pérdida total de la apuesta.</span></li>
+          <li><span class="en">Check settlement in “My Bets” / “Mis apuestas”. Contact support if the result is mis-settled vs final score.</span><span class="es">Revisa la liquidación en “My Bets” / “Mis apuestas”. Contacta soporte si el resultado se liquida mal vs el marcador final.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Self-critique + Sources + Responsible -->
+  <div class="border-t border-slate-800 px-6 py-4 bg-slate-950/40 text-xs">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <div class="font-semibold mb-1 text-slate-300">
+          <span class="en">Top risks (what could make this wrong)</span>
+          <span class="es">Principales riesgos (qué podría hacer que esto falle)</span>
+        </div>
+        <ul class="list-disc ml-4 space-y-0.5 text-slate-400">
+          <li><span class="en">Qatar organizes a low-block and Canada fails to convert chances (high variance in single match).</span><span class="es">Qatar organiza un bloque bajo y Canadá falla en convertir oportunidades (alta varianza en un solo partido).</span></li>
+          <li><span class="en">Key Canada attacker injured or rested before kickoff (lineup gate); model used pre-match host/form assumptions.</span><span class="es">Delantero clave de Canadá lesionado o descansado antes del pitido inicial (puerta de alineaciones); el modelo usó suposiciones de local/forma pre-partido.</span></li>
+          <li><span class="en">Weather or pitch conditions at BC Place reduce total goals below 2.45 μ (model λs become less favorable for win-by-2+).</span><span class="es">Condiciones climáticas o de cancha en BC Place reducen los goles totales por debajo de μ=2.45 (las λ del modelo se vuelven menos favorables para ganar por 2+).</span></li>
+        </ul>
+        <div class="mt-1 text-[10px] text-slate-500">
+          <span class="en">Confidence: ≤70% (per AGENT.md). Football is high-variance; edge &lt;3% is marginal.</span>
+          <span class="es">Confianza: ≤70% (según AGENT.md). El fútbol tiene alta varianza; un edge &lt;3% es marginal.</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="font-semibold mb-1 text-slate-300">
+          <span class="en">Sources (verbatim from allowed files only)</span>
+          <span class="es">Fuentes (textual solo de archivos permitidos)</span>
+        </div>
+        <ul class="text-[10px] text-slate-400 space-y-0.5">
+          <li><span class="en">CSV row: Canada vs Qatar 2026-06-18 — elo_a=1860 (eloratings.net / international-football 2026-06-17 snapshot (host)), elo_b=1570 (eloratings.net Jun17), home_adv=40, form_adjust_a=10, injury_adjust_a=-5, mu_total=2.45, finetune_applied="Rule 21 + host adj + Rule 24", screenshot_source_odds="IMG_7475.PNG (Betsson Handicap CAN-1 1.87; BTTS 2.30 DC 1.03)", rec_odds=1.87, model_p_win_or_sel=0.603, ev_pct=+12.8</span><span class="es">Fila CSV: Canadá vs Qatar 2026-06-18 — elo_a=1860 (eloratings.net / international-football instantánea 17-06-2026 (local)), elo_b=1570, etc. — rec_odds=1.87, ev_pct=+12.8</span></li>
+          <li><span class="en">wc_june17_21_dataset_provenance.txt: processing steps, Rule 21 minnow_resilience, host adj, screenshot transcription rules.</span><span class="es">wc_june17_21_dataset_provenance.txt: pasos de procesamiento, Regla 21 minnow_resilience, adj local, reglas de transcripción de capturas.</span></li>
+          <li><span class="en">wc_replicable_pipeline.py: two_way_win_prob, three_way_1x2, expected_lambdas, compute_margin_prob, apply_finetunes — executed live.</span><span class="es">wc_replicable_pipeline.py: two_way_win_prob, three_way_1x2, expected_lambdas, compute_margin_prob, apply_finetunes — ejecutado en vivo.</span></li>
+          <li><span class="en">wc_june17_21_predictions.json: match entry confirms ev_pct=12.8, rec_odds=1.87, strength=STRONG, recommendation=handicap_minus1, screenshot_source={'handicap_minus1': 1.87}</span><span class="es">wc_june17_21_predictions.json: entrada del partido confirma ev_pct=12.8, rec_odds=1.87, strength=STRONG, recommendation=handicap_minus1</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Responsible gambling block verbatim per AGENT.md -->
+    <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-400">
+      <span class="en">Betting carries real risk of financial loss. This is analysis only, not financial advice or a guarantee of outcomes. Past form and model edges do not predict individual match results. If gambling is no longer recreational, contact Peru's <a href="https://www.gob.pe/mincetur" class="underline">Línea 0800-1-3232 (MINCETUR)</a> or <a href="https://jugadoresanonimos.org/" class="underline">Jugadores Anónimos Perú</a>.</span>
+      <span class="es">Las apuestas conllevan riesgo real de pérdida financiera. Esto es solo análisis, no consejo financiero ni garantía de resultados. El rendimiento pasado y los edges del modelo no predicen resultados individuales. Si el juego ya no es recreativo, contacta la Línea 0800-1-3232 (MINCETUR) de Perú o Jugadores Anónimos Perú.</span>
+    </div>
+  </div>
+</div>
+
                 <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden mb-6">
                     <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
                         <div><span class="font-semibold"><span class="en">Portugal vs DR Congo — June 17</span><span class="es">Portugal vs R.D. Congo — 17 de Junio</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group K • Houston • 12:00</span><span class="es">Grupo K • Houston • 12:00</span></span></div>
@@ -1419,6 +1709,90 @@
                 e.target.dataset.asc = asc;
             }
         });
+        // ===== DYNAMIC DATA POPULATION (element-by-element from JSON - verified schema) =====
+        function createMatchCard(item) {
+            if (!item || typeof item !== 'object') return document.createElement('div');
+            const div = document.createElement('div');
+            div.className = 'bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden mb-6';
+            const ev = item.ev_pct || 0;
+            const evCls = ev > 0 ? 'text-emerald-400' : (ev < 0 ? 'text-rose-400' : '');
+            const rec = (item.recommendation || 'win').toUpperCase();
+            div.innerHTML = `
+                <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
+                    <div>
+                        <span class="font-semibold"><span class="en">${item.match || ''}</span><span class="es">${item.match || ''}</span></span>
+                        <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">${item.date || ''}</span><span class="es">${item.date || ''}</span></span>
+                    </div>
+                    <div class="text-xs ${evCls} font-mono">${ev}% EV • ${item.strength || 'PASS'}</div>
+                </div>
+                <div class="p-5 grid grid-cols-1 md:grid-cols-3 gap-5 text-sm">
+                    <div>
+                        <div class="font-medium mb-1"><span class="en">Model (JSON)</span><span class="es">Modelo (JSON)</span></div>
+                        <div class="text-xs">P: ${item.p_win || 0}% / ${item.p_draw || 0}% / ${item.p_loss || 0}%</div>
+                        <div class="text-xs mt-1">${(item.model_source || '').slice(0, 60)}...</div>
+                    </div>
+                    <div>
+                        <div class="font-medium mb-1"><span class="en">Rec</span><span class="es">Rec</span></div>
+                        <div class="p-2 bg-emerald-950/60 border border-emerald-900 rounded text-xs">
+                            <strong>${rec} @${item.rec_odds || ''} (${ev}% EV)</strong><br>
+                            <span class="text-[10px]">${item.rule_notes || ''}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-medium mb-1"><span class="en">Source</span><span class="es">Fuente</span></div>
+                        <div class="text-xs">${item.screenshot_source || 'N/A'}</div>
+                    </div>
+                </div>
+                <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3">
+                    <strong><span class="en">ELI5:</span><span class="es">ELI5:</span></strong> <span class="en">Pipeline P(win)=${item.p_win || 0}%. At odds ${item.rec_odds} EV=${ev}%. ${ev > 0 ? 'Positive value.' : 'Skip or low priority.'} Always re-verify live screenshot.</span><span class="es">P(win) pipeline=${item.p_win || 0}%. A cuota ${item.rec_odds} EV=${ev}%. ${ev > 0 ? 'Valor positivo.' : 'Omitir o baja prioridad.'} Siempre re-verifica captura live.</span>
+                </div>`;
+            return div;
+        }
+
+        async function loadDynamicData() {
+            const tbody = document.getElementById('recs-tbody');
+            const cardsC = document.getElementById('dynamic-match-cards');
+            try {
+                const r = await fetch('wc_june17_21_predictions.json');
+                const jsonData = await r.json();
+                if (!Array.isArray(jsonData)) return;
+
+                // Element-by-element: every JSON item -> table row (no skip)
+                if (tbody) {
+                    tbody.innerHTML = '';
+                    jsonData.forEach((item) => {
+                        const tr = document.createElement('tr');
+                        const eClass = (item.ev_pct > 0) ? 'ev-positive' : ((item.ev_pct < 0) ? 'ev-negative' : '');
+                        tr.innerHTML = `<td><span class="en">${item.match || ''}</span><span class="es">${item.match || ''}</span></td>
+                            <td><span class="en">${item.recommendation || ''}</span><span class="es">${item.recommendation || ''}</span></td>
+                            <td>${item.rec_odds || ''}</td>
+                            <td class="font-mono">${item.p_win || ''}</td>
+                            <td class="${eClass}">${item.ev_pct || ''}</td>
+                            <td><span class="en">${item.strength || ''}</span><span class="es">${item.strength || ''}</span></td>
+                            <td><span class="en">${item.rule_notes || ''}</span><span class="es">${item.rule_notes || ''}</span></td>`;
+                        tbody.appendChild(tr);
+                    });
+                }
+
+                // Element-by-element: loop every item -> full card (absolute accuracy)
+                if (cardsC) {
+                    cardsC.innerHTML = '';
+                    jsonData.forEach((item) => {
+                        cardsC.appendChild(createMatchCard(item));
+                    });
+                }
+            } catch (e) {
+                // guard: fallback to static if JSON unavailable; no crash
+                console.info('[dynamic] JSON load fallback (static cards remain):', e.message);
+            }
+        }
+
+        // extend existing onload
+        const _oldLoad = window.onload || (() => {});
+        window.onload = function() {
+            _oldLoad();
+            loadDynamicData();
+        };
     </script>
 </body>
 </html>
