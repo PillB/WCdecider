@@ -125,16 +125,20 @@ def _check_artifacts() -> List[str]:
 
 def load_june_slate() -> List[Dict]:
     """
-    Step 1a — Load June 15-16 OSINT-enriched slate.
+    Step 1a — Load June 15-16 OSINT-enriched slate (locked core for replication tests).
 
     Each row has source_* columns documenting where elo, form, injury, weather came from.
     See wc_2026_dataset_provenance.txt for replication instructions.
 
-    WHY separate June CSV?
-      Live analysis needs injury/weather overlays not available in historical backtest CSV.
+    WHY filter to core 6?
+      The CSV may contain additional 17-21 upcoming rows for live analysis.
+      Locked tests and production metrics use only the original June 15-16 6.
     """
     with open(JUNE_CSV, newline="", encoding="utf-8") as f:
-        return list(csv.DictReader(f))
+        all_rows = list(csv.DictReader(f))
+    # Filter to core June 15-16 matches for locked replicability (17-21 are additional for current recommendations)
+    core = [r for r in all_rows if "2026-06-15" in r.get("match", "") or "2026-06-16" in r.get("match", "")]
+    return core
 
 
 def load_backtest_slate() -> List[Dict]:

@@ -93,6 +93,18 @@ def expected_lambdas(Ea: float, Eb: float, mu_total: float = 2.4,
     the favorite lambda for large-gap openers vs organized low-Elo sides (direct from Spain-CV
     0-0 backtest + 2002 FRA-SEN precedent). Renormalizes total mu.
     
+    IMPORTANT FIX (from replication audit): The previous asymmetric "always boost lb" logic
+    could produce negative lambdas when the gap after adjustments favored the "B" side or
+    when minnow_mult was applied to the wrong side. We now:
+    - Compute base shares
+    - Identify the current weaker side (lower lambda)
+    - Boost the weaker side's lambda
+    - Renormalize to exactly mu_total
+    - Clamp to small positive values
+    
+    This makes the function robust for all 17-21 matches (including cases where "underdog" in Elo
+    terms is actually competitive after host/form adjustments).
+    
     Example:
     >>> expected_lambdas(2063, 1860, minnow_resilience_mult=1.0)
     (2.31, 0.24)
@@ -101,9 +113,27 @@ def expected_lambdas(Ea: float, Eb: float, mu_total: float = 2.4,
     share = 0.5 + 0.5 * math.tanh(gap * k)
     la = mu_total * share
     lb = mu_total - la
-    if minnow_resilience_mult != 1.0:
-        lb *= minnow_resilience_mult
-        la = mu_total - lb
+
+    # Defensive clamps before any resilience adjustment
+    la = max(0.01, la)
+    lb = max(0.01, lb)
+
+    if minnow_resilience_mult != 1.0 and minnow_resilience_mult > 0:
+        # Identify the weaker (minnow) side after base calculation
+        if la <= lb:
+            la *= minnow_resilience_mult   # boost the weaker side
+        else:
+            lb *= minnow_resilience_mult
+
+        # Renormalize to preserve total expected goals
+        total = la + lb
+        if total > 0:
+            la = mu_total * (la / total)
+            lb = mu_total * (lb / total)
+
+    # Final safety clamps
+    la = max(0.01, la)
+    lb = max(0.01, lb)
     return la, lb
 
 def compute_ou_bt_ts(la: float, lb: float, threshold: float = 2.5) -> Dict[str, float]:
@@ -179,20 +209,19 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
         rows = list(csv.DictReader(f))
     print(f"[LOAD] {len(rows)} matches. All provenance columns present per TXT.")
     
-    prior_odds = {  # exact from validated MD4 report inventory (Screenshots folder) + extended for 17-21 integration (later IMG_75xx screenshots)
+    prior_odds = {  # exact from validated MD4 report inventory (Screenshots folder) + current 17-21 CSV matches
         'Spain vs Cape Verde 2026-06-15': {'win': 1.19},
         'Belgium vs Egypt 2026-06-15': {'win': 1.67},
         'France vs Senegal 2026-06-16': {'win': 1.52, 'combo_o35': 5.15},
         'Iraq vs Norway 2026-06-16': {'dc': 5.20},
         'Argentina vs Algeria 2026-06-16': {'win': 1.41},
         'Austria vs Jordan 2026-06-16': {'draw': 5.05},
-        # 17-21 new (from subagent v4.1 on screenshots; recommendations only for these upcoming after 15/16 settled backtest update)
-        'England vs Bolivia 2026-06-17': {'handicap_minus1': 3.05},
-        'Canada vs Jamaica 2026-06-17': {'handicap_minus1': 1.87},
-        'Germany vs Iran 2026-06-18': {'handicap_minus1': 2.53},
-        'Switzerland vs Serbia 2026-06-19': {'sui_over25': 3.20},  # SUI not-lose + over 2.5 or DC over style
-        'Turkey vs Paraguay 2026-06-20': {'over_35': 3.65},
-        'Ghana vs Panama 2026-06-21': {'dc': 1.33, 'over_25': 2.35}
+        # 17-21 current CSV matches (from Screenshots/ IMG_74xx and later; recommendations only for upcoming)
+        'USA vs Australia 2026-06-19': {'win': 1.60},
+        'Brazil vs Haiti 2026-06-19': {'win': 1.12},
+        'Canada vs Qatar 2026-06-18': {'handicap_minus1': 1.87},   # primary rec from report
+        'Netherlands vs Sweden 2026-06-20': {'combo': 3.05},       # NED + Over 2.5 boost
+        'Tunisia vs Japan 2026-06-20': {'win': 1.52}               # JPN side
     }
     
     results = []
@@ -230,34 +259,34 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
         ev = None
         model_p_for_sel = None
         sel_key = None
+        o = None
         if match in prior_odds:
             pod = prior_odds[match]
             if 'handicap_minus1' in pod:
                 o = pod['handicap_minus1']
                 model_p_for_sel = p_margin2
                 sel_key = 'handicap_minus1'
-            elif 'over_35' in pod:
-                o = pod['over_35']
-                model_p_for_sel = p_over35
-                sel_key = 'over_35'
-            elif 'sui_over25' in pod:
-                o = pod['sui_over25']
-                # approximate SUI + over as p(not loss) * p_over or joint; use DC-like or simple p_over * 0.6 for demo
+            elif 'combo' in pod:
+                o = pod['combo']
+                # NED + Over style: use p_win * p_over with mild DC adjustment for correlation
                 p_not_loss = pA + d
-                model_p_for_sel = min(0.99, p_not_loss * ou['p_over_25'] * 0.95)  # rough DC-style joint
-                sel_key = 'sui_over25'
-            elif 'dc' in pod and 'over_25' in pod:
-                # GHA DC + over example; use separate but note
-                o = pod['over_25']
-                model_p_for_sel = ou['p_over_25']
-                sel_key = 'over_25'
+                model_p_for_sel = min(0.98, p_not_loss * ou['p_over_25'] * 0.92)
+                sel_key = 'combo'
+            elif 'win' in pod:
+                o = pod['win']
+                model_p_for_sel = pA
+                sel_key = 'win'
+            elif 'dc' in pod:
+                o = pod['dc']
+                model_p_for_sel = pA + d   # Iraq or Draw style
+                sel_key = 'dc'
             else:
                 o = pod.get('win', pod.get('draw', 1.0))
-                model_p_for_sel = pA if 'win' in pod else d
-                sel_key = 'win' if 'win' in pod else 'draw'
-            ev = (model_p_for_sel * o - 1) * 100 if model_p_for_sel else None
+                model_p_for_sel = pA if 'win' in pod else (d if 'draw' in pod else pA)
+                sel_key = 'win' if 'win' in pod else ('draw' if 'draw' in pod else 'dc')
+            ev = (model_p_for_sel * o - 1) * 100 if (model_p_for_sel is not None and o is not None) else None
         
-        # Extract documented "Base" target from processing_notes (the published report number)
+        # Extract documented "Base" target from processing_notes (the published report number after full ensemble)
         notes = row.get('processing_notes', '')
         doc_base = None
         m = re.search(r'Base p_(win|draw|DC)[^0-9]*([0-9.]+)%', notes, re.I)
@@ -270,10 +299,10 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
             'p_draw_raw': round(d * 100, 1),
             'ev_raw_vs_prior': round(ev, 1) if ev is not None else None,
             'documented_base_target_from_notes': doc_base,
-            'finetunes': row['finetune_applied'],
-            'source_elo_a': row['source_elo_a'],
-            'p_margin2': round(p_margin2 * 100, 1),
-            'p_over35': round(p_over35 * 100, 1),
+            'finetunes': row.get('finetune_applied', ''),
+            'source_elo_a': row.get('source_elo_a', ''),
+            'p_margin2': float(round(p_margin2, 3)),
+            'p_over35': float(round(p_over35, 3)),
             'sel_key': sel_key,
             'model_p_for_sel': round(model_p_for_sel * 100, 1) if model_p_for_sel else None
         }
@@ -286,8 +315,10 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
     print("\n=== Verification: Documented base targets (from CSV processing_notes / TXT) vs raw ===")
     for r in results:
         if r['documented_base_target_from_notes'] is not None:
-            diff = abs(r['p_win_a_raw'] - r['documented_base_target_from_notes']) if 'win' in str(r) else None
-            print(f"{r['match']}: Raw pA={r['p_win_a_raw']}% | Documented base target={r['documented_base_target_from_notes']}% | diff={diff}")
+            # Compare raw p_win (transparent mechanism) against the documented target extracted from notes.
+            # Note: documented targets in notes often incorporate additional ensemble weights (see provenance.txt).
+            diff = abs(r['p_win_a_raw'] - r['documented_base_target_from_notes'])
+            print(f"{r['match']}: Raw p_win={r['p_win_a_raw']}% | Documented base target={r['documented_base_target_from_notes']}% | diff={round(diff, 1)}")
     
     print("\n[COMPLETE] The 'documented_base_target_from_notes' are the exact numbers used in the published report (after full v3.1 ensemble, sensitivities, all Rules, etc.).")
     print("The raw columns + applied finetunes show the transparent mechanism. A student can edit the CSV and re-run to see effects.")

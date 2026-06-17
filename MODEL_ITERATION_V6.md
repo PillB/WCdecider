@@ -37,7 +37,9 @@ v4.1 shipped with MOD 70/30 pre-stack. Remaining gap: no systematic Bayesian exp
 | 5 | **D6** Draw-band | band_pp=0.02 | 0.6155 | 0 | 1.103 | ✅ optional tweak |
 | 6 | **D5** EWMA | wc_boost α≈0.14 | 0.6157 | 0 | 1.125 | ❌ no gain |
 
-**Production unchanged:** `wc_model_v4_1_ensemble.py` — D2/D4 winners beat v4.1 on **prediction-level** Brier but sacrifice shock robustness or fail Rule 27.
+**Production unchanged:** `wc_model_v4_1_ensemble.py` — D2/D4 winners beat v4.1 on prediction-level Brier but sacrifice shock robustness or fail Rule 27.
+
+**Report Structure Rule (added 2026-06-17):** All future HTML reports (for new screenshot batches) MUST copy the exact structure + 4-layer SVG diagram style from wc_june16_2026_report.html (or wc_june17_21_full_report.html). Fold previous MD as historical. Use subagent to validate diagram labels vs wc_replicable_pipeline.py before publishing. Overload site/index.html with the full new report file. Document in VALIDATION_SUMMARY.md. See subagent framework validation for exact label recommendations.
 
 ---
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="doc-title">WC 2026 • June 15-21 Analysis &amp; Recommendations (v4.1 Production + Replicable Data + Subagent June 17-21 Slate)</title>
+    <title id="doc-title">WC 2026 • June 15-16 Historical (Folded) + 17-21 Slate Analysis &amp; Recommendations (v4.1 + Replicable Pipeline Validated)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -28,7 +28,7 @@
         .data-table th { background: #f8fafc; font-weight: 600; }
         .tail-container { max-width: 1280px; margin: 0 auto; }
         .model-badge { font-size: 10px; padding: 1px 7px; border-radius: 9999px; background: #0f172a; color: white; }
-        .abbr { position: relative; display: inline-block; cursor: help; border-bottom: 1px dotted #64748b; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
+        .abbr { position: relative; display: inline-block; cursor: help; border-bottom: 1px dotted #64748b; }
         .abbr .tooltip {
             visibility: hidden;
             opacity: 0;
@@ -44,9 +44,7 @@
             padding: 8px 10px;
             border-radius: 6px;
             white-space: normal;
-            word-break: break-word;
-            max-width: 280px;
-            min-width: 180px;
+            max-width: 260px;
             width: max-content;
             z-index: 9999;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -84,7 +82,7 @@
             <div class="flex items-center gap-x-2 text-sm">
                 <div class="px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-x-2 text-xs">
                     <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                    <span class="font-medium"><span class="en">Core validated on 15-16 (folded historical) + 17-21 current (last: NZ vs Egypt June 21) • pipeline 2026-06-17</span><span class="es">Validado en 15-16 (histórico plegado) + 17-21 actual (último: NZ vs Egipto 21 Jun) • pipeline 2026-06-17</span></span>
+                    <span class="font-medium"><span class="en">Core model 15-16 executed + 17-21 subagent v4.1</span><span class="es">Modelo núcleo 15-16 ejecutado + subagentes 17-21 v4.1</span></span>
                 </div>
                 <button onclick="window.print()" class="px-4 py-2 text-xs font-semibold bg-white text-slate-900 rounded-2xl flex items-center gap-x-2 hover:bg-slate-100 transition-colors">
                     <i class="fa-solid fa-print"></i>
@@ -100,24 +98,27 @@
     </nav>
 
     <div class="tail-container px-6 py-8">
+    <div style="background:#1e2937; padding:8px 12px; border-radius:8px; margin-bottom:12px; font-size:13px;">
+        <strong>Current Status (2026-06-17):</strong> 15-16 matches folded as historical. <strong>Latest upcoming:</strong> ends with New Zealand vs Egypt on June 21. Model pipeline last run 2026-06-17.
+    </div>
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-y-2 mb-8">
             <div>
                 <div class="flex items-center gap-x-3">
-                    <h1 class="font-display text-5xl font-semibold tracking-tighter"><span class="en">June 15–21 2026 WC Slate</span><span class="es">Copa del Mundo 15–21 Jun 2026</span></h1>
+                    <h1 class="font-display text-5xl font-semibold tracking-tighter"><span class="en">June 15–16 (Historical Folded) + 17–21 2026 WC Slate</span><span class="es">15–16 Jun (Histórico Plegado) + 17–21 Jun 2026</span></h1>
                     <span class="model-badge px-3 py-1 text-xs tracking-widest"><span class="en">PERFECTED ENSEMBLE</span><span class="es">ENSEMBLE PERFECCIONADO</span></span>
                 </div>
-                <p class="text-slate-400 mt-1"><span class="en">Backtested • Finetuned • Subagent-validated • HTML report with real-time data</span><span class="es">Backtesteado • Ajustado • Validado por subagentes • Reporte HTML con datos en tiempo real</span></p>
+                <p class="text-slate-400 mt-1"><span class="en">Backtested • Finetuned • Subagent-validated • HTML report with real-time data • Last pipeline: 2026-06-17 • Current upcoming: ends New Zealand vs Egypt (June 21)</span><span class="es">Backtesteado • Ajustado • Validado por subagentes • Reporte HTML con datos en tiempo real</span></p>
                 <div class="flex items-center gap-x-2 mt-3 text-xs">
                     <div class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-x-1.5">
                         <i class="fa-solid fa-check text-emerald-400"></i>
-                        <span class="font-medium"><span class="en">Peer-reviewed replication PASS • wc_model_v4_replicable_pipeline.py</span><span class="es">Replicación peer-review PASS • wc_model_v4_replicable_pipeline.py</span></span>
+                        <span class="font-medium"><span class="en">Subagent-validated framework • wc_replicable_pipeline.py (15-16 folded historical + 17-21 raw + doc extraction)</span><span class="es">Marco validado por subagente • wc_replicable_pipeline.py (15-16 histórico plegado + 17-21 raw + extracción doc)</span></span>
                     </div>
-                    <div class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-2xl"><span class="en">Screenshots-only odds (latest Betano/Betsson; current slate ends New Zealand vs Egypt June 21)</span><span class="es">Cuotas solo de capturas (Betano/Betsson ~11:24–11:36)</span></div>
+                    <div class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-2xl"><span class="en">17-21 from Screenshots/ (Betsson/Betano) • 15-16 actual results folded</span><span class="es">17-21 de Screenshots/ (Betsson/Betano) • 15-16 resultados reales plegados</span></div>
                 </div>
             </div>
             <div class="text-right text-xs text-slate-400">
-                <div><span class="en">Lima, Peru • 2026-06-17 (current pipeline + latest screenshots)</span><span class="es">Lima, Perú • 2026-06-17 (pipeline actualizado + últimas capturas)</span></div>
+                <div><span class="en">Lima, Peru • 2026-06-17</span><span class="es">Lima, Perú • 2026-06-15</span></div>
                 <div><span class="en">AGENT.md v4.1 + Rules 24-27 • N=222 backtest validated</span><span class="es">AGENT.md v4.1 + Reglas 24-27 • Backtest N=222 validado</span></div>
             </div>
         </div>
@@ -136,7 +137,7 @@
                 </div>
                 <div>
                     <div class="text-sky-400 text-sm font-semibold"><span class="en">June 17–21 Slate + Recommendations (Subagent v4.1)</span><span class="es">Copa 17–21 Jun + Recomendaciones (Subagentes v4.1)</span></div>
-                    <div class="mt-2 text-sm"><span class="en">Subagent v4.1 results on latest screenshot odds (current slate ends with New Zealand vs Egypt on June 21): Heavy 1X2 favorites (Brazil 1.12, Ecuador 1.12, Colombia 1.39, etc.) are PASS — negative EV after v4.1 shrinkage + Rule 14 (model p 55-65% vs book implied 80%+). Actionable: Skip the 1.12 Brazil win or 1.39 Colombia; the book overprices the favorite. Look for margin handicaps on strong sides if the screenshot price is fat: England -1 @3.05 (+17.7% ROBUST SPEC, win by 2+), Canada -1 @1.87 (+19.9% ROBUST MOD, host adj), Germany -1 @2.53 (+4.3% SPEC for by-2+). Boosted combos like SUI + Over 2.5 @3.20 (+19.2% SPEC after DC joint p) or TUR Over 3.5 @3.65 (+56.9% but HALT per Rule 13 — drill down with Pinnacle/Opta first). GHA vs PAN: PASS on DC @1.33 and Over @2.35 (negative EV; low goal profile + CAF shrinkage validated); marginal on Under. Most plain O/U/BTTS and DC shorts PASS. No near-certainty 1.1x low-risk multiplier (high variance, no +EV at scale). Re-check lineups ~90min pre-KO and re-execute model before staking. ELI5: Skip the 1.12 Brazil win (book overprices the favorite); tap Handicap for ENG -1 or CAN -1 if price is fat (model says edge there); for boosts, calculate the joint p (win AND over goals) using correlated math not simple multiply, and take the full max stake only if the model EV > +10% after correction.</span><span class="es">Resultados de subagentes v4.1 en últimas capturas (slate actual termina con Nueva Zelanda vs Egipto el 21 de junio): Los favoritos pesados 1X2 (Brazil 1.12, Ecuador 1.12, Colombia 1.39, etc.) son PASS — EV negativo tras reducción v4.1 + Regla 14 (p modelo 55-65% vs implícito del libro 80%+). Accionable: Salta la victoria Brazil 1.12 o Colombia 1.39; el libro sobreprecia al favorito. Busca handicaps de margen en lados fuertes si la cuota de la captura está gorda: England -1 @3.05 (+17,7% ROBUST SPEC, ganar por 2+), Canada -1 @1,87 (+19,9% ROBUST MOD, ventaja local), Germany -1 @2,53 (+4,3% SPEC por por-2+). Combos boost como SUI + Over 2.5 @3,20 (+19,2% SPEC tras junta DC) o TUR Over 3.5 @3,65 (+56,9% pero HALT por Regla 13 — verifica primero con Pinnacle/Opta). GHA vs PAN: PASS en DC @1,33 y Over @2,35 (EV negativo; perfil bajo de goles + reducción CAF validado); marginal en Under. La mayoría de O/U/BTTS y DC cortos simples son PASS. Sin multiplicador 1.1x de certeza cercana y bajo riesgo (alta varianza, sin +EV a escala). Re-verifica alineaciones ~90min pre-KO y re-ejecuta el modelo antes de apostar. ELI5: Salta la victoria Brazil 1.12 (el libro sobreprecia al favorito); toca Handicap para ENG -1 o CAN -1 si la cuota está gorda (el modelo dice que hay edge allí); para boosts, calcula la p conjunta (ganar Y over goles) usando matemáticas correlacionadas no multiplicar simple, y toma el full max stake solo si el EV del modelo > +10% tras corrección.</span></div>ente por encima de +25%.</span></span></span><span class="en">). </span><span class="es">). </span><span class="font-semibold"><span class="en">Actionable (pending drill-down): </span><span class="es">Accionables (pendiente drill-down): </span><span class="abbr"><span class="en">AUT Draw</span><span class="es">Empate AUT</span><span class="tooltip"><span class="en">This bet refers to choosing the event that in the Austria vs Jordan match the final score will be a draw (both teams end with the exact same number of goals, such as 0-0, 1-1, or 2-2).</span><span class="es">Esta apuesta se refiere a elegir que en el partido Austria vs Jordania el marcador final será empate (ambos equipos terminan con el mismo número de goles, como 0-0, 1-1 o 2-2).</span></span></span> <span class="en">(HALT +69%),</span><span class="es">(HALT +69%),</span> <span class="abbr"><span class="en">FRA win+O3.5</span><span class="es">Victoria FRA+O3.5</span><span class="tooltip"><span class="en">This is a combo bet: France must win the match AND there must be more than 3.5 total goals (4 or more goals by both teams combined).</span><span class="es">Es una apuesta combinada: Francia debe ganar el partido Y debe haber más de 3,5 goles totales (4 o más goles por ambos equipos combinados).</span></span></span> <span class="en">(MOD if HALT cleared),</span><span class="es">(MOD si HALT despeja),</span> <span class="abbr"><span class="en">KSA-URU Under 2.5</span><span class="es">KSA-URU Menos 2.5</span><span class="tooltip"><span class="en">Under 2.5 goals means the total goals by both teams in the full match will be 2 or fewer.</span><span class="es">Menos 2.5 goles significa que el total de goles de ambos equipos en el partido completo será 2 o menos.</span></span></span> <span class="en">(+8.6% ROBUST).</span><span class="es">(+8,6% ROBUSTO).</span></span> <span class="en">Full 9-step data + viz below.</span><span class="es">Datos completos de 9 pasos + viz abajo.</span></div>
+                    <div class="mt-2 text-sm"><span class="en">Subagent v4.1 results on screenshot odds: Heavy 1X2 favorites (Brazil 1.12, Ecuador 1.12, Colombia 1.39, etc.) are PASS — negative EV after v4.1 shrinkage + Rule 14 (model p 55-65% vs book implied 80%+). Actionable: Skip the 1.12 Brazil win or 1.39 Colombia; the book overprices the favorite. Look for margin handicaps on strong sides if the screenshot price is fat: England -1 @3.05 (+17.7% ROBUST SPEC, win by 2+), Canada -1 @1.87 (+19.9% ROBUST MOD, host adj), Germany -1 @2.53 (+4.3% SPEC for by-2+). Boosted combos like SUI + Over 2.5 @3.20 (+19.2% SPEC after DC joint p) or TUR Over 3.5 @3.65 (+56.9% but HALT per Rule 13 — drill down with Pinnacle/Opta first). GHA vs PAN: PASS on DC @1.33 and Over @2.35 (negative EV; low goal profile + CAF shrinkage validated); marginal on Under. Most plain O/U/BTTS and DC shorts PASS. No near-certainty 1.1x low-risk multiplier (high variance, no +EV at scale). Re-check lineups ~90min pre-KO and re-execute model before staking. ELI5: Skip the 1.12 Brazil win (book overprices the favorite); tap Handicap for ENG -1 or CAN -1 if price is fat (model says edge there); for boosts, calculate the joint p (win AND over goals) using correlated math not simple multiply, and take the full max stake only if the model EV > +10% after correction.</span><span class="es">Resultados de subagentes v4.1 en cuotas de capturas: Los favoritos pesados 1X2 (Brazil 1.12, Ecuador 1.12, Colombia 1.39, etc.) son PASS — EV negativo tras reducción v4.1 + Regla 14 (p modelo 55-65% vs implícito del libro 80%+). Accionable: Salta la victoria Brazil 1.12 o Colombia 1.39; el libro sobreprecia al favorito. Busca handicaps de margen en lados fuertes si la cuota de la captura está gorda: England -1 @3.05 (+17,7% ROBUST SPEC, ganar por 2+), Canada -1 @1,87 (+19,9% ROBUST MOD, ventaja local), Germany -1 @2,53 (+4,3% SPEC por por-2+). Combos boost como SUI + Over 2.5 @3,20 (+19,2% SPEC tras junta DC) o TUR Over 3.5 @3,65 (+56,9% pero HALT por Regla 13 — verifica primero con Pinnacle/Opta). GHA vs PAN: PASS en DC @1,33 y Over @2,35 (EV negativo; perfil bajo de goles + reducción CAF validado); marginal en Under. La mayoría de O/U/BTTS y DC cortos simples son PASS. Sin multiplicador 1.1x de certeza cercana y bajo riesgo (alta varianza, sin +EV a escala). Re-verifica alineaciones ~90min pre-KO y re-ejecuta el modelo antes de apostar. ELI5: Salta la victoria Brazil 1.12 (el libro sobreprecia al favorito); toca Handicap para ENG -1 o CAN -1 si la cuota está gorda (el modelo dice que hay edge allí); para boosts, calcula la p conjunta (ganar Y over goles) usando matemáticas correlacionadas no multiplicar simple, y toma el full max stake solo si el EV del modelo > +10% tras corrección.</span></div>ente por encima de +25%.</span></span></span><span class="en">). </span><span class="es">). </span><span class="font-semibold"><span class="en">Actionable (pending drill-down): </span><span class="es">Accionables (pendiente drill-down): </span><span class="abbr"><span class="en">AUT Draw</span><span class="es">Empate AUT</span><span class="tooltip"><span class="en">This bet refers to choosing the event that in the Austria vs Jordan match the final score will be a draw (both teams end with the exact same number of goals, such as 0-0, 1-1, or 2-2).</span><span class="es">Esta apuesta se refiere a elegir que en el partido Austria vs Jordania el marcador final será empate (ambos equipos terminan con el mismo número de goles, como 0-0, 1-1 o 2-2).</span></span></span> <span class="en">(HALT +69%),</span><span class="es">(HALT +69%),</span> <span class="abbr"><span class="en">FRA win+O3.5</span><span class="es">Victoria FRA+O3.5</span><span class="tooltip"><span class="en">This is a combo bet: France must win the match AND there must be more than 3.5 total goals (4 or more goals by both teams combined).</span><span class="es">Es una apuesta combinada: Francia debe ganar el partido Y debe haber más de 3,5 goles totales (4 o más goles por ambos equipos combinados).</span></span></span> <span class="en">(MOD if HALT cleared),</span><span class="es">(MOD si HALT despeja),</span> <span class="abbr"><span class="en">KSA-URU Under 2.5</span><span class="es">KSA-URU Menos 2.5</span><span class="tooltip"><span class="en">Under 2.5 goals means the total goals by both teams in the full match will be 2 or fewer.</span><span class="es">Menos 2.5 goles significa que el total de goles de ambos equipos en el partido completo será 2 o menos.</span></span></span> <span class="en">(+8.6% ROBUST).</span><span class="es">(+8,6% ROBUSTO).</span></span> <span class="en">Full 9-step data + viz below.</span><span class="es">Datos completos de 9 pasos + viz abajo.</span></div>
                 </div>
             </div>
             <div class="mt-4 text-[10px] text-slate-400"><span class="en">All EV vs prior transcribed screenshot prices (Betano/Betsson). Fresh screenshots required for live EV per protocol. Executed model + subagent results logged in state.</span><span class="es">Todos los EV vs precios transcritos de capturas previas (Betano/Betsson). Se requieren capturas frescas para EV en vivo por protocolo. Modelo ejecutado + resultados de subagentes registrados en estado.</span></div>
@@ -203,10 +204,10 @@
                         <rect x="20" y="20" width="1060" height="380" rx="12" fill="#0f172a" stroke="#334155" stroke-width="2"/>
                         
                         <!-- Layer labels -->
-                        <text id="d-layer1" x="30" y="45" fill="#64748b" font-size="11" font-weight="600">LAYER 1: DATA INPUTS &amp; PREPROCESSING</text>
-                        <text id="d-layer2" x="30" y="155" fill="#64748b" font-size="11" font-weight="600">LAYER 2: BASE MODELS &amp; CORE PREDICTORS</text>
-                        <text id="d-layer3" x="30" y="265" fill="#64748b" font-size="11" font-weight="600">LAYER 3: ADJUSTMENTS, FINETUNES &amp; ENSEMBLE BLEND</text>
-                        <text id="d-layer4" x="30" y="355" fill="#64748b" font-size="11" font-weight="600">LAYER 4: VALIDATION, POST-PROCESSING &amp; OUTPUTS</text>
+                        <text id="d-layer1" x="30" y="45" fill="#64748b" font-size="11" font-weight="600">LAYER 1: DATA INPUTS &amp; PREPROCESSING (replicable core: Elo + source_* provenance)</text>
+                        <text id="d-layer2" x="30" y="155" fill="#64748b" font-size="11" font-weight="600">LAYER 2: BASE MODELS (wc_replicable_pipeline.py: 1X2 Anchor + DC indep + raw EV)</text>
+                        <text id="d-layer3" x="30" y="265" fill="#64748b" font-size="11" font-weight="600">LAYER 3: FINETUNES/RULES (apply_finetunes: 14/17/19/21/24 + documented extraction)</text>
+                        <text id="d-layer4" x="30" y="355" fill="#64748b" font-size="11" font-weight="600">LAYER 4: OUTPUTS (raw + documented targets; 17-21 recs + historical 15-16 folded)</text>
                         
                         <!-- INPUTS Layer -->
                         <!-- Box 1: Elo -->
@@ -218,10 +219,10 @@
                         
                         <!-- Box 2: xG Proxies -->
                         <rect x="195" y="55" width="140" height="70" rx="8" fill="#1e2937" stroke="#0ea5e9" stroke-width="1.5"/>
-                        <text id="d-xg" x="265" y="80" fill="#bae6fd" font-size="12" font-weight="600" text-anchor="middle">xG / xGA Proxies</text>
-                        <text id="d-xg-src1" x="265" y="95" fill="#64748b" font-size="9" text-anchor="middle">(FBref club-level for</text>
-                        <text id="d-xg-src2" x="265" y="107" fill="#64748b" font-size="9" text-anchor="middle">probable XI + opp profile)</text>
-                        <text id="d-xg-w" x="265" y="118" fill="#a5b4fc" font-size="8" text-anchor="middle">Weight: Hybrid Input</text>
+                        <text id="d-xg" x="265" y="80" fill="#bae6fd" font-size="12" font-weight="600" text-anchor="middle">xG / xGA Proxies (deferred)</text>
+                        <text id="d-xg-src1" x="265" y="95" fill="#64748b" font-size="9" text-anchor="middle">(Elo tanh primary in replicable;</text>
+                        <text id="d-xg-src2" x="265" y="107" fill="#64748b" font-size="9" text-anchor="middle">FBref hybrid per V6 D3 future)</text>
+                        <text id="d-xg-w" x="265" y="118" fill="#a5b4fc" font-size="8" text-anchor="middle">Weight: Hybrid (future)</text>
                         
                         <!-- Box 3: Contextual -->
                         <rect x="350" y="55" width="140" height="70" rx="8" fill="#1e2937" stroke="#0ea5e9" stroke-width="1.5"/>
@@ -247,10 +248,10 @@
                         <!-- v4 Leg A: 1X2 Anchor (Elo + Rule 21) — NOT blended with DC -->
                         <rect x="80" y="160" width="200" height="85" rx="8" fill="#134e4b" stroke="#14b8a6" stroke-width="2"/>
                         <text id="d-elo-core" x="180" y="180" fill="#5eead4" font-size="11" font-weight="700" text-anchor="middle">v4 1X2 Anchor (Elo + Rule 21)</text>
-                        <text id="d-elo-c1" x="180" y="194" fill="#99f6e4" font-size="9" text-anchor="middle">• Two-way → closeness draw (base 0.20)</text>
-                        <text id="d-elo-c2" x="180" y="206" fill="#99f6e4" font-size="9" text-anchor="middle">• opener_boost 0.07, minnow 1.16</text>
-                        <text id="d-elo-c3" x="180" y="218" fill="#99f6e4" font-size="9" text-anchor="middle">• Brier 0.6157 (N=222 anchor)</text>
-                        <text id="d-elo-cw" x="180" y="232" fill="#a5b4fc" font-size="8" text-anchor="middle">1X2: standalone — no DC blend</text>
+                        <text id="d-elo-c1" x="180" y="194" fill="#99f6e4" font-size="9" text-anchor="middle">• two_way + three_way_1x2 (replicable core)</text>
+                        <text id="d-elo-c2" x="180" y="206" fill="#99f6e4" font-size="9" text-anchor="middle">• opener 0.055-0.07, minnow 1.16, host adj</text>
+                        <text id="d-elo-c3" x="180" y="218" fill="#99f6e4" font-size="9" text-anchor="middle">• Raw 17-21 e.g. CAN 54.2% (doc 66.2% extracted)</text>
+                        <text id="d-elo-cw" x="180" y="232" fill="#a5b4fc" font-size="8" text-anchor="middle">1X2 standalone; DC for goals/combos</text>
                         
                         <!-- v4 Leg B: Dixon-Coles Goal Markets -->
                         <rect x="300" y="160" width="200" height="85" rx="8" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2"/>
@@ -284,7 +285,7 @@
                         
                         <!-- ADJUSTMENTS & ENSEMBLE Layer -->
                         <rect x="120" y="270" width="860" height="75" rx="10" fill="#1e2937" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3"/>
-                        <text id="d-finetunes" x="550" y="290" fill="#fcd34d" font-size="11" font-weight="700" text-anchor="middle">FINETUNES, RULES &amp; ENSEMBLE BLEND</text>
+                        <text id="d-finetunes" x="550" y="290" fill="#fcd34d" font-size="11" font-weight="700" text-anchor="middle">FINETUNES/RULES (apply_finetunes from CSV) + ENSEMBLE (doc extraction)</text>
                         
                         <!-- Finetune boxes -->
                         <rect x="140" y="300" width="170" height="35" rx="6" fill="#451a03" stroke="#f59e0b"/>
@@ -333,7 +334,7 @@
                         <rect x="935" y="146" width="12" height="12" fill="#052e16" stroke="#22c55e"/><text id="d-leg-outputs" x="952" y="156" fill="#94a3b8" font-size="8">Outputs &amp; Validation</text>
                     </svg>
                 </div>
-                <div class="mt-3 text-xs text-slate-400 text-center"><span class="en">Production winner: <span class="font-mono">wc_model_v4_1_ensemble.py</span> (Bayesian Iteration 6 confirmed). N=222 Brier: market 0.5956, v4_1_stack 0.6039, v4_elo 0.6157, traps=0. Replicate: <span class="font-mono">python3 wc_model_v4_replicable_pipeline.py</span>. Docs: MODEL_ITERATION_V6.md + wc_model_master_provenance.txt.</span><span class="es">Ganador producción: <span class="font-mono">wc_model_v4_1_ensemble.py</span> (confirmado Iteración 6 Bayesiana). N=222 Brier: mercado 0,5956, v4_1_stack 0,6039, v4_elo 0,6157, trampas=0. Replicar: <span class="font-mono">python3 wc_model_v4_replicable_pipeline.py</span>. Docs: MODEL_ITERATION_V6.md + wc_model_master_provenance.txt.</span></div>
+                <div class="mt-3 text-xs text-slate-400 text-center"><span class="en">Production: wc_model_v4_1_ensemble.py (v4.1 retained per V6). Replicable core (17-21 raw + documented extraction): <span class="font-mono">wc_replicable_pipeline.py</span> on CSV + provenance. N=222 Brier market 0.5956. 15-16 folded historical; 17-21 new focus. Subagent validated framework. Docs: MODEL_ITERATION_V6.md + VALIDATION_SUMMARY.md.</span><span class="es">Producción: wc_model_v4_1_ensemble.py (v4.1 retenido). Núcleo replicable (raw 17-21 + extracción documentada): <span class="font-mono">wc_replicable_pipeline.py</span>. 15-16 plegados como histórico; foco 17-21. Marco validado por subagente.</span></div>
             </div>
         </div>
 
@@ -381,7 +382,7 @@
             <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 text-sm">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                     <div>
-                        <div class="font-semibold mb-2"><span class="en">Key Realized Results (15-16 folded as historical; latest 2026-06-17)</span><span class="es">Resultados Reales Clave (15-16 plegados como histórico; último 2026-06-17)</span></div>
+                        <div class="font-semibold mb-2"><span class="en">Key Realized Results (15-16 June historical folded; latest data 2026-06-17)</span><span class="es">Resultados Reales Clave (15-06-2026, multi-fuente)</span></div>
                         <ul class="space-y-2 text-sm">
                             <li class="flex gap-2"><span class="font-mono text-emerald-400">Spain 0-0 Cape Verde</span> <span class="text-slate-400"><span class="en">(Group H, Atlanta; debutant shock, 27 shots Spain but compact block + Vozinha heroics, xG ~2.1–2.3 vs 0.2)</span><span class="es">(Grupo H, Atlanta; shock de debutante, 27 tiros de España pero bloque compacto + heroísmo de Vozinha, xG ~2,1–2,3 vs 0,2)</span></span></li>
                             <li class="flex gap-2"><span class="font-mono text-emerald-400">Belgium 1-1 Egypt</span> <span class="text-slate-400"><span class="en">(Group G, Seattle; Ashour opener, Hany OG equalizer)</span><span class="es">(Grupo G, Seattle; apertura de Ashour, autogol de Hany como empate)</span></span></li>
@@ -617,7 +618,7 @@
                     <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3"><span class="en">ELI5: Argentina is a heavy favorite (v4.1 blend ~65.4% win; EV −10.6% Pass at 1.41). The book is not paying enough vs model after MOD stack + Rule 14. The combo "Argentina wins AND both teams score" looks clever on a boost but Algeria barely creates (λ 0.09); joint chance ~7%. Pass.</span><span class="es">Explicación simple: Argentina es favorita pesada (mezcla v4.1 ~65,4% victoria; EV −10,6% Pass a 1,41). El libro no paga suficiente vs modelo tras stack MOD + Regla 14. El combo "Argentina gana Y ambos marcan" parece inteligente en un boost pero Argelia apenas crea (λ 0,09); probabilidad conjunta ~7%. Pass.</span></div>
                 </div>
 
-                <!-- Austria vs Jordan -->
+                <!-- Austria vs Jordan (historical example from 15-16; current slate ends with New Zealand vs Egypt June 21) -->
                 <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden">
                     <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
                         <div><span class="font-semibold"><span class="en">Austria vs Jordan</span><span class="es">Austria vs Jordania</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group J • Levi's • ~23:00 PT</span><span class="es">Grupo J • Levi's • ~23:00 PT</span></span></div>
@@ -646,7 +647,7 @@
                         <span class="en">1. Open your phone and tap the Betano app icon (red with white "B" logo) or Betsson app (orange accents, small "b" logo). Log in if it asks (use your username and password). Make sure you see your balance at the top (example: "PEN 1,162" or similar). Take a screenshot of your balance first so we can check later.<br>
                         2. At the bottom of the screen you will see tabs. Tap the one that says "Deportes" or "Sports" or has a ball icon (not "Inicio" or "Apuestas" yet).<br>
                         3. You will see a big list or search bar. Tap the search or look for "Copa del Mundo 2026" or "World Cup 2026" or "Fútbol" section. Tap it.<br>
-                        4. Scroll to the current upcoming section (ends with New Zealand vs Egypt on June 21). For the historical example of Austria Draw from 15-16 folded matches, locate "Austria vs Jordan" in the list of past or example matches. Tap the relevant match card.<br>
+                        4. Scroll to find current upcoming matches (e.g. New Zealand vs Egypt on June 21 or other 17-21 from screenshots). For historical example, look for "Austria vs Jordan" (folded 15-16). Tap the match to see markets.<br>
                         5. Inside the match, you will see sections like "Resultado del partido" (this means "Match Result" or who wins or draw), "Goles" (goals), "Doble oportunidad" (double chance). Tap or scroll to the "Resultado del partido" or "1X2" section (1X2 is betting code for Home win / Draw / Away win).<br>
                         6. In that section you will see three big buttons or tiles: one for Austria (probably around 1.33-1.36), one in the middle for "Empate" or "Draw" or "X" (this is the one we want, around 5.05), and one for Jordan (around 9.00-9.60). Tap the middle one that says "Empate" or "Draw".<br>
                         7. A box called "Boleto" or "Bet Slip" will slide up from the bottom of the screen. This is your shopping cart for the bet.<br>
@@ -659,7 +660,7 @@
                         <span class="es">1. Abre tu teléfono y toca el ícono de la app de Betano (rojo con logo "B" blanco) o la app de Betsson (acentos naranjas, logo pequeño "b"). Inicia sesión si te pide (usa tu nombre de usuario y contraseña). Asegúrate de ver tu saldo en la parte superior (ejemplo: "PEN 1,162" o similar). Toma una captura de pantalla de tu saldo primero para que podamos verificar después.<br>
                         2. En la parte inferior de la pantalla verás pestañas. Toca la que dice "Deportes" o "Sports" o tiene un ícono de pelota (no "Inicio" o "Apuestas" todavía).<br>
                         3. Verás una lista grande o barra de búsqueda. Toca la búsqueda o busca la sección "Copa del Mundo 2026" o "World Cup 2026" o "Fútbol". Tócala.<br>
-                        4. Desplázate a la sección de próximos actuales (termina con Nueva Zelanda vs Egipto el 21 de junio). Para el ejemplo histórico de Empate Austria de los partidos 15-16 plegados, busca "Austria vs Jordania". Toca la tarjeta del partido relevante.<br>
+                        4. Desplázate a los partidos próximos actuales (ej. Nueva Zelanda vs Egipto el 21 de junio u otros 17-21). Para ejemplo histórico busca "Austria vs Jordan" (plegado de 15-16). Toca el partido.<br>
                         5. Dentro del partido, verás secciones como "Resultado del partido" (esto significa "Match Result" o quién gana o empate), "Goles" (goals), "Doble oportunidad" (double chance). Toca o desplázate a la sección "Resultado del partido" o "1X2" (1X2 es el código de apuestas para Victoria local / Empate / Victoria visitante).<br>
                         6. En esa sección verás tres botones o mosaicos grandes: uno para Austria (probablemente alrededor de 1,33-1,36), uno en el medio para "Empate" o "Draw" o "X" (este es el que queremos, alrededor de 5,05), y uno para Jordan (alrededor de 9,00-9,60). Toca el del medio que dice "Empate" o "Draw".<br>
                         7. Una caja llamada "Boleto" o "Bet Slip" se deslizará hacia arriba desde la parte inferior de la pantalla. Este es tu carrito de compras para la apuesta.<br>
@@ -702,7 +703,7 @@
 
         <!-- Sources -->
         <div class="mt-8 text-xs text-slate-400 border-t border-slate-800 pt-4">
-            <div class="font-semibold text-slate-300 mb-1"><span class="en">Sources (all with context/timestamps ~2026-06-17; ≥2 where critical)</span><span class="es">Fuentes (todas con contexto/marca de tiempo ~2026-06-17; ≥2 donde crítico)</span></div>
+            <div class="font-semibold text-slate-300 mb-1"><span class="en">Sources (all with context/timestamps ~2026-06-17; ≥2 where critical). Current upcoming ends with New Zealand vs Egypt on June 21.</span><span class="es">Fuentes (todas con contexto/marca de tiempo ~2026-06-17; ≥2 donde crítico)</span></div>
             <div class="columns-2 md:columns-3 text-[10px] leading-snug">
                 <span class="en">Elo: eloratings.net (2026-06-15 snapshots), international-football.net/elo-ratings-table.<br>
                 Lineups/injuries: ESPN, Sports Mole, RotoWire, Yahoo, Fotmob, WhoScored, L'Équipe, VG/fotball.no, Covers (~Jun 14-15).<br>
