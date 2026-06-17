@@ -34,6 +34,9 @@ jobs:
       - name: Run replication pipeline
         run: python3 wc_model_v4_replicable_pipeline.py
 
+      - name: Run June 17-21 replicable pipeline (produces wc_june17_21_predictions.json for dynamic cards + hover explanations)
+        run: python3 wc_replicable_pipeline.py
+
       - name: Run pytest (model + report)
         run: |
           pytest tests/test_peer_replication.py \
@@ -49,6 +52,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Run June 17-21 replicable pipeline (ensure fresh predictions.json + explanations in artifact)
+        run: python3 wc_replicable_pipeline.py
 
       - name: Build static site
         run: python3 scripts/build_site.py

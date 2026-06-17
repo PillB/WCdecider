@@ -65,6 +65,81 @@ CONSTANTS = {
 }
 
 # ============================================================
+# BETTING TERM EXPLANATIONS (bilingual EN/ES, ELI5-style)
+# Always emitted into JSON under "glossary" + per-match "explanation"
+# This enables dynamic, predictable hover tooltips in the UI for every
+# recommendation term (e.g. "handicap_minus1" → "ENG -1"), strength, EV etc.
+# ============================================================
+TERM_GLOSSARY = {
+    "win": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete más goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+    },
+    "handicap_minus1": {
+        "en": "Handicap -1 (e.g. ENG -1): The selected team must win by TWO or more goals. If they win by exactly 1 goal (e.g. 2-1), it is usually a 'push' (your stake is returned, no win or loss). Draw or loss = bet loses.",
+        "es": "Hándicap -1 (ej. ING -1): El equipo debe ganar por DOS o más goles. Si gana por exactamente 1 gol (ej. 2-1), normalmente es 'push' (te devuelven el stake, ni ganas ni pierdes). Empate o derrota = pierdes la apuesta."
+    },
+    "handicap_plus1": {
+        "en": "Handicap +1 (e.g. NZ +1): You win the bet if your team loses by only 1 goal, wins, or draws. You lose only if they lose by 2 or more goals.",
+        "es": "Hándicap +1 (ej. NZ +1): Ganas la apuesta si tu equipo pierde por solo 1 gol, gana o empata. Pierdes solo si pierde por 2 o más goles."
+    },
+    "dc": {
+        "en": "Double Chance (DC): A bet that covers two of the three possible 1X2 results. E.g. 'X2' wins on draw OR away win. Safer than single outcome but pays less.",
+        "es": "Doble oportunidad (DC): Apuesta que cubre dos de los tres resultados 1X2 posibles. Ej. 'X2' gana con empate O victoria visitante. Más segura que un solo resultado pero paga menos."
+    },
+    "over35": {
+        "en": "Over 3.5 goals: The total number of goals scored by BOTH teams together must reach 4 or more for this bet to win.",
+        "es": "Más de 3.5 goles: El número total de goles de AMBOS equipos juntos debe llegar a 4 o más para que gane esta apuesta."
+    },
+    "combo": {
+        "en": "Combo bet: ALL parts of the bet must succeed (e.g. team to win AND total goals over X). Model uses Dixon-Coles joint probability to account for how goals and results are correlated.",
+        "es": "Apuesta combinada: TODAS las partes deben cumplirse (ej. equipo gana Y total de goles más de X). El modelo usa probabilidad conjunta Dixon-Coles para tener en cuenta la correlación entre goles y resultados."
+    },
+    "PASS": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (cálculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontró valor esperado positivo. No coloques esta apuesta."
+    },
+    "STRONG": {
+        "en": "STRONG: Highest tier. Model edge is positive and ROBUST — holds up in aggressive, base, and conservative sensitivity runs with good EV.",
+        "es": "STRONG: Máximo nivel. El borde del modelo es positivo y ROBUSTO — se mantiene en corridas de sensibilidad agresiva, base y conservadora con buen EV."
+    },
+    "SPEC": {
+        "en": "SPEC (Speculative): Positive EV mainly in base (or aggressive) case, or a longshot. Higher variance — use very small stakes only (0.25-0.5% bankroll).",
+        "es": "SPEC (Especulativa): EV positivo principalmente en caso base (o agresivo), o un longshot. Mayor varianza — usa stakes muy pequeños solamente (0.25-0.5% del bankroll)."
+    },
+    "EV": {
+        "en": "EV % (Expected Value): (model prob × live decimal odds − 1) × 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo × cuota decimal live − 1) × 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+    },
+    "Rule14": {
+        "en": "Rule 14 (favorite-longshot bias): Longshots (odds ≥4.0) get a small probability uplift; heavy favorites get shrinkage. Corrects documented market bias.",
+        "es": "Regla 14 (sesgo favorito-longshot): Los longshots (cuotas ≥4.0) reciben un pequeño aumento de probabilidad; los favoritos pesados se reducen. Corrige un sesgo documentado del mercado."
+    },
+    "Rule21": {
+        "en": "Rule 21: WC-specific finetunes (opener draw boost, minnow resilience, rotation penalty). Stops overrating big teams in low-data group games.",
+        "es": "Regla 21: Ajustes finos específicos del Mundial (impulso empate en aperturas, resiliencia minnow, penalización rotación). Evita sobrevalorar grandes equipos en partidos de grupos con poca data."
+    }
+}
+
+def get_explanation(term_key: str, strength: str = None, is_ev: bool = False) -> dict:
+    """Return bilingual explanation for a term. Used to populate JSON for dynamic hovers.
+    term_key is the primary bet term (win, handicap_minus1, dc...). 
+    strength param used only when explicitly requesting strength tier expl (see call sites).
+    """
+    if is_ev:
+        return TERM_GLOSSARY.get("EV", {"en": "EV = expected value.", "es": "EV = valor esperado."})
+    # When caller wants the strength tier expl, pass is_strength=True conceptually via special key
+    if term_key and str(term_key).upper() in ("STRONG", "SPEC", "PASS", "MODERATE"):
+        k = str(term_key).upper()
+        return TERM_GLOSSARY.get(k, TERM_GLOSSARY["PASS"])
+    if strength and str(strength).upper() in ("STRONG", "SPEC", "PASS", "MODERATE") and (not term_key or str(term_key).lower() not in TERM_GLOSSARY):
+        # legacy safeguard
+        k = str(strength).upper()
+        return TERM_GLOSSARY.get(k, TERM_GLOSSARY["PASS"])
+    key = (term_key or "win").lower()
+    return TERM_GLOSSARY.get(key, TERM_GLOSSARY["win"])
+
+# ============================================================
 # CORE FUNCTIONS (exact from validated wc_model_v3.py + finetunes)
 # Copious comments + docstrings with examples + "why this was chosen" (backtest evidence, AGENT protocol, literature).
 # ============================================================
@@ -437,21 +512,45 @@ if __name__ == "__main__":
     import json
     json_out = []
     for r in results:
+        rec = r.get('rec_selection') or r.get('sel_key') or 'win'
+        strength = r.get('strength') or 'PASS'
+        ev = r.get('ev_pct')
+        # Predictably generated explanation for this match's primary recommendation term (e.g. handicap_minus1)
+        expl = get_explanation(rec)
+        # Strength tier expl (separate predictable key)
+        str_expl = get_explanation(strength)
+        # Also attach EV explanation (always useful)
+        ev_expl = get_explanation(None, is_ev=True)
         json_out.append({
             "match": r['match'],
             "p_win": round(r.get('p_win_a_raw', 0), 1),
             "p_draw": round(r.get('p_draw_raw', 0), 1),
             "p_loss": round(r.get('p_loss_raw', 0), 1),
-            "ev_pct": r.get('ev_pct'),
-            "recommendation": r.get('rec_selection') or r.get('sel_key'),
+            "ev_pct": ev,
+            "recommendation": rec,
             "rec_odds": r.get('rec_odds'),
-            "strength": r.get('strength'),
+            "strength": strength,
             "rule_notes": r.get('rule_notes', r.get('finetunes')),
             "screenshot_source": r.get('screenshot_source_odds'),
             "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
-            "date": r.get('match', '').split()[-1] if '2026' in str(r.get('match','')) else ''
+            "date": r.get('match', '').split()[-1] if '2026' in str(r.get('match','')) else '',
+            # NEW: explanations always emitted in JSON structure for dynamic hover tooltips
+            "term_key": rec,
+            "explanation": expl,
+            "strength_explanation": str_expl,
+            "ev_explanation": ev_expl
         })
+    # Write as object containing predictions + full glossary so ALL betting terms
+    # (handicap_minus1, ENG-1 style, STRONG, EV, Rule21 etc) are generated here
+    # and can be linked dynamically from JS (no hard-coded strings in UI).
+    out_obj = {
+        "predictions": json_out,
+        "glossary": TERM_GLOSSARY,
+        "generated_by": "wc_replicable_pipeline.py",
+        "schema_note": "Each prediction has .explanation + .term_key; root glossary covers all common terms for dynamic .abbr tooltips"
+    }
     with open("wc_june17_21_predictions.json", "w") as jf:
-        json.dump(json_out, jf, indent=2)
-    print("\n[JSON] wc_june17_21_predictions.json written for HTML dynamic population (20 entries).")
+        json.dump(out_obj, jf, indent=2)
+    print("\n[JSON] wc_june17_21_predictions.json written (object with predictions[] + glossary).")
+    print("Explanations included for dynamic hover on all betting terms (rec/strength/EV).")
     print("Use this + the CSV + provenance to replicate every number in the report.")

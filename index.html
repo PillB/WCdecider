@@ -1710,20 +1710,65 @@
             }
         });
         // ===== DYNAMIC DATA POPULATION (element-by-element from JSON - verified schema) =====
-        function createMatchCard(item) {
+        // Helper: produce safe .abbr + .tooltip HTML string (bilingual)
+        function makeAbbrHTML(displayText, enExpl, esExpl) {
+            const t = String(displayText || '').replace(/</g, '&lt;');
+            const en = String(enExpl || '').replace(/</g, '&lt;');
+            const es = String(esExpl || '').replace(/</g, '&lt;');
+            return `<span class="abbr">${t}<span class="tooltip"><span class="en">${en}</span><span class="es">${es}</span></span></span>`;
+        }
+
+        // Humanize recommendation key into user-friendly label like "ENG -1"
+        function humanizeRec(rec, matchName) {
+            if (!rec) return String(rec || '');
+            const firstTeam = (matchName || '').split(' vs ')[0] || '';
+            const short = firstTeam.slice(0, 3).toUpperCase().replace(/[^A-Z]/g, '') || 'TM';
+            const r = String(rec).toLowerCase();
+            if (r === 'handicap_minus1') return short + ' -1';
+            if (r === 'handicap_plus1') return short + ' +1';
+            if (r === 'win') return '1X2 win';
+            if (r === 'dc') return 'Double Chance';
+            if (r === 'over35') return 'Over 3.5';
+            if (r === 'combo') return 'Combo';
+            return String(rec);
+        }
+
+        function getItemExplanation(item, key) {
+            // Prefer per-item generated fields (always emitted by pipeline for predictable linking)
+            if (!item) return { en: 'Betting term.', es: 'Término de apuestas.' };
+            if (key === 'EV' && item.ev_explanation && typeof item.ev_explanation === 'object') return item.ev_explanation;
+            if (key === 'strength' && item.strength_explanation && typeof item.strength_explanation === 'object') return item.strength_explanation;
+            if (item.explanation && typeof item.explanation === 'object') return item.explanation;
+            // Fallback: caller can pass glossary lookup
+            return { en: 'Betting term.', es: 'Término de apuestas.' };
+        }
+
+        function createMatchCard(item, glossary) {
             if (!item || typeof item !== 'object') return document.createElement('div');
             const div = document.createElement('div');
             div.className = 'bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden mb-6';
             const ev = item.ev_pct || 0;
             const evCls = ev > 0 ? 'text-emerald-400' : (ev < 0 ? 'text-rose-400' : '');
-            const rec = (item.recommendation || 'win').toUpperCase();
+            const recRaw = item.recommendation || 'win';
+            const recLabel = humanizeRec(recRaw, item.match);
+            const strength = item.strength || 'PASS';
+
+            // Pull generated explanations (always present from pipeline JSON)
+            const recExpl = getItemExplanation(item);
+            const strExpl = getItemExplanation(item, 'strength');
+            const evExpl = getItemExplanation(item, 'EV');
+
+            const recAbbr = makeAbbrHTML(recLabel, recExpl.en, recExpl.es);
+            const strAbbr = makeAbbrHTML(strength, strExpl.en || strExpl.es, strExpl.es || strExpl.en);
+            const evAbbr = makeAbbrHTML(ev + '% EV', evExpl.en, evExpl.es);
+
             div.innerHTML = `
                 <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
                     <div>
                         <span class="font-semibold"><span class="en">${item.match || ''}</span><span class="es">${item.match || ''}</span></span>
                         <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">${item.date || ''}</span><span class="es">${item.date || ''}</span></span>
                     </div>
-                    <div class="text-xs ${evCls} font-mono">${ev}% EV • ${item.strength || 'PASS'}</div>
+                    <div class="text-xs ${evCls} font-mono">${evAbbr} • ${strAbbr}</div>
                 </div>
                 <div class="p-5 grid grid-cols-1 md:grid-cols-3 gap-5 text-sm">
                     <div>
@@ -1734,7 +1779,7 @@
                     <div>
                         <div class="font-medium mb-1"><span class="en">Rec</span><span class="es">Rec</span></div>
                         <div class="p-2 bg-emerald-950/60 border border-emerald-900 rounded text-xs">
-                            <strong>${rec} @${item.rec_odds || ''} (${ev}% EV)</strong><br>
+                            <strong>${recAbbr} @${item.rec_odds || ''}</strong><br>
                             <span class="text-[10px]">${item.rule_notes || ''}</span>
                         </div>
                     </div>
@@ -1744,7 +1789,7 @@
                     </div>
                 </div>
                 <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3">
-                    <strong><span class="en">ELI5:</span><span class="es">ELI5:</span></strong> <span class="en">Pipeline P(win)=${item.p_win || 0}%. At odds ${item.rec_odds} EV=${ev}%. ${ev > 0 ? 'Positive value.' : 'Skip or low priority.'} Always re-verify live screenshot.</span><span class="es">P(win) pipeline=${item.p_win || 0}%. A cuota ${item.rec_odds} EV=${ev}%. ${ev > 0 ? 'Valor positivo.' : 'Omitir o baja prioridad.'} Siempre re-verifica captura live.</span>
+                    <strong><span class="en">ELI5:</span><span class="es">ELI5:</span></strong> <span class="en">Pipeline P(win)=${item.p_win || 0}%. At odds ${item.rec_odds} EV=${ev}%. ${ev > 0 ? 'Positive value.' : 'Skip or low priority.'} Always re-verify live screenshot. Hover any term for explanation.</span><span class="es">P(win) pipeline=${item.p_win || 0}%. A cuota ${item.rec_odds} EV=${ev}%. ${ev > 0 ? 'Valor positivo.' : 'Omitir o baja prioridad.'} Siempre re-verifica captura live. Pasa el ratón sobre cualquier término para explicación.</span>
                 </div>`;
             return div;
         }
@@ -1752,10 +1797,13 @@
         async function loadDynamicData() {
             const tbody = document.getElementById('recs-tbody');
             const cardsC = document.getElementById('dynamic-match-cards');
+            let glossary = {};
             try {
                 const r = await fetch('wc_june17_21_predictions.json');
-                const jsonData = await r.json();
-                if (!Array.isArray(jsonData)) return;
+                const raw = await r.json();
+                // Support both legacy array and new {predictions, glossary} structure
+                const jsonData = Array.isArray(raw) ? raw : (raw && raw.predictions ? raw.predictions : []);
+                if (raw && raw.glossary) glossary = raw.glossary;
 
                 // Element-by-element: every JSON item -> table row (no skip)
                 if (tbody) {
@@ -1763,13 +1811,46 @@
                     jsonData.forEach((item) => {
                         const tr = document.createElement('tr');
                         const eClass = (item.ev_pct > 0) ? 'ev-positive' : ((item.ev_pct < 0) ? 'ev-negative' : '');
-                        tr.innerHTML = `<td><span class="en">${item.match || ''}</span><span class="es">${item.match || ''}</span></td>
-                            <td><span class="en">${item.recommendation || ''}</span><span class="es">${item.recommendation || ''}</span></td>
-                            <td>${item.rec_odds || ''}</td>
-                            <td class="font-mono">${item.p_win || ''}</td>
-                            <td class="${eClass}">${item.ev_pct || ''}</td>
-                            <td><span class="en">${item.strength || ''}</span><span class="es">${item.strength || ''}</span></td>
-                            <td><span class="en">${item.rule_notes || ''}</span><span class="es">${item.rule_notes || ''}</span></td>`;
+                        const recLabel = humanizeRec(item.recommendation, item.match);
+                        const recExpl = getItemExplanation(item);
+                        const strExpl = getItemExplanation(item, 'strength');
+                        const evExpl = getItemExplanation(item, 'EV');
+
+                        const recCell = makeAbbrHTML(recLabel, recExpl.en, recExpl.es);
+                        const strCell = makeAbbrHTML(item.strength || '', strExpl.en, strExpl.es);
+                        const evCell = makeAbbrHTML(String(item.ev_pct || ''), evExpl.en, evExpl.es);
+
+                        // Build row with DOM for abbrs (predictable hover)
+                        const tdMatch = document.createElement('td');
+                        tdMatch.innerHTML = `<span class="en">${item.match || ''}</span><span class="es">${item.match || ''}</span>`;
+
+                        const tdRec = document.createElement('td');
+                        tdRec.innerHTML = recCell;
+
+                        const tdOdds = document.createElement('td');
+                        tdOdds.textContent = item.rec_odds || '';
+
+                        const tdP = document.createElement('td');
+                        tdP.className = 'font-mono';
+                        tdP.textContent = item.p_win || '';
+
+                        const tdEV = document.createElement('td');
+                        tdEV.className = eClass;
+                        tdEV.innerHTML = evCell;
+
+                        const tdStr = document.createElement('td');
+                        tdStr.innerHTML = strCell;
+
+                        const tdRule = document.createElement('td');
+                        tdRule.innerHTML = `<span class="en">${item.rule_notes || ''}</span><span class="es">${item.rule_notes || ''}</span>`;
+
+                        tr.appendChild(tdMatch);
+                        tr.appendChild(tdRec);
+                        tr.appendChild(tdOdds);
+                        tr.appendChild(tdP);
+                        tr.appendChild(tdEV);
+                        tr.appendChild(tdStr);
+                        tr.appendChild(tdRule);
                         tbody.appendChild(tr);
                     });
                 }
@@ -1778,7 +1859,7 @@
                 if (cardsC) {
                     cardsC.innerHTML = '';
                     jsonData.forEach((item) => {
-                        cardsC.appendChild(createMatchCard(item));
+                        cardsC.appendChild(createMatchCard(item, glossary));
                     });
                 }
             } catch (e) {

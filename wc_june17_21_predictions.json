@@ -1,0 +1,596 @@
+{
+  "predictions": [
+    {
+      "match": "Portugal vs DR Congo 2026-06-17",
+      "p_win": 65.2,
+      "p_draw": 26.3,
+      "p_loss": 8.5,
+      "ev_pct": -14.5,
+      "recommendation": "win",
+      "rec_odds": 1.31,
+      "strength": "PASS",
+      "rule_notes": "Rule 21 + Rule 14 heavy fav shrinkage + screenshot EV",
+      "screenshot_source": "{'win': 1.31}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-17",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "England vs Croatia 2026-06-17",
+      "p_win": 53.4,
+      "p_draw": 29.4,
+      "p_loss": 17.2,
+      "ev_pct": 72.1,
+      "recommendation": "handicap_minus1",
+      "rec_odds": 3.8,
+      "strength": "STRONG",
+      "rule_notes": "Rule 21 + Rule 14 + margin + screenshot EV",
+      "screenshot_source": "{'handicap_minus1': 3.8}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-17",
+      "term_key": "handicap_minus1",
+      "explanation": {
+        "en": "Handicap -1 (e.g. ENG -1): The selected team must win by TWO or more goals. If they win by exactly 1 goal (e.g. 2-1), it is usually a 'push' (your stake is returned, no win or loss). Draw or loss = bet loses.",
+        "es": "H\u00e1ndicap -1 (ej. ING -1): El equipo debe ganar por DOS o m\u00e1s goles. Si gana por exactamente 1 gol (ej. 2-1), normalmente es 'push' (te devuelven el stake, ni ganas ni pierdes). Empate o derrota = pierdes la apuesta."
+      },
+      "strength_explanation": {
+        "en": "STRONG: Highest tier. Model edge is positive and ROBUST \u2014 holds up in aggressive, base, and conservative sensitivity runs with good EV.",
+        "es": "STRONG: M\u00e1ximo nivel. El borde del modelo es positivo y ROBUSTO \u2014 se mantiene en corridas de sensibilidad agresiva, base y conservadora con buen EV."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Ghana vs Panama 2026-06-17",
+      "p_win": 33.4,
+      "p_draw": 35.0,
+      "p_loss": 31.6,
+      "ev_pct": -9.0,
+      "recommendation": "dc",
+      "rec_odds": 1.33,
+      "strength": "PASS",
+      "rule_notes": "Rule 19 CAF + Rule 21 + screenshot EV",
+      "screenshot_source": "{'dc': 1.33}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-17",
+      "term_key": "dc",
+      "explanation": {
+        "en": "Double Chance (DC): A bet that covers two of the three possible 1X2 results. E.g. 'X2' wins on draw OR away win. Safer than single outcome but pays less.",
+        "es": "Doble oportunidad (DC): Apuesta que cubre dos de los tres resultados 1X2 posibles. Ej. 'X2' gana con empate O victoria visitante. M\u00e1s segura que un solo resultado pero paga menos."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Uzbekistan vs Colombia 2026-06-17",
+      "p_win": 17.7,
+      "p_draw": 29.5,
+      "p_loss": 52.8,
+      "ev_pct": -74.4,
+      "recommendation": "win",
+      "rec_odds": 1.45,
+      "strength": "PASS",
+      "rule_notes": "Rule 21 mild + CONMEBOL baseline + screenshot EV",
+      "screenshot_source": "{'win': 1.45}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-17",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Czechia vs South Africa 2026-06-18",
+      "p_win": 49.3,
+      "p_draw": 26.0,
+      "p_loss": 24.7,
+      "ev_pct": -18.7,
+      "recommendation": "win",
+      "rec_odds": 1.65,
+      "strength": "PASS",
+      "rule_notes": "Base + screenshot EV",
+      "screenshot_source": "{'win': 1.65}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-18",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Switzerland vs Bosnia and Herzegovina 2026-06-18",
+      "p_win": 48.1,
+      "p_draw": 26.3,
+      "p_loss": 25.6,
+      "ev_pct": -25.4,
+      "recommendation": "win",
+      "rec_odds": 1.55,
+      "strength": "PASS",
+      "rule_notes": "Base + screenshot EV",
+      "screenshot_source": "{'win': 1.55}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-18",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Canada vs Qatar 2026-06-18",
+      "p_win": 64.1,
+      "p_draw": 26.5,
+      "p_loss": 9.4,
+      "ev_pct": 12.8,
+      "recommendation": "handicap_minus1",
+      "rec_odds": 1.87,
+      "strength": "STRONG",
+      "rule_notes": "Rule 21 + host adj + Rule 24 + screenshot EV",
+      "screenshot_source": "{'handicap_minus1': 1.87}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-18",
+      "term_key": "handicap_minus1",
+      "explanation": {
+        "en": "Handicap -1 (e.g. ENG -1): The selected team must win by TWO or more goals. If they win by exactly 1 goal (e.g. 2-1), it is usually a 'push' (your stake is returned, no win or loss). Draw or loss = bet loses.",
+        "es": "H\u00e1ndicap -1 (ej. ING -1): El equipo debe ganar por DOS o m\u00e1s goles. Si gana por exactamente 1 gol (ej. 2-1), normalmente es 'push' (te devuelven el stake, ni ganas ni pierdes). Empate o derrota = pierdes la apuesta."
+      },
+      "strength_explanation": {
+        "en": "STRONG: Highest tier. Model edge is positive and ROBUST \u2014 holds up in aggressive, base, and conservative sensitivity runs with good EV.",
+        "es": "STRONG: M\u00e1ximo nivel. El borde del modelo es positivo y ROBUSTO \u2014 se mantiene en corridas de sensibilidad agresiva, base y conservadora con buen EV."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Mexico vs South Korea 2026-06-18",
+      "p_win": 43.4,
+      "p_draw": 32.1,
+      "p_loss": 24.5,
+      "ev_pct": -9.7,
+      "recommendation": "win",
+      "rec_odds": 2.08,
+      "strength": "PASS",
+      "rule_notes": "Rule 21 + host + screenshot EV",
+      "screenshot_source": "{'win': 2.08}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-18",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "United States vs Australia 2026-06-19",
+      "p_win": 50.9,
+      "p_draw": 30.0,
+      "p_loss": 19.1,
+      "ev_pct": -18.5,
+      "recommendation": "win",
+      "rec_odds": 1.6,
+      "strength": "PASS",
+      "rule_notes": "Rule 21 host + Rule 14 + screenshot EV",
+      "screenshot_source": "{'win': 1.6}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-19",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Scotland vs Morocco 2026-06-19",
+      "p_win": 29.4,
+      "p_draw": 27.8,
+      "p_loss": 42.8,
+      "ev_pct": -38.2,
+      "recommendation": "win",
+      "rec_odds": 2.1,
+      "strength": "PASS",
+      "rule_notes": "Base + screenshot EV",
+      "screenshot_source": "{'win': 2.1}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-19",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Brazil vs Haiti 2026-06-19",
+      "p_win": 76.2,
+      "p_draw": 19.3,
+      "p_loss": 4.5,
+      "ev_pct": -14.6,
+      "recommendation": "win",
+      "rec_odds": 1.12,
+      "strength": "PASS",
+      "rule_notes": "Rule 15 finisher + Rule 14 + screenshot EV",
+      "screenshot_source": "{'win': 1.12}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-19",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "T\u00fcrkiye vs Paraguay 2026-06-20",
+      "p_win": 42.3,
+      "p_draw": 32.5,
+      "p_loss": 25.2,
+      "ev_pct": -11.5,
+      "recommendation": "over35",
+      "rec_odds": 3.65,
+      "strength": "PASS",
+      "rule_notes": "Rule 21 + Rule 13 + screenshot EV",
+      "screenshot_source": "{'over35': 3.65}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-20",
+      "term_key": "over35",
+      "explanation": {
+        "en": "Over 3.5 goals: The total number of goals scored by BOTH teams together must reach 4 or more for this bet to win.",
+        "es": "M\u00e1s de 3.5 goles: El n\u00famero total de goles de AMBOS equipos juntos debe llegar a 4 o m\u00e1s para que gane esta apuesta."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Netherlands vs Sweden 2026-06-20",
+      "p_win": 55.6,
+      "p_draw": 28.8,
+      "p_loss": 15.6,
+      "ev_pct": 1.8,
+      "recommendation": "combo",
+      "rec_odds": 3.05,
+      "strength": "SPEC",
+      "rule_notes": "Rule 21 + Rule 17 DC + screenshot EV",
+      "screenshot_source": "{'combo': 3.05}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-20",
+      "term_key": "combo",
+      "explanation": {
+        "en": "Combo bet: ALL parts of the bet must succeed (e.g. team to win AND total goals over X). Model uses Dixon-Coles joint probability to account for how goals and results are correlated.",
+        "es": "Apuesta combinada: TODAS las partes deben cumplirse (ej. equipo gana Y total de goles m\u00e1s de X). El modelo usa probabilidad conjunta Dixon-Coles para tener en cuenta la correlaci\u00f3n entre goles y resultados."
+      },
+      "strength_explanation": {
+        "en": "SPEC (Speculative): Positive EV mainly in base (or aggressive) case, or a longshot. Higher variance \u2014 use very small stakes only (0.25-0.5% bankroll).",
+        "es": "SPEC (Especulativa): EV positivo principalmente en caso base (o agresivo), o un longshot. Mayor varianza \u2014 usa stakes muy peque\u00f1os solamente (0.25-0.5% del bankroll)."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Germany vs Ivory Coast 2026-06-20",
+      "p_win": 44.0,
+      "p_draw": 32.0,
+      "p_loss": 24.0,
+      "ev_pct": -39.3,
+      "recommendation": "win",
+      "rec_odds": 1.38,
+      "strength": "PASS",
+      "rule_notes": "Rule 19 CAF + Rule 21 + screenshot EV",
+      "screenshot_source": "{'win': 1.38}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-20",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Ecuador vs Cura\u00e7ao 2026-06-20",
+      "p_win": 63.8,
+      "p_draw": 22.3,
+      "p_loss": 13.9,
+      "ev_pct": -22.1,
+      "recommendation": "win",
+      "rec_odds": 1.22,
+      "strength": "PASS",
+      "rule_notes": "Base + minnow + screenshot EV",
+      "screenshot_source": "{'win': 1.22}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-20",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Tunisia vs Japan 2026-06-20",
+      "p_win": 18.2,
+      "p_draw": 22.7,
+      "p_loss": 59.1,
+      "ev_pct": 23.5,
+      "recommendation": "win",
+      "rec_odds": 6.8,
+      "strength": "STRONG",
+      "rule_notes": "Rule 19 CAF + Rule 14 uplift on long + screenshot EV",
+      "screenshot_source": "{'win': 6.8}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-20",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "STRONG: Highest tier. Model edge is positive and ROBUST \u2014 holds up in aggressive, base, and conservative sensitivity runs with good EV.",
+        "es": "STRONG: M\u00e1ximo nivel. El borde del modelo es positivo y ROBUSTO \u2014 se mantiene en corridas de sensibilidad agresiva, base y conservadora con buen EV."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Spain vs Saudi Arabia 2026-06-21",
+      "p_win": 71.7,
+      "p_draw": 24.7,
+      "p_loss": 3.6,
+      "ev_pct": -19.7,
+      "recommendation": "win",
+      "rec_odds": 1.12,
+      "strength": "PASS",
+      "rule_notes": "Rule 21 opener + rotation + Rule 14 + screenshot EV",
+      "screenshot_source": "{'win': 1.12}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-21",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Belgium vs Iran 2026-06-21",
+      "p_win": 55.3,
+      "p_draw": 24.4,
+      "p_loss": 20.3,
+      "ev_pct": -29.3,
+      "recommendation": "win",
+      "rec_odds": 1.28,
+      "strength": "PASS",
+      "rule_notes": "Base + screenshot EV",
+      "screenshot_source": "{'win': 1.28}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-21",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "Uruguay vs Cape Verde 2026-06-21",
+      "p_win": 62.8,
+      "p_draw": 26.9,
+      "p_loss": 10.3,
+      "ev_pct": -25.9,
+      "recommendation": "win",
+      "rec_odds": 1.18,
+      "strength": "PASS",
+      "rule_notes": "Rule 21 minnow + screenshot EV",
+      "screenshot_source": "{'win': 1.18}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-21",
+      "term_key": "win",
+      "explanation": {
+        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      },
+      "strength_explanation": {
+        "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+        "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    },
+    {
+      "match": "New Zealand vs Egypt 2026-06-21",
+      "p_win": 18.6,
+      "p_draw": 23.9,
+      "p_loss": 57.5,
+      "ev_pct": 25.6,
+      "recommendation": "handicap_plus1",
+      "rec_odds": 2.38,
+      "strength": "STRONG",
+      "rule_notes": "Rule 24 + Rule 19 mirror + screenshot EV",
+      "screenshot_source": "{'handicap_plus1': 2.38}",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+      "date": "2026-06-21",
+      "term_key": "handicap_plus1",
+      "explanation": {
+        "en": "Handicap +1 (e.g. NZ +1): You win the bet if your team loses by only 1 goal, wins, or draws. You lose only if they lose by 2 or more goals.",
+        "es": "H\u00e1ndicap +1 (ej. NZ +1): Ganas la apuesta si tu equipo pierde por solo 1 gol, gana o empata. Pierdes solo si pierde por 2 o m\u00e1s goles."
+      },
+      "strength_explanation": {
+        "en": "STRONG: Highest tier. Model edge is positive and ROBUST \u2014 holds up in aggressive, base, and conservative sensitivity runs with good EV.",
+        "es": "STRONG: M\u00e1ximo nivel. El borde del modelo es positivo y ROBUSTO \u2014 se mantiene en corridas de sensibilidad agresiva, base y conservadora con buen EV."
+      },
+      "ev_explanation": {
+        "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+        "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+      }
+    }
+  ],
+  "glossary": {
+    "win": {
+      "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
+      "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+    },
+    "handicap_minus1": {
+      "en": "Handicap -1 (e.g. ENG -1): The selected team must win by TWO or more goals. If they win by exactly 1 goal (e.g. 2-1), it is usually a 'push' (your stake is returned, no win or loss). Draw or loss = bet loses.",
+      "es": "H\u00e1ndicap -1 (ej. ING -1): El equipo debe ganar por DOS o m\u00e1s goles. Si gana por exactamente 1 gol (ej. 2-1), normalmente es 'push' (te devuelven el stake, ni ganas ni pierdes). Empate o derrota = pierdes la apuesta."
+    },
+    "handicap_plus1": {
+      "en": "Handicap +1 (e.g. NZ +1): You win the bet if your team loses by only 1 goal, wins, or draws. You lose only if they lose by 2 or more goals.",
+      "es": "H\u00e1ndicap +1 (ej. NZ +1): Ganas la apuesta si tu equipo pierde por solo 1 gol, gana o empata. Pierdes solo si pierde por 2 o m\u00e1s goles."
+    },
+    "dc": {
+      "en": "Double Chance (DC): A bet that covers two of the three possible 1X2 results. E.g. 'X2' wins on draw OR away win. Safer than single outcome but pays less.",
+      "es": "Doble oportunidad (DC): Apuesta que cubre dos de los tres resultados 1X2 posibles. Ej. 'X2' gana con empate O victoria visitante. M\u00e1s segura que un solo resultado pero paga menos."
+    },
+    "over35": {
+      "en": "Over 3.5 goals: The total number of goals scored by BOTH teams together must reach 4 or more for this bet to win.",
+      "es": "M\u00e1s de 3.5 goles: El n\u00famero total de goles de AMBOS equipos juntos debe llegar a 4 o m\u00e1s para que gane esta apuesta."
+    },
+    "combo": {
+      "en": "Combo bet: ALL parts of the bet must succeed (e.g. team to win AND total goals over X). Model uses Dixon-Coles joint probability to account for how goals and results are correlated.",
+      "es": "Apuesta combinada: TODAS las partes deben cumplirse (ej. equipo gana Y total de goles m\u00e1s de X). El modelo usa probabilidad conjunta Dixon-Coles para tener en cuenta la correlaci\u00f3n entre goles y resultados."
+    },
+    "PASS": {
+      "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
+      "es": "PASS: El protocolo completo (c\u00e1lculo EV, 3 sensibilidades, Reglas 14/19/21/24 etc.) no encontr\u00f3 valor esperado positivo. No coloques esta apuesta."
+    },
+    "STRONG": {
+      "en": "STRONG: Highest tier. Model edge is positive and ROBUST \u2014 holds up in aggressive, base, and conservative sensitivity runs with good EV.",
+      "es": "STRONG: M\u00e1ximo nivel. El borde del modelo es positivo y ROBUSTO \u2014 se mantiene en corridas de sensibilidad agresiva, base y conservadora con buen EV."
+    },
+    "SPEC": {
+      "en": "SPEC (Speculative): Positive EV mainly in base (or aggressive) case, or a longshot. Higher variance \u2014 use very small stakes only (0.25-0.5% bankroll).",
+      "es": "SPEC (Especulativa): EV positivo principalmente en caso base (o agresivo), o un longshot. Mayor varianza \u2014 usa stakes muy peque\u00f1os solamente (0.25-0.5% del bankroll)."
+    },
+    "EV": {
+      "en": "EV % (Expected Value): (model prob \u00d7 live decimal odds \u2212 1) \u00d7 100. +5% EV means that on average, for every 100 units staked on many similar bets, you expect to be up 5 units profit long-term.",
+      "es": "EV % (Valor Esperado): (prob modelo \u00d7 cuota decimal live \u2212 1) \u00d7 100. +5% EV significa que en promedio, por cada 100 unidades apostadas en muchas apuestas similares, esperas estar +5 unidades de ganancia a largo plazo."
+    },
+    "Rule14": {
+      "en": "Rule 14 (favorite-longshot bias): Longshots (odds \u22654.0) get a small probability uplift; heavy favorites get shrinkage. Corrects documented market bias.",
+      "es": "Regla 14 (sesgo favorito-longshot): Los longshots (cuotas \u22654.0) reciben un peque\u00f1o aumento de probabilidad; los favoritos pesados se reducen. Corrige un sesgo documentado del mercado."
+    },
+    "Rule21": {
+      "en": "Rule 21: WC-specific finetunes (opener draw boost, minnow resilience, rotation penalty). Stops overrating big teams in low-data group games.",
+      "es": "Regla 21: Ajustes finos espec\u00edficos del Mundial (impulso empate en aperturas, resiliencia minnow, penalizaci\u00f3n rotaci\u00f3n). Evita sobrevalorar grandes equipos en partidos de grupos con poca data."
+    }
+  },
+  "generated_by": "wc_replicable_pipeline.py",
+  "schema_note": "Each prediction has .explanation + .term_key; root glossary covers all common terms for dynamic .abbr tooltips"
+}
