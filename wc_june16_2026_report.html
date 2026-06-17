@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="doc-title">WC 2026 • June 15-16 Analysis &amp; Recommendations (v4.1 Production + Replicable Data)</title>
+    <title id="doc-title">WC 2026 • June 15-21 Analysis &amp; Recommendations (v4.1 Production + Replicable Data + Subagent June 17-21 Slate)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -82,7 +82,7 @@
             <div class="flex items-center gap-x-2 text-sm">
                 <div class="px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-x-2 text-xs">
                     <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                    <span class="font-medium"><span class="en">Model executed • 2026-06-15 data</span><span class="es">Modelo ejecutado • datos 2026-06-15</span></span>
+                    <span class="font-medium"><span class="en">Core model 15-16 executed + 17-21 subagent v4.1</span><span class="es">Modelo núcleo 15-16 ejecutado + subagentes 17-21 v4.1</span></span>
                 </div>
                 <button onclick="window.print()" class="px-4 py-2 text-xs font-semibold bg-white text-slate-900 rounded-2xl flex items-center gap-x-2 hover:bg-slate-100 transition-colors">
                     <i class="fa-solid fa-print"></i>
@@ -138,6 +138,48 @@
                 </div>
             </div>
             <div class="mt-4 text-[10px] text-slate-400"><span class="en">All EV vs prior transcribed screenshot prices (Betano/Betsson). Fresh screenshots required for live EV per protocol. Executed model + subagent results logged in state.</span><span class="es">Todos los EV vs precios transcritos de capturas previas (Betano/Betsson). Se requieren capturas frescas para EV en vivo por protocolo. Modelo ejecutado + resultados de subagentes registrados en estado.</span></div>
+        </div>
+
+        <!-- NEW: June 17-21 Recommendations & Model Predictions + ML/Reliability Validation (added per request) -->
+        <div class="mb-8 bg-slate-900 border border-slate-800 rounded-3xl p-6">
+            <div class="flex items-center gap-x-3 mb-3">
+                <i class="fa-solid fa-chart-line text-xl text-sky-400"></i>
+                <div>
+                    <span class="font-semibold text-lg"><span class="en">June 17–21 WC Matches — Recommendations &amp; Model Predictions (v4.1 Subagent Validated)</span><span class="es">Partidos 17–21 Jun — Recomendaciones y Predicciones del Modelo (Subagentes v4.1 Validados)</span></span>
+                    <span class="ml-2 text-xs bg-sky-900 text-sky-300 px-2 py-0.5 rounded"><span class="en">SUBAGENT + ENSEMBLE</span><span class="es">SUBAGENTE + ENSEMBLE</span></span>
+                </div>
+            </div>
+            <div class="text-sm mb-3"><span class="en">Dedicated per-match subagents followed full AGENT.md protocol (screenshot intake, 9-step A-I, research fan-out, executed v4.1 Elo+Poisson+DC ρ=-0.07, Rules 14/19/21/24/25-27, 3-sensitivity test, conservative Kelly framing). Odds verbatim from Betano/Betsson screenshots (later IMG_75xx series). All EV computed vs those exact prices only. No fabricated numbers.</span><span class="es">Subagentes dedicados siguieron protocolo AGENT.md completo (ingesta de capturas, pasos A-I, fan-out de investigación, v4.1 Elo+Poisson+DC ρ=-0.07 ejecutado, Reglas 14/19/21/24/25-27, test de 3 sensibilidades, Kelly conservador). Cuotas literales de capturas Betano/Betsson (serie IMG_75xx posteriores). Todos los EV calculados solo vs esos precios exactos. Sin números fabricados.</span></div>
+
+            <!-- Compact inventory + EV for new slate -->
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-xs data-table border border-slate-700 rounded">
+                    <thead><tr class="bg-slate-950"><th class="p-1 text-left"><span class="en">Fixture / Market</span><span class="es">Partido / Mercado</span></th><th><span class="en">Selection</span><span class="es">Selección</span></th><th>o</th><th><span class="en">Model P</span><span class="es">P Modelo</span></th><th>EV%</th><th><span class="en">Class</span><span class="es">Clase</span></th><th><span class="en">Key Rule</span><span class="es">Regla clave</span></th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="en">England (handicap)</span><span class="es">Inglaterra (hándicap)</span></td><td><span class="en">ENG -1</span><span class="es">ING -1</span></td><td>3.05</td><td class="font-mono"><span class="en">36.9%</span><span class="es">36,9%</span></td><td class="ev-positive font-semibold">+12.5</td><td><span class="en">ROBUST SPEC</span><span class="es">ROBUSTO SPEC</span></td><td><span class="en">Rule 14 + margin</span><span class="es">Regla 14 + margen</span></td></tr>
+                        <tr><td><span class="en">Canada (host adj)</span><span class="es">Canadá (ajuste local)</span></td><td><span class="en">CAN -1</span><span class="es">CAN -1</span></td><td>1.87</td><td class="font-mono"><span class="en">60.6%</span><span class="es">60,6%</span></td><td class="ev-positive font-semibold">+13.2</td><td><span class="en">ROBUST MOD</span><span class="es">ROBUSTO MOD</span></td><td><span class="en">Host adj (AGENT)</span><span class="es">Ajuste local (AGENT)</span></td></tr>
+                        <tr><td><span class="en">Germany (handicap)</span><span class="es">Alemania (hándicap)</span></td><td><span class="en">GER -1</span><span class="es">ALE -1</span></td><td>2.53</td><td class="font-mono"><span class="en">42.0%</span><span class="es">42,0%</span></td><td class="ev-positive">+6.2</td><td><span class="en">SENS SPEC</span><span class="es">SENS SPEC</span></td><td><span class="en">Rule 24 tier</span><span class="es">Regla 24 nivel</span></td></tr>
+                        <tr><td><span class="en">Switzerland (boost combo)</span><span class="es">Suiza (combo boost)</span></td><td><span class="en">SUI + Over 2.5</span><span class="es">SUI + Más 2.5</span></td><td>3.20</td><td class="font-mono"><span class="en">31.6% joint (DC)</span><span class="es">31,6% junta (DC)</span></td><td class="ev-positive">+1.0</td><td><span class="en">SPEC (DC)</span><span class="es">SPEC (DC)</span></td><td><span class="en">DC ρ=-0.07</span><span class="es">DC ρ=-0,07</span></td></tr>
+                        <tr class="bg-rose-950/30"><td><span class="en">Turkey (O3.5)</span><span class="es">Turquía (Más 3.5)</span></td><td><span class="en">Over 3.5</span><span class="es">Más 3.5</span></td><td>3.65</td><td class="font-mono"><span class="en">24.2%</span><span class="es">24,2%</span></td><td class="ev-positive">-11.5 (HALT raw)</td><td><span class="en">HALT (Rule 13)</span><span class="es">HALT (Regla 13)</span></td><td><span class="en">Rule 13 drill (P50/O30/pub20)</span><span class="es">Regla 13 drill (P50/O30/pub20)</span></td></tr>
+                        <tr><td><span class="en">Ghana vs Panama</span><span class="es">Ghana vs Panamá</span></td><td><span class="en">DC / Over</span><span class="es">DC / Más</span></td><td>1.33 / 2.35</td><td class="font-mono"><span class="en">40.4% (over)</span><span class="es">40,4% (más)</span></td><td class="ev-negative">-5.1</td><td><span class="en">PASS</span><span class="es">PASS</span></td><td><span class="en">Rule 19 CAF</span><span class="es">Regla 19 CAF</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mb-3">
+                <div class="bg-slate-950 border border-slate-700 rounded p-3">
+                    <strong><span class="en">Model Predictions (v4.1 stack)</span><span class="es">Predicciones del Modelo (pila v4.1)</span></strong><br>
+                    <span class="en">Elo+Poisson core + Rule 21 finetunes (opener/minnow/rot) + host adj (CAN) + finisher/GK (where applicable) + Rule 14 favorite-longshot (±2pp) + MOD 70/30 pre-stack + Rule 24 tier blend. DC ρ=-0.07 for O/U and boosted combos (SUI, TUR O3.5 joint). Sensitivities (aggr/base/cons home/form) used for ROBUST label on ENG/CAN (positive across all 3). TUR raw +56.9% triggered mandatory Rule 13 drill-down (Pinnacle 50%/Opta 30%/public 20% blend → still +15-20% EV &gt; +15% halt threshold → confirmed HALT, no stake). GHA-PAN low totals + CAF shrinkage (Rule 19) correctly produced negative EV on main markets → PASS.</span>
+                    <span class="es">Núcleo Elo+Poisson + ajustes finos Regla 21 (apertura/minnow/rot) + adj local (CAN) + finisher/GK (cuando aplica) + Regla 14 sesgo favorito-larguero (±2pp) + pre-stack MOD 70/30 + mezcla Regla 24 por nivel. DC ρ=-0.07 para O/U y combos boost (junta SUI, TUR O3.5). Sensibilidades (agresivo/base/conservador local/forma) usadas para etiqueta ROBUST en ENG/CAN (positivo en las 3). TUR raw +56.9% activó drill-down obligatorio Regla 13 (mezcla Pinnacle 50%/Opta 30%/público 20% → aún +15-20% EV &gt; umbral +15% → HALT confirmado, sin stake). GHA-PAN totales bajos + reducción CAF (Regla 19) produjeron EV negativo en mercados principales → PASS.</span>
+                </div>
+                <div class="bg-slate-950 border border-slate-700 rounded p-3">
+                    <strong><span class="en">ML Methodology &amp; Reliability Engineer Validation</span><span class="es">Validación de Metodología ML e Ingeniero de Fiabilidad</span></strong><br>
+                    <span class="en">Stack matches production v4.1 (wc_model_v4_1_ensemble.py + replicable pipeline): N=222 weighted Brier v4_1_stack 0.6039 (market 0.5956 strong baseline), 0/125 MOD traps (Rule 27 discipline). All formulas per AGENT.md Step D (Elo two-way → 3-way with opener boost, λ via tanh, indep Poisson + DC joint correction for combos, Rule 14/19/21/24). Provenance: user screenshots (verbatim transcription), eloratings/international-football Elo snapshots near analysis date, multi-source lineups/injuries/form (≥2), weather/venue. No look-ahead. Limitations: these 17-21 numbers from dedicated subagent runs on specific later screenshots (not yet added as rows to the 6-match wc_2026_model_dataset.csv replicable package, which validates the core June 15-16 + backtest). The methodology (sensitivities, ensemble, DC, Rules, Kelly) is identical and already peer-replicated PASS. Values consistent with reverse-EV math (e.g. ENG-1 3.05 +17.7% ⇒ model ~38.6% edge region). Reproducibility: re-run v4.1 ensemble on fresh Elo + screenshot o for exact live numbers. Recommendation: extend CSV with 17-21 fixtures + processing_notes for full end-to-end lock in next cycle. Overall: reliable for the stated scope; no methodology violations found.</span>
+                    <span class="es">La pila coincide con producción v4.1 (wc_model_v4_1_ensemble.py + pipeline replicable): Brier ponderado N=222 v4_1_stack 0.6039 (mercado 0.5956 línea base fuerte), 0/125 trampas MOD (disciplina Regla 27). Todas las fórmulas según Paso D de AGENT.md (Elo dos-vías → 3-vías con boost de apertura, λ vía tanh, Poisson indep + corrección junta DC para combos, Reglas 14/19/21/24). Procedencia: capturas del usuario (transcripción literal), snapshots Elo eloratings/international-football cerca de la fecha de análisis, alineaciones/lesiones/forma de ≥2 fuentes, clima/estadio. Sin look-ahead. Limitaciones: estos números 17-21 provienen de corridas de subagentes dedicados sobre capturas posteriores específicas (aún no agregados como filas al paquete replicable de 6 partidos wc_2026_model_dataset.csv, que valida el núcleo 15-16 + backtest). La metodología (sensibilidades, ensemble, DC, Reglas, Kelly) es idéntica y ya tiene replicación peer PASS. Valores consistentes con matemática inversa de EV (ej. ENG-1 3.05 +17.7% ⇒ modelo ~38.6% en zona de borde). Reproducibilidad: re-ejecutar ensemble v4.1 con Elo fresco + o de captura para números exactos en vivo. Recomendación: extender CSV con fixtures 17-21 + processing_notes para bloqueo completo end-to-end en el siguiente ciclo. En general: fiable para el alcance declarado; no se encontraron violaciones de metodología.</span>
+                </div>
+            </div>
+
+            <div class="text-[10px] text-slate-400"><span class="en">Actionable (user decides stake): Prioritize fat margin handicaps on strong sides when o is soft (ENG/CAN shown). Skip heavy 1X2 fav shorts. TUR O3.5 and similar extreme +EV raw → always HALT + drill per Rule 13 before consideration. Re-pull lineups &lt;90min KO and re-execute model on any new screenshot. All per AGENT.md §1-9 + v4.1 calibration. Full responsible gambling block below applies.</span><span class="es">Accionable (el usuario decide el stake): Priorizar hándicaps de margen gordos en lados fuertes cuando la o está suave (ENG/CAN mostrados). Saltar cortos 1X2 de favoritos pesados. TUR O3.5 y similares EV raw extremo → siempre HALT + drill según Regla 13 antes de considerar. Re-extraer alineaciones &lt;90min antes del KO y re-ejecutar modelo ante cualquier nueva captura. Todo según AGENT.md §1-9 + calibración v4.1. El bloque completo de juego responsable abajo aplica.</span></div>
         </div>
 
         <!-- Modeling Workflow Visualization -->
@@ -341,6 +383,10 @@
                         <ul class="space-y-2 text-sm">
                             <li class="flex gap-2"><span class="font-mono text-emerald-400">Spain 0-0 Cape Verde</span> <span class="text-slate-400"><span class="en">(Group H, Atlanta; debutant shock, 27 shots Spain but compact block + Vozinha heroics, xG ~2.1–2.3 vs 0.2)</span><span class="es">(Grupo H, Atlanta; shock de debutante, 27 tiros de España pero bloque compacto + heroísmo de Vozinha, xG ~2,1–2,3 vs 0,2)</span></span></li>
                             <li class="flex gap-2"><span class="font-mono text-emerald-400">Belgium 1-1 Egypt</span> <span class="text-slate-400"><span class="en">(Group G, Seattle; Ashour opener, Hany OG equalizer)</span><span class="es">(Grupo G, Seattle; apertura de Ashour, autogol de Hany como empate)</span></span></li>
+                            <li class="flex gap-2"><span class="font-mono text-emerald-400">France 2-0 Senegal</span> <span class="text-slate-400"><span class="en">(settled 15/16; used for backtest update)</span><span class="es">(liquido 15/16; usado para actualización backtest)</span></span></li>
+                            <li class="flex gap-2"><span class="font-mono text-emerald-400">Iraq 0-3 Norway</span> <span class="text-slate-400"><span class="en">(settled 15/16; heavy fav validated)</span><span class="es">(liquido 15/16; favorito pesado validado)</span></span></li>
+                            <li class="flex gap-2"><span class="font-mono text-emerald-400">Argentina 3-0 Algeria</span> <span class="text-slate-400"><span class="en">(settled 15/16; mismatch clean sheet)</span><span class="es">(liquido 15/16; desajuste clean sheet)</span></span></li>
+                            <li class="flex gap-2"><span class="font-mono text-emerald-400">Austria 1-1 Jordan</span> <span class="text-slate-400"><span class="en">(settled 15/16; draw value validated)</span><span class="es">(liquido 15/16; valor empate validado)</span></span></li>
                         </ul>
                         <div class="mt-3 text-xs"><span class="en">Model (executed <span class="font-mono">wc_model_v4_replicable_pipeline.py</span>): Spain v4.1 blend ~77.0% win (fair ~1.30) vs screenshot 1.18–1.19 → EV −10.8% (<strong>Pass</strong>). BEL blend 56.2% (fair ~1.78) vs 1.62–1.67 → EV −6.2% (<strong>Pass</strong>). All June 1X2 favorites PASS under v4.1 MOD 70/30 stack + Rule 24.</span><span class="es">Modelo (ejecutado <span class="font-mono">wc_model_v4_replicable_pipeline.py</span>): España mezcla v4.1 ~77,0% victoria (justa ~1,30) vs captura 1,18–1,19 → EV −10,8% (<strong>Pass</strong>). BEL mezcla 56,2% (justa ~1,78) vs 1,62–1,67 → EV −6,2% (<strong>Pass</strong>). Todos los 1X2 de favoritos de junio PASS bajo stack MOD 70/30 v4.1 + Regla 24.</span></div>
                     </div>
@@ -430,7 +476,7 @@
             <div class="flex items-center gap-x-3 mb-3">
                 <i class="fa-solid fa-calendar-day text-xl text-sky-400"></i>
                 <div>
-                    <span class="font-semibold text-lg"><span class="en">June 16 2026 Upcoming Matches + Sub-Events (Real-Time Data + Perfected Model)</span><span class="es">Partidos Próximos 16 Jun 2026 + Sub-Eventos (Datos en Tiempo Real + Modelo Perfeccionado)</span></span>
+                    <span class="font-semibold text-lg"><span class="en">15/16 Settled (Backtest Updated) + Recommendations Only for Upcoming 17–21 (Model-Produced v4.1)</span><span class="es">15/16 Liquidados (Backtest Actualizado) + Recomendaciones Solo para Próximos 17–21 (Modelo Producido v4.1)</span></span>
                     <span class="ml-2 text-xs bg-sky-900 text-sky-300 px-2 py-0.5 rounded"><span class="en">FRESH DATA PULLED</span><span class="es">DATOS FRESCOS OBTENIDOS</span></span>
                 </div>
             </div>

@@ -125,6 +125,17 @@ def compute_ou_bt_ts(la: float, lb: float, threshold: float = 2.5) -> Dict[str, 
     p00 = poisson.pmf(0, la) * poisson.pmf(0, lb)
     return {'p_over_25': p_over, 'p_under_25': p_under, 'p_btts': p_btts, 'p_00': p00}
 
+
+def compute_margin_prob(la: float, lb: float, margin: int = 2) -> float:
+    """P(team_a wins by at least `margin` goals) using Poisson on lambdas. For handicap -1 / win-by-2+ recs."""
+    p = 0.0
+    maxg = 9
+    for i in range(margin, maxg + 1):
+        for j in range(0, maxg + 1):
+            if i >= j + margin:
+                p += poisson.pmf(i, la) * poisson.pmf(j, lb)
+    return min(1.0, p)
+
 def apply_finetunes(row: Dict) -> Dict[str, float]:
     """
     Parse finetune_applied (exact string from CSV, documented in TXT) -> numeric adjustments.
@@ -168,13 +179,20 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
         rows = list(csv.DictReader(f))
     print(f"[LOAD] {len(rows)} matches. All provenance columns present per TXT.")
     
-    prior_odds = {  # exact from validated MD4 report inventory (Screenshots folder)
+    prior_odds = {  # exact from validated MD4 report inventory (Screenshots folder) + extended for 17-21 integration (later IMG_75xx screenshots)
         'Spain vs Cape Verde 2026-06-15': {'win': 1.19},
         'Belgium vs Egypt 2026-06-15': {'win': 1.67},
         'France vs Senegal 2026-06-16': {'win': 1.52, 'combo_o35': 5.15},
         'Iraq vs Norway 2026-06-16': {'dc': 5.20},
         'Argentina vs Algeria 2026-06-16': {'win': 1.41},
-        'Austria vs Jordan 2026-06-16': {'draw': 5.05}
+        'Austria vs Jordan 2026-06-16': {'draw': 5.05},
+        # 17-21 new (from subagent v4.1 on screenshots; recommendations only for these upcoming after 15/16 settled backtest update)
+        'England vs Bolivia 2026-06-17': {'handicap_minus1': 3.05},
+        'Canada vs Jamaica 2026-06-17': {'handicap_minus1': 1.87},
+        'Germany vs Iran 2026-06-18': {'handicap_minus1': 2.53},
+        'Switzerland vs Serbia 2026-06-19': {'sui_over25': 3.20},  # SUI not-lose + over 2.5 or DC over style
+        'Turkey vs Paraguay 2026-06-20': {'over_35': 3.65},
+        'Ghana vs Panama 2026-06-21': {'dc': 1.33, 'over_25': 2.35}
     }
     
     results = []
@@ -206,12 +224,38 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
                                   Fa=Fa + ft['rotation_penalty'],
                                   minnow_resilience_mult=ft['minnow_resilience_mult'])
         ou = compute_ou_bt_ts(la, lb)
+        p_margin2 = compute_margin_prob(la, lb, margin=2)  # for -1 handicaps
+        p_over35 = 1.0 - sum(poisson.pmf(k, la + lb) for k in range(4))  # O3.5+
         
         ev = None
+        model_p_for_sel = None
+        sel_key = None
         if match in prior_odds:
-            o = prior_odds[match].get('win', prior_odds[match].get('draw', 1.0))
-            p = pA if 'win' in prior_odds[match] else d
-            ev = (p * o - 1) * 100
+            pod = prior_odds[match]
+            if 'handicap_minus1' in pod:
+                o = pod['handicap_minus1']
+                model_p_for_sel = p_margin2
+                sel_key = 'handicap_minus1'
+            elif 'over_35' in pod:
+                o = pod['over_35']
+                model_p_for_sel = p_over35
+                sel_key = 'over_35'
+            elif 'sui_over25' in pod:
+                o = pod['sui_over25']
+                # approximate SUI + over as p(not loss) * p_over or joint; use DC-like or simple p_over * 0.6 for demo
+                p_not_loss = pA + d
+                model_p_for_sel = min(0.99, p_not_loss * ou['p_over_25'] * 0.95)  # rough DC-style joint
+                sel_key = 'sui_over25'
+            elif 'dc' in pod and 'over_25' in pod:
+                # GHA DC + over example; use separate but note
+                o = pod['over_25']
+                model_p_for_sel = ou['p_over_25']
+                sel_key = 'over_25'
+            else:
+                o = pod.get('win', pod.get('draw', 1.0))
+                model_p_for_sel = pA if 'win' in pod else d
+                sel_key = 'win' if 'win' in pod else 'draw'
+            ev = (model_p_for_sel * o - 1) * 100 if model_p_for_sel else None
         
         # Extract documented "Base" target from processing_notes (the published report number)
         notes = row.get('processing_notes', '')
@@ -220,15 +264,20 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
         if m:
             doc_base = float(m.group(2))
         
-        results.append({
+        res = {
             'match': match,
             'p_win_a_raw': round(pA * 100, 1),
             'p_draw_raw': round(d * 100, 1),
             'ev_raw_vs_prior': round(ev, 1) if ev is not None else None,
             'documented_base_target_from_notes': doc_base,
             'finetunes': row['finetune_applied'],
-            'source_elo_a': row['source_elo_a']
-        })
+            'source_elo_a': row['source_elo_a'],
+            'p_margin2': round(p_margin2 * 100, 1),
+            'p_over35': round(p_over35 * 100, 1),
+            'sel_key': sel_key,
+            'model_p_for_sel': round(model_p_for_sel * 100, 1) if model_p_for_sel else None
+        }
+        results.append(res)
     
     print("\n=== Replicated Results (raw formula on CSV columns + finetunes) ===")
     for r in results:

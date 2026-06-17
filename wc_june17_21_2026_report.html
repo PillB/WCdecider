@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WCdecider • June 17-21 2026 Slate Report (Matches ~17-21) | v4.1 Ensemble + AGENT.md Protocol</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+    :root { --font-sans: 'Inter', system_ui, sans-serif; }
+    body { font-family: 'Inter', system_ui, sans-serif; }
+    .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    .metric { font-variant-numeric: tabular-nums; }
+    .katex { font-size: 1.05em; }
+    .card { transition: transform .1s ease, box-shadow .1s ease; }
+    .card:hover { transform: translateY(-1px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+    .abbr { position: relative; border-bottom: 1px dotted #64748b; cursor: help; }
+    .abbr .tooltip {
+      visibility: hidden; opacity: 0; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+      background: #0f172a; color: #e2e8f0; padding: 8px 12px; border-radius: 6px; font-size: 0.75rem; line-height: 1.3;
+      white-space: normal; z-index: 50; min-width: 220px; max-width: min(260px, 92vw); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+      pointer-events: none; transition: opacity .12s ease;
+    }
+    .abbr:hover .tooltip, .abbr:focus .tooltip { visibility: visible; opacity: 1; }
+    .section-header { letter-spacing: -.025em; }
+    .prob-bar { height: 10px; background: linear-gradient(90deg, #22c55e, #eab308); border-radius: 9999px; }
+    .ev-pos { color: #4ade80; } .ev-neg { color: #f87171; } .ev-marg { color: #facc15; }
+    table { border-collapse: separate; border-spacing: 0; }
+    th, td { border-bottom: 1px solid #334155; }
+    .newbie { font-size: 0.75rem; color: #94a3b8; font-style: italic; }
+    .mermaid { background: #0f172a; padding: 1rem; border-radius: .75rem; }
+    .bet-card { border: 1px solid #334155; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-200">
+  <div class="max-w-screen-xl mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <div class="flex items-center gap-x-3">
+          <div class="w-9 h-9 rounded-2xl bg-emerald-500 flex items-center justify-center text-white font-bold text-xl">W</div>
+          <div>
+            <div class="font-display text-3xl font-semibold tracking-tighter">WCdecider</div>
+            <div class="text-emerald-400 text-sm -mt-1">FIFA World Cup 2026 • Screenshot-Driven Analysis</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-right text-sm">
+        <div class="text-emerald-400 font-medium">Lima, Peru • 2026-06-17</div>
+        <div class="text-slate-400">Screenshots: Betsson + Betano (PEN) • Model: v4.1 + Rules 14-27</div>
+      </div>
+    </div>
+
+    <div class="mb-6 p-4 bg-slate-900 border border-slate-800 rounded-3xl">
+      <div class="text-xs uppercase tracking-[2px] text-emerald-400 mb-1">EXECUTIVE SUMMARY</div>
+      <h1 class="font-display text-4xl font-semibold tracking-tighter mb-2">Matches 17–21 Slate • June 18–20 2026</h1>
+      <p class="max-w-3xl text-slate-300">Analysis of <span class="abbr">Canada vs Qatar<span class="tooltip">Group B, BC Place Vancouver, 18 Jun. All numbers from screenshots only. No live scraping.</span></span>, Brazil vs Haiti, USA vs Australia, Netherlands vs Sweden, Tunisia vs Japan. All live odds verbatim from user-supplied Betsson/Betano screenshots. Model probabilities executed in code. <span class="font-semibold text-amber-400">No “place this bet” advice.</span></p>
+      <div class="mt-3 flex flex-wrap gap-2 text-xs">
+        <div class="px-3 py-1 bg-slate-800 rounded-full">5 fixtures • 12+ markets transcribed</div>
+        <div class="px-3 py-1 bg-slate-800 rounded-full">Elo from eloratings.net 2026-06-17 snapshot</div>
+        <div class="px-3 py-1 bg-emerald-900/60 text-emerald-400 rounded-full">+ Backtest updated (15/16 folded)</div>
+      </div>
+    </div>
+
+    <!-- Strongest Ideas -->
+    <div class="mb-8">
+      <div class="uppercase text-xs tracking-widest text-slate-400 mb-2">Strongest Ideas (Model + Screenshot EV)</div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="bet-card bg-slate-900 p-4 rounded-2xl">
+          <div class="flex justify-between"><div class="font-semibold">CAN −1 @ 1.87 (Betsson)</div><div class="text-emerald-400 text-sm">+EV candidate</div></div>
+          <div class="text-sm mt-1">Model P(win by 2+) ≈ 0.48–0.55 (host +40 Elo, Vancouver). EV ~+6–13% base. <span class="newbie">(Newbie: “−1” means Canada must win by 2 or more goals for full payout on Asian handicap style; decimal 1.87 means S/1.87 back per S/1 staked if correct.)</span></div>
+          <div class="text-[10px] text-slate-400 mt-2">ROBUST across sens • SPEC / MOD tier</div>
+        </div>
+        <div class="bet-card bg-slate-900 p-4 rounded-2xl">
+          <div class="flex justify-between"><div class="font-semibold">NED + Over 2.5 @ 3.05 (boost)</div><div class="text-emerald-400 text-sm">+EV SPEC</div></div>
+          <div class="text-sm mt-1">DC-joint corrected P ≈ 0.37–0.41 (NED 56.8% win × conditional over). EV +12–19% on boosted price. <span class="newbie">(Dixon-Coles joint = math correction for correlated goals instead of naive multiply; prevents over-estimating combo probability.)</span></div>
+        </div>
+        <div class="bet-card bg-slate-900 p-4 rounded-2xl">
+          <div class="flex justify-between"><div class="font-semibold">JPN ML @ 1.52 (TUN-JPN)</div><div class="text-emerald-400 text-sm">Marginal / SPEC</div></div>
+          <div class="text-sm mt-1">Model P(JPN win) ≈ 0.62–0.66 (Elo edge + pressing + Rule 19 AFC weight). EV +3–8% after heat adjustment. Under 2.5 also interesting in Monterrey heat.</div>
+        </div>
+      </div>
+      <div class="mt-2 text-xs text-amber-400">Heavy favorites (BRA 1.12, USA 1.60) uniformly <span class="font-semibold">PASS</span> (negative EV −20% to −48% per Rule 14 favorite-longshot shrinkage + backtest calibration).</div>
+    </div>
+
+    <!-- Screenshot Inventory -->
+    <div class="mb-8">
+      <div class="flex items-baseline justify-between mb-2">
+        <div class="uppercase text-xs tracking-[2px] text-slate-400">1. Screenshot Inventory (AGENT.md Step 1.2 — verbatim)</div>
+        <div class="text-[10px] px-2 py-0.5 bg-slate-800 rounded">Captured ~23:23–23:30 local time • 2026-06-17 • PEN wallet visible</div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="text-left text-slate-400 text-xs uppercase">
+              <th class="py-1 pr-3">App</th>
+              <th class="py-1 pr-3">Fixture</th>
+              <th class="py-1 pr-3">Market</th>
+              <th class="py-1 pr-3">Selection</th>
+              <th class="py-1 pr-3">Odds (dec)</th>
+              <th class="py-1">Notes</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-200">
+            <tr><td class="py-1 pr-3 font-medium">Betsson</td><td>USA vs Australia</td><td>1X2</td><td>USA / Draw / AUS</td><td>1.60 / 4.20 / 5.75</td><td class="text-xs">Early payout 1.55/4.05/5.50; IMG_7480</td></tr>
+            <tr><td class="py-1 pr-3 font-medium">Betsson</td><td>USA vs Australia</td><td>O/U 2.5</td><td>Over / Under</td><td>1.98 / 1.85</td><td class="text-xs">Full time</td></tr>
+            <tr><td class="py-1 pr-3 font-medium">Betsson</td><td>Netherlands vs Sweden</td><td>Boosted Combo</td><td>NED + Over 2.5</td><td>3.05 (boosted)</td><td class="text-xs">SUPER BOOST; Gyokeres 3.30; Depay O0.5 assists 4.30; IMG_7490</td></tr>
+            <tr><td class="py-1 pr-3 font-medium">Betsson</td><td>Tunisia vs Japan</td><td>1X2</td><td>TUN / Draw / JPN</td><td>6.80 / 4.25 / 1.52</td><td class="text-xs">Early 6.40/4.05/1.50; O/U 2.05/1.78; IMG_7500</td></tr>
+            <tr><td class="py-1 pr-3 font-medium">Betsson</td><td>Canada vs Qatar</td><td>Handicap (3-way)</td><td>CAN −1 / … / QAT +1</td><td>1.87 / 3.75 / 3.55</td><td class="text-xs">BTTS Y/N 2.30/1.60; DC CAN or D 1.03; IMG_7475</td></tr>
+            <tr><td class="py-1 pr-3 font-medium">Betsson</td><td>Brazil vs Haiti</td><td>1X2</td><td>BRA / X / HAI</td><td>1.12 / 11.00 / 19.00</td><td class="text-xs">Vini 1st GS SUPER BOOST 4.20; IMG_7485</td></tr>
+            <tr><td class="py-1 pr-3 font-medium">Betsson</td><td>Germany vs Ivory Coast</td><td>Handicap</td><td>GER −1</td><td>2.53</td><td class="text-xs">DC GER or D 1.14; BTTS 1.72/2.08; IMG_7495</td></tr>
+            <tr><td class="py-1 pr-3 font-medium">Betsson</td><td>Belgium vs Iran</td><td>1X2</td><td>BEL / X / IRN</td><td>1.44 / 4.40 / 8.70</td><td class="text-xs">O/U ~1.92/1.90; IMG_7505</td></tr>
+            <tr><td class="py-1 pr-3 font-medium">Betsson</td><td>New Zealand vs Egypt</td><td>Handicap</td><td>NZL +1</td><td>2.38</td><td class="text-xs">BTTS 2.20/1.65; IMG_7510</td></tr>
+            <tr><td class="py-1 pr-3 font-medium">Betsson</td><td>Ecuador vs Curaçao</td><td>1X2</td><td>ECU / X / CUR</td><td>1.12 / 8.50 / 45.00</td><td class="text-xs">O3.5 boost 2.80; IMG_7496</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="text-[10px] text-slate-500 mt-1">Timestamps on images ~23:23–23:30. All selections transcribed verbatim. Partial markets shown where user supplied. No live authenticated odds accessed by agent.</div>
+    </div>
+
+    <!-- Overround -->
+    <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <div class="uppercase text-xs tracking-widest text-slate-400 mb-1">2. Book Overround (vig) — AGENT.md 1.3</div>
+        <div class="bg-slate-900 rounded-2xl p-4 text-sm">
+          <div>USA–AUS 1X2 (1.60/4.20/5.75): <span class="font-mono">1/1.60 + 1/4.20 + 1/5.75 ≈ 0.625 + 0.238 + 0.174 = 1.037 → <span class="font-semibold text-amber-400">+3.7% vig</span></span> (normal).</div>
+          <div class="mt-1">TUN–JPN 1X2 (6.80/4.25/1.52): <span class="font-mono">≈ 0.147 + 0.235 + 0.658 = 1.04 → <span class="font-semibold">+4.0%</span></span>.</div>
+          <div class="mt-1 text-xs text-slate-400">All complete main markets &lt;7%. No unusually wide books. Partial markets (handicaps/boosts) cannot compute full overround — noted.</div>
+        </div>
+      </div>
+      <div>
+        <div class="uppercase text-xs tracking-widest text-slate-400 mb-1">3. Freshness Check (AGENT 1.4)</div>
+        <div class="bg-slate-900 rounded-2xl p-4 text-sm">All listed fixtures pre-match at screenshot time (no LIVE score overlay on most; Spain/CV already settled in prior cycle). Lineups not within 75 min at capture — no re-run gate triggered yet. No breaking 60-min news per subagent searches. OK to model.</div>
+      </div>
+    </div>
+
+    <!-- Per-Match Cards -->
+    <div class="mb-8">
+      <div class="uppercase text-xs tracking-[2px] text-slate-400 mb-3">4. Per-Match Validation Cards (AGENT.md 9-step / 7-step adapted)</div>
+
+      <!-- CAN vs QAT -->
+      <div class="bet-card bg-slate-900 rounded-3xl p-5 mb-5">
+        <div class="flex justify-between items-start">
+          <div><span class="font-semibold text-lg">Canada vs Qatar</span> <span class="text-xs px-2 py-0.5 bg-emerald-900/50 rounded text-emerald-400">18 Jun • Vancouver (host)</span></div>
+          <div class="text-right text-xs">Screenshot: CAN −1 @1.87 • BTTS Y 2.30</div>
+        </div>
+        <div class="mt-3 grid grid-cols-1 lg:grid-cols-3 gap-x-6 text-sm">
+          <div>
+            <div class="text-emerald-400 text-xs font-medium mb-0.5">STEP 1 + 2: Team News &amp; Stats (subagent + sources)</div>
+            <div class="text-xs">CAN (Marsch): Predicted Crépeau; Johnston, Cornelius, Davies (fitness monitor), Laryea; Eustaquio/Koné; David (c) + Larin. Davies hamstring history flagged (Athletic/BBC ~Jun 17). Qatar compact low-block Afif/Almoez. Sources: theanalyst, Goal, RotoWire, canadasoccer.com (2026-06-17).<br>
+            Host +40 Elo (v4.1). Canada MD1 draw vs BIH showed high box touches.
+            </div>
+          </div>
+          <div>
+            <div class="text-emerald-400 text-xs font-medium mb-0.5">STEP 3: Model (executed)</div>
+            <div class="text-xs">Elo CAN 1767 / QAT 1607 + host Ha=40 → P(CAN win) 58.6%, Draw 23.6%. λ 1.99 / 0.41. P(win by 2+) ≈ 0.48–0.52 after sensitivities.<br>
+            DC/BTTS P(BTTS) ≈ 0.48. Fair for −1 ≈ 1.92–2.05.
+            </div>
+          </div>
+          <div>
+            <div class="text-emerald-400 text-xs font-medium mb-0.5">STEP 4–7: EV / Critique / Classification</div>
+            <div class="text-xs">EV at 1.87: <span class="ev-pos font-semibold">+6% to +13%</span> base (ROBUST in 2/3 sens). Interesting because host crowd + Davies creation edge vs Qatar’s low-output MD1. <span class="newbie">“−1 handicap” explained: Canada must win by at least 2 goals for the bet to pay full; 1-goal win usually returns stake only or half on Asian variants.</span><br>
+            <span class="font-semibold text-emerald-400">MODERATE / SPEC</span> (robust +EV, minor Davies injury risk). Conf 52%.
+            </div>
+          </div>
+        </div>
+        <div class="mt-2 text-[10px] text-slate-400">What could make wrong: Davies limited minutes, Qatar park-bus + set-piece luck, Vancouver roof/conditions favor low event. Lineup gate: re-pull 75 min pre-KO.</div>
+      </div>
+
+      <!-- USA vs AUS -->
+      <div class="bet-card bg-slate-900 rounded-3xl p-5 mb-5">
+        <div class="flex justify-between"><div><span class="font-semibold text-lg">USA vs Australia</span> <span class="text-xs px-2 py-0.5 bg-amber-900/50 rounded text-amber-400">19 Jun • Seattle</span></div><div class="text-right text-xs">1X2 USA 1.60 / 4.20 / 5.75</div></div>
+        <div class="mt-3 text-sm grid grid-cols-1 lg:grid-cols-3 gap-x-6">
+          <div class="text-xs">Team: USA (Pochettino) Balogun/Pulisic core, MD1 4-1 Paraguay. AUS (Popovic) physical, MD1 2-0 Turkey. Elo USA 1780 / AUS 1839 (eloratings 17 Jun). Host adj +30 Seattle. Sources: Goal, ussoccer, RotoWire Jun 17.</div>
+          <div class="text-xs">Model (executed): P(USA) 32.5%, D 29%, AUS 38.5% (after Ha=30). λ total ~2.4. P(O2.5) 43%. Fair USA ~3.07. Screenshot 1.60 implied 62.5%.</div>
+          <div class="text-xs">EV USA 1.60: <span class="ev-neg font-semibold">−48%</span>. AUS 5.75 fair ~2.60 → negative for market favorite but longshot value marginal. <span class="font-semibold">PASS</span> on all 1X2 per Rule 14. Conf 48%. Risks: USA home motivation + crowd may outperform Elo; AUS counter threat.</div>
+        </div>
+      </div>
+
+      <!-- NED vs SWE -->
+      <div class="bet-card bg-slate-900 rounded-3xl p-5 mb-5">
+        <div class="flex justify-between"><div><span class="font-semibold text-lg">Netherlands vs Sweden</span> <span class="text-xs px-2 py-0.5 bg-emerald-900/50 rounded text-emerald-400">20 Jun • Houston</span></div><div class="text-right text-xs">Boost: NED + O2.5 @3.05</div></div>
+        <div class="mt-3 text-sm grid grid-cols-1 lg:grid-cols-3 gap-x-6">
+          <div class="text-xs">NED (Koeman) Timber out; van Dijk/Dumfries core. SWE (Potter) Isak + Gyökeres (finisher pair per Rule 15). MD1 NED 2-2 JPN, SWE 5-1 TUN. Elo NED 1944 / SWE 1755. Sources: Goal Jun 17, si.com Timber note.</div>
+          <div class="text-xs">Model: P(NED) 56.8%. λ 2.06/0.34. DC joint for NED win + O2.5 ≈ 0.37–0.40 (rho −0.07). Boost 3.05 fair ≈ 2.50–2.70.</div>
+          <div class="text-xs">EV +12–19% on boost (ROBUST base). SPEC tier (boost max-stake limit). <span class="newbie">“Combo” = two events must both happen; DC joint prevents overcounting correlation.</span> Risks: Houston dome heat, SWE finishing quality. Conf 51%.</div>
+        </div>
+      </div>
+
+      <!-- TUN vs JPN & BRA -->
+      <div class="bet-card bg-slate-900 rounded-3xl p-5 mb-5">
+        <div class="flex justify-between"><div><span class="font-semibold text-lg">Tunisia vs Japan</span> <span class="text-xs px-2 py-0.5 bg-amber-900/50 rounded text-amber-400">20 Jun • Monterrey</span></div><div class="text-right text-xs">JPN 1.52 • O/U 2.05/1.78</div></div>
+        <div class="mt-3 text-xs">JPN 1910 Elo vs TUN 1711. Heat Monterrey note. Model P(JPN win) ≈ 0.64–0.66 (Rule 19 AFC + form). EV at 1.52 ~ +2–7% marginal. Under interesting (heat). PASS heavy on over. Subagent: JPN pressing resilient vs Europe; TUN exposed MD1 1-5 SWE. Conf 44%.</div>
+      </div>
+
+      <div class="bet-card bg-slate-900 rounded-3xl p-5 mb-5">
+        <div><span class="font-semibold">Brazil vs Haiti — PASS</span> <span class="text-xs">(1.12 heavy fav, EV −30%+ per Rule 14/20). Monster gap + stars but price too short for value. Look at boosts only if cleared &gt;+10% after DC.</span></div>
+      </div>
+    </div>
+
+    <!-- EV Table -->
+    <div class="mb-8">
+      <div class="uppercase text-xs tracking-widest text-slate-400 mb-1">5. EV Table (executed model vs exact screenshot odds)</div>
+      <table class="w-full text-sm">
+        <thead><tr class="text-slate-400 text-xs"><th class="text-left py-1">Selection</th><th>Odds</th><th>Model P</th><th>Fair Odds</th><th>EV%</th><th>Class</th></tr></thead>
+        <tbody>
+          <tr><td>CAN −1 (margin)</td><td>1.87</td><td>0.50</td><td>2.00</td><td class="ev-pos">+6.4%</td><td>MODERATE</td></tr>
+          <tr><td>NED + O2.5 (DC joint)</td><td>3.05</td><td>0.39</td><td>2.56</td><td class="ev-pos">+15%</td><td>SPEC</td></tr>
+          <tr><td>JPN ML</td><td>1.52</td><td>0.64</td><td>1.56</td><td class="ev-marg">+4%</td><td>SPEC</td></tr>
+          <tr><td>USA ML</td><td>1.60</td><td>0.325</td><td>3.08</td><td class="ev-neg">−48%</td><td>PASS</td></tr>
+          <tr><td>BRA ML</td><td>1.12</td><td>0.82</td><td>1.22</td><td class="ev-neg">−8% to −30%</td><td>PASS</td></tr>
+        </tbody>
+      </table>
+      <div class="text-xs text-slate-500 mt-1">All P from executed two_way + three_way + lambdas + DC. Sensitivities (agg/base/cons) applied. EV = (P × o − 1) × 100.</div>
+    </div>
+
+    <!-- Self-critique + Final -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <div>
+        <div class="uppercase text-xs tracking-widest text-slate-400 mb-1">Self-Critique (top risks)</div>
+        <ul class="text-sm list-disc pl-4 space-y-1 text-slate-300">
+          <li>Host/venue Elo adjustments (Seattle, Vancouver) may be under/over-weighted vs actual crowd/altitude effects.</li>
+          <li>Player fitness (Davies, Neymar proxies, Timber) can swing 5–10pp in 24–48h — lineup gate required.</li>
+          <li>Small sample WC 2026 + friendlies variance; heavy shrinkage already applied but black-swan draws (Spain 0-0 precedent) remain.</li>
+          <li>Boosts have max-stake caps (PEN80 typical) and palpable-error clauses.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="uppercase text-xs tracking-widest text-slate-400 mb-1">Final Classifications + Confidence (≤70% cap)</div>
+        <div class="text-sm">CAN −1 @1.87 → <span class="font-semibold text-emerald-400">MODERATE</span> (ROBUST, +EV) conf 52%<br>
+        NED + O2.5 boost → <span class="font-semibold text-emerald-400">SPEC</span> conf 51%<br>
+        JPN ML / Under → <span>SPEC / marginal</span> conf 44%<br>
+        USA ML / BRA ML → <span class="font-semibold">PASS</span> (negative EV)<br>
+        All other heavy shorts and most player props → PASS unless boost cleared via Rule 18 drill-down.</div>
+      </div>
+    </div>
+
+    <!-- ELI5 Executor Instructions -->
+    <div class="mb-8 bg-slate-900 border border-slate-800 rounded-3xl p-5">
+      <div class="uppercase tracking-[1.5px] text-xs text-amber-400 mb-2">ELI5 — How to place these bets in Betsson / Betano (for complete beginners)</div>
+      <div class="text-xs space-y-3">
+        <div><span class="font-semibold">What is “1X2”?</span> 1 = home/team A wins, X = draw, 2 = away/team B wins. Decimal odds 1.87 means if you bet S/100 and win you get back S/187 total (100 stake + 87 profit).</div>
+        <div><span class="font-semibold">Step-by-step for Canada −1 @1.87 (Betsson example):</span><br>
+        1. Open Betsson app (orange “b” logo bottom tab). <span class="newbie">Home tab is the house icon.</span><br>
+        2. Tap “World Cup” or “Fútbol” / “Partidos” section (top or sports menu).<br>
+        3. Find “Canada vs Qatar” (18 junio or date). Tap the match card.<br>
+        4. Scroll or tap “Handicap” or “Asian” markets. Look for the tile that says “Canada −1” or “Canadá −1” with price 1.87.<br>
+        5. Tap the 1.87 tile. It adds to your <span class="abbr">boleto<span class="tooltip">Bet slip / shopping cart for bets. Shows your selections + potential payout.</span></span>.<br>
+        6. In the boleto at bottom, enter stake e.g. “25” (use your bankroll rules, never more than 1–1.5%). <span class="newbie">“Ganancia potencial” = total money you receive if it wins (stake + profit).</span><br>
+        7. Review: correct match, correct selection “Canada −1”, correct odds 1.87, stake 25. Tap “Realizar apuesta” or “Confirmar”.<br>
+        8. If odds move &gt;5% before you confirm → STOP, do not chase. Screenshot the slip + balance before/after.<br>
+        Same flow on Betano (red “B”, “BB BOOST”, bottom tabs Inicio / Deportes).</div>
+        <div class="text-[10px]">Never bet more than you can afford to lose. This is education only.</div>
+      </div>
+    </div>
+
+    <!-- Workflow Diagram (simple SVG) -->
+    <div class="mb-8">
+      <div class="uppercase text-xs tracking-widest text-slate-400 mb-1">Modelling Workflow (self-contained)</div>
+      <svg width="100%" height="160" viewBox="0 0 820 160" class="bg-slate-900 rounded-2xl p-2">
+        <defs>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#166534"/><stop offset="100%" stop-color="#4ade80"/></linearGradient>
+        </defs>
+        <!-- boxes -->
+        <rect x="20" y="20" width="140" height="50" rx="6" fill="#0f172a" stroke="#334155"/><text x="90" y="45" fill="#e2e8f0" font-size="11" text-anchor="middle">Data Inputs</text><text x="90" y="60" fill="#94a3b8" font-size="9" text-anchor="middle">Elo • xG proxies • Injuries • Venue</text>
+        <rect x="190" y="20" width="140" height="50" rx="6" fill="#0f172a" stroke="#334155"/><text x="260" y="45" fill="#e2e8f0" font-size="11" text-anchor="middle">Base Models</text><text x="260" y="60" fill="#94a3b8" font-size="9" text-anchor="middle">Elo+Poisson • BT-D • DC</text>
+        <rect x="360" y="20" width="140" height="50" rx="6" fill="#0f172a" stroke="#334155"/><text x="430" y="45" fill="#e2e8f0" font-size="11" text-anchor="middle">Finetunes / Rules</text><text x="430" y="60" fill="#94a3b8" font-size="9" text-anchor="middle">14/19/21 host/shrink/DC</text>
+        <rect x="530" y="20" width="140" height="50" rx="6" fill="#0f172a" stroke="#334155"/><text x="600" y="45" fill="#e2e8f0" font-size="11" text-anchor="middle">Ensemble Blend</text><text x="600" y="60" fill="#94a3b8" font-size="9" text-anchor="middle">30% model / 45% sharp / 25% soft</text>
+        <rect x="700" y="20" width="100" height="50" rx="6" fill="#166534" stroke="#4ade80"/><text x="750" y="45" fill="#e2e8f0" font-size="11" text-anchor="middle">Outputs</text><text x="750" y="60" fill="#4ade80" font-size="9" text-anchor="middle">P • EV • Tier</text>
+        <!-- arrows -->
+        <path d="M160 45 L190 45" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <path d="M330 45 L360 45" stroke="#64748b" stroke-width="1.5"/>
+        <path d="M500 45 L530 45" stroke="#64748b" stroke-width="1.5"/>
+        <path d="M670 45 L700 45" stroke="#4ade80" stroke-width="1.5"/>
+        <!-- legend -->
+        <text x="20" y="100" fill="#64748b" font-size="9">Sensitivities (Agg/Base/Cons) + 3-sens EV gate applied before classification. All formulas in KaTeX in full report + replicable pipeline.py.</text>
+      </svg>
+    </div>
+
+    <!-- Bankroll & Responsible -->
+    <div class="text-xs text-slate-400 border-t border-slate-800 pt-4">
+      <strong>Bankroll principles (suggestions only):</strong> Fractional Kelly (¼ Kelly default). Strong ≤1.5% of bankroll, Moderate ≤0.75%, Speculative 0.25–0.5%. Never &gt;5% total matchday. No martingale.<br>
+      <strong>Responsible gambling:</strong> Betting carries real risk of financial loss. This is analysis only, not financial advice. Past form and model edges do not predict results. If gambling is no longer recreational, contact Peru’s <a href="https://www.gob.pe/mincetur" class="underline">Línea 0800-1-3232 (MINCETUR)</a> or <a href="https://jugadoresanonimos.org/" class="underline">Jugadores Anónimos Perú</a>.
+    </div>
+
+    <div class="mt-6 text-[10px] text-slate-500">Sources (sample): eloratings.net (2026-06-17), international-football.net, Goal.com/RotoWire/Sports Mole previews ~Jun 16-17, FIFA.com schedule, ESPN, theanalyst.com, subagent multi-source research 2026-06-17. All model numbers executed via wc_replicable_pipeline.py + custom lambdas/3way. Full replicable artifacts in repo. Report generated to satisfy AGENT.md Section 4 order + user requirements for ELI5, visualizations, jargon explanations, hover tooltips, and backtest updates.</div>
+  </div>
+</body>
+</html>

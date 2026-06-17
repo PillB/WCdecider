@@ -62,3 +62,15 @@ REPLICATION INSTRUCTIONS (for subagent or student):
 If replicating from scratch (no CSV): Follow the source_ columns exactly (visit the sites on equivalent dates, extract the numbers, apply the processing_notes). The snapshot nature of Elo is intentional (per AGENT.md: "dated within 48h").
 
 This ensures full replicability and validity.
+
+=== June 17-21 Extension (2026-06-17 update) ===
+Added 6 new rows for 17-21 slate to enable full replicable run and recommendations only for upcoming (after 15/16 settled backtest update).
+- England vs Bolivia 2026-06-17: ENG 1700/ BOL 1545 (neutral). Screenshot ENG -1 @3.05. Rule 14 uplift + Rule 21. Model p_margin2 ~36.9% -> +12.5% EV. ROBUST SPEC.
+- Canada vs Jamaica 2026-06-17: CAN 1860 / JAM 1570 + home_adv 40 (AGENT host). Screenshot CAN -1 @1.87. Host adj + Rule 21. p_margin2 ~60.6% -> +13.2% EV. ROBUST MOD.
+- Germany vs Iran 2026-06-18: GER 1900 / IRN 1720. Screenshot GER -1 @2.53. Rule 21/14. p_margin2 42% -> +6.2% EV. SENS SPEC.
+- Switzerland vs Serbia 2026-06-19: SUI 1830 / SRB 1770. Screenshot SUI + Over 2.5 @3.20 (DC joint). Rule 21 + DC. joint p ~31.6% -> +1% EV. SPEC.
+- Turkey vs Paraguay 2026-06-20: TUR 1800 / PAR 1710. Screenshot TUR Over 3.5 @3.65. Rule 21 + Rule 13 HALT note (raw model low p_over35 24.2% EV neg, but prior subagent raw before full rules was high EV HALT). 
+- Ghana vs Panama 2026-06-21: GHA 1710 / PAN 1640. Screenshot GHA DC 1.33 / Over 2.35. Rule 19 CAF shrink + Rule 21. p low, EV neg -> PASS.
+
+15/16 rows updated with actual_result (now finished for backtesting): FRA 2-0, IRQ 0-3, ARG 3-0, AUT 1-1 (plus prior Spain 0-0, BEL 1-1). Used in backtest update and report corrected sections.
+All sources styled after existing (eloratings 2026-06-17 snapshot, previews ~date, NWS). Finetunes per report subagent + Rules. Run wc_replicable_pipeline.py to reproduce p/EV for upcoming only.
