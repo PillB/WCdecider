@@ -5,6 +5,7 @@ Per AGENT.md update protocol: This ensures the live site has correct layout and 
 Run as final step after any new screenshot batch update (retrain, sections, tests, build).
 Must pass test_deployed_site.py with 0 failures.
 See AGENT.md "Automated Update Protocol" for full automatic/comprehensive cycle.
+"""
 
 from __future__ import annotations
 
