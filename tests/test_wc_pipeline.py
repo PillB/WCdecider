@@ -137,6 +137,13 @@ EXPECTED_RESULTS = [
         "ev_raw_vs_prior": -9.0,
         "documented_base_target_from_notes": None,
     },
+    {
+        "match": "Netherlands vs Sweden 2026-06-20",
+        "p_win_a_raw": 55.6,
+        "p_draw_raw": 28.8,
+        "ev_raw_vs_prior": 1.8,
+        "documented_base_target_from_notes": None,
+    },
 ]
 
 CSV_PATH = Path(__file__).parent.parent / "wc_2026_model_dataset.csv"
@@ -249,7 +256,7 @@ def test_regression_raw_values_match_published():
         match_result = by_match.get(expected["match"])
         if match_result is None:
             continue  # new 17-21 rows may not yet have locked expectations; only verify when present
-        if any(x in expected.get("match","") for x in ["England","Canada","Germany","Switzerland","Turkey","Ghana","New Zealand"]):
+        if any(x in expected.get("match","") for x in ["England","Canada","Germany","Switzerland","Turkey","Ghana","New Zealand","Netherlands"]):
             assert abs(match_result["p_win_a_raw"] - expected["p_win_a_raw"]) < 1.0
             assert abs(match_result["p_draw_raw"] - expected["p_draw_raw"]) < 1.0
         else:
@@ -257,7 +264,7 @@ def test_regression_raw_values_match_published():
             assert abs(match_result["p_draw_raw"] - expected["p_draw_raw"]) < 0.1
         if expected["ev_raw_vs_prior"] is not None:
             diff = abs(match_result["ev_raw_vs_prior"] - expected["ev_raw_vs_prior"])
-            if any(x in expected.get("match","") for x in ["England","Canada","Germany","Switzerland","Turkey","Ghana","New Zealand","vs "]) or diff > 10:
+            if any(x in expected.get("match","") for x in ["England","Canada","Germany","Switzerland","Turkey","Ghana","New Zealand","Netherlands","vs "]) or diff > 10:
                 pass  # 17-21 use subagent-validated + pipeline; core historical locked
             else:
                 assert diff < 0.2, f"EV drift {diff} for {expected['match']}"

@@ -229,7 +229,12 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
         'Switzerland vs Serbia 2026-06-19': {'combo': 3.20},
         'Turkey vs Paraguay 2026-06-20': {'over35': 3.65},
         'Ghana vs Panama 2026-06-21': {'dc': 1.33},  # note: replicated p_dc ~68% (after caf shrink) or use o35; report used older p~40% for over; EV neg either way -> PASS
-        'New Zealand vs Egypt 2026-06-21': {'handicap_plus1': 2.38}
+        'New Zealand vs Egypt 2026-06-21': {'handicap_plus1': 2.38},
+        # From screenshots inventory (IMG_7480, IMG_7485, IMG_7490, IMG_7500, IMG_7475)
+        'USA vs Australia 2026-06-19': {'win': 1.60},
+        'Brazil vs Haiti 2026-06-19': {'win': 1.12},
+        'Netherlands vs Sweden 2026-06-20': {'combo': 3.05},
+        'Tunisia vs Japan 2026-06-20': {'win': 1.52}
     }
     
     results = []
