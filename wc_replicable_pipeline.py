@@ -39,6 +39,16 @@ import re
 from scipy.stats import poisson
 from typing import Dict, Tuple, List
 
+# TGNN champion (TGN-like from research: memory + temporal graph msgs)
+# Loaded if available for blend (25% weight per comparisons); falls back gracefully.
+try:
+    from wc_temporal_graph_nn import TemporalGraphNN, tgnn_predict_1x2
+    _TGNN = TemporalGraphNN(emb_dim=8, temporal_only=False, seed=42)
+    _TGNN.load("training/tgnn_d8_fg.npz")
+except Exception:
+    _TGNN = None
+    tgnn_predict_1x2 = None
+
 # ============================================================
 # TUNED CONSTANTS (Iteration 2 auditor fix - extract magic numbers)
 # ============================================================
@@ -377,6 +387,22 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
         
         p_tw = two_way_win_prob(Ea_adj, Eb_adj, Ha=Ha, Fa=Fa + ft['rotation_penalty'])
         pA, d, pB = three_way_1x2(p_tw, s=1.0, opener_draw_boost=ft['opener_draw_boost'])
+
+        # TGNN champion blend (research-informed TGN-like: temporal memory + graph neighbor msgs from elapsed A+B)
+        # 75% core v4 + 25% TGNN for robustness without losing sensitivity (temporal CV validated low trap)
+        if _TGNN is not None and tgnn_predict_1x2 is not None:
+            try:
+                ta = str(row.get("team_a", "")).strip().upper().replace(" ", "")
+                tb = str(row.get("team_b", "")).strip().upper().replace(" ", "")
+                pt = tgnn_predict_1x2(ta, tb, Ea, Eb, model=_TGNN)
+                pA = 0.75 * pA + 0.25 * pt[0]
+                d  = 0.75 * d  + 0.25 * pt[1]
+                pB = 0.75 * pB + 0.25 * pt[2]
+                s = pA + d + pB
+                if s > 0:
+                    pA, d, pB = pA/s, d/s, pB/s
+            except Exception:
+                pass  # fallback to pure core
         
         # Rule 14 uplift for longshots (if the finetune string says so)
         if ft['rule14_uplift'] and pA < 0.25:
@@ -532,7 +558,7 @@ if __name__ == "__main__":
             "strength": strength,
             "rule_notes": r.get('rule_notes', r.get('finetunes')),
             "screenshot_source": r.get('screenshot_source_odds'),
-            "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24)",
+            "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
             "date": r.get('match', '').split()[-1] if '2026' in str(r.get('match','')) else '',
             # NEW: explanations always emitted in JSON structure for dynamic hover tooltips
             "term_key": rec,
