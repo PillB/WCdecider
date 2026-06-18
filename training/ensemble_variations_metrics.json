@@ -1,0 +1,49 @@
+{
+  "bases_brier": {
+    "v4.1": 0.20716714949262985,
+    "TGNN": 0.2196224704693292,
+    "GraphMixer": 0.21943482307365472,
+    "Tabular": 0.21960716353999643
+  },
+  "temporal_cv": {
+    "pre2024": {
+      "v4.1": 0.19716050795743412,
+      "TGNN": 0.21806313524994284,
+      "GraphMixer": 0.2179441503947188,
+      "Tabular": 0.21803368045401683
+    },
+    "early2026": {
+      "v4.1": 0.20917369216924522,
+      "TGNN": 0.22010160829373154,
+      "GraphMixer": 0.21989958746640875,
+      "Tabular": 0.22036048489359658
+    },
+    "mid2026": {
+      "v4.1": 0.2872155414382173,
+      "TGNN": 0.2319450878784889,
+      "GraphMixer": 0.23120872281699045,
+      "Tabular": 0.23179627846746625
+    }
+  },
+  "real_pnl_proxy": {
+    "v4.1": -0.0,
+    "TGNN": 2.2,
+    "GraphMixer": 2.1,
+    "Tabular": 2.2
+  },
+  "blends_example": {
+    "blend_50_50_v4_TGNN": {
+      "brier": 0.20831608784521788,
+      "pnl": 1.1
+    },
+    "blend_70_10_10_10": {
+      "brier": 0.20662585593060334,
+      "pnl": 0.6
+    },
+    "stack_proxy": {
+      "brier": 0.20973345287073636,
+      "pnl": 1.2
+    }
+  },
+  "notes": "GraphMixer from Cong et al ICLR23 (simple yet strong). Stacking per papers (meta on bases). All chrono. Champion selection requires trap=0 + temporal stability + real profit."
+}
