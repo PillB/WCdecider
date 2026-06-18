@@ -2,21 +2,21 @@
   "predictions": [
     {
       "match": "Portugal vs DR Congo 2026-06-17",
-      "p_win": 61.4,
-      "p_draw": 22.4,
-      "p_loss": 16.2,
+      "p_win": 59.2,
+      "p_draw": 26.2,
+      "p_loss": 14.6,
       "ev_pct": -22.4,
       "recommendation": "win",
       "rec_odds": 1.31,
       "strength": "PASS",
-      "rule_notes": "Rule 21 + Rule 14 heavy fav shrinkage + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 21 + Rule 14 heavy fav shrinkage + screenshot EV",
       "screenshot_source": "{'win': 1.31}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-17",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -29,16 +29,16 @@
     },
     {
       "match": "England vs Croatia 2026-06-17",
-      "p_win": 52.8,
-      "p_draw": 24.5,
-      "p_loss": 22.7,
+      "p_win": 50.3,
+      "p_draw": 28.5,
+      "p_loss": 21.2,
       "ev_pct": 72.1,
       "recommendation": "handicap_minus1",
       "rec_odds": 3.8,
       "strength": "STRONG",
-      "rule_notes": "Rule 21 + Rule 14 + margin + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 21 + Rule 14 + margin + screenshot EV",
       "screenshot_source": "{'handicap_minus1': 3.8}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-17",
       "term_key": "handicap_minus1",
       "explanation": {
@@ -56,21 +56,21 @@
     },
     {
       "match": "Ghana vs Panama 2026-06-17",
-      "p_win": 42.7,
-      "p_draw": 27.2,
-      "p_loss": 30.1,
+      "p_win": 35.4,
+      "p_draw": 32.8,
+      "p_loss": 31.8,
       "ev_pct": -9.4,
       "recommendation": "dc",
       "rec_odds": 1.33,
       "strength": "PASS",
-      "rule_notes": "Rule 19 CAF + Rule 21 + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 19 CAF + Rule 21 + screenshot EV",
       "screenshot_source": "{'dc': 1.33}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-17",
       "term_key": "dc",
       "explanation": {
-        "en": "Double Chance (DC): A bet that covers two of the three possible 1X2 results. E.g. 'X2' wins on draw OR away win. Safer than single outcome but pays less.",
-        "es": "Doble oportunidad (DC): Apuesta que cubre dos de los tres resultados 1X2 posibles. Ej. 'X2' gana con empate O victoria visitante. M\u00e1s segura que un solo resultado pero paga menos."
+        "en": "Double Chance (DC): Covers exactly two of the three 1X2 outcomes (e.g. 'X2' = draw OR the away team wins). Wins unless the uncovered outcome happens. In apps: locate under 'Doble oportunidad' or DC section next to 1X2. Safer than single 'win' but lower payout. Specific DC shown in the rec (e.g. 1X or X2).",
+        "es": "Doble oportunidad (DC): Cubre exactamente dos de los tres resultados 1X2 (ej. 'X2' = empate O gana el visitante). Gana a menos que ocurra el resultado no cubierto. En apps: busca bajo 'Doble oportunidad' o secci\u00f3n DC junto al 1X2. M\u00e1s segura que una 'victoria' simple pero paga menos. El DC espec\u00edfico se indica en la rec (ej. 1X o X2)."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -83,21 +83,21 @@
     },
     {
       "match": "Uzbekistan vs Colombia 2026-06-17",
-      "p_win": 25.9,
-      "p_draw": 24.8,
-      "p_loss": 49.4,
+      "p_win": 23.5,
+      "p_draw": 28.7,
+      "p_loss": 47.8,
       "ev_pct": -65.9,
       "recommendation": "win",
       "rec_odds": 1.45,
       "strength": "PASS",
-      "rule_notes": "Rule 21 mild + CONMEBOL baseline + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 21 mild + CONMEBOL baseline + screenshot EV",
       "screenshot_source": "{'win': 1.45}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-17",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -110,21 +110,21 @@
     },
     {
       "match": "Czechia vs South Africa 2026-06-18",
-      "p_win": 46.8,
-      "p_draw": 26.1,
-      "p_loss": 27.1,
+      "p_win": 47.3,
+      "p_draw": 26.0,
+      "p_loss": 26.7,
       "ev_pct": -22.0,
       "recommendation": "win",
       "rec_odds": 1.65,
       "strength": "PASS",
-      "rule_notes": "Base + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Base + screenshot EV",
       "screenshot_source": "{'win': 1.65}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-18",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -137,21 +137,21 @@
     },
     {
       "match": "Switzerland vs Bosnia and Herzegovina 2026-06-18",
-      "p_win": 46.0,
+      "p_win": 46.4,
       "p_draw": 26.3,
-      "p_loss": 27.7,
+      "p_loss": 27.3,
       "ev_pct": -28.1,
       "recommendation": "win",
       "rec_odds": 1.55,
       "strength": "PASS",
-      "rule_notes": "Base + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Base + screenshot EV",
       "screenshot_source": "{'win': 1.55}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-18",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -164,16 +164,16 @@
     },
     {
       "match": "Canada vs Qatar 2026-06-18",
-      "p_win": 60.4,
-      "p_draw": 22.6,
-      "p_loss": 17.0,
+      "p_win": 58.4,
+      "p_draw": 26.4,
+      "p_loss": 15.2,
       "ev_pct": 12.8,
       "recommendation": "handicap_minus1",
       "rec_odds": 1.87,
       "strength": "STRONG",
-      "rule_notes": "Rule 21 + host adj + Rule 24 + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 21 + host adj + Rule 24 + screenshot EV",
       "screenshot_source": "{'handicap_minus1': 1.87}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-18",
       "term_key": "handicap_minus1",
       "explanation": {
@@ -191,21 +191,21 @@
     },
     {
       "match": "Mexico vs South Korea 2026-06-18",
-      "p_win": 44.8,
-      "p_draw": 26.6,
-      "p_loss": 28.6,
+      "p_win": 42.9,
+      "p_draw": 30.6,
+      "p_loss": 26.5,
       "ev_pct": -10.8,
       "recommendation": "win",
       "rec_odds": 2.08,
       "strength": "PASS",
-      "rule_notes": "Rule 21 + host + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 21 + host + screenshot EV",
       "screenshot_source": "{'win': 2.08}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-18",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -218,21 +218,21 @@
     },
     {
       "match": "United States vs Australia 2026-06-19",
-      "p_win": 50.8,
-      "p_draw": 25.0,
-      "p_loss": 24.2,
+      "p_win": 48.5,
+      "p_draw": 29.0,
+      "p_loss": 22.5,
       "ev_pct": -22.4,
       "recommendation": "win",
       "rec_odds": 1.6,
       "strength": "PASS",
-      "rule_notes": "Rule 21 host + Rule 14 + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 21 host + Rule 14 + screenshot EV",
       "screenshot_source": "{'win': 1.6}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-19",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -245,21 +245,21 @@
     },
     {
       "match": "Scotland vs Morocco 2026-06-19",
-      "p_win": 32.9,
-      "p_draw": 27.3,
-      "p_loss": 39.8,
+      "p_win": 32.3,
+      "p_draw": 27.4,
+      "p_loss": 40.3,
       "ev_pct": -32.1,
       "recommendation": "win",
       "rec_odds": 2.1,
       "strength": "PASS",
-      "rule_notes": "Base + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Base + screenshot EV",
       "screenshot_source": "{'win': 2.1}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-19",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -272,21 +272,21 @@
     },
     {
       "match": "Brazil vs Haiti 2026-06-19",
-      "p_win": 65.3,
-      "p_draw": 21.5,
-      "p_loss": 13.2,
+      "p_win": 67.5,
+      "p_draw": 21.0,
+      "p_loss": 11.5,
       "ev_pct": -24.4,
       "recommendation": "win",
       "rec_odds": 1.12,
       "strength": "PASS",
-      "rule_notes": "Rule 15 finisher + Rule 14 + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 15 finisher + Rule 14 + screenshot EV",
       "screenshot_source": "{'win': 1.12}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-19",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -299,16 +299,16 @@
     },
     {
       "match": "T\u00fcrkiye vs Paraguay 2026-06-20",
-      "p_win": 44.3,
-      "p_draw": 26.7,
-      "p_loss": 28.9,
+      "p_win": 42.0,
+      "p_draw": 30.9,
+      "p_loss": 27.1,
       "ev_pct": -11.5,
       "recommendation": "over35",
       "rec_odds": 3.65,
       "strength": "PASS",
-      "rule_notes": "Rule 21 + Rule 13 + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 21 + Rule 13 + screenshot EV",
       "screenshot_source": "{'over35': 3.65}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-20",
       "term_key": "over35",
       "explanation": {
@@ -326,16 +326,16 @@
     },
     {
       "match": "Netherlands vs Sweden 2026-06-20",
-      "p_win": 54.2,
-      "p_draw": 24.2,
-      "p_loss": 21.6,
+      "p_win": 52.0,
+      "p_draw": 28.1,
+      "p_loss": 19.9,
       "ev_pct": -3.3,
       "recommendation": "combo",
       "rec_odds": 3.05,
       "strength": "PASS",
-      "rule_notes": "Rule 21 + Rule 17 DC + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 21 + Rule 17 DC + screenshot EV",
       "screenshot_source": "{'combo': 3.05}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-20",
       "term_key": "combo",
       "explanation": {
@@ -353,21 +353,21 @@
     },
     {
       "match": "Germany vs Ivory Coast 2026-06-20",
-      "p_win": 51.1,
-      "p_draw": 25.0,
-      "p_loss": 24.0,
+      "p_win": 43.3,
+      "p_draw": 30.5,
+      "p_loss": 26.2,
       "ev_pct": -40.3,
       "recommendation": "win",
       "rec_odds": 1.38,
       "strength": "PASS",
-      "rule_notes": "Rule 19 CAF + Rule 21 + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 19 CAF + Rule 21 + screenshot EV",
       "screenshot_source": "{'win': 1.38}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-20",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -380,21 +380,21 @@
     },
     {
       "match": "Ecuador vs Cura\u00e7ao 2026-06-20",
-      "p_win": 57.0,
-      "p_draw": 23.5,
-      "p_loss": 19.5,
+      "p_win": 58.2,
+      "p_draw": 23.2,
+      "p_loss": 18.6,
       "ev_pct": -29.0,
       "recommendation": "win",
       "rec_odds": 1.22,
       "strength": "PASS",
-      "rule_notes": "Base + minnow + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Base + minnow + screenshot EV",
       "screenshot_source": "{'win': 1.22}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-20",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -407,21 +407,21 @@
     },
     {
       "match": "Tunisia vs Japan 2026-06-20",
-      "p_win": 27.0,
-      "p_draw": 25.1,
-      "p_loss": 47.9,
+      "p_win": 24.2,
+      "p_draw": 23.4,
+      "p_loss": 52.4,
       "ev_pct": 64.3,
       "recommendation": "win",
       "rec_odds": 6.8,
       "strength": "STRONG",
-      "rule_notes": "Rule 19 CAF + Rule 14 uplift on long + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 19 CAF + Rule 14 uplift on long + screenshot EV",
       "screenshot_source": "{'win': 6.8}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-20",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "STRONG: Highest tier. Model edge is positive and ROBUST \u2014 holds up in aggressive, base, and conservative sensitivity runs with good EV.",
@@ -434,21 +434,21 @@
     },
     {
       "match": "Spain vs Saudi Arabia 2026-06-21",
-      "p_win": 66.8,
-      "p_draw": 21.1,
-      "p_loss": 12.0,
+      "p_win": 64.1,
+      "p_draw": 25.0,
+      "p_loss": 10.9,
       "ev_pct": -28.2,
       "recommendation": "win",
       "rec_odds": 1.12,
       "strength": "PASS",
-      "rule_notes": "Rule 21 opener + rotation + Rule 14 + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 21 opener + rotation + Rule 14 + screenshot EV",
       "screenshot_source": "{'win': 1.12}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-21",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -461,21 +461,21 @@
     },
     {
       "match": "Belgium vs Iran 2026-06-21",
-      "p_win": 51.0,
-      "p_draw": 25.0,
-      "p_loss": 24.0,
+      "p_win": 51.7,
+      "p_draw": 24.8,
+      "p_loss": 23.5,
       "ev_pct": -33.8,
       "recommendation": "win",
       "rec_odds": 1.28,
       "strength": "PASS",
-      "rule_notes": "Base + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Base + screenshot EV",
       "screenshot_source": "{'win': 1.28}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-21",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -488,21 +488,21 @@
     },
     {
       "match": "Uruguay vs Cape Verde 2026-06-21",
-      "p_win": 59.6,
-      "p_draw": 22.8,
-      "p_loss": 17.6,
+      "p_win": 57.4,
+      "p_draw": 26.7,
+      "p_loss": 15.9,
       "ev_pct": -32.2,
       "recommendation": "win",
       "rec_odds": 1.18,
       "strength": "PASS",
-      "rule_notes": "Rule 21 minnow + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 21 minnow + screenshot EV",
       "screenshot_source": "{'win': 1.18}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-21",
       "term_key": "win",
       "explanation": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+        "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
       },
       "strength_explanation": {
         "en": "PASS: The full protocol (EV calculation, 3 sensitivities, Rules 14/19/21/24 etc.) found no positive expected value. Do not place this bet.",
@@ -515,16 +515,16 @@
     },
     {
       "match": "New Zealand vs Egypt 2026-06-21",
-      "p_win": 28.6,
-      "p_draw": 25.7,
-      "p_loss": 45.6,
+      "p_win": 24.2,
+      "p_draw": 24.4,
+      "p_loss": 51.4,
       "ev_pct": 25.6,
       "recommendation": "handicap_plus1",
       "rec_odds": 2.38,
       "strength": "STRONG",
-      "rule_notes": "Rule 24 + Rule 19 mirror + screenshot EV + GraphMixer (Cong23) + stacking/MoE variants; temporal CV",
+      "rule_notes": "Rule 24 + Rule 19 mirror + screenshot EV",
       "screenshot_source": "{'handicap_plus1': 2.38}",
-      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph) + ensemble_variations_champion_70_10_10_10 (v4.1+TGNN+GraphMixer+Tabular)",
+      "model_source": "wc_replicable_pipeline.py + wc_june17_21_model_dataset.csv (Elo two_way + expected_lambdas + DC joints + Rules 14/17/19/21/24) + TGNN_d8_fg champion blend (TGN temporal graph)",
       "date": "2026-06-21",
       "term_key": "handicap_plus1",
       "explanation": {
@@ -543,8 +543,8 @@
   ],
   "glossary": {
     "win": {
-      "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-      "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete m\u00e1s goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+      "en": "1X2 Win (the team shown in the recommendation): Selects that specific team to win the match outright in the three-way 1X2 market. The bet wins only if the selected team scores strictly more goals than the opponent by the final whistle (90 min + stoppage). In Betsson/Betano apps, locate via: open the fixture in Sports/World Cup section \u2192 '1X2', 'Match Result', 'Match Winner' or 'Resultado del partido' market \u2192 tap the team's listed decimal-odds tile \u2192 review/enter stake in slip and confirm. Decimal odds multiply stake for total return if it wins. Draw or opponent win = bet loses. Analysis and mechanics explanation only; user decides all actions and stakes.",
+      "es": "Victoria 1X2 (el equipo mostrado en la recomendaci\u00f3n): Selecciona a ese equipo espec\u00edfico para ganar el partido de forma clara en el mercado 1X2 de tres v\u00edas. La apuesta gana solo si el equipo seleccionado anota estrictamente m\u00e1s goles que el rival al final del silbato (90 min + a\u00f1adido). En apps Betsson/Betano se localiza as\u00ed: abre el partido en Deportes/Copa del Mundo \u2192 mercado '1X2', 'Resultado del partido', 'Match Winner' o 'Match Result' \u2192 toca el recuadro con la cuota decimal del equipo \u2192 revisa/ingresa el stake en el boleto y confirma. Las cuotas decimales multiplican el stake para retorno total si gana. Empate o victoria rival = pierdes la apuesta. Solo explicaci\u00f3n de an\u00e1lisis y mec\u00e1nica; el usuario decide todas las acciones y stakes."
     },
     "handicap_minus1": {
       "en": "Handicap -1 (e.g. ENG -1): The selected team must win by TWO or more goals. If they win by exactly 1 goal (e.g. 2-1), it is usually a 'push' (your stake is returned, no win or loss). Draw or loss = bet loses.",
@@ -555,8 +555,8 @@
       "es": "H\u00e1ndicap +1 (ej. NZ +1): Ganas la apuesta si tu equipo pierde por solo 1 gol, gana o empata. Pierdes solo si pierde por 2 o m\u00e1s goles."
     },
     "dc": {
-      "en": "Double Chance (DC): A bet that covers two of the three possible 1X2 results. E.g. 'X2' wins on draw OR away win. Safer than single outcome but pays less.",
-      "es": "Doble oportunidad (DC): Apuesta que cubre dos de los tres resultados 1X2 posibles. Ej. 'X2' gana con empate O victoria visitante. M\u00e1s segura que un solo resultado pero paga menos."
+      "en": "Double Chance (DC): Covers exactly two of the three 1X2 outcomes (e.g. 'X2' = draw OR the away team wins). Wins unless the uncovered outcome happens. In apps: locate under 'Doble oportunidad' or DC section next to 1X2. Safer than single 'win' but lower payout. Specific DC shown in the rec (e.g. 1X or X2).",
+      "es": "Doble oportunidad (DC): Cubre exactamente dos de los tres resultados 1X2 (ej. 'X2' = empate O gana el visitante). Gana a menos que ocurra el resultado no cubierto. En apps: busca bajo 'Doble oportunidad' o secci\u00f3n DC junto al 1X2. M\u00e1s segura que una 'victoria' simple pero paga menos. El DC espec\u00edfico se indica en la rec (ej. 1X o X2)."
     },
     "over35": {
       "en": "Over 3.5 goals: The total number of goals scored by BOTH teams together must reach 4 or more for this bet to win.",
