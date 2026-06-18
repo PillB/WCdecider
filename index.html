@@ -29,6 +29,13 @@
         .data-table { font-size: 0.875rem; }
         .data-table th { background: #f8fafc; font-weight: 600; }
         .tail-container { max-width: 1280px; margin: 0 auto; }
+        /* Responsive & overflow guards */
+        .match-detail, .eli5-block { word-break: break-word; overflow-wrap: anywhere; }
+        @media (max-width: 640px) {
+            .long-eli5 { max-height: 220px; overflow: auto; -webkit-overflow-scrolling: touch; }
+            .dense-grid { gap: 0.75rem !important; }
+            .p-5.dense-grid { padding: 0.875rem; }
+        }
         .model-badge { font-size: 10px; padding: 1px 7px; border-radius: 9999px; background: #0f172a; color: white; }
         .abbr { position: relative; display: inline-block; cursor: help; border-bottom: 1px dotted #64748b; }
         .abbr .tooltip {
@@ -43,23 +50,39 @@
             color: #f1f5f9;
             font-size: 11px;
             line-height: 1.3;
-            padding: 8px 10px;
+            padding: 6px 8px;
             border-radius: 6px;
             white-space: normal;
             max-width: 260px;
+            max-height: 38vh;
+            overflow-y: auto;
             width: max-content;
             z-index: 9999;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             transition: opacity 0.15s ease, visibility 0.15s ease;
             pointer-events: none;
+            -webkit-overflow-scrolling: touch;
         }
-        .abbr:hover .tooltip {
+        .abbr:hover .tooltip,
+        .abbr:focus .tooltip,
+        .abbr:active .tooltip {
             visibility: visible;
             opacity: 1;
         }
-        /* Prevent tooltip overflow on right edge */
+        /* Prevent tooltip overflow on right edge + mobile */
         .abbr .tooltip {
-            max-width: min(260px, 90vw);
+            max-width: min(260px, 92vw);
+        }
+        @media (max-width: 640px) {
+            .abbr .tooltip {
+                bottom: auto;
+                top: 100%;
+                margin-top: 4px;
+                margin-bottom: 0;
+                font-size: 10px;
+                padding: 5px 7px;
+                max-height: 45vh;
+            }
         }
         /* Bilingual language toggle support */
         .lang-es .en, .lang-en .es { display: none !important; }
@@ -71,43 +94,43 @@
 <body class="bg-slate-950 text-slate-200 lang-en">
     <!-- Top Nav -->
     <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
-        <div class="tail-container px-6 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-x-3">
-                <div class="w-9 h-9 bg-sky-500 rounded-xl flex items-center justify-center">
-                    <i class="fa-solid fa-futbol text-white text-2xl"></i>
+        <div class="tail-container px-4 sm:px-6 py-2 sm:py-3 flex flex-wrap items-center justify-between gap-y-2 gap-x-2">
+            <div class="flex items-center gap-x-2 sm:gap-x-3 min-w-0">
+                <div class="w-8 h-8 sm:w-9 sm:h-9 bg-sky-500 rounded-xl flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-futbol text-white text-xl sm:text-2xl"></i>
                 </div>
-                <div>
-                    <span class="font-display text-2xl font-semibold tracking-tighter">WCdecider</span>
-                    <span class="text-xs px-2 py-0.5 bg-slate-800 text-sky-400 rounded ml-1.5 font-mono">v4.1 prod</span>
+                <div class="min-w-0">
+                    <span class="font-display text-xl sm:text-2xl font-semibold tracking-tighter">WCdecider</span>
+                    <span class="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 bg-slate-800 text-sky-400 rounded ml-1 font-mono">v4.1 prod</span>
                 </div>
             </div>
-            <div class="flex items-center gap-x-2 text-sm">
-                <div class="px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-x-2 text-xs">
-                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                    <span class="font-medium"><span class="en">Core model (v4.1 pipeline) executed on full 15–21 dataset A + backtested (15-16 actuals folded)</span><span class="es">Modelo núcleo (pipeline v4.1) ejecutado en dataset A completo 15–21 + backtest (15-16 reales plegados)</span></span>
+            <div class="flex items-center gap-x-1.5 sm:gap-x-2 text-xs sm:text-sm flex-wrap justify-end">
+                <div class="hidden sm:flex px-2 sm:px-3 py-1 sm:py-1.5 bg-slate-900 border border-slate-800 rounded-2xl items-center gap-x-1.5 sm:gap-x-2 text-[10px] sm:text-xs max-w-[55vw] sm:max-w-none truncate">
+                    <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
+                    <span class="font-medium truncate"><span class="en">Core model (v4.1) on full 15–21 A + backtested</span><span class="es">Modelo v4.1 en dataset A completo + backtest</span></span>
                 </div>
-                <button onclick="window.print()" class="px-4 py-2 text-xs font-semibold bg-white text-slate-900 rounded-2xl flex items-center gap-x-2 hover:bg-slate-100 transition-colors">
+                <button onclick="window.print()" class="px-2.5 sm:px-4 py-1 sm:py-2 text-[10px] sm:text-xs font-semibold bg-white text-slate-900 rounded-2xl flex items-center gap-x-1 sm:gap-x-2 hover:bg-slate-100 transition-colors shrink-0">
                     <i class="fa-solid fa-print"></i>
-                    <span class="en">Print / PDF</span><span class="es">Imprimir / PDF</span>
+                    <span class="hidden xs:inline"><span class="en">Print</span><span class="es">Imprimir</span></span>
                 </button>
                 <!-- Language Toggle -->
-                <div class="flex items-center text-xs font-semibold border border-slate-700 rounded-2xl overflow-hidden" style="height:32px;">
-                    <button id="btn-en" onclick="switchLang('en')" class="lang-btn px-3 h-full transition-colors active">EN</button>
-                    <button id="btn-es" onclick="switchLang('es')" class="lang-btn px-3 h-full transition-colors">ES</button>
+                <div class="flex items-center text-[10px] sm:text-xs font-semibold border border-slate-700 rounded-2xl overflow-hidden shrink-0" style="height:28px;">
+                    <button id="btn-en" onclick="switchLang('en')" class="lang-btn px-2 sm:px-3 h-full transition-colors active">EN</button>
+                    <button id="btn-es" onclick="switchLang('es')" class="lang-btn px-2 sm:px-3 h-full transition-colors">ES</button>
                 </div>
             </div>
         </div>
     </nav>
 
     <div class="tail-container px-6 py-8">
-    <div style="background:#1e2937; padding:8px 12px; border-radius:8px; margin-bottom:12px; font-size:13px;">
-        <strong>Current Status (2026-06-17):</strong> <span class="en">Core model v4.1 pipeline executed + backtested on full dataset A (15-21). 15-16 with actual results for backtesting/calibration; 17-21 predicted from screenshot-derived data. </span><span class="es">Modelo núcleo pipeline v4.1 ejecutado + backtesteado en dataset A completo (15-21). 15-16 con resultados reales para backtesting/calibración; 17-21 predichos desde datos de capturas. </span><strong><span class="en">Latest:</span><span class="es">Último:</span></strong> <span class="en">New Zealand vs Egypt (June 21). Full core model run 2026-06-17.</span><span class="es">Nueva Zelanda vs Egipto (21 junio). Ejecución completa núcleo 2026-06-17.</span> <span id="site-version" data-version="v2024-06-17-ci-fix-001" style="font-size: 10px; background: #334155; padding: 1px 4px; border-radius: 2px;">v2024-06-17-ci-fix-001</span>
+    <div class="text-xs sm:text-sm" style="background:#1e2937; padding:6px 10px; border-radius:8px; margin-bottom:12px;">
+        <strong>Current Status (2026-06-17):</strong> <span class="en">Core model v4.1 pipeline executed + backtested on full dataset A (15-21). 15-16 with actual results for backtesting/calibration; 17-21 predicted from screenshot-derived data. </span><span class="es">Modelo núcleo pipeline v4.1 ejecutado + backtesteado en dataset A completo (15-21). 15-16 con resultados reales para backtesting/calibración; 17-21 predichos desde datos de capturas. </span><strong><span class="en">Latest:</span><span class="es">Último:</span></strong> <span class="en">New Zealand vs Egypt (June 21). Full core model run 2026-06-17.</span><span class="es">Nueva Zelanda vs Egipto (21 junio). Ejecución completa núcleo 2026-06-17.</span> <span id="site-version" data-version="v2024-06-17-ci-fix-001" style="font-size: 9px; background: #334155; padding: 1px 3px; border-radius: 2px;">v2024-06-17-ci-fix-001</span>
     </div>
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-y-2 mb-8">
             <div>
                 <div class="flex items-center gap-x-3">
-                    <h1 class="font-display text-5xl font-semibold tracking-tighter"><span class="en">June 15–21 2026 WC Slate — Core Model v4.1 Pipeline (Full Dataset A Backtested + Predicted)</span><span class="es">15–21 Jun 2026 WC — Modelo Núcleo v4.1 Pipeline (Dataset A Completo Backtesteado + Predicho)</span></h1>
+                    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter"><span class="en">June 15–21 2026 WC Slate — Core Model v4.1 Pipeline (Full Dataset A Backtested + Predicted)</span><span class="es">15–21 Jun 2026 WC — Modelo Núcleo v4.1 Pipeline (Dataset A Completo Backtesteado + Predicho)</span></h1>
                     <span class="model-badge px-3 py-1 text-xs tracking-widest"><span class="en">PERFECTED ENSEMBLE</span><span class="es">ENSEMBLE PERFECCIONADO</span></span>
                 </div>
                 <p class="text-slate-400 mt-1"><span class="en">Core model v4.1 (replicable pipeline + ensemble) backtested on 15-16 actuals + predicts 17-21 from screenshot Elo/adjustments in full dataset A. Finetuned • Validated • Last full run: 2026-06-17</span><span class="es">Modelo núcleo v4.1 (pipeline replicable + ensemble) backtesteado en reales 15-16 + predice 17-21 desde Elo de capturas en dataset A completo. Ajustado • Validado • Última ejecución completa: 2026-06-17</span></p>
@@ -245,8 +268,8 @@
                 </div>
 
                 <!-- Workflow Diagram -->
-                <div class="viz-container bg-slate-950 border border-slate-700 rounded-2xl p-4 overflow-x-auto">
-                    <svg width="100%" height="420" viewBox="0 0 1100 420" class="mx-auto" style="max-width: 100%;">
+                <div class="viz-container bg-slate-950 border border-slate-700 rounded-2xl p-3 sm:p-4 overflow-x-auto">
+                    <svg width="100%" height="auto" viewBox="0 0 1100 420" class="mx-auto" style="max-width: 100%; height: min(420px, 58vh);">
                         <!-- Background layers -->
                         <rect x="20" y="20" width="1060" height="380" rx="12" fill="#0f172a" stroke="#334155" stroke-width="2"/>
                         
@@ -542,7 +565,7 @@
                         </div>
                         <div class="text-xs text-slate-400"><span class="en">Mild weather • Ref Faghani (low pens)</span><span class="es">Clima templado • Árbitro Faghani (pocos penales)</span></div>
                     </div>
-                    <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
+                    <div class="p-5 dense-grid grid grid-cols-1 md:grid-cols-12 gap-5 text-sm match-detail">
                         <div class="md:col-span-5">
                             <div class="font-medium mb-1.5"><span class="en">Data Snapshot (≥2 sources)</span><span class="es">Resumen de Datos (≥2 fuentes)</span></div>
                             <div class="text-xs space-y-1 text-slate-300">
@@ -584,7 +607,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3">
+                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3 long-eli5">
                         <strong><span class="en">ELI5 for the betting assistant who has NEVER placed a bet or watched football before - How to actually execute this recommended bet step by step in the app (super simple, no jargon left unexplained):</span><span class="es">ELI5 para el asistente de apuestas que NUNCA ha apostado ni visto fútbol - Cómo ejecutar realmente esta apuesta recomendada paso a paso en la app (súper simple, sin jerga sin explicar):</span></strong><br><br>
                         <strong><span class="en">What this bet is (explained like you're 5):</span><span class="es">Qué es esta apuesta (explicado como si tuvieras 5 años):</span></strong> <span class="en">We are betting on TWO things at the same time (this is called a "combo" or "multi" bet). First: France must win the game (score more goals than Senegal). Second: There must be 4 or more goals in total in the whole game (for example 2-2, 3-1, 4-0, 3-2, etc.). BOTH things must happen for us to win the bet. If France loses or draws, or if there are only 0, 1, 2, or 3 goals total, we lose the whole bet.</span><span class="es">Estamos apostando a DOS cosas al mismo tiempo (esto se llama apuesta "combo" o "multi"). Primero: Francia debe ganar el partido (anotar más goles que Senegal). Segundo: Debe haber 4 o más goles en total en todo el partido (por ejemplo 2-2, 3-1, 4-0, 3-2, etc.). AMBAS cosas deben pasar para que ganemos la apuesta. Si Francia pierde o empata, o si hay solo 0, 1, 2 o 3 goles totales, perdemos toda la apuesta.</span><br><br>
                         <strong><span class="en">The odd 5.15 explained:</span><span class="es">La cuota 5,15 explicada:</span></strong> <span class="en">This is the "boosted" (temporarily made better) decimal odds. Decimal odds are a multiplier. Bet S/100 at 5.15 and win → you get S/515 total back (your S/100 stake returned + S/415 profit). The boost makes the number bigger than normal (was 4.30, now 5.15), which is good for us if our model thinks the real chance is higher than the old price suggested.</span><span class="es">Esta es la cuota decimal "boosted" (temporalmente mejorada). Las cuotas decimales son un multiplicador. Apuesta S/100 a 5,15 y si ganas → recibes S/515 en total (tus S/100 de stake devueltos + S/415 de ganancia). El boost hace el número más grande de lo normal (era 4,30, ahora 5,15), lo cual es bueno para nosotros si nuestro modelo cree que la probabilidad real es mayor que lo que sugería el precio anterior.</span><br><br>
@@ -623,7 +646,7 @@
                         <div><span class="font-semibold"><span class="en">Iraq vs Norway</span><span class="es">Iraq vs Noruega</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group I • Gillette • ~17:00</span><span class="es">Grupo I • Gillette • ~17:00</span></span></div>
                         <div class="text-xs text-slate-400"><span class="en">Benign weather • Haaland/Ødegaard fit</span><span class="es">Clima benigno • Haaland/Ødegaard en forma</span></div>
                     </div>
-                    <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
+                    <div class="p-5 dense-grid grid grid-cols-1 md:grid-cols-12 gap-5 text-sm match-detail">
                         <div class="md:col-span-5 text-xs">
                             <div class="font-medium mb-1"><span class="en">Data (≥2 sources)</span><span class="es">Datos (≥2 fuentes)</span></div>
                             <div><span class="en">NOR full strength (Haaland + Sørloth = finisher-pair +30 Elo). IRQ domestic-heavy squad. Elo NOR 1914 / IRQ 1607. No major injuries.</span><span class="es">NOR plena fuerza (Haaland + Sørloth = par de goleadores +30 Elo). IRQ plantilla mayormente doméstica. Elo NOR 1914 / IRQ 1607. Sin lesiones mayores.</span></div>
@@ -638,7 +661,7 @@
                             <div class="text-xs"><span class="en">1. IRQ or Draw DC (SPEC if boost visible &amp; cleared) — 35.6% uplifted. Cap S/15. Risks: NOR clinical. 2. High totals / NOR scoring (finisher edge). 3. NOR 1X2 heavy short → Pass.</span><span class="es">1. IRQ o Empate DC (SPEC si boost visible y despejado) — 35,6% con uplift. Tope S/15. Riesgos: NOR clínico. 2. Totales altos / NOR anotando (ventaja goleadores). 3. NOR 1X2 corto pesado → Pass.</span></div>
                         </div>
                     </div>
-                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3"><span class="en">ELI5: "Double chance Iraq or Draw" covers two outcomes — you win unless Norway wins outright. Model gives ~36% true chance (after uplift for longshot bias). At 5.20 that can look attractive, but Norway's attack (Haaland + Sørloth) is elite; one clinical day and the bet is dead. High variance = not "sure."</span><span class="es">Explicación simple: "Doble oportunidad Iraq o Empate" cubre dos resultados — ganas a menos que Noruega gane directamente. El modelo da ~36% de probabilidad real (tras ajuste por sesgo longshot). A 5,20 puede parecer atractivo, pero el ataque de Noruega (Haaland + Sørloth) es élite; un día clínico y la apuesta muere. Alta varianza = no es "segura".</span></div>
+                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3 long-eli5"><span class="en">ELI5: "Double chance Iraq or Draw" covers two outcomes — you win unless Norway wins outright. Model gives ~36% true chance (after uplift for longshot bias). At 5.20 that can look attractive, but Norway's attack (Haaland + Sørloth) is elite; one clinical day and the bet is dead. High variance = not "sure."</span><span class="es">Explicación simple: "Doble oportunidad Iraq o Empate" cubre dos resultados — ganas a menos que Noruega gane directamente. El modelo da ~36% de probabilidad real (tras ajuste por sesgo longshot). A 5,20 puede parecer atractivo, pero el ataque de Noruega (Haaland + Sørloth) es élite; un día clínico y la apuesta muere. Alta varianza = no es "segura".</span></div>
                 </div>
 
                 <!-- Argentina vs Algeria -->
@@ -647,7 +670,7 @@
                         <div><span class="font-semibold"><span class="en">Argentina vs Algeria</span><span class="es">Argentina vs Argelia</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group J • Arrowhead • ~20:00</span><span class="es">Grupo J • Arrowhead • ~20:00</span></span></div>
                         <div class="text-xs text-slate-400"><span class="en">~30°C possible storms</span><span class="es">~30°C posibles tormentas</span></div>
                     </div>
-                    <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
+                    <div class="p-5 dense-grid grid grid-cols-1 md:grid-cols-12 gap-5 text-sm match-detail">
                         <div class="md:col-span-5 text-xs">
                             <div class="font-medium mb-1"><span class="en">Data</span><span class="es">Datos</span></div>
                             <div><span class="en">ARG strong core (Messi confirmed, Alvarez fit). ALG organized (4 CS streak discounted — low-quality opp). Bensebaini out. Elo ARG 2115 (finisher bonus) / ALG 1772. λ ARG 2.51 / ALG 0.09 extreme.</span><span class="es">ARG núcleo fuerte (Messi confirmado, Alvarez en forma). ALG organizada (racha 4 CS descontada — rival de baja calidad). Bensebaini fuera. Elo ARG 2115 (bono goleador) / ALG 1772. λ ARG 2,51 / ALG 0,09 extremo.</span></div>
@@ -662,7 +685,7 @@
                             <div class="text-xs"><span class="en">1. ARG win 1X2 — neg EV. Pass. 2. Over 2.5 or high-quality scorer props (if o ≥3.00) — P(O2.5) 48.2%. SPEC if screenshot value (Messi fit). 3. ARG+BTTS boost — extreme mismatch makes BTTS rare. Pass.</span><span class="es">1. Victoria ARG 1X2 — EV neg. Pass. 2. Más 2.5 o props de goleador de calidad (si o ≥3,00) — P(O2.5) 48,2%. SPEC si valor en captura (Messi en forma). 3. Boost ARG+BTTS — desajuste extremo hace BTTS raro. Pass.</span></div>
                         </div>
                     </div>
-                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3"><span class="en">ELI5: Argentina is a heavy favorite (v4.1 blend ~65.4% win; EV −10.6% Pass at 1.41). The book is not paying enough vs model after MOD stack + Rule 14. The combo "Argentina wins AND both teams score" looks clever on a boost but Algeria barely creates (λ 0.09); joint chance ~7%. Pass.</span><span class="es">Explicación simple: Argentina es favorita pesada (mezcla v4.1 ~65,4% victoria; EV −10,6% Pass a 1,41). El libro no paga suficiente vs modelo tras stack MOD + Regla 14. El combo "Argentina gana Y ambos marcan" parece inteligente en un boost pero Argelia apenas crea (λ 0,09); probabilidad conjunta ~7%. Pass.</span></div>
+                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3 long-eli5"><span class="en">ELI5: Argentina is a heavy favorite (v4.1 blend ~65.4% win; EV −10.6% Pass at 1.41). The book is not paying enough vs model after MOD stack + Rule 14. The combo "Argentina wins AND both teams score" looks clever on a boost but Algeria barely creates (λ 0.09); joint chance ~7%. Pass.</span><span class="es">Explicación simple: Argentina es favorita pesada (mezcla v4.1 ~65,4% victoria; EV −10,6% Pass a 1,41). El libro no paga suficiente vs modelo tras stack MOD + Regla 14. El combo "Argentina gana Y ambos marcan" parece inteligente en un boost pero Argelia apenas crea (λ 0,09); probabilidad conjunta ~7%. Pass.</span></div>
                 </div>
 
                 <!-- Austria vs Jordan (historical example from 15-16; current slate ends with New Zealand vs Egypt June 21) -->
@@ -671,7 +694,7 @@
                         <div><span class="font-semibold"><span class="en">Austria vs Jordan</span><span class="es">Austria vs Jordania</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group J • Levi's • ~23:00 PT</span><span class="es">Grupo J • Levi's • ~23:00 PT</span></span></div>
                         <div class="text-xs text-slate-400"><span class="en">Milder Bay Area • JOR Al-Naimat (top striker) out entire tournament</span><span class="es">Área de la Bahía más templada • JOR Al-Naimat (delantero top) fuera todo el torneo</span></div>
                     </div>
-                    <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
+                    <div class="p-5 dense-grid grid grid-cols-1 md:grid-cols-12 gap-5 text-sm match-detail">
                         <div class="md:col-span-5 text-xs">
                             <div class="font-medium mb-1"><span class="en">Data (strong)</span><span class="es">Datos (fuertes)</span></div>
                             <div><span class="en">AUT: Baumgartner out (creativity loss), Alaba fit caveat, Wimmer doubts. XI Schlager; Laimer/Lienhart/Alaba/Mwene; X.Schlager/Seiwald; Sabitzer/Schmid/Gregoritsch; Arnautović. JOR low-block (Sellami/Morocco-2022 style) but missing key striker. Elo AUT 1830 / JOR 1680. Milder weather supports organized underdog.</span><span class="es">AUT: Baumgartner fuera (pérdida de creatividad), reserva forma de Alaba, dudas Wimmer. XI Schlager; Laimer/Lienhart/Alaba/Mwene; X.Schlager/Seiwald; Sabitzer/Schmid/Gregoritsch; Arnautović. JOR bloque bajo (estilo Sellami/Marruecos-2022) pero sin delantero clave. Elo AUT 1830 / JOR 1680. Clima más templado favorece al underdog organizado.</span></div>
@@ -686,7 +709,7 @@
                             <div class="p-2 bg-amber-950/60 border border-amber-900 rounded text-xs"><strong><span class="en">Draw @5.05 — HALT (+69% EV)</span><span class="es">Empate @5,05 — HALT (+69% EV)</span></strong> <span class="en">— Data-aligned narrative (AUT creator loss + JOR low-block) but EV exceeds +25% threshold. Mandatory Pinnacle reconciliation per Rules 13/18 before any stake. Do not place until drill-down clears. Risks: model error vs soft-book price; AUT clinical day. Conf 40% until cleared.</span><span class="es">— Narrativa alineada con datos (pérdida creador AUT + bloque bajo JOR) pero EV supera umbral +25%. Reconciliación Pinnacle obligatoria según Reglas 13/18 antes de stake. No colocar hasta que drill-down despeje. Riesgos: error de modelo vs precio soft-book; día clínico de AUT. Conf 40% hasta despejar.</span></div>
                         </div>
                     </div>
-                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3">
+                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3 long-eli5">
                         <strong><span class="en">ELI5 for the betting assistant who has NEVER placed a bet or watched football before - How to actually execute this recommended bet step by step in the app (super simple, no jargon left unexplained):</span><span class="es">ELI5 para el asistente de apuestas que NUNCA ha apostado ni visto fútbol - Cómo ejecutar realmente esta apuesta recomendada paso a paso en la app (súper simple, sin jerga sin explicar):</span></strong><br><br>
                         <strong><span class="en">What this bet is (explained like you're 5):</span><span class="es">Qué es esta apuesta (explicado como si tuvieras 5 años):</span></strong> <span class="en">We think the game between Austria and Jordan will end with the same number of goals for both teams. This is called a "draw" or "empate" in Spanish. Examples: 0-0, 1-1, 2-2, 3-3. If it ends like that, we win the bet. If Austria scores more goals than Jordan OR Jordan scores more, we lose the bet.</span><span class="es">Creemos que el partido entre Austria y Jordania terminará con el mismo número de goles para ambos equipos. Esto se llama "draw" o "empate" en español. Ejemplos: 0-0, 1-1, 2-2, 3-3. Si termina así, ganamos la apuesta. Si Austria anota más goles que Jordania O Jordania anota más, perdemos la apuesta.</span><br><br>
                         <strong><span class="en">The odd 5.05 explained:</span><span class="es">La cuota 5,05 explicada:</span></strong> <span class="en">This number is called "decimal odds". It is a multiplier. If you bet S/100 soles on this, and it wins, the app will give you back S/505 soles total (your original S/100 back + S/405 profit). The higher the number, the more money you get if you win, but the harder it is to win.</span><span class="es">Este número se llama "cuotas decimales". Es un multiplicador. Si apuestas S/100 soles en esto y ganas, la app te devolverá S/505 soles en total (tus S/100 originales de vuelta + S/405 de ganancia). Cuanto más alto el número, más dinero recibes si ganas, pero más difícil es ganar.</span><br><br>
@@ -1216,7 +1239,7 @@
                         <div><span class="font-semibold"><span class="en">Portugal vs DR Congo — June 17</span><span class="es">Portugal vs R.D. Congo — 17 de Junio</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group K • Houston • 12:00</span><span class="es">Grupo K • Houston • 12:00</span></span></div>
                         <div class="text-xs text-slate-400"><span class="en">Heavy favorite trap</span><span class="es">Trampa favorito pesado</span></div>
                     </div>
-                    <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
+                    <div class="p-5 dense-grid grid grid-cols-1 md:grid-cols-12 gap-5 text-sm match-detail">
                         <div class="md:col-span-5 text-xs">
                             <div class="font-medium mb-1"><span class="en">Data (screenshot + eloratings)</span><span class="es">Datos (captura + eloratings)</span></div>
                             <div><span class="en">POR ~ high Elo / COD low. Screenshot POR 1.31. Strong favorite.</span><span class="es">POR alto Elo / COD bajo. Captura POR 1,31. Fuerte favorito.</span></div>
@@ -1231,7 +1254,7 @@
                             <div class="p-2 bg-emerald-950/60 border border-emerald-900 rounded text-xs"><strong><span class="en">POR win @1.31 — PASS (-4.5% EV)</span><span class="es">Victoria POR @1,31 — PASS (-4,5% EV)</span></strong> <span class="en">— Overpriced favorite. Skip. Check longshot or O/U.</span><span class="es">— Favorito sobrepreciado. Salta. Ver longshot o O/U.</span></div>
                         </div>
                     </div>
-                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3">
+                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3 long-eli5">
                         <strong><span class="en">ELI5:</span><span class="es">ELI5:</span></strong> <span class="en">Portugal is heavy favorite but 1.31 pays too little per model after Rule 14. <span class="abbr">PASS<span class="tooltip"><span class="en">PASS = Skip; no edge.</span><span class="es">PASS = Salta; sin borde.</span></span></span>. App (for 1X2 win recs): ONE BY ONE — Identify recommended team from rec (Portugal, NOT opponent or draw); tap ONLY that tile. 6 steps: see IMPROVED_GLOSSARY / dynamic card for full. NO advice — user decides. Hover for Rule 14/EV.</span><span class="es">Portugal es fuerte favorito pero 1,31 paga muy poco según modelo tras Regla 14. <span class="abbr">PASS<span class="tooltip"><span class="en">PASS = Salta; sin borde.</span><span class="es">PASS = Salta; sin borde.</span></span></span>. App (para recs 1X2 win): UNO POR UNO — Identifica equipo recomendado del rec (Portugal, NO rival ni empate); toca SOLO esa casilla. 6 pasos: ver IMPROVED_GLOSSARY / tarjeta dinámica para completo. NO consejo — usuario decide. Pasa ratón para Regla 14/EV.</span>
                     </div>
                 </div>
@@ -1241,7 +1264,7 @@
                         <div><span class="font-semibold"><span class="en">England vs Croatia — June 17</span><span class="es">Inglaterra vs Croacia — 17 de Junio</span></span> <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">Group L • Dallas • 15:00</span><span class="es">Grupo L • Dallas • 15:00</span></span></div>
                         <div class="text-xs text-slate-400"><span class="en">Value on margin or draw</span><span class="es">Valor en margen o empate</span></div>
                     </div>
-                    <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 text-sm">
+                    <div class="p-5 dense-grid grid grid-cols-1 md:grid-cols-12 gap-5 text-sm match-detail">
                         <div class="md:col-span-5 text-xs">
                             <div class="font-medium mb-1"><span class="en">Data (screenshot inventory)</span><span class="es">Datos (inventario capturas)</span></div>
                             <div><span class="en">ENG ~ Elo edge / CRO competitive. Screenshot ENG 1.75-1.80. Margin ENG -1 ~3.80 from similar.</span><span class="es">ENG ventaja Elo / CRO competitivo. Captura ENG 1,75-1,80. Margen ENG -1 ~3,80 similar.</span></div>
@@ -1256,7 +1279,7 @@
                             <div class="p-2 bg-emerald-950/60 border border-emerald-900 rounded text-xs"><strong><span class="en">ENG -1 @3.8 — STRONG (+72.1% EV)</span><span class="es">ING -1 @3,8 — STRONG (+72,1% EV)</span></strong> <span class="en">— Model edge on quality per champion. Small stake. User decides (analysis only).</span><span class="es">— Borde modelo en calidad por campeón. Stake pequeño. Usuario decide (solo análisis).</span></div>
                         </div>
                     </div>
-                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3">
+                    <div class="px-5 pb-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3 long-eli5">
                         <strong><span class="en">ELI5:</span><span class="es">ELI5:</span></strong> <span class="en">England to win by 2+ (or value on draw vs tough CRO). App: Handicap section → ENG -1 tile. Hover STRONG/EV for full. See dynamic cards + glossary for ONE BY ONE on win recs. User decides only.</span><span class="es">Inglaterra ganar por 2+ (o valor en empate vs CRO duro). App: sección Hándicap → casilla ING -1. Hover STRONG/EV para completo. Ver tarjetas dinámicas + glosario para UNO POR UNO en recs de win. Solo usuario decide.</span>
                     </div>
                 </div>
@@ -1621,7 +1644,7 @@
                     </div>
                     <div class="text-xs ${evCls} font-mono">${evAbbr} • ${strAbbr}</div>
                 </div>
-                <div class="p-5 grid grid-cols-1 md:grid-cols-3 gap-5 text-sm">
+                <div class="p-5 dense-grid grid grid-cols-1 md:grid-cols-3 gap-5 text-sm match-detail">
                     <div>
                         <div class="font-medium mb-1"><span class="en">Model (JSON)</span><span class="es">Modelo (JSON)</span></div>
                         <div class="text-xs">P: ${item.p_win || 0}% / ${item.p_draw || 0}% / ${item.p_loss || 0}%</div>
