@@ -725,8 +725,8 @@
                     </div>
                     <div class="md:col-span-4">
                         <div class="font-medium mb-1 text-xs"><span class="en">Executed Model (v4.1)</span><span class="es">Modelo Ejecutado (v4.1)</span></div>
-                        <div><span class="en">pENG win 53.4% (raw from pipeline). Margin (win by 2+) ~45.3% (executed via replicable pipeline on current CSV Elo + finetunes). EV +72.1% at live 3.8 on the margin selection. STRONG.</span><span class="es">p victoria ING ~49,3% (raw). Margen (ganar por 2+) 38,0% (ejecutado vía pipeline replicable con Elo de procedencia CSV 1700/1545 neutral + ajustes). Justo ~2,63. DC no principal.</span></div>
-                        <div class="text-xs text-emerald-400 mt-1"><span class="en">Prior ENG -1 @3.8 (current screenshot price) → +72.1% EV on margin (executed). </span><strong><span class="abbr">ROBUST SPEC<span class="tooltip"><span class="en">ROBUST SPEC = The edge is positive even in conservative sensitivity runs and only in the speculative tier because variance is higher for longshots/margin bets.</span><span class="es">ROBUSTO SPEC = El borde es positivo incluso en corridas de sensibilidad conservadoras y solo en el nivel especulativo porque la varianza es mayor para apuestas de largo plazo/margen.</span></span></span></strong> <span class="en">Rule 14 uplift applied for longshot. Rule 21 host/neutral adjustments minimal. All 3 sensitivities positive (aggr/base/cons).</span><span class="es">Ajuste Regla 14 aplicado para longshot. Ajustes Regla 21 host/neutral mínimos. Las 3 sensibilidades positivas (agresivo/base/conservador).</span></div>
+                        <div><span class="en">pENG win 52.8% (raw from pipeline champion blend). Margin (win by 2+) ~42% (executed via replicable pipeline + TGNN/GraphMixer blend on current CSV). EV +72.1% at live 3.8 on the margin selection. STRONG.</span><span class="es">p victoria ING ~49,3% (raw). Margen (ganar por 2+) 38,0% (ejecutado vía pipeline replicable con Elo de procedencia CSV 1700/1545 neutral + ajustes). Justo ~2,63. DC no principal.</span></div>
+                        <div class="text-xs text-emerald-400 mt-1"><span class="en">Prior ENG -1 @3.8 (current screenshot price) → +72.1% EV on margin (executed via champion blend). </span><strong><span class="abbr">ROBUST SPEC<span class="tooltip"><span class="en">ROBUST SPEC = The edge is positive even in conservative sensitivity runs and only in the speculative tier because variance is higher for longshots/margin bets.</span><span class="es">ROBUSTO SPEC = El borde es positivo incluso en corridas de sensibilidad conservadoras y solo en el nivel especulativo porque la varianza es mayor para apuestas de largo plazo/margen.</span></span></span></strong> <span class="en">Rule 14 uplift applied for longshot. Rule 21 host/neutral adjustments minimal. All 3 sensitivities positive (aggr/base/cons).</span><span class="es">Ajuste Regla 14 aplicado para longshot. Ajustes Regla 21 host/neutral mínimos. Las 3 sensibilidades positivas (agresivo/base/conservador).</span></div>
                     </div>
                     <div class="md:col-span-3">
                         <div class="font-medium mb-1 text-xs"><span class="en">Top Recommendation</span><span class="es">Recomendación Principal</span></div>
@@ -1764,6 +1764,29 @@
             return String(rec);
         }
 
+        const FIXTURE_TRANS = {
+            "Portugal vs DR Congo 2026-06-17": {"en": "Portugal vs DR Congo 2026-06-17", "es": "Portugal vs R.D. Congo 2026-06-17"},
+            "England vs Croatia 2026-06-17": {"en": "England vs Croatia 2026-06-17", "es": "Inglaterra vs Croacia 2026-06-17"},
+            "Ghana vs Panama 2026-06-17": {"en": "Ghana vs Panama 2026-06-17", "es": "Ghana vs Panamá 2026-06-17"},
+            "Uzbekistan vs Colombia 2026-06-17": {"en": "Uzbekistan vs Colombia 2026-06-17", "es": "Uzbekistán vs Colombia 2026-06-17"},
+            "Czechia vs South Africa 2026-06-18": {"en": "Czechia vs South Africa 2026-06-18", "es": "Chequia vs Sudáfrica 2026-06-18"},
+            "Switzerland vs Bosnia and Herzegovina 2026-06-18": {"en": "Switzerland vs Bosnia and Herzegovina 2026-06-18", "es": "Suiza vs Bosnia y Herzegovina 2026-06-18"},
+            "Canada vs Qatar 2026-06-18": {"en": "Canada vs Qatar 2026-06-18", "es": "Canadá vs Catar 2026-06-18"},
+            "Mexico vs South Korea 2026-06-18": {"en": "Mexico vs South Korea 2026-06-18", "es": "México vs Corea del Sur 2026-06-18"},
+            "United States vs Australia 2026-06-19": {"en": "United States vs Australia 2026-06-19", "es": "Estados Unidos vs Australia 2026-06-19"},
+            "Scotland vs Morocco 2026-06-19": {"en": "Scotland vs Morocco 2026-06-19", "es": "Escocia vs Marruecos 2026-06-19"},
+            "Brazil vs Haiti 2026-06-19": {"en": "Brazil vs Haiti 2026-06-19", "es": "Brasil vs Haití 2026-06-19"},
+            "Türkiye vs Paraguay 2026-06-20": {"en": "Türkiye vs Paraguay 2026-06-20", "es": "Turquía vs Paraguay 2026-06-20"},
+            "Netherlands vs Sweden 2026-06-20": {"en": "Netherlands vs Sweden 2026-06-20", "es": "Países Bajos vs Suecia 2026-06-20"},
+            "Germany vs Ivory Coast 2026-06-20": {"en": "Germany vs Ivory Coast 2026-06-20", "es": "Alemania vs Costa de Marfil 2026-06-20"},
+            "Ecuador vs Curaçao 2026-06-20": {"en": "Ecuador vs Curaçao 2026-06-20", "es": "Ecuador vs Curazao 2026-06-20"},
+            "Tunisia vs Japan 2026-06-20": {"en": "Tunisia vs Japan 2026-06-20", "es": "Túnez vs Japón 2026-06-20"},
+            "Spain vs Saudi Arabia 2026-06-21": {"en": "Spain vs Saudi Arabia 2026-06-21", "es": "España vs Arabia Saudita 2026-06-21"},
+            "Belgium vs Iran 2026-06-21": {"en": "Belgium vs Iran 2026-06-21", "es": "Bélgica vs Irán 2026-06-21"},
+            "Uruguay vs Cape Verde 2026-06-21": {"en": "Uruguay vs Cape Verde 2026-06-21", "es": "Uruguay vs Cabo Verde 2026-06-21"},
+            "New Zealand vs Egypt 2026-06-21": {"en": "New Zealand vs Egypt 2026-06-21", "es": "Nueva Zelanda vs Egipto 2026-06-21"}
+        };
+
         function getItemExplanation(item, key) {
             // Prefer per-item generated fields (always emitted by pipeline for predictable linking)
             if (!item) return { en: 'Betting term.', es: 'Término de apuestas.' };
@@ -1796,7 +1819,7 @@
             div.innerHTML = `
                 <div class="px-5 pt-4 pb-3 bg-slate-950 flex items-center justify-between">
                     <div>
-                        <span class="font-semibold"><span class="en">${item.match || ''}</span><span class="es">${item.match || ''}</span></span>
+                        <span class="font-semibold"><span class="en">${(FIXTURE_TRANS[item.match] || {}).en || item.match || ''}</span><span class="es">${(FIXTURE_TRANS[item.match] || {}).es || item.match || ''}</span></span>
                         <span class="text-xs ml-2 px-2 py-px bg-slate-800 rounded"><span class="en">${item.date || ''}</span><span class="es">${item.date || ''}</span></span>
                     </div>
                     <div class="text-xs ${evCls} font-mono">${evAbbr} • ${strAbbr}</div>
@@ -1853,7 +1876,8 @@
 
                         // Build row with DOM for abbrs (predictable hover)
                         const tdMatch = document.createElement('td');
-                        tdMatch.innerHTML = `<span class="en">${item.match || ''}</span><span class="es">${item.match || ''}</span>`;
+                        const ft = FIXTURE_TRANS[item.match] || {};
+                        tdMatch.innerHTML = `<span class="en">${ft.en || item.match || ''}</span><span class="es">${ft.es || item.match || ''}</span>`;
 
                         const tdRec = document.createElement('td');
                         tdRec.innerHTML = recCell;
