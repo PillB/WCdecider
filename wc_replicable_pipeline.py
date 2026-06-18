@@ -82,8 +82,8 @@ CONSTANTS = {
 # ============================================================
 TERM_GLOSSARY = {
     "win": {
-        "en": "1X2 Win: Bet on this team to win the match outright. If they score more goals than the opponent by the final whistle, the bet wins at the decimal odds shown.",
-        "es": "Victoria 1X2: Apuesta a que este equipo gane el partido de forma clara. Si mete más goles que el rival al final, la apuesta gana a la cuota decimal mostrada."
+        "en": "1X2 Win (the recommended team — ONE BY ONE): In the three-way 1X2 / Match Result / Match Winner market, you bet on ONE specific team (the RECOMMENDED one shown in the 'rec' field of the card/JSON for that match) to win the match outright. STEP-BY-STEP TO OPERATIONALIZE: 1) Identify the recommended team from the analysis rec (e.g. if rec='win' on 'Portugal vs DR Congo' the team to bet is Portugal, NOT DR Congo or draw). 2) Open the Betsson or Betano app and navigate to the match. 3) Scroll or tap to the '1X2', 'Match Winner', 'Match Result' or 'Resultado del partido' section. 4) Tap ONLY the decimal odds tile for the recommended team (the one matching the rec). 5) Enter your stake amount in the bet slip / boleto. 6) Review the selection name + potential payout (odds × stake) and confirm ONLY if you decide to. Win condition: the chosen recommended team must have strictly more goals than the opponent at 90min+stoppage (regular time only; extra time does not count). Payout: decimal odds × stake = total return (stake returned + profit). Analysis, mechanics and probabilities only — NO advice to place any bet. User decides stake, timing and whether to act. Always use fresh screenshot odds for EV. Example: Portugal win rec @2.10 means tap Portugal's tile in 1X2.",
+        "es": "Victoria 1X2 (el equipo recomendado — PASO A PASO): En el mercado 1X2 de tres vías / Resultado del partido / Match Winner, apuestas a UN equipo específico (el RECOMENDADO que aparece en el campo 'rec' de la tarjeta/JSON del partido) para ganar el partido. PASOS PARA OPERACIONALIZAR UNO POR UNO: 1) Identifica el equipo recomendado del análisis (ej. si rec='win' en 'Portugal vs RD Congo' el equipo a apostar es Portugal, NO Congo ni empate). 2) Abre la app de Betsson o Betano y ve al partido. 3) Desplázate o toca la sección '1X2', 'Match Winner', 'Match Result' o 'Resultado del partido'. 4) Toca SOLO el recuadro de cuota decimal del equipo recomendado (el que coincide con la rec). 5) Ingresa el monto de stake en el boleto / bet slip. 6) Revisa el nombre de selección + ganancia potencial (cuota × stake) y confirma SOLO si decides. Condición: el equipo recomendado elegido debe tener estrictamente más goles que el rival al final de 90min+añadido (solo tiempo regular). Pago: cuota × stake = retorno total. Solo análisis, mecánica y probabilidades — NO consejo para apostar. El usuario decide stake, momento y si actuar. Usa siempre capturas frescas para EV. Ejemplo: rec Victoria Portugal @2,10 → toca solo la casilla de Portugal en 1X2."
     },
     "handicap_minus1": {
         "en": "Handicap -1 (e.g. ENG -1): The selected team must win by TWO or more goals. If they win by exactly 1 goal (e.g. 2-1), it is usually a 'push' (your stake is returned, no win or loss). Draw or loss = bet loses.",
@@ -94,8 +94,8 @@ TERM_GLOSSARY = {
         "es": "Hándicap +1 (ej. NZ +1): Ganas la apuesta si tu equipo pierde por solo 1 gol, gana o empata. Pierdes solo si pierde por 2 o más goles."
     },
     "dc": {
-        "en": "Double Chance (DC): A bet that covers two of the three possible 1X2 results. E.g. 'X2' wins on draw OR away win. Safer than single outcome but pays less.",
-        "es": "Doble oportunidad (DC): Apuesta que cubre dos de los tres resultados 1X2 posibles. Ej. 'X2' gana con empate O victoria visitante. Más segura que un solo resultado pero paga menos."
+        "en": "Double Chance (DC): Covers exactly two of the three 1X2 outcomes (e.g. 'X2' = draw OR the away team wins). Wins unless the uncovered outcome happens. In apps: locate under 'Doble oportunidad' or DC section next to 1X2. Safer than single 'win' but lower payout. Specific DC shown in the rec (e.g. 1X or X2).",
+        "es": "Doble oportunidad (DC): Cubre exactamente dos de los tres resultados 1X2 (ej. 'X2' = empate O gana el visitante). Gana a menos que ocurra el resultado no cubierto. En apps: busca bajo 'Doble oportunidad' o sección DC junto al 1X2. Más segura que una 'victoria' simple pero paga menos. El DC específico se indica en la rec (ej. 1X o X2)."
     },
     "over35": {
         "en": "Over 3.5 goals: The total number of goals scored by BOTH teams together must reach 4 or more for this bet to win.",
@@ -389,6 +389,7 @@ def run_full_pipeline(csv_path: str = "wc_2026_model_dataset.csv") -> List[Dict]
         pA, d, pB = three_way_1x2(p_tw, s=1.0, opener_draw_boost=ft['opener_draw_boost'])
 
         # TGNN champion blend (research-informed TGN-like: temporal memory + graph neighbor msgs from elapsed A+B)
+        # Models (TGNN/GraphMixer etc) now trained on A+B combined (see variations.py + GNN _load patches).
         # 75% core v4 + 25% TGNN for robustness without losing sensitivity (temporal CV validated low trap)
         # TGNN blend only for june17+ slate (preserve exact regression for older locked datasets in tests)
         if "june17" in str(csv_path).lower() and _TGNN is not None and tgnn_predict_1x2 is not None:

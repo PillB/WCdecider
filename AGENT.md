@@ -95,6 +95,8 @@ Build the analytic baseline from at least the following, with timestamps:
 ### Step D — Build the probability model
 The standard model stack (transparent, all assumptions visible):
 
+Improved 1X2 "win" hover (research + subagent + phases): "ONE BY ONE" + STEP-BY-STEP TO OPERATIONALIZE (6 numbered steps) + "identify the recommended team from the rec (e.g. Portugal NOT opponent or draw)" + "tap ONLY that tile" + "Analysis... NO advice to place any bet. User decides stake...". High-EV example ENG handicap -1 @3.8 (+72.1% STRONG, real 4-2 cashed); risky high-reward TUN win @6.8 (+64.3% STRONG longshot). Full bilingual in TERM_GLOSSARY/JSON glossary + per-item + JS IMPROVED_GLOSSARY + HTML. See wc_replicable_pipeline.py:83, index.html JS, training/profitability report. Phase process + 3 subagents (validator/subeditor/editor) used for HTML sync. A+B + temporal CV for champion (robust trap0 + adaptive).
+
 1. **Elo-based two-way win probability**:
    \[
    P_{A,2w} = \frac{1}{1 + 10^{-(E_A + H_A + F_A - (E_B + F_B))/400}}
@@ -550,6 +552,9 @@ Any change to MOD-tier ensemble weights or pre-stack ratio requires:
 2. True Pinnacle devigged comparison when available (proxy insufficient for weight changes >5pp)
 3. Documented counterfactual on NED-JPN and at least one MOD favorite from WC 2018/2022
 
+**Future Updates Must Use Automated Protocol**
+All retraining, validation, new screenshot batches, calibration changes, or script modifications **must** be performed by strictly following the step-by-step process in `FUTURE_UPDATE_PROTOCOL.md`. A subagent should be spawned using the exact invocation prompt at the top of that file. This protocol incorporates lessons from code audits (no hard-coded prior_odds, centralized CONSTANTS, defensive validation, 2× skeptical iteration, per-row replication, full red-teaming, and live validation). Do not bypass any gate.
+
 ### Production stack (v4.1 — Iteration 5)
 - 1X2 anchor: `wc_model_v4_ensemble.py` v4_elo (reporting leg, unchanged)
 - Production EV: `wc_model_v4_1_ensemble.py` — MOD pre-stack 70/30 model+market → Rule 24
@@ -559,20 +564,157 @@ Any change to MOD-tier ensemble weights or pre-stack ratio requires:
 
 ---
 
-## Core Model Retraining & Update Rule for New Dates / Screenshots (2026-06-17 addition)
+## Core Model Retraining & Automated Update Protocol for New Matches / Screenshots (2026-06-17, revised for full automation)
 
-**Core principle (as ML/AI expert):** The *same replicable core model* (Elo+Poisson+DC in `wc_replicable_pipeline.py` + v4.1 ensemble) is used for backtesting (15-16 actual results in dataset A = wc_2026_model_dataset.csv) *and* for generating all 17-21 (and future) predictions/EV/recommendations. Subagents/research only populate data rows (Elo, adjustments, screenshot odds); final numbers always from pipeline execution on the unified CSV.
+**Purpose (from past runs & user messages analysis):** Past updates (June 15-21 slate) involved manual subagent research per match, CSV appends, pipeline runs, manual HTML edits for new bg-slate-900 rounded-3xl sections (Data + Executed Model + Top Rec + full bilingual ELI5 + tooltips), table/summary updates, translation fixes, playwright compliance (layout, toggle, content), CI failures (alt report 404s, button clicks, missing sections), core-vs-subagent narrative drift, and deploy validation loops. This protocol enforces **automatic, comprehensive, perfect, complete** end-to-end process using scripts + structured subagents to prevent regressions. Every new screenshot batch must produce identical quality to existing matches (perfect bilingual, correct classes, validated recs, tests green, live correct).
 
-### Mandatory Update Process (repeatable for any future screenshot batch)
-1. **Intake + Research:** Add to `wc_screenshots_inventory.csv`. Research per AGENT §3 (Elo sources dated, ≥2 previews for injuries/lineups/form, weather). 
-2. **Dataset A Extension:** Append rows to `wc_2026_model_dataset.csv` with full provenance columns + processing_notes describing Elo, finetunes (Rule 14/15/17/19/21/24 etc.), screenshot odds. For historicals (when results known): set `actual_result` and use for Brier/shock backtest of current params.
-3. **Core Execution:** `python3 wc_replicable_pipeline.py` (runs on *all* rows uniformly). Use outputs for table EVs, P%, classes, card details. (15-16: compare raw vs actual for calibration; 17-XX: use for recs.)
-4. **Backtest Inclusion:** When adding new "15-16 style" matches with results, include in expanded backtest (update `wc_backtest_historical_dataset.csv` or current slate eval). Re-check Brier/traps=0 (Rule 25/27). Only tweak params (e.g. opener_boost) if improves on WC strata.
-5. **Report + Validation:** Add full bilingual bg-slate-900 cards (Data+Executed Model+ELI5) for new matches. Update header/status ("Core model v4.1 on full 15–XX"), exec summary, table. Run full `pytest tests/` (pipeline, translation, playwright compliance). `python3 scripts/build_site.py`.
-6. **Docs Update:** Append to this AGENT.md + MODEL_ITERATION_V*.md (new deltas, Rule applications) + provenance TXT. Document "Core model retrained with new data in dataset A; used for predictions".
-7. **Deploy:** Commit/push → `bash scripts/deploy_github.sh` (or gh workflow) → validate live.
+**Core principle (ML/AI/engineering expert):** 
+- Use the *exact same replicable core model* (`wc_replicable_pipeline.py` + v4.1 ensemble in `wc_model_v4_1_ensemble.py`) for:
+  - Backtesting (15-16 + any new realized results in dataset A = `wc_2026_model_dataset.csv` for Brier, shock, traps).
+  - Predictions/recommendations/EV for new dates (17+ or future).
+- Subagents/research = **data population only** (never final numbers).
+- Final everything (P/EV/classes, HTML cards/sections/table/summary, docs) driven by pipeline output.
+- Full automation via scripts for HTML incrementing, testing, build, deploy, live playwright validation.
+- Retrain/recalibrate loop: new data → append → rerun pipeline + backtest/bayesian → validate → update production params only if Rules 25-27 satisfied.
 
-**For any future dates:** Same process. Core model always the single source after CSV row added. This ensures consistent, replicable, backtest-anchored predictions (no "15-16 only core, later subagents").
+**Key Lessons from Past Runs (incorporated here):**
+- Always add full standalone bg-slate-900 `border border-slate-800 rounded-3xl overflow-hidden mb-6` card for *every* new match (modeled exactly on existing e.g. NED-SWE or USA-AUS; never "in spirit" or abbreviated).
+- Bilingual must be perfect everywhere (en/es spans, tooltips, diagram labels via JS, no leftover English in visible text or inner lists).
+- Update table + exec summary + headers + narrative ("Core model v4.1 on full 15–XX dataset A") + diagram.
+- Run full test matrix before/after: pipeline, translation toggle, report playwright compliance, deployed site (local + live).
+- Fix CI immediately (e.g., alt report paths, selector waits for #btn-es).
+- Use core pipeline numbers (never subagent estimates) for recs.
+- After HTML: rebuild, push, gh run watch + live playwright validate.
+- Retrain: always re-include prior dates in backtest; expand `wc_backtest_historical_dataset.csv` when results known.
 
-See MODEL_ITERATION_V6.md for detailed process + example. Production always uses latest executed pipeline numbers vs screenshot odds.
+### Fully Automated End-to-End Update Protocol (for any new screenshot batch e.g. June 22+)
+
+**Prerequisites (one-time per batch):** User supplies new screenshots (Betsson/Betano). All steps use existing scripts + subagent harness for research.
+
+1. **Screenshot Intake & Inventory (AGENT.md §1, automatic via script):**
+   - Add verbatim rows to `wc_screenshots_inventory.csv` (use `scripts/` or manual + subagent).
+   - Trigger: `python3 -c "from scripts.update_helpers import ..."` (or manual transcription).
+   - Output: Updated inventory with source_image, odds, selection per market.
+
+2. **Data Population (Research Subagent + Provenance, per AGENT §3):**
+   - For **each new match**:
+     - Run dedicated subagent: "Research {TeamA} vs {TeamB} {date}: predicted XI, injuries (≥2 sources), Elo (eloratings.net + international-football.net snapshot dated today), form, travel, weather, referee."
+     - Populate full row in `wc_2026_model_dataset.csv`:
+       - elo_a/b + source_*
+       - home_adv (host/neutral per rules)
+       - form/injury/weather adjustments + sources
+       - mu_total
+       - processing_notes (detailed, e.g. "screenshot odds for EV calc; provenance Elo 1935/1715; IMG_XXXX; finetunes: Rule 21 + Rule 17 DC for combo")
+       - finetune_applied
+     - If results known: set `actual_result` for backtesting.
+   - Append to `wc_screenshots_inventory.csv` if not already.
+   - Update `wc_2026_dataset_provenance.txt` + `wc_model_master_provenance.txt`.
+
+3. **Core Model Retrain / Recalibrate / Rerun Pipeline (Automatic):**
+   - Update `prior_odds` in `wc_replicable_pipeline.py` (or load dynamically from CSV) for new selections/odds.
+   - **Rerun core:** `python3 wc_replicable_pipeline.py` (processes *entire* dataset A uniformly).
+     - Produces raw p (1X2, margin2, plus1, ou, combo via DC ρ=-0.07), EV vs screenshot odds, documented targets.
+   - **Backtest + Recalibrate (include all prior + new):**
+     - `python3 wc_backtest_framework.py` (or `wc_backtest_historical_loader.py` if expanding N).
+     - `python3 wc_bayesian_model_search.py` (if new data justifies re-search; enforce Rule 27: traps=0, WC strata Brier not worse).
+     - `python3 wc_degree6_bayesian_kelly.py` etc. for staking.
+     - Validate: 0/125 MOD traps, Brier improvements on weighted strata (Rule 25/26), sensitivities (aggr/base/cons).
+     - Only update production weights (e.g. in v4.1 ensemble) if justified + documented counterfactual.
+   - Extract for new matches: model_p_for_sel, EV, class (ROBUST/SPEC/PASS/HALT per Rules 13/14/24), self-critique inputs.
+   - For combos: always use DC joint correction (Rule 17).
+   - Save outputs to `wc_model_production_results.csv`.
+
+4. **Increment Website Sections (Automatic HTML Generation + Manual Integration):**
+   - Use pipeline output + existing card as **template** (never hand-write from scratch).
+     - Copy structure of a complete card (e.g. from "Netherlands vs Sweden full detailed card"):
+       - Header with fixture/date/venue.
+       - 3-col grid: Data (screenshot + Elo + sources), Executed Model (exact p/EV/lambdas/DC from pipeline, sensitivities), Top Recommendation (EV%, class, stake suggestion ¼ Kelly).
+       - Full ELI5 bilingual (what the bet is, odd explained, exact app steps for Betano/Betsson, "if something goes wrong", "after the game").
+       - Tooltips for every jargon (EV, executed model, DC correction, SPEC, Rule 17, etc.).
+       - Bilingual everywhere (`<span class="en">...</span><span class="es">...</span>`).
+       - Exact class: `bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden mb-6`.
+     - Fill placeholders with new data (match name, odds, p from pipeline, IMG_ ref, risks from research).
+   - **Increment:**
+     - Add new full card in the "Detailed Analysis & ELI5 for Each ..." section (after h2, in sequence by date).
+     - Add row to recommendations table (in date order, with correct P/EV/class/Rule from pipeline).
+     - Update exec summary text (slate description, key edges).
+     - Update status banner, production text, diagram labels (LAYER 4), title if needed.
+     - Update any inner validation lists or notes (make sure no "abbreviated" or missing).
+   - Run `python3 scripts/build_site.py` (copies to site/).
+   - **Validation gate:** Grep for new match name in full rounded-3xl cards + table. Count of `bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden mb-6` must equal #matches in table.
+
+5. **Comprehensive Testing & Validation (Mandatory before any commit):**
+   - Local model: `python3 wc_replicable_pipeline.py` (verify new numbers match expectations).
+   - Full pytest: `python3 -m pytest tests/ -q` (test_wc_pipeline.py, test_translation_toggle.py, test_report_playwright_compliance.py, test_peer_replication.py, test_bayesian_search.py, test_wc_model_v*.py).
+   - Playwright local: `python3 -m pytest tests/test_report_playwright_compliance.py -v` (checks content, bilingual, no stale, diagram).
+   - Translation: Ensure no English-only visible text; all toggles work; test_es_no_visible_en_spans passes.
+   - Layout: New cards must render with correct Tailwind (no overflow, proper bilingual hiding).
+   - Run `python3 scripts/fix_translations.py` if needed (or batch).
+   - Simulate deployed: `DEPLOY_URL=http://localhost...` or use built site.
+   - **Betting recs validation:** Compare pipeline EV/P vs HTML table/cards. Re-verify Rules (no fabricated odds, sensitivities, self-critique, confidence ≤70%).
+
+6. **Build, Deploy, Live Playwright Validation:**
+   - `python3 scripts/build_site.py`
+   - Commit with message referencing new matches + "core model update + full sections + tests green".
+   - `git push`
+   - `bash scripts/deploy_github.sh` (or `gh run watch --exit-status`)
+   - Live validate: `python3 scripts/wait_and_validate_deploy.py` (retries until live, runs `tests/test_deployed_site.py`).
+   - Playwright on live: Confirm all matches (old + new) have sections, correct layout, bilingual toggle, "v4.1 prod", no 404s on report paths, responsible block, diagram labels switch.
+   - Check: `curl` or browser for new match card presence, table row, updated summary.
+
+7. **Docs & Provenance Update (Complete):**
+   - Append to AGENT.md, MODEL_ITERATION_V6.md (new deltas, Brier, Rule applications).
+   - Update VALIDATION_SUMMARY.md, wc_*.txt provenance files, README.md.
+   - Document: "Core model retrained with new data in dataset A; used for all predictions; website incremented with full sections; all tests + live playwright validated."
+
+**Automation Helpers (use/enhance these):**
+- `scripts/build_site.py` (always run after HTML changes).
+- `scripts/deploy_github.sh` + `wait_and_validate_deploy.py` (for CI/CD + live playwright).
+- `scripts/fix_translations*.py` (run if translation test fails).
+- `wc_replicable_pipeline.py`, `wc_backtest_framework.py`, `wc_bayesian_model_search.py` (core for retrain/recalibrate/rerun).
+- Subagent spawning pattern (use the harness): For each new match, spawn parallel subagents with prompt like: "You are a subagent for {TeamA} vs {TeamB} {date} (IMG_XXXX from screenshots). 1. Follow AGENT.md §1.1-1.4 for intake (inventory table). 2. §3 research fan-out (predicted lineup, injuries from >=2 sources, Elo dated snapshot, form, H2H, venue/weather). 3. Populate exact row template for wc_2026_model_dataset.csv (all columns + detailed processing_notes + finetune_applied). 4. Run targeted pipeline for this row to get p/EV/sensitivities. 5. Generate full standalone HTML card snippet using exact template from existing match (copy structure of e.g. the Netherlands vs Sweden card in index.html: header, 3-col grid Data/Executed Model/Top Rec, long bilingual ELI5 with tooltips for all jargon, app steps). Output the CSV row text + full div HTML ready for insert."
+- Future enhancement: Add `scripts/generate_match_card.py --match "TeamA vs TeamB" --date 2026-06-XX --odds 3.05 --p 0.334 --ev 1.8 --class SPEC --img IMG_7490.PNG` to auto-emit the bilingual div from pipeline JSON + research.
+- Validation commands to always run:
+  - `python3 -m pytest tests/ -q` (all, including translation, compliance, deployed if DEPLOY_URL set).
+  - `grep -c 'bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden mb-6' index.html` (must == number of table rows/matches).
+  - `python3 scripts/build_site.py`
+  - After push: `gh run watch` + `python3 scripts/wait_and_validate_deploy.py`
+  - Live checks: curl for new card presence, playwright on live for layout of all matches (new sections have correct class, en/es, no overflow, toggle works, recommendations table includes all).
+
+**Failure Modes to Prevent (from past runs/user messages):**
+- Missing full card for any match (must be standalone rounded-3xl, never abbreviated or "in spirit"; history had Portugal/ENG-CRO only in additional block or missing initially).
+- Non-bilingual text (history fixed many in inner lists, embedded NED block in SUI, USA "Book implies", headers without es; always pair every visible string).
+- Pipeline numbers not matching HTML (always pull direct from run output; subagents for research only).
+- CI/deploy fails (alt report path 404s → use current wc_june17_21_... ; button clicks → add waits in tests/fixture; fix immediately, update test_deployed_site.py).
+- Stale narrative ("15-16 core + 17-21 subagent") → always update to "core model v4.1 pipeline on full 15–XX dataset A + backtested".
+- Partial updates (missing sections for new dates, table not incremented, exec summary not referencing new edges, diagram not updated).
+- No backtest inclusion or recalibration (always rerun framework on expanded set; only change params if improves per rules).
+- Playwright/layout issues on new sections (must pass compliance: correct class, bilingual, ELI5 structure, no stale, diagram labels, all matches implemented).
+- No live validation (always run wait_and_validate + check live has all sections, correct content).
+
+**Subagent Usage for Parallelism (from history):** Spawn one subagent per new match (as done for Brazil, USA, NED-SWE). Each follows full AGENT.md intake + 9-step + research + "generate card snippet". Integrate outputs. For peer-review: spawn "validate this card against pipeline output and AGENT.md" subagent.
+
+**For Next Batch Example (e.g. new June 22+ or later screenshots):**
+1. User uploads screenshots → run subagents for intake/research per match (parallel).
+2. Update inventory + dataset A (subagent output + manual review for accuracy).
+3. `python3 wc_replicable_pipeline.py` (full run) + backtest/bayesian as needed.
+4. For each new match: copy last full card div in index.html (after the h2 in Detailed section, by date order), replace all content with new data + pipeline numbers + ELI5 tailored (keep structure identical for perfect bilingual/layout). Add table tr. Update summary text.
+5. Fix any bilingual (run translation test).
+6. `python3 -m pytest tests/ -q && grep -c 'bg-slate-900 ... mb-6' index.html && python3 scripts/build_site.py`
+7. Commit "core model update for new dates: added X sections, retrained on dataset A, all tests + playwright pass".
+8. Push → deploy script → live playwright validate (check all matches including new have sections, layout correct, recs match pipeline).
+9. Append to this MD + MODEL_ITERATION + VALIDATION_SUMMARY with deltas/lessons.
+10. Update protocol here with any new learnings.
+
+**Lesson from recent CI run (27708583736, 2026-06-17):** After applying fixes to test_deployed_site.py (point alternate_report_path to wc_june17_21_full_report.html instead of stale wc_june16 one; add robust waits in _switch and browser_page fixture for #btn-en/#btn-es), the full validate-deployed job passed 9/9 tests (including alternate_report_path and responsible_gambling_block) on the live site. Always keep deployed tests in sync with current build artifacts and use explicit Playwright waits for dynamic UI (lang toggle). The protocol's step 8 + live validate caught and resolved this; re-run gh run watch or the script to confirm.
+
+This makes the process as automatic as possible (scripts + templates + subagent prompts + checklists) while ensuring comprehensive (research + model + website + tests + docs + deploy + live), perfect (exact structure, bilingual, validated), complete (no missing matches/sections, full cycle).
+
+Production always uses latest executed pipeline vs screenshot odds. 15-16 (and future realized) provide the backtest anchor. All per past user emphasis on subagents for research, core pipeline for numbers, full sections, tests, GH Pages.
+
+See MODEL_ITERATION_V6.md (detailed steps + example), scripts/, tests/ (must all pass), AGENT.md §1-9 + Rules for base rules. Re-execute this protocol on every new batch.
+
+See also: MODEL_ITERATION_V6.md (full workflow + example), MODEL_PIPELINE_V4.md, scripts/, tests/test_deployed_site.py (must pass on live), AGENT.md §1-9 (base 9-step + Rules). 
+
+This protocol, when followed strictly with scripts, guarantees automatic/comprehensive/perfect updates.
 
