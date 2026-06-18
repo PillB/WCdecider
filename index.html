@@ -1751,6 +1751,12 @@
             _oldLoad();
             loadDynamicData();
             initModelPerformanceVisualizations();
+            // Set last update time in header
+            const lu = document.getElementById('last-update');
+            if (lu) {
+                const now = new Date().toISOString().replace('T', ' ').slice(0,19) + 'Z';
+                lu.innerHTML = `<span class="en">Last updated: ${now}</span><span class="es">Última actualización: ${now}</span>`;
+            }
         };
 
         // Best-in-class model metrics + temporal CV visualizations (Chart.js)
