@@ -40,6 +40,12 @@ def build() -> Path:
     if MATCHES.exists():
         shutil.copy2(MATCHES, SITE / "wc_2026_matches_june_17-21.csv")
 
+    # Copy model comparison + temporal CV metrics for visualizations (research-driven best practice)
+    METRICS = ROOT / "training" / "model_comparison_metrics.json"
+    if METRICS.exists():
+        shutil.copy2(METRICS, SITE / "model_comparison_metrics.json")
+        print(f"[build_site] Copied viz data: {SITE / 'model_comparison_metrics.json'}")
+
     print(f"[build_site] Wrote {SITE / 'index.html'} ({(SITE / 'index.html').stat().st_size:,} bytes)")
     return SITE
 
