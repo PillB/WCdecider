@@ -22,6 +22,10 @@ historical data ─────────┼──── elapsed WC results
                          ▼
             wc_june22_27_predictions.json
                          │
+                         ├── subagent mission/review registry
+                         ▼
+          wc_june22_27_datapoint_audit.csv
+                         │
                          ▼
              scripts/generate_report.py
                          │
@@ -49,10 +53,11 @@ historical data ─────────┼──── elapsed WC results
   - Dataset B: qualifiers and friendlies used as supplementary evidence.
 - A three-way Elo conversion is selected using chronological evaluation windows.
 - Current ratings are updated deterministically from the 40 World Cup results through June 21.
-- Tournament form and host adjustments are bounded and recorded.
-- A Poisson score grid supports totals, BTTS, and Asian handicap settlement.
+- Tournament form and host adjustments are descriptive and zero in the current production probability path.
+- A Poisson score grid is descriptive; totals, BTTS, and handicap recommendation policies are not validated in this release.
 - Current odds are external CSV data with screenshot SHA-256 hashes.
 - No neural model is silently loaded. No reported target is parsed from prose.
+- There is no production ensemble/stack in this release. Future candidates must beat calibrated Elo under nested chronological evaluation.
 
 ## Website
 
@@ -63,12 +68,15 @@ historical data ─────────┼──── elapsed WC results
 - recommendations and risk classes
 - research notes and sources
 - English/Spanish fixture text
+- field-level audit status and conditional freshness
 
 The HTML contains only batch-independent layout, glossary, workflow visualization, and rendering code. Dynamic content is escaped before insertion and JSON load failures are visible.
+
+Every prediction/metrics JSON leaf is enumerated in the datapoint audit manifest with source/model/mission hashes and distinct owner, replication-1, replication-2, and editor identities. A non-PASS row blocks the site build.
 
 ## Validation and deployment
 
 - Unit/integration tests verify schemas, formulas, datasets, hashes, full regeneration, and artifact counts.
 - Playwright tests serve `site/` over HTTP and validate 32 unique cards, JSON parity, translations, requests, and responsive overflow.
-- GitHub Actions runs the full suite before deployment.
+- GitHub Actions generates the audit manifest, builds `site/`, then runs the full suite against the exact artifact before deployment.
 - The generated HTML embeds the exact commit SHA; live validation rejects stale Pages content.

@@ -67,6 +67,8 @@ RESEARCH_OUT = ROOT / "wc_research_june22_27.csv"
 
 SEED = 42
 EPS = 1e-12
+DATA_CUTOFF = datetime.fromisoformat("2026-06-21T23:59:00-05:00")
+FRESHNESS_HORIZON_HOURS = 48
 HOSTS = {"USA", "CAN", "MEX"}
 
 TEAM_ALIASES = {
@@ -186,6 +188,20 @@ def write_csv(path: Path, rows: Sequence[Mapping[str, object]], fields: Sequence
         writer.writeheader()
         for row in rows:
             writer.writerow({field: row.get(field, "") for field in fields})
+
+
+def freshness_status(kickoff: datetime) -> str:
+    """Return freshness from the data cutoff instead of fixture-date rules.
+
+    Forecasts more than 48 hours after the verified cutoff are conditional and
+    must be rebuilt with intervening results, lineups, and current prices.
+    """
+    horizon = (kickoff - DATA_CUTOFF).total_seconds() / 3600.0
+    return (
+        "current_snapshot"
+        if horizon <= FRESHNESS_HORIZON_HOURS
+        else "conditional_requires_rerun_after_intervening_matches"
+    )
 
 
 def sha256(path: Path) -> str:
@@ -801,10 +817,7 @@ def build() -> Dict[str, object]:
             "research_injuries": research[fixture["fixture_id"]]["injuries_suspensions"],
             "research_motivation": research[fixture["fixture_id"]]["motivation_group_state"],
             "research_weather": research[fixture["fixture_id"]]["weather_venue_notes"],
-            "freshness_status": (
-                "current_snapshot" if kickoff.date() <= date(2026, 6, 23)
-                else "conditional_requires_rerun_after_intervening_matches"
-            ),
+            "freshness_status": freshness_status(kickoff),
         }
         model_rows.append(model_row)
         names_a, names_b = CODE_NAMES[ta], CODE_NAMES[tb]
@@ -834,10 +847,7 @@ def build() -> Dict[str, object]:
             },
             "supported_markets_evaluated": len(candidate_rows),
             "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
-            "freshness_status": (
-                "current_snapshot" if kickoff.date() <= date(2026, 6, 23)
-                else "conditional_requires_rerun_after_intervening_matches"
-            ),
+            "freshness_status": freshness_status(kickoff),
             "risk_notes": {
                 "en": [
                     "Football outcomes remain high variance even when expected value is positive.",

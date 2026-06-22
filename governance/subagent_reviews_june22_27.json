@@ -1,0 +1,26 @@
+{
+  "git_commit": "PENDING_CORRECTED_RELEASE",
+  "global": {
+    "owner": {
+      "id": "019eefef-6d6d-7550-98c9-f22314357e29",
+      "status": "PASS",
+      "evidence": "Independent model/backtest audit: holdout metrics, policy, hashes, no 1.10 near-certain bet."
+    },
+    "replication_1": {
+      "id": "019ef029-089c-7e72-9a44-4d21cb9e2af7",
+      "status": "PASS",
+      "evidence": "Isolated rebuild and 1,565-leaf manifest coverage passed; hashes, distinct roles, fail-closed behavior, 32 fixtures, policy and freshness reproduced."
+    },
+    "replication_2": {
+      "id": "019ef029-1b89-7eb1-9112-678204b56464",
+      "status": "PASS",
+      "evidence": "Byte-identical nine-artifact rebuild, chronology/holdout, calibration, hashes, 32 fixtures and deterministic 1,565-leaf all-PASS manifest simulation verified."
+    },
+    "editor": {
+      "id": "019ef029-2ef9-71a3-b8bc-3b5d90a32306",
+      "status": "PASS",
+      "evidence": "Final element-by-element corrected-report audit passed with no remaining editor/UIUX blocker."
+    }
+  },
+  "fixtures": {}
+}

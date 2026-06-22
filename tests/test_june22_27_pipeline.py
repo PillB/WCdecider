@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import csv
 import inspect
+import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -89,6 +92,80 @@ def test_research_tables_cover_every_fixture_with_direct_urls():
     assert len(rows) == 32
     assert all("https://" in row["source_urls"] for row in rows.values())
     assert all(row["confidence"] for row in rows.values())
+
+
+def test_ci_builds_site_before_browser_tests():
+    workflow = (ROOT / ".github" / "workflows" / "deploy.yml").read_text(encoding="utf-8")
+    test_job = workflow.split("\n  build:", 1)[0]
+    assert test_job.index("- name: Generate field-level subagent audit manifest") < test_job.index(
+        "- name: Generate JSON-driven report"
+    )
+    assert test_job.index("- name: Generate JSON-driven report") < test_job.index(
+        "- name: Build exact site artifact"
+    )
+    assert test_job.index("- name: Build exact site artifact") < test_job.index(
+        "- name: Run full pytest matrix"
+    )
+
+
+def test_datapoint_audit_covers_all_json_leaves_with_distinct_passed_reviewers():
+    manifest_path = ROOT / "wc_june22_27_datapoint_audit.csv"
+    assert manifest_path.exists()
+    rows = read_rows(manifest_path.name)
+    assert rows
+
+    expected = set()
+    for artifact in ("wc_june22_27_predictions.json", "wc_june22_27_model_metrics.json"):
+        payload = json.loads((ROOT / artifact).read_text(encoding="utf-8"))
+        expected.update((artifact, pointer) for pointer, _ in pipeline_json_leaves(payload))
+    actual = {(row["output_artifact"], row["json_pointer"]) for row in rows}
+    assert actual == expected
+
+    for row in rows:
+        reviewer_ids = [
+            row["owner_subagent_id"], row["replication_1_subagent_id"],
+            row["replication_2_subagent_id"], row["editor_subagent_id"],
+        ]
+        assert len(set(reviewer_ids)) == 4
+        assert row["owner_result"] == "PASS"
+        assert row["replication_1_status"] == "PASS"
+        assert row["replication_2_status"] == "PASS"
+        assert row["editor_status"] == "PASS"
+        assert row["final_status"] == "PASS"
+        assert len(row["value_sha256"]) == 64
+        assert len(row["source_sha256"]) == 64
+        assert len(row["mission_sha256"]) == 64
+
+
+def pipeline_json_leaves(value, pointer=""):
+    if isinstance(value, dict):
+        for key in sorted(value):
+            escaped = key.replace("~", "~0").replace("/", "~1")
+            yield from pipeline_json_leaves(value[key], f"{pointer}/{escaped}")
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            yield from pipeline_json_leaves(item, f"{pointer}/{index}")
+    else:
+        yield pointer or "/", value
+
+
+def test_audit_generator_is_deterministic():
+    subprocess.run(
+        [sys.executable, "-B", "scripts/generate_datapoint_audit.py"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    first = (ROOT / "wc_june22_27_datapoint_audit.csv").read_bytes()
+    subprocess.run(
+        [sys.executable, "-B", "scripts/generate_datapoint_audit.py"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert (ROOT / "wc_june22_27_datapoint_audit.csv").read_bytes() == first
 
 
 def test_full_build_emits_exactly_32_predictions_when_inputs_are_complete(tmp_path, monkeypatch):

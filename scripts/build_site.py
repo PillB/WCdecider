@@ -11,6 +11,7 @@ from __future__ import annotations
 import os
 import shutil
 import subprocess
+import csv
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -47,10 +48,16 @@ def build() -> Path:
         ROOT / "wc_june22_27_provenance.txt",
         ROOT / "wc_screenshot_manifest_june22_27.csv",
         ROOT / "wc_research_june22_27.csv",
+        ROOT / "wc_june22_27_datapoint_audit.csv",
     ]
     missing = [path.name for path in required if not path.exists()]
     if missing:
         raise FileNotFoundError(f"Required deployment artifacts missing: {missing}")
+    audit_path = ROOT / "wc_june22_27_datapoint_audit.csv"
+    with audit_path.open(newline="", encoding="utf-8") as handle:
+        audit_rows = list(csv.DictReader(handle))
+    if not audit_rows or any(row.get("final_status") != "PASS" for row in audit_rows):
+        raise ValueError("Datapoint audit is empty or contains non-PASS rows")
     for path in required:
         shutil.copy2(path, SITE / path.name)
         print(f"[build_site] Copied: {path.name}")

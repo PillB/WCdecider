@@ -34,14 +34,17 @@ jobs:
       - name: Run June 22-27 reproducible pipeline
         run: python3 wc_june22_27_pipeline.py
 
+      - name: Generate field-level subagent audit manifest
+        run: python3 scripts/generate_datapoint_audit.py
+
       - name: Generate JSON-driven report
         run: python3 scripts/generate_report.py
 
-      - name: Run full pytest matrix
-        run: pytest tests/ -v --tb=short
-
       - name: Build exact site artifact
         run: python3 scripts/build_site.py
+
+      - name: Run full pytest matrix
+        run: pytest tests/ -v --tb=short
 
   build:
     needs: test
@@ -60,6 +63,9 @@ jobs:
 
       - name: Run June 22-27 reproducible pipeline
         run: python3 wc_june22_27_pipeline.py
+
+      - name: Generate field-level subagent audit manifest
+        run: python3 scripts/generate_datapoint_audit.py
 
       - name: Generate JSON-driven report
         run: python3 scripts/generate_report.py

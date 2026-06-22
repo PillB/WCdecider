@@ -87,6 +87,18 @@ Done tests:
 
 ## Phase 6 — JSON-driven bilingual report
 
+Before report generation:
+
+- [ ] Expand prediction and metrics JSON into canonical leaf paths.
+- [ ] Assign distinct owner, replication-1, replication-2, and editor agents using the versioned mandatory mission.
+- [ ] Generate the datapoint audit manifest and block on any missing/non-PASS row.
+
+Governance done tests:
+
+1. Manifest paths equal all prediction and metrics JSON leaves exactly.
+2. Every row has source/model/mission hashes and four distinct passing agent IDs.
+3. Conditional status and editor evidence are present for every fixture field.
+
 - [ ] Generate one `bg-slate-900` card per canonical fixture from JSON.
 - [ ] Translate every visible label, explanation, button, error, tooltip, and ELI5 instruction.
 - [ ] Render data sources, model workflow, uncertainty, conditional status, and responsible-gambling text.

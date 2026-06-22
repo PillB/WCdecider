@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
+  <meta name="wcdecider-audit-sha256" content="a997b4a9ad7a9077ba7576c7974ca637702b777833e4b3d41f79ccc119818b59">
   <title>WCdecider • June 22–27, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -51,9 +52,11 @@
             <span class="es">Cada cuota mostrada proviene de una captura de Betano o Betsson. Las probabilidades se generan antes de comparar el mercado y luego se prueban por valor esperado, sensibilidad y desacuerdo modelo-mercado.</span>
           </p>
           <div id="summary" class="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+          <div id="model-evidence" class="mt-4 rounded-2xl border border-slate-700 bg-slate-950/70 p-4 text-sm text-slate-300"></div>
         </div>
-        <svg viewBox="0 0 520 360" role="img" aria-labelledby="flow-title" class="w-full">
-          <title id="flow-title">WCdecider model workflow</title>
+        <svg viewBox="0 0 520 360" role="img" aria-labelledby="flow-title flow-desc" class="w-full">
+          <title id="flow-title"><tspan class="en">WCdecider model workflow</tspan><tspan class="es">Flujo del modelo WCdecider</tspan></title>
+          <desc id="flow-desc"><tspan class="en">Sources flow through chronological model selection, untouched holdout validation, market comparison, audit, JSON, and report generation.</tspan><tspan class="es">Las fuentes pasan por selección cronológica, validación holdout intacta, comparación de mercado, auditoría, JSON y generación del informe.</tspan></desc>
           <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#34d399"/></marker></defs>
           <g fill="#0f172a" stroke="#334155" stroke-width="2">
             <rect x="20" y="25" width="145" height="64" rx="14"/><rect x="20" y="113" width="145" height="64" rx="14"/>
@@ -63,13 +66,13 @@
           </g>
           <g fill="#e2e8f0" font-family="system-ui" font-size="14" text-anchor="middle">
             <text x="92" y="52"><tspan class="en">Dataset A/B</tspan><tspan class="es">Dataset A/B</tspan></text><text x="92" y="72"><tspan class="en">temporal history</tspan><tspan class="es">historia temporal</tspan></text>
-            <text x="92" y="140"><tspan class="en">Elapsed WC</tspan><tspan class="es">Mundial jugado</tspan></text><text x="92" y="160">40 results</text>
+            <text x="92" y="140"><tspan class="en">Elapsed WC</tspan><tspan class="es">Mundial jugado</tspan></text><text x="92" y="160"><tspan class="en">40 results</tspan><tspan class="es">40 resultados</tspan></text>
             <text x="92" y="228"><tspan class="en">Screenshots</tspan><tspan class="es">Capturas</tspan></text><text x="92" y="248">Betano + Betsson</text>
-            <text x="277" y="110">Elo + Poisson</text><text x="277" y="134"><tspan class="en">chronological calibration</tspan><tspan class="es">calibración cronológica</tspan></text>
-            <text x="277" y="158"><tspan class="en">score-grid settlement</tspan><tspan class="es">liquidación por marcadores</tspan></text><text x="277" y="182">stress tests</text>
-            <text x="445" y="52"><tspan class="en">Probabilities</tspan><tspan class="es">Probabilidades</tspan></text><text x="445" y="72">1X2 + goals</text>
-            <text x="445" y="140">EV + HALT</text><text x="445" y="160"><tspan class="en">risk classes</tspan><tspan class="es">clases de riesgo</tspan></text>
-            <text x="445" y="228">JSON</text><text x="445" y="248"><tspan class="en">32 cards</tspan><tspan class="es">32 tarjetas</tspan></text>
+            <text x="277" y="106">Elo 1X2</text><text x="277" y="130"><tspan class="en">walk-forward selection</tspan><tspan class="es">selección walk-forward</tspan></text>
+            <text x="277" y="154"><tspan class="en">untouched holdout</tspan><tspan class="es">holdout intacto</tspan></text><text x="277" y="178"><tspan class="en">calibration + stress</tspan><tspan class="es">calibración + estrés</tspan></text>
+            <text x="445" y="52"><tspan class="en">Probabilities</tspan><tspan class="es">Probabilidades</tspan></text><text x="445" y="72">1X2</text>
+            <text x="445" y="140">PASS / HALT</text><text x="445" y="160"><tspan class="en">no actionable bets</tspan><tspan class="es">sin apuestas accionables</tspan></text>
+            <text x="445" y="228">JSON + audit</text><text x="445" y="248"><tspan class="en">32 synced cards</tspan><tspan class="es">32 tarjetas sincronizadas</tspan></text>
           </g>
           <g stroke="#34d399" stroke-width="3" fill="none" marker-end="url(#arrow)">
             <path d="M165 57 C190 57 185 105 205 112"/><path d="M165 145 H205"/><path d="M165 233 C190 233 185 180 205 172"/>
@@ -81,12 +84,12 @@
 
     <section class="mb-8 grid lg:grid-cols-[1fr_1fr] gap-5">
       <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
-        <h2 class="text-xl font-bold text-white"><span class="en">How to read a recommendation</span><span class="es">Cómo leer una recomendación</span></h2>
+        <h2 class="text-xl font-bold text-white"><span class="en">How to read this analysis</span><span class="es">Cómo leer este análisis</span></h2>
         <ol class="mt-3 space-y-2 text-sm text-slate-300 list-decimal pl-5">
-          <li><span class="en">Find the exact match, app, market and selection shown.</span><span class="es">Busca el partido, app, mercado y selección exactos.</span></li>
-          <li><span class="en">Confirm the current decimal odd still matches the captured price.</span><span class="es">Confirma que la cuota decimal actual aún coincide con la captura.</span></li>
-          <li><span class="en">If the price moved, treat the displayed EV as stale and stop.</span><span class="es">Si la cuota cambió, considera el EV desactualizado y detente.</span></li>
-          <li><span class="en">Read risks and confidence. Analysis is not a guarantee or instruction to bet.</span><span class="es">Lee riesgos y confianza. El análisis no es garantía ni instrucción para apostar.</span></li>
+          <li><span class="en">There are zero actionable bets in this release.</span><span class="es">No hay apuestas accionables en esta versión.</span></li>
+          <li><span class="en">PASS means the betting policy is not validated; HALT means the apparent edge is suspicious and needs investigation.</span><span class="es">PASS significa que la política de apuestas no está validada; HALT significa que la ventaja aparente es sospechosa y necesita investigación.</span></li>
+          <li><span class="en">Conditional forecasts must be rerun after intervening matches and new lineups/odds.</span><span class="es">Los pronósticos condicionales deben recalcularse después de partidos intermedios y nuevas alineaciones/cuotas.</span></li>
+          <li><span class="en">Displayed prices are source evidence, not instructions to place a bet.</span><span class="es">Las cuotas mostradas son evidencia de fuente, no instrucciones para apostar.</span></li>
         </ol>
       </div>
       <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
@@ -95,6 +98,8 @@
           <p><span class="tip" tabindex="0">1X2<span><span class="en">1 = first team wins, X = draw, 2 = second team wins.</span><span class="es">1 = gana el primer equipo, X = empate, 2 = gana el segundo.</span></span></span>: <span class="en">the three full-time result choices.</span><span class="es">las tres opciones de resultado final.</span></p>
           <p><span class="tip" tabindex="0">EV<span><span class="en">Expected value is the estimated average return over many similar bets, not certainty in one match.</span><span class="es">Valor esperado es el retorno promedio estimado en muchas apuestas similares, no certeza en un partido.</span></span></span>: <span class="en">positive does not mean guaranteed.</span><span class="es">positivo no significa garantizado.</span></p>
           <p><span class="tip" tabindex="0">HALT<span><span class="en">The apparent edge is too extreme or disagrees too much with the market, so extra verification is required.</span><span class="es">La ventaja aparente es extrema o discrepa demasiado del mercado, por lo que requiere verificación extra.</span></span></span>: <span class="en">do not treat it as actionable.</span><span class="es">no lo trates como accionable.</span></p>
+          <p><span class="tip" tabindex="0">PASS<span><span class="en">The comparison is published for transparency, but no profitable betting policy has been validated.</span><span class="es">La comparación se publica por transparencia, pero no se ha validado una política de apuestas rentable.</span></span></span>: <span class="en">abstain.</span><span class="es">abstenerse.</span></p>
+          <p><span class="tip" tabindex="0"><span class="en">Stress EV</span><span class="es">EV estresado</span><span><span class="en">EV after reducing the selected outcome probability by three percentage points; this is a simple robustness check, not a confidence interval.</span><span class="es">EV después de reducir tres puntos porcentuales la probabilidad seleccionada; es una prueba simple de robustez, no un intervalo de confianza.</span></span></span></p>
         </div>
       </div>
     </section>
@@ -122,45 +127,58 @@
 <script>
 const $=s=>document.querySelector(s);
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let DATA=null;
+let DATA=null,METRICS=null,AUDIT_COUNT=0;
  const strengthColor=s=>({HALT:'text-red-300 border-red-700',PASS:'text-slate-300 border-slate-700'}[s]||'text-slate-300 border-slate-700');
 function metric(label,value){return `<div class="rounded-2xl border border-slate-800 bg-slate-950 p-3"><div class="text-xs text-slate-500">${label}</div><div class="text-lg font-black text-white">${value}</div></div>`}
 function renderSummary(rows){
- const recs=[];
  const halted=rows.filter(x=>x.recommendation?.strength==='HALT').length;
- $('#summary').innerHTML=metric('Fixtures / Partidos',rows.length)+metric('Candidates / Candidatas',recs.length)+metric('HALT',halted)+metric('Model hash',DATA.model.pipeline_sha256.slice(0,8));
+ $('#summary').innerHTML=metric('<span class="en">Fixtures</span><span class="es">Partidos</span>',rows.length)+metric('<span class="en">Actionable bets</span><span class="es">Apuestas accionables</span>',0)+metric('HALT',halted)+metric('<span class="en">Holdout Brier</span><span class="es">Brier holdout</span>',Number(METRICS.calibration.holdout_brier).toFixed(4));
+ $('#model-evidence').innerHTML=`<p class="font-bold text-white"><span class="en">Validation evidence and limitations</span><span class="es">Evidencia de validación y limitaciones</span></p>
+ <p class="mt-2"><span class="en">Selection rows: ${METRICS.calibration.selection_rows}; untouched holdout: ${METRICS.calibration.holdout_rows}; Brier: ${Number(METRICS.calibration.holdout_brier).toFixed(4)}; log loss: ${Number(METRICS.calibration.holdout_log_loss).toFixed(4)}. Uniform baselines are 0.6667 Brier and 1.0986 log loss.</span><span class="es">Filas de selección: ${METRICS.calibration.selection_rows}; holdout intacto: ${METRICS.calibration.holdout_rows}; Brier: ${Number(METRICS.calibration.holdout_brier).toFixed(4)}; log loss: ${Number(METRICS.calibration.holdout_log_loss).toFixed(4)}. Las bases uniformes son 0,6667 Brier y 1,0986 log loss.</span></p>
+ <p class="mt-2 text-amber-200"><span class="en">This validates forecast signal only. Historical closing odds are incomplete, so profitability, CLV, ROI and staking tiers are not validated.</span><span class="es">Esto valida solo señal predictiva. Las cuotas históricas de cierre están incompletas, por lo que rentabilidad, CLV, ROI y niveles de apuesta no están validados.</span></p>`;
 }
-function card(row){
+function card(row,index){
  const r=row.recommendation;
+ const ptr=`/predictions/${index}`;
  const strength=r?.strength||'PASS';
  const rec=r?`${escapeHtml(r.selection_original)} ${r.line?`(${escapeHtml(r.line)})`:''} @ ${Number(r.odds).toFixed(2)}`:'No supported price / Sin cuota compatible';
  const sources=(row.research?.source_urls||[]).map(u=>`<a class="text-cyan-400 hover:underline break-all" href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(new URL(u).hostname)}</a>`).join(' · ');
  return `<article class="card-anchor bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden" data-fixture-id="${escapeHtml(row.fixture_id)}" data-date="${row.kickoff_lima.slice(0,10)}" data-strength="${strength}">
    <header class="p-5 border-b border-slate-800 flex justify-between gap-4">
-    <div><div class="text-xs text-slate-500">${escapeHtml(row.kickoff_lima.replace('T',' ').slice(0,16))} • Group ${escapeHtml(row.group)}</div>
-    <h2 class="mt-1 text-xl font-black text-white"><span class="en">${escapeHtml(row.fixture.en)}</span><span class="es">${escapeHtml(row.fixture.es)}</span></h2></div>
+    <div><div class="text-xs text-slate-500" data-json-pointer="${ptr}/kickoff_lima">${escapeHtml(row.kickoff_lima.replace('T',' ').slice(0,16))} • <span class="en">Group</span><span class="es">Grupo</span> <span data-json-pointer="${ptr}/group">${escapeHtml(row.group)}</span></div>
+    <h2 class="mt-1 text-xl font-black text-white"><span class="en" data-json-pointer="${ptr}/fixture/en">${escapeHtml(row.fixture.en)}</span><span class="es" data-json-pointer="${ptr}/fixture/es">${escapeHtml(row.fixture.es)}</span></h2></div>
     <span class="h-fit rounded-full border px-3 py-1 text-xs font-bold ${strengthColor(strength)}">${strength}</span>
    </header>
    <div class="p-5">
     <div class="grid grid-cols-3 gap-2 text-center">
-     ${metric('1',`${(row.probabilities.team_a_win*100).toFixed(1)}%`)}
-     ${metric('X',`${(row.probabilities.draw*100).toFixed(1)}%`)}
-     ${metric('2',`${(row.probabilities.team_b_win*100).toFixed(1)}%`)}
+     <div data-json-pointer="${ptr}/probabilities/team_a_win">${metric('1',`${(row.probabilities.team_a_win*100).toFixed(1)}%`)}</div>
+     <div data-json-pointer="${ptr}/probabilities/draw">${metric('X',`${(row.probabilities.draw*100).toFixed(1)}%`)}</div>
+     <div data-json-pointer="${ptr}/probabilities/team_b_win">${metric('2',`${(row.probabilities.team_b_win*100).toFixed(1)}%`)}</div>
     </div>
+    <div class="mt-3 rounded-xl border ${row.freshness_status==='current_snapshot'?'border-emerald-800 bg-emerald-950/30':'border-amber-800 bg-amber-950/30'} p-3 text-xs">
+      ${row.freshness_status==='current_snapshot'
+        ?'<span class="en">Current snapshot at the documented cutoff.</span><span class="es">Instantánea vigente al corte documentado.</span>'
+        :'<span class="en">Conditional forecast: rerun after intervening matches and before using updated lineups or odds.</span><span class="es">Pronóstico condicional: recalcular después de partidos intermedios y antes de usar alineaciones o cuotas actualizadas.</span>'}
+    </div>
+    <div class="mt-3 text-xs text-emerald-300"><span class="en">Field-level subagent audit: PASS</span><span class="es">Auditoría de subagentes por campo: PASS</span> • ${AUDIT_COUNT} <span class="en">manifest datapoints</span><span class="es">datos auditados</span></div>
     <div class="mt-4 rounded-2xl border border-slate-700 bg-slate-950 p-4">
-      <div class="text-xs text-slate-500"><span class="en">Best supported screenshot candidate</span><span class="es">Mejor candidata compatible de capturas</span></div>
-      <div class="mt-1 font-bold text-white">${rec}</div>
-      ${r?`<div class="mt-2 grid grid-cols-3 gap-2 text-sm"><div>EV <b>${r.ev_pct.toFixed(1)}%</b></div><div><span class="en">Stress</span><span class="es">Estrés</span> <b>${r.stressed_ev_pct.toFixed(1)}%</b></div><div><span class="en">Confidence</span><span class="es">Confianza</span> <b>${r.confidence}%</b></div></div>
+      <div class="text-xs text-slate-500"><span class="en">Highest-EV screenshot comparison — not actionable</span><span class="es">Comparación de captura con mayor EV — no accionable</span></div>
+      <div class="mt-1 font-bold text-white" data-json-pointer="${ptr}/recommendation/selection_original">${rec}</div>
+      ${r?`<div class="mt-2 grid grid-cols-3 gap-2 text-sm"><div data-json-pointer="${ptr}/recommendation/ev_pct">EV <b>${r.ev_pct.toFixed(1)}%</b></div><div data-json-pointer="${ptr}/recommendation/stressed_ev_pct"><span class="en">Stress</span><span class="es">Estrés</span> <b>${r.stressed_ev_pct.toFixed(1)}%</b></div><div data-json-pointer="${ptr}/recommendation/confidence"><span class="en">Confidence</span><span class="es">Confianza</span> <b>${r.confidence}%</b></div></div>
       <div class="mt-2 text-xs text-slate-400">${escapeHtml(r.app)} • ${escapeHtml(r.market_original)} • ${escapeHtml(r.source_image)}</div>`:''}
     </div>
     <details class="mt-4 rounded-2xl border border-slate-800 p-4">
       <summary class="cursor-pointer font-semibold"><span class="en">Research, risks and ELI5</span><span class="es">Investigación, riesgos y ELI5</span></summary>
       <div class="mt-3 space-y-3 text-sm text-slate-300">
-        <p><b><span class="en">Team news:</span><span class="es">Noticias:</span></b> ${escapeHtml(row.research?.team_news||'Unavailable')}</p>
-        <p><b><span class="en">Injuries/suspensions:</span><span class="es">Lesiones/sanciones:</span></b> ${escapeHtml(row.research?.injuries_suspensions||'Unavailable')}</p>
-        <p><b><span class="en">Motivation:</span><span class="es">Motivación:</span></b> ${escapeHtml(row.research?.motivation_group_state||'Unavailable')}</p>
-        <ul class="list-disc pl-5"><span class="en">${row.risk_notes.en.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</span><span class="es">${row.risk_notes.es.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</span></ul>
-        <p><b>ELI5:</b> <span class="en">Open the named app, search World Cup, open this exact fixture, find the market shown above, and compare the current price with the captured price. If any label or price differs, stop because the displayed EV is no longer valid. You decide whether to act.</span><span class="es">Abre la app indicada, busca Copa del Mundo, abre este partido exacto, encuentra el mercado mostrado y compara la cuota actual con la capturada. Si cambia una etiqueta o cuota, detente porque el EV ya no es válido. Tú decides si actuar.</span></p>
+        <div class="en">
+          <p><b>Team news:</b> ${escapeHtml(row.research?.team_news||'Unavailable')}</p>
+          <p><b>Injuries/suspensions:</b> ${escapeHtml(row.research?.injuries_suspensions||'Unavailable')}</p>
+          <p><b>Motivation:</b> ${escapeHtml(row.research?.motivation_group_state||'Unavailable')}</p>
+        </div>
+        <div class="es"><p><b>Notas OSINT:</b> Las notas originales se conservaron en inglés para no introducir una traducción no verificada. Consulta las fuentes enlazadas y el CSV de investigación para el texto exacto.</p></div>
+        <div class="en"><ul class="list-disc pl-5">${row.risk_notes.en.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
+        <div class="es"><ul class="list-disc pl-5">${row.risk_notes.es.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
+        <p><b>ELI5:</b> <span class="en">This row compares a model probability with an old screenshot price. PASS and HALT both mean “do not treat as a bet.” Use it to inspect the model, not to execute a wager.</span><span class="es">Esta fila compara una probabilidad del modelo con una cuota antigua de captura. PASS y HALT significan “no tratar como apuesta”. Úsala para inspeccionar el modelo, no para ejecutar una apuesta.</span></p>
         <p class="text-xs">${sources}</p>
       </div>
     </details>
@@ -173,18 +191,28 @@ function applyFilters(){
 }
 async function load(){
  try{
-  const response=await fetch('wc_june22_27_predictions.json',{cache:'no-store'});
+  const [response,metricsResponse,auditResponse]=await Promise.all([
+    fetch('wc_june22_27_predictions.json',{cache:'no-store'}),
+    fetch('wc_june22_27_model_metrics.json',{cache:'no-store'}),
+    fetch('wc_june22_27_datapoint_audit.csv',{cache:'no-store'})
+  ]);
   if(!response.ok)throw new Error(`predictions.json HTTP ${response.status}`);
-  DATA=await response.json();
+  if(!metricsResponse.ok)throw new Error(`metrics.json HTTP ${metricsResponse.status}`);
+  if(!auditResponse.ok)throw new Error(`audit.csv HTTP ${auditResponse.status}`);
+  DATA=await response.json(); METRICS=await metricsResponse.json();
+  const auditText=await auditResponse.text();
+  const auditRows=auditText.trim().split(/\r?\n/).slice(1);
+  if(!auditRows.length||auditRows.some(line=>!line.endsWith(',PASS')))throw new Error('Datapoint audit is incomplete or blocked');
+  AUDIT_COUNT=auditRows.length;
   if(DATA.batch.fixture_count!==32||DATA.predictions.length!==32)throw new Error('Expected exactly 32 predictions');
   const ids=new Set(DATA.predictions.map(x=>x.fixture_id)); if(ids.size!==32)throw new Error('Duplicate fixture IDs');
   renderSummary(DATA.predictions);
   $('#cards').innerHTML=DATA.predictions.map(card).join('');
   [...new Set(DATA.predictions.map(x=>x.kickoff_lima.slice(0,10)))].forEach(d=>$('#date-filter').insertAdjacentHTML('beforeend',`<option value="${d}">${d}</option>`));
-  $('#status').innerHTML='<span class="en">Verified JSON loaded</span><span class="es">JSON verificado cargado</span>';
+ $('#status').innerHTML='<span class="en">Verified JSON loaded</span><span class="es">JSON verificado cargado</span>';
  }catch(error){
-  $('#error').classList.remove('hidden'); $('#error').textContent=`Report data failed to load: ${error.message}`;
-  $('#status').textContent='DATA ERROR';
+  $('#error').classList.remove('hidden'); $('#error').innerHTML=`<span class="en">Report data failed to load: ${escapeHtml(error.message)}</span><span class="es">No se pudieron cargar los datos del informe: ${escapeHtml(error.message)}</span>`;
+  $('#status').innerHTML='<span class="en">DATA ERROR</span><span class="es">ERROR DE DATOS</span>';
  }
 }
 $('#lang').addEventListener('click',()=>{const es=document.body.classList.contains('lang-es');document.body.classList.toggle('lang-es',!es);document.body.classList.toggle('lang-en',es);$('#lang').textContent=es?'ES':'EN';document.documentElement.lang=es?'en':'es';});
