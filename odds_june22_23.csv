@@ -1,0 +1,25 @@
+fixture_id,fixture_display,kickoff_local,app,market_original,market_id,selection_original,selection_id,line,odds,promo,source_image,capture_time,notes
+2026-06-22-arg-aut,Argentina vs Austria,2026-06-22 12:00,Betano,Resultado del partido,match_result,Argentina,home,,1.52,false,IMG_7523.PNG,2026-06-21 22:14 -05:00,Independent visual fallback; standard market
+2026-06-22-arg-aut,Argentina vs Austria,2026-06-22 12:00,Betano,Resultado del partido,match_result,Empate,draw,,3.95,false,IMG_7523.PNG,2026-06-21 22:14 -05:00,Independent visual fallback; standard market
+2026-06-22-arg-aut,Argentina vs Austria,2026-06-22 12:00,Betano,Resultado del partido,match_result,Austria,away,,7.10,false,IMG_7523.PNG,2026-06-21 22:14 -05:00,Independent visual fallback; standard market
+2026-06-22-fra-irq,France vs Iraq,2026-06-22 16:00,Betano,Resultado del partido,match_result,Francia,home,,1.09,false,IMG_7529.PNG,2026-06-21 22:16 -05:00,Independent visual fallback; standard market
+2026-06-22-fra-irq,France vs Iraq,2026-06-22 16:00,Betano,Resultado del partido,match_result,Empate,draw,,13.50,false,IMG_7529.PNG,2026-06-21 22:16 -05:00,Independent visual fallback; standard market
+2026-06-22-fra-irq,France vs Iraq,2026-06-22 16:00,Betano,Resultado del partido,match_result,Irak,away,,17.00,false,IMG_7529.PNG,2026-06-21 22:16 -05:00,Independent visual fallback; standard market
+2026-06-22-nor-sen,Norway vs Senegal,2026-06-22 19:00,Betano,Resultado del partido,match_result,Noruega,home,,2.22,false,IMG_7533.PNG,2026-06-21 22:17 -05:00,Independent visual fallback; standard market
+2026-06-22-nor-sen,Norway vs Senegal,2026-06-22 19:00,Betano,Resultado del partido,match_result,Empate,draw,,3.50,false,IMG_7533.PNG,2026-06-21 22:17 -05:00,Independent visual fallback; standard market
+2026-06-22-nor-sen,Norway vs Senegal,2026-06-22 19:00,Betano,Resultado del partido,match_result,Senegal,away,,3.20,false,IMG_7533.PNG,2026-06-21 22:17 -05:00,Independent visual fallback; standard market
+2026-06-22-jor-alg,Jordan vs Algeria,2026-06-22 22:00,Betano,Resultado del partido,match_result,Jordania,home,,5.50,false,IMG_7537.PNG,2026-06-21 22:18 -05:00,Independent visual fallback; standard market
+2026-06-22-jor-alg,Jordan vs Algeria,2026-06-22 22:00,Betano,Resultado del partido,match_result,Empate,draw,,4.10,false,IMG_7537.PNG,2026-06-21 22:18 -05:00,Independent visual fallback; standard market
+2026-06-22-jor-alg,Jordan vs Algeria,2026-06-22 22:00,Betano,Resultado del partido,match_result,Argelia,away,,1.60,false,IMG_7537.PNG,2026-06-21 22:18 -05:00,Independent visual fallback; standard market
+2026-06-23-por-uzb,Portugal vs Uzbekistan,2026-06-23 12:00,Betano,Resultado del partido,match_result,Portugal,home,,1.23,false,IMG_7541.PNG,2026-06-21 22:19 -05:00,Independent visual fallback; standard market
+2026-06-23-por-uzb,Portugal vs Uzbekistan,2026-06-23 12:00,Betano,Resultado del partido,match_result,Empate,draw,,6.00,false,IMG_7541.PNG,2026-06-21 22:19 -05:00,Independent visual fallback; standard market
+2026-06-23-por-uzb,Portugal vs Uzbekistan,2026-06-23 12:00,Betano,Resultado del partido,match_result,Uzbekistán,away,,14.00,false,IMG_7541.PNG,2026-06-21 22:19 -05:00,Independent visual fallback; standard market
+2026-06-23-eng-gha,England vs Ghana,2026-06-23 15:00,Betano,Resultado del partido,match_result,Inglaterra,home,,1.25,false,IMG_7545.PNG,2026-06-21 22:20 -05:00,Independent visual fallback; standard market
+2026-06-23-eng-gha,England vs Ghana,2026-06-23 15:00,Betano,Resultado del partido,match_result,Empate,draw,,6.00,false,IMG_7545.PNG,2026-06-21 22:20 -05:00,Independent visual fallback; standard market
+2026-06-23-eng-gha,England vs Ghana,2026-06-23 15:00,Betano,Resultado del partido,match_result,Ghana,away,,12.50,false,IMG_7545.PNG,2026-06-21 22:20 -05:00,Independent visual fallback; standard market
+2026-06-23-pan-cro,Panama vs Croatia,2026-06-23 18:00,Betano,Resultado del partido,match_result,Panamá,home,,6.30,false,IMG_7549.PNG,2026-06-21 22:20 -05:00,Independent visual fallback; standard market
+2026-06-23-pan-cro,Panama vs Croatia,2026-06-23 18:00,Betano,Resultado del partido,match_result,Empate,draw,,3.90,false,IMG_7549.PNG,2026-06-21 22:20 -05:00,Independent visual fallback; standard market
+2026-06-23-pan-cro,Panama vs Croatia,2026-06-23 18:00,Betano,Resultado del partido,match_result,Croacia,away,,1.57,false,IMG_7549.PNG,2026-06-21 22:20 -05:00,Independent visual fallback; standard market
+2026-06-23-col-cod,Colombia vs Congo DR,2026-06-23 21:00,Betano,Resultado del partido,match_result,Colombia,home,,1.55,false,IMG_7552.PNG,2026-06-21 22:21 -05:00,Independent visual fallback; standard market
+2026-06-23-col-cod,Colombia vs Congo DR,2026-06-23 21:00,Betano,Resultado del partido,match_result,Empate,draw,,3.95,false,IMG_7552.PNG,2026-06-21 22:21 -05:00,Independent visual fallback; standard market
+2026-06-23-col-cod,Colombia vs Congo DR,2026-06-23 21:00,Betano,Resultado del partido,match_result,RD Congo,away,,6.50,false,IMG_7552.PNG,2026-06-21 22:21 -05:00,Independent visual fallback; standard market

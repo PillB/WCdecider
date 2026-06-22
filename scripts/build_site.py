@@ -8,7 +8,9 @@ See AGENT.md for full 7-step (screenshots → CSV → core pipeline retrain → 
 
 from __future__ import annotations
 
+import os
 import shutil
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -24,28 +26,36 @@ def build() -> Path:
         shutil.rmtree(SITE)
     SITE.mkdir(parents=True)
 
-    shutil.copy2(REPORT, SITE / "index.html")
+    build_sha = os.environ.get("GITHUB_SHA")
+    if not build_sha:
+        build_sha = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+        ).strip()
+    report_text = REPORT.read_text(encoding="utf-8").replace("__BUILD_SHA__", build_sha)
+    (SITE / "index.html").write_text(report_text, encoding="utf-8")
 
     # Optional: keep canonical filename reachable (use latest name)
-    shutil.copy2(REPORT, SITE / "wc_june17_21_full_report.html")
+    (SITE / "wc_june22_27_full_report.html").write_text(report_text, encoding="utf-8")
 
     # Copy dynamic data files for JS population in deployed site (per architecture for dynamic cards/table from JSON)
-    JSON_DATA = ROOT / "wc_june17_21_predictions.json"
-    if JSON_DATA.exists():
-        shutil.copy2(JSON_DATA, SITE / "wc_june17_21_predictions.json")
-        print(f"[build_site] Copied dynamic data: {SITE / 'wc_june17_21_predictions.json'}")
+    required = [
+        ROOT / "wc_june22_27_predictions.json",
+        ROOT / "wc_june22_27_model_metrics.json",
+        ROOT / "wc_june22_27_model_dataset.csv",
+        ROOT / "wc_odds_june_22-27.csv",
+        ROOT / "wc_2026_matches_june_22-27.csv",
+        ROOT / "wc_june22_27_provenance.txt",
+        ROOT / "wc_screenshot_manifest_june22_27.csv",
+        ROOT / "wc_research_june22_27.csv",
+    ]
+    missing = [path.name for path in required if not path.exists()]
+    if missing:
+        raise FileNotFoundError(f"Required deployment artifacts missing: {missing}")
+    for path in required:
+        shutil.copy2(path, SITE / path.name)
+        print(f"[build_site] Copied: {path.name}")
 
     # Also copy matches for potential enrichment if needed in future
-    MATCHES = ROOT / "wc_2026_matches_june_17-21.csv"
-    if MATCHES.exists():
-        shutil.copy2(MATCHES, SITE / "wc_2026_matches_june_17-21.csv")
-
-    # Copy model comparison + temporal CV metrics for visualizations (research-driven best practice)
-    METRICS = ROOT / "training" / "model_comparison_metrics.json"
-    if METRICS.exists():
-        shutil.copy2(METRICS, SITE / "model_comparison_metrics.json")
-        print(f"[build_site] Copied viz data: {SITE / 'model_comparison_metrics.json'}")
-
     print(f"[build_site] Wrote {SITE / 'index.html'} ({(SITE / 'index.html').stat().st_size:,} bytes)")
     return SITE
 

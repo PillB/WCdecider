@@ -31,20 +31,16 @@ jobs:
           pip install -r requirements-ci.txt
           playwright install --with-deps chromium
 
-      - name: Run replication pipeline
-        run: python3 wc_model_v4_replicable_pipeline.py
+      - name: Run June 22-27 reproducible pipeline
+        run: python3 wc_june22_27_pipeline.py
 
-      - name: Run June 17-21 replicable pipeline (produces wc_june17_21_predictions.json for dynamic cards + hover explanations)
-        run: python3 wc_replicable_pipeline.py
+      - name: Generate JSON-driven report
+        run: python3 scripts/generate_report.py
 
-      - name: Run pytest (model + report)
-        run: |
-          pytest tests/test_peer_replication.py \
-                 tests/test_translation_toggle.py \
-                 tests/test_report_playwright_compliance.py \
-                 -v --tb=short
+      - name: Run full pytest matrix
+        run: pytest tests/ -v --tb=short
 
-      - name: Build site artifact (smoke)
+      - name: Build exact site artifact
         run: python3 scripts/build_site.py
 
   build:
@@ -62,8 +58,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-ci.txt
 
-      - name: Run June 17-21 replicable pipeline (ensure fresh predictions.json + explanations in artifact)
-        run: python3 wc_replicable_pipeline.py
+      - name: Run June 22-27 reproducible pipeline
+        run: python3 wc_june22_27_pipeline.py
+
+      - name: Generate JSON-driven report
+        run: python3 scripts/generate_report.py
 
       - name: Build static site
         run: python3 scripts/build_site.py

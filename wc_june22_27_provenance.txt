@@ -1,0 +1,55 @@
+WCdecider June 22–27, 2026 provenance
+=======================================
+
+Canonical fixtures: wc_2026_matches_june_22-27.csv
+Elapsed outcomes: wc_2026_results_through_june21.csv
+Pre-tournament Elo: wc_team_elo_baseline_june11.csv
+Historical Dataset A/B source: wc_backtest_historical_dataset.csv
+Screenshot-derived odds: odds_june22_23.csv, odds_june24.csv, odds_june25_26.csv, odds_june27.csv
+Complete screenshot inventory: wc_screenshot_manifest_june22_27.csv
+OSINT notes: research_june22_23.csv, research_june24_25.csv, research_june26_27.csv
+Sanitized canonical OSINT output: wc_research_june22_27.csv (post-cutoff sources are excluded).
+
+Column derivations:
+- updated Elo: sequential neutral-site World Cup Elo update with K=60 and goal-margin multiplier.
+- goal-margin multiplier: 1.0 for one-goal/draw, 1.5 for two goals, (11+margin)/8 for three or more.
+- form features: tournament games, points, goals for/against through June 21.
+- tournament form: descriptive only in production; no second adjustment after Elo updates.
+- probabilities: chronologically calibrated Elo three-way conversion.
+- parameter grid: divisor {350,400,450,500}; draw_base {.14,.16,.18,.20,.22}; draw_slope {.06,.08,.10,.12}.
+- selection split: first 85% by time; final 15% untouched holdout. Selection rows use four ordered windows after the first 55%.
+- expected goals: 75% Dataset A mean + 25% Dataset B mean; team share = .5 + .34*tanh(Elo gap/420).
+- score grid: independent Poisson scores 0..10, renormalized. It is descriptive only in this release.
+- EV/recommendations: standard full-time 1X2 markets only in this release.
+- stress EV: subtract 3 percentage points from selected win probability and add 3 points to loss probability.
+- classification: divergence >15pp or EV >25% HALT; all other selections PASS until recommendation-policy profitability is validated out of sample.
+- source_sha256: SHA-256 of the exact screenshot containing the price.
+
+Model selection:
+- Hyperparameters are selected on pre-holdout chronological windows and evaluated on an untouched final 15% holdout.
+- Dataset A contains World Cup rows; Dataset B contains qualifiers/friendlies.
+- No current price is hard-coded in Python and no reported target is extracted from prose.
+
+Input hashes:
+- odds_june22_23.csv: 11f2470f953489af6966bd60cea31ab3f4437a278cba60a69c991841763f488d
+- odds_june24.csv: fe71b2941a9d4f477ce067f0341154e46a5f03e9be1cb6dc11aabadbc182daa8
+- odds_june25_26.csv: 910fa838a9314a5d30227a977c3a462e8f5a288855f21d66f4576becc0582957
+- odds_june27.csv: 6ace21a6cff0718dfd01be6b62ab3575014b9f2a531e9fac64c29a27c43cd0a4
+- research_june22_23.csv: 73e84dac2994f81848af66a83db2bc41f7215576feac06d1bb06ed410e0fb606
+- research_june24_25.csv: d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517
+- research_june26_27.csv: 5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60
+- wc_2026_matches_june_22-27.csv: 5c8f68a44f90ce000568d0618046d45cedd07557d1ee175162f3a86459af0a2d
+- wc_2026_results_through_june21.csv: 478fe45b6945af10e10cdf637ba84dc876dc92bc62795074c064a0035ae37c7a
+- wc_backtest_historical_dataset.csv: 41a5c7732582314e32d42135ee09f212a7e4fe70f398d491df8b80f6275b3add
+- wc_team_elo_baseline_june11.csv: f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b
+- pipeline: f4e821c3cc3e1fc1dbe97c7535584c81ad6f0097b9308823974c3cb3ba46bc40
+
+Generated artifact hashes:
+- wc_dataset_a_world_cups.csv: 7201bba4742ec97394b68c00056235996d6b4ea3df1bc4093e59857290b40be3
+- wc_dataset_b_supplementary.csv: ec3eac9206beb113cd88e27ea00610edf9ddce60c913910f61760517ec86d2db
+- wc_june22_27_model_dataset.csv: 0f136c404146c43bf0e826b52ff2419d25b4ae34d06a94a36a85c6b8474d7bc6
+- wc_june22_27_model_metrics.json: 9d8d80eef3471b9c24f90ea2d275f2cf4a79d66a03c82013061ecc707b981094
+- wc_june22_27_predictions.json: 81806b1d87a55bbcc080b35dded2109bb3b9ddacdcef68c31203a82f7109c688
+- wc_odds_june_22-27.csv: 01f7ee6934cd2fe24500c5971c0c70b27d83bd3cc6cded5fe31be2197f3cc296
+- wc_research_june22_27.csv: 1e7310c443256c70a9c31afebda811a04c557f7f88c59f5514da49128b88d22d
+- wc_screenshot_manifest_june22_27.csv: f19cbe911a219616ad492f879c3a04296ea05ba73928d3326e694ec15c0deab0

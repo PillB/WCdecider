@@ -1,143 +1,37 @@
-#!/usr/bin/env python3
-"""
-Playwright validation against the deployed GitHub Pages site.
-
-Set DEPLOY_URL (e.g. https://pillb.github.io/WCdecider/)
-Run: DEPLOY_URL=https://... python3 -m pytest tests/test_deployed_site.py -v
-"""
+"""Live GitHub Pages validation for the exact June 22–27 artifact."""
 
 from __future__ import annotations
 
+import json
 import os
-import re
-from urllib.parse import urljoin
+from pathlib import Path
 
 import pytest
 
-DEPLOY_URL = os.environ.get("DEPLOY_URL", "").rstrip("/") + "/"
-
-REQUIRED_EN = [
-    "v4.1 prod",
-    "wc_model_v4_replicable_pipeline.py",
-    "68.6% win / 28.1% draw",
-    "opener_draw_boost +0.07",
-    "+69% HALT",
-    "59.6%",
-    "0.5956",
-    "0.6039",
-]
-
-REQUIRED_ES = [
-    "RESUMEN EJECUTIVO",
-    "68,6% victoria / 28,1% empate",
-    "HALT (+69% EV)",
-    "Apostar conlleva riesgo real",
-]
-
-FORBIDDEN = [
-    "(+12% SPEC), cleared",
-    "Model (executed wc_model_v3.py)",
-    "opener_draw_boost +0.055 (extra chance",
-]
+ROOT = Path(__file__).resolve().parent.parent
 
 
-@pytest.fixture(scope="module")
-def deploy_url() -> str:
-    if not DEPLOY_URL or DEPLOY_URL == "/":
-        pytest.skip("DEPLOY_URL not set — skip deployed-site tests")
-    return DEPLOY_URL
-
-
-@pytest.fixture(scope="module")
-def browser_page(deploy_url: str):
+@pytest.mark.skipif(not os.environ.get("DEPLOY_URL"), reason="DEPLOY_URL is set after Pages deploy")
+def test_live_site_matches_expected_commit_and_json():
     from playwright.sync_api import sync_playwright
 
+    url = os.environ["DEPLOY_URL"].rstrip("/") + "/"
+    expected_sha = os.environ.get("GITHUB_SHA")
+    local = json.loads((ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8"))
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        page = browser.new_page(viewport={"width": 1400, "height": 900})
-        page.goto(deploy_url, wait_until="networkidle", timeout=120_000)
-        page.wait_for_selector("#btn-en", timeout=10000)
-        page.wait_for_timeout(300)
-        yield page, deploy_url
+        page = browser.new_page(viewport={"width": 1280, "height": 900})
+        failures = []
+        page.on("requestfailed", lambda request: failures.append(request.url))
+        page.goto(url, wait_until="networkidle")
+        page.wait_for_selector("#cards article")
+        assert page.locator("#cards article").count() == 32
+        assert len(set(page.locator("#cards article").evaluate_all("els => els.map(e => e.dataset.fixtureId)"))) == 32
+        assert failures == []
+        if expected_sha:
+            assert page.locator('meta[name="wcdecider-build"]').get_attribute("content") == expected_sha
+        remote = page.evaluate("fetch('wc_june22_27_predictions.json').then(r => r.json())")
+        assert remote["model"]["pipeline_sha256"] == local["model"]["pipeline_sha256"]
+        page.locator("#lang").click()
+        assert "lang-es" in page.locator("body").get_attribute("class")
         browser.close()
-
-
-def _switch(page, lang: str) -> str:
-    btn = page.locator(f"#btn-{'en' if lang == 'en' else 'es'}")
-    btn.wait_for(state="visible", timeout=10000)
-    btn.click()
-    page.wait_for_timeout(500)
-    return page.evaluate("() => document.body.innerText")
-
-
-class TestDeployedGitHubPages:
-    def test_homepage_loads_200(self, browser_page):
-        page, url = browser_page
-        assert "WCdecider" in page.title() or "WCdecider" in page.content()
-
-    def test_cdn_assets_render(self, browser_page):
-        page, _ = browser_page
-        # Tailwind + nav should produce styled layout (not raw unstyled HTML)
-        nav = page.locator("nav")
-        assert nav.count() > 0
-        bg = page.evaluate("""() => {
-          const nav = document.querySelector('nav');
-          return nav ? getComputedStyle(nav).backgroundColor : '';
-        }""")
-        assert bg and bg != "rgba(0, 0, 0, 0)"
-
-    def test_en_required_content(self, browser_page):
-        page, _ = browser_page
-        text = _switch(page, "en")
-        missing = [m for m in REQUIRED_EN if m not in text]
-        assert not missing, f"Missing on deployed EN site: {missing}"
-
-    def test_en_forbidden_stale_absent(self, browser_page):
-        page, _ = browser_page
-        text = _switch(page, "en")
-        found = [f for f in FORBIDDEN if f in text]
-        assert not found, f"Stale content on deployed site: {found}"
-
-    def test_es_toggle_and_content(self, browser_page):
-        page, _ = browser_page
-        text = _switch(page, "es")
-        assert "lang-es" in page.evaluate("() => document.body.className")
-        missing = [m for m in REQUIRED_ES if m not in text]
-        assert not missing, f"Missing on deployed ES site: {missing}"
-
-    def test_es_no_visible_en_spans(self, browser_page):
-        page, _ = browser_page
-        _switch(page, "es")
-        visible_en = page.evaluate("""() => {
-          let n = 0;
-          document.querySelectorAll('.en').forEach(el => {
-            const s = getComputedStyle(el);
-            const r = el.getBoundingClientRect();
-            if (s.display !== 'none' && s.visibility !== 'hidden' && r.width > 0 && r.height > 0) n++;
-          });
-          return n;
-        }""")
-        assert visible_en == 0
-
-    def test_diagram_labels_toggle(self, browser_page):
-        page, _ = browser_page
-        _switch(page, "en")
-        en_layer = page.text_content("#d-layer1")
-        _switch(page, "es")
-        es_layer = page.text_content("#d-layer1")
-        assert en_layer != es_layer
-        assert "CAPA 1" in (es_layer or "")
-
-    def test_alternate_report_path(self, browser_page, deploy_url: str):
-        page, base = browser_page
-        # Current deployed canonical report (built by scripts/build_site.py)
-        alt = urljoin(base, "wc_june17_21_full_report.html")
-        resp = page.goto(alt, wait_until="networkidle", timeout=120_000)
-        assert resp and resp.ok
-        assert "v4.1 prod" in page.content()
-
-    def test_responsible_gambling_block(self, browser_page):
-        page, _ = browser_page
-        _switch(page, "es")
-        text = page.evaluate("() => document.body.innerText")
-        assert "Jugadores Anónimos" in text

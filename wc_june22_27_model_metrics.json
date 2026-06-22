@@ -1,0 +1,53 @@
+{
+  "version": "june22_27_integrity_v1",
+  "seed": 42,
+  "dataset_a_rows": 132,
+  "dataset_b_rows": 121,
+  "elapsed_wc2026_rows": 40,
+  "calibration": {
+    "divisor": 450.0,
+    "draw_base": 0.22,
+    "draw_slope": 0.12,
+    "mean_brier": 0.6199161230384551,
+    "mean_log_loss": 1.030320926182056,
+    "folds": [
+      {
+        "brier": 0.6146773599554965,
+        "log_loss": 1.033457114765305
+      },
+      {
+        "brier": 0.6589931210017108,
+        "log_loss": 1.0874029707872834
+      },
+      {
+        "brier": 0.5080577418811444,
+        "log_loss": 0.8750614487589435
+      },
+      {
+        "brier": 0.6979362693154685,
+        "log_loss": 1.125362170416692
+      }
+    ],
+    "selection_rows": 215,
+    "holdout_rows": 38,
+    "holdout_brier": 0.573469096305491,
+    "holdout_log_loss": 0.9375854971036603
+  },
+  "mu_dataset_a": 2.628787878787879,
+  "mu_dataset_b": 2.4441964285714297,
+  "mu_production": 2.582640016233767,
+  "input_hashes": {
+    "wc_backtest_historical_dataset.csv": "41a5c7732582314e32d42135ee09f212a7e4fe70f398d491df8b80f6275b3add",
+    "wc_2026_results_through_june21.csv": "478fe45b6945af10e10cdf637ba84dc876dc92bc62795074c064a0035ae37c7a",
+    "wc_team_elo_baseline_june11.csv": "f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b",
+    "wc_2026_matches_june_22-27.csv": "5c8f68a44f90ce000568d0618046d45cedd07557d1ee175162f3a86459af0a2d",
+    "odds_june22_23.csv": "11f2470f953489af6966bd60cea31ab3f4437a278cba60a69c991841763f488d",
+    "odds_june24.csv": "fe71b2941a9d4f477ce067f0341154e46a5f03e9be1cb6dc11aabadbc182daa8",
+    "odds_june25_26.csv": "910fa838a9314a5d30227a977c3a462e8f5a288855f21d66f4576becc0582957",
+    "odds_june27.csv": "6ace21a6cff0718dfd01be6b62ab3575014b9f2a531e9fac64c29a27c43cd0a4",
+    "research_june22_23.csv": "73e84dac2994f81848af66a83db2bc41f7215576feac06d1bb06ed410e0fb606",
+    "research_june24_25.csv": "d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517",
+    "research_june26_27.csv": "5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60"
+  },
+  "pipeline_sha256": "f4e821c3cc3e1fc1dbe97c7535584c81ad6f0097b9308823974c3cb3ba46bc40"
+}

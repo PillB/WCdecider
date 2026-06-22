@@ -26,14 +26,15 @@ def normalize_url(url: str) -> str:
     return url
 
 
-def wait_for_live(url: str, timeout_sec: int = 300, interval: int = 10) -> None:
+def wait_for_live(url: str, expected_sha: str, timeout_sec: int = 300, interval: int = 10) -> None:
     deadline = time.time() + timeout_sec
     last_err = None
     while time.time() < deadline:
         try:
             with urlopen(url, timeout=15) as resp:
                 body = resp.read(8000).decode("utf-8", errors="replace")
-                if resp.status == 200 and "WCdecider" in body and "v4.1" in body:
+                sha_marker = f'content="{expected_sha}"'
+                if resp.status == 200 and "WCdecider" in body and sha_marker in body:
                     print(f"[wait] Live OK: {url} ({len(body)} bytes sampled)")
                     return
                 last_err = f"status={resp.status}, missing markers"
@@ -58,7 +59,10 @@ def resolve_deploy_url() -> str:
 def main() -> int:
     url = resolve_deploy_url()
     print(f"[validate] DEPLOY_URL={url}")
-    wait_for_live(url)
+    expected_sha = os.environ.get("GITHUB_SHA", "").strip()
+    if not expected_sha:
+        raise ValueError("GITHUB_SHA is required for stale-deploy protection")
+    wait_for_live(url, expected_sha)
     env = {**os.environ, "DEPLOY_URL": url}
     cmd = [
         sys.executable, "-m", "pytest",

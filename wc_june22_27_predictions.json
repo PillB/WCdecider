@@ -1,0 +1,2196 @@
+{
+  "schema_version": "2.0",
+  "generated_at": "2026-06-21T23:59:00-05:00",
+  "batch": {
+    "start": "2026-06-22",
+    "end": "2026-06-27",
+    "fixture_count": 32
+  },
+  "model": {
+    "version": "june22_27_integrity_v1",
+    "seed": 42,
+    "dataset_a_rows": 132,
+    "dataset_b_rows": 121,
+    "elapsed_wc2026_rows": 40,
+    "calibration": {
+      "divisor": 450.0,
+      "draw_base": 0.22,
+      "draw_slope": 0.12,
+      "mean_brier": 0.6199161230384551,
+      "mean_log_loss": 1.030320926182056,
+      "folds": [
+        {
+          "brier": 0.6146773599554965,
+          "log_loss": 1.033457114765305
+        },
+        {
+          "brier": 0.6589931210017108,
+          "log_loss": 1.0874029707872834
+        },
+        {
+          "brier": 0.5080577418811444,
+          "log_loss": 0.8750614487589435
+        },
+        {
+          "brier": 0.6979362693154685,
+          "log_loss": 1.125362170416692
+        }
+      ],
+      "selection_rows": 215,
+      "holdout_rows": 38,
+      "holdout_brier": 0.573469096305491,
+      "holdout_log_loss": 0.9375854971036603
+    },
+    "mu_dataset_a": 2.628787878787879,
+    "mu_dataset_b": 2.4441964285714297,
+    "mu_production": 2.582640016233767,
+    "input_hashes": {
+      "wc_backtest_historical_dataset.csv": "41a5c7732582314e32d42135ee09f212a7e4fe70f398d491df8b80f6275b3add",
+      "wc_2026_results_through_june21.csv": "478fe45b6945af10e10cdf637ba84dc876dc92bc62795074c064a0035ae37c7a",
+      "wc_team_elo_baseline_june11.csv": "f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b",
+      "wc_2026_matches_june_22-27.csv": "5c8f68a44f90ce000568d0618046d45cedd07557d1ee175162f3a86459af0a2d",
+      "odds_june22_23.csv": "11f2470f953489af6966bd60cea31ab3f4437a278cba60a69c991841763f488d",
+      "odds_june24.csv": "fe71b2941a9d4f477ce067f0341154e46a5f03e9be1cb6dc11aabadbc182daa8",
+      "odds_june25_26.csv": "910fa838a9314a5d30227a977c3a462e8f5a288855f21d66f4576becc0582957",
+      "odds_june27.csv": "6ace21a6cff0718dfd01be6b62ab3575014b9f2a531e9fac64c29a27c43cd0a4",
+      "research_june22_23.csv": "73e84dac2994f81848af66a83db2bc41f7215576feac06d1bb06ed410e0fb606",
+      "research_june24_25.csv": "d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517",
+      "research_june26_27.csv": "5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60"
+    },
+    "pipeline_sha256": "f4e821c3cc3e1fc1dbe97c7535584c81ad6f0097b9308823974c3cb3ba46bc40"
+  },
+  "predictions": [
+    {
+      "fixture_id": "2026-06-22-arg-aut",
+      "kickoff_lima": "2026-06-22T12:00:00-05:00",
+      "kickoff_utc": "2026-06-22T17:00:00Z",
+      "fixture": {
+        "en": "Argentina vs Austria",
+        "es": "Argentina vs Austria"
+      },
+      "group": "J",
+      "venue": "Dallas Stadium, Arlington, Texas, USA",
+      "probabilities": {
+        "team_a_win": 0.585735,
+        "draw": 0.267965,
+        "team_b_win": 0.1463
+      },
+      "expected_goals": {
+        "team_a": 1.791,
+        "team_b": 0.792
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Empate",
+        "line": "",
+        "odds": 3.95,
+        "p_win": 0.267965,
+        "p_push": 0.0,
+        "ev_pct": 5.85,
+        "stressed_ev_pct": -6.0,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7523.PNG",
+        "source_sha256": "27805ab6312c44ceda3e1d6d2075c5538365bb5be54e40b0f02dc4f77d75130d"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "current_snapshot",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium",
+        "team_news": "As known by 2026-06-21, Argentina entered after a 3-0 win over Algeria on 2026-06-16; Austria entered after a 3-1 win over Jordan on 2026-06-17. Austria's opener was level until the 77th minute before an own goal and a stoppage-time Marko Arnautovic penalty.",
+        "injuries_suspensions": "Austria: Christoph Baumgartner was reported before the tournament as missing through injury. Argentina: Cristian Romero had carried a recent injury into the selected squad, but a match-specific availability update by the 2026-06-21 cutoff was unavailable. Suspensions for either team: unavailable.",
+        "predicted_lineup_notes": "No confirmed XI was available by the cutoff. Argentina were expected to retain their experienced core around Lionel Messi, Julian Alvarez/Lautaro Martinez and the established midfield; any rotation is unconfirmed. Austria's previewed core included David Alaba, Konrad Laimer, Marcel Sabitzer and Arnautovic; Baumgartner was unavailable.",
+        "motivation_group_state": "Group J after one match: Argentina 3 pts, GD +3; Austria 3 pts, GD +2. The winner would take sole control of first place and be strongly positioned to advance; both still had a final group match on 2026-06-27.",
+        "weather_venue_notes": "Dallas Stadium in Arlington is the 94,000-capacity AT&T Stadium and has a retractable roof with climate control, reducing direct weather exposure if closed. A reliable match-time roof decision and forecast were unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/live/2026/jun/17/fifa-world-cup-2026-live-austria-v-jordan-updates-aut-vs-jor-group-j-match-score-latest",
+          "https://www.starsandstripesfc.com/fifa-world-cup/44091/2026-world-cup-group-j-preview",
+          "https://www.fourfourtwo.com/team/argentina-world-cup-2026-squad",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:47:58-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-22-fra-irq",
+      "kickoff_lima": "2026-06-22T16:00:00-05:00",
+      "kickoff_utc": "2026-06-22T21:00:00Z",
+      "fixture": {
+        "en": "France vs Iraq",
+        "es": "Francia vs Irak"
+      },
+      "group": "I",
+      "venue": "Philadelphia Stadium, Philadelphia, Pennsylvania, USA",
+      "probabilities": {
+        "team_a_win": 0.705432,
+        "draw": 0.237858,
+        "team_b_win": 0.05671
+      },
+      "expected_goals": {
+        "team_a": 2.016,
+        "team_b": 0.567
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Empate",
+        "line": "",
+        "odds": 13.5,
+        "p_win": 0.237858,
+        "p_push": 0.0,
+        "ev_pct": 221.11,
+        "stressed_ev_pct": 180.61,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7529.PNG",
+        "source_sha256": "0ce76a49456a799cef2f4772115d846721d5f4fc0d43c6b85d5cb6e3f5878825"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "current_snapshot",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium",
+        "team_news": "France arrived after beating Senegal 3-1 on 2026-06-16, with Kylian Mbappe scoring twice and becoming France's record men's scorer according to the cited report. Iraq lost 4-1 to Norway the same day but created periods of pressure and equalized before a goalkeeper error restored Norway's lead.",
+        "injuries_suspensions": "No match-specific confirmed injuries or suspensions for France or Iraq were found by the 2026-06-21 cutoff; unavailable.",
+        "predicted_lineup_notes": "A 2026-06-21 report said Bradley Barcola could replace Ousmane Dembele after Barcola scored as a substitute against Senegal; other defensive and midfield changes were described as possible, not confirmed. Iraq's confirmed XI or changes from the Norway match were unavailable.",
+        "motivation_group_state": "Group I after one match: France 3 pts, GD +2; Iraq 0 pts, GD -3. France could move to six points and close on qualification; Iraq needed points to avoid entering the final match in a severely disadvantaged position.",
+        "weather_venue_notes": "Philadelphia Stadium is Lincoln Financial Field, an open-air venue, with kickoff scheduled for 17:00 local on 2026-06-22. A reliable match-time weather forecast was unavailable in the reviewed sources by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/live/2026/jun/16/iraq-v-norway-world-cup-2026-live",
+          "https://www.managingmadrid.com/real-madrid-cf-players/109066/kylian-mbappe-becomes-frances-record-goalscorer-to-beat-senegal",
+          "https://www.the-sun.com/sport/16549587/ballon-dor-world-cup-curse-messi-ronaldo-dembele/",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:47:58-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-22-nor-sen",
+      "kickoff_lima": "2026-06-22T19:00:00-05:00",
+      "kickoff_utc": "2026-06-23T00:00:00Z",
+      "fixture": {
+        "en": "Norway vs Senegal",
+        "es": "Noruega vs Senegal"
+      },
+      "group": "I",
+      "venue": "New York New Jersey Stadium, East Rutherford, New Jersey, USA",
+      "probabilities": {
+        "team_a_win": 0.421985,
+        "draw": 0.312655,
+        "team_b_win": 0.265359
+      },
+      "expected_goals": {
+        "team_a": 1.478,
+        "team_b": 1.105
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Empate",
+        "line": "",
+        "odds": 3.5,
+        "p_win": 0.312655,
+        "p_push": 0.0,
+        "ev_pct": 9.43,
+        "stressed_ev_pct": -1.07,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7533.PNG",
+        "source_sha256": "9d84659a733aeaae98f0b87bb0d218058863317ad2974538a5fed2642faed642"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "current_snapshot",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium",
+        "team_news": "Norway opened with a 4-1 win over Iraq on 2026-06-16; Erling Haaland scored twice, although the match report noted defensive vulnerability during Iraq's stronger spells. Senegal lost 3-1 to France on 2026-06-16.",
+        "injuries_suspensions": "No match-specific confirmed injuries or suspensions for Norway or Senegal were found by the 2026-06-21 cutoff; unavailable.",
+        "predicted_lineup_notes": "No confirmed XI was available. Norway's established attacking structure centers on Haaland with Martin Odegaard supplying chances, while pre-tournament analysis described a compact 4-4-2 and quick transitions. Senegal lineup changes after the France defeat were unavailable.",
+        "motivation_group_state": "Group I after one match: Norway 3 pts, GD +3; Senegal 0 pts, GD -2. Norway could reach six points and move close to qualification; Senegal needed a result before its final match against Iraq on 2026-06-26.",
+        "weather_venue_notes": "New York New Jersey Stadium is the open-air MetLife Stadium in East Rutherford, capacity 82,500, with a 20:00 local kickoff. A reliable match-time weather forecast was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/live/2026/jun/16/iraq-v-norway-world-cup-2026-live",
+          "https://nypost.com/2026/06/10/sports/world-cup-2026-group-i-preview-prediction-odds-full-team-overviews/",
+          "https://nypost.com/2026/06/16/betting/iraq-vs-norway-world-cup-prediction-best-bet/",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:47:58-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-22-jor-alg",
+      "kickoff_lima": "2026-06-22T22:00:00-05:00",
+      "kickoff_utc": "2026-06-23T03:00:00Z",
+      "fixture": {
+        "en": "Jordan vs Algeria",
+        "es": "Jordania vs Argelia"
+      },
+      "group": "J",
+      "venue": "San Francisco Bay Area Stadium, Santa Clara, California, USA",
+      "probabilities": {
+        "team_a_win": 0.254392,
+        "draw": 0.308262,
+        "team_b_win": 0.437346
+      },
+      "expected_goals": {
+        "team_a": 1.074,
+        "team_b": 1.508
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Jordania",
+        "line": "",
+        "odds": 5.5,
+        "p_win": 0.254392,
+        "p_push": 0.0,
+        "ev_pct": 39.92,
+        "stressed_ev_pct": 23.42,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7537.PNG",
+        "source_sha256": "0050afec82338869985b68ec0590d799fe45776692c30a056ced586f2b0def5a"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "current_snapshot",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium",
+        "team_news": "Jordan lost 3-1 to Austria on 2026-06-17 but produced four shots on target to Austria's two and Ali Olwan scored Jordan's first World Cup goal. Algeria lost 3-0 to Argentina on 2026-06-16.",
+        "injuries_suspensions": "Jordan: star striker Yazan Al-Naimat was reported before the tournament as missing through injury. Algeria: match-specific injury and suspension information by the cutoff was unavailable. No confirmed suspensions were found for Jordan.",
+        "predicted_lineup_notes": "No confirmed XI was available. Jordan must plan without Al-Naimat; otherwise changes from the Austria match were unavailable. Algeria's expected core included Riyad Mahrez, Amine Gouiri, Houssem Aouar, Ibrahim Maza, Rayan Ait-Nouri and Ramy Bensebaini, but selection and shape were unconfirmed.",
+        "motivation_group_state": "Group J after one match: Jordan 0 pts, GD -2; Algeria 0 pts, GD -3. This was a high-leverage match between the bottom two: a loss would leave either side near elimination, while a win would restore a realistic route to a top-two or best-third-place finish.",
+        "weather_venue_notes": "San Francisco Bay Area Stadium is the open-air Levi's Stadium in Santa Clara, with a 20:00 local kickoff on 2026-06-22. A reliable match-time weather forecast was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/live/2026/jun/17/fifa-world-cup-2026-live-austria-v-jordan-updates-aut-vs-jor-group-j-match-score-latest",
+          "https://www.starsandstripesfc.com/fifa-world-cup/44091/2026-world-cup-group-j-preview",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:47:58-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-23-por-uzb",
+      "kickoff_lima": "2026-06-23T12:00:00-05:00",
+      "kickoff_utc": "2026-06-23T17:00:00Z",
+      "fixture": {
+        "en": "Portugal vs Uzbekistan",
+        "es": "Portugal vs Uzbekistán"
+      },
+      "group": "K",
+      "venue": "Houston Stadium, Houston, Texas, USA",
+      "probabilities": {
+        "team_a_win": 0.619622,
+        "draw": 0.259246,
+        "team_b_win": 0.121132
+      },
+      "expected_goals": {
+        "team_a": 1.854,
+        "team_b": 0.729
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Uzbekistán",
+        "line": "",
+        "odds": 14.0,
+        "p_win": 0.121132,
+        "p_push": 0.0,
+        "ev_pct": 69.58,
+        "stressed_ev_pct": 27.58,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7541.PNG",
+        "source_sha256": "83b6b5892e1c82bb385179ae35d2e3239aaf1fab33dcbc4f0f9b1a51f73f1804"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "current_snapshot",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium-low",
+        "team_news": "Portugal drew 1-1 with Congo DR on 2026-06-17. Uzbekistan lost 3-1 to Colombia in its first World Cup match the same day. Pre-tournament reporting described Portugal as tactically flexible between a back three and back four with an aggressive press, and Uzbekistan as defense-first and counterattacking under Fabio Cannavaro.",
+        "injuries_suspensions": "No match-specific confirmed injuries or suspensions for Portugal or Uzbekistan were found by the 2026-06-21 cutoff; unavailable.",
+        "predicted_lineup_notes": "No confirmed XI was available. Cristiano Ronaldo remained the focal selection question for Portugal, with Bruno Fernandes identified as the primary creative influence; whether Ronaldo would start was unconfirmed by the cutoff. Uzbekistan were expected to retain a compact structure featuring Abdukodir Khusanov, but changes after the Colombia loss were unavailable.",
+        "motivation_group_state": "Group K after one match: Portugal 1 pt, GD 0; Uzbekistan 0 pts, GD -2. Portugal needed a win to keep pace with Colombia; Uzbekistan needed points to preserve a credible path to qualification before facing Congo DR on 2026-06-27.",
+        "weather_venue_notes": "Houston Stadium is NRG Stadium, a retractable-roof, climate-controlled venue. A roof decision and reliable match-time external-weather forecast were unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://nypost.com/2026/06/10/sports/world-cup-2026-group-k-preview-prediction-odds-full-team-overviews/",
+          "https://www.starsandstripesfc.com/copa-america/44201/2026-world-cup-group-k-preview",
+          "https://www.fourfourtwo.com/team/uzbekistan-world-cup-2026-squad",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:47:58-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-23-eng-gha",
+      "kickoff_lima": "2026-06-23T15:00:00-05:00",
+      "kickoff_utc": "2026-06-23T20:00:00Z",
+      "fixture": {
+        "en": "England vs Ghana",
+        "es": "Inglaterra vs Ghana"
+      },
+      "group": "L",
+      "venue": "Boston Stadium, Foxborough, Massachusetts, USA",
+      "probabilities": {
+        "team_a_win": 0.614751,
+        "draw": 0.260489,
+        "team_b_win": 0.12476
+      },
+      "expected_goals": {
+        "team_a": 1.845,
+        "team_b": 0.738
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Empate",
+        "line": "",
+        "odds": 6.0,
+        "p_win": 0.260489,
+        "p_push": 0.0,
+        "ev_pct": 56.29,
+        "stressed_ev_pct": 38.29,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7545.PNG",
+        "source_sha256": "32786a7ef9c2039851806a24a007def1b9434a806832e3903a160647f15a71c6"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "current_snapshot",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "high",
+        "team_news": "England beat Croatia 4-2 on 2026-06-17 and led Group L on goal difference. Ghana beat Panama 1-0, setting up a meeting of the group's two opening winners.",
+        "injuries_suspensions": "England: Tino Livramento was ruled out of the tournament with a calf injury on 2026-06-16 and replaced by Trevoh Chalobah. Bukayo Saka was managing an Achilles problem and was not considered ready for 90 minutes. Declan Rice had upper-hamstring/lower-back nerve pain but said on 2026-06-21 he was fit; Marcus Rashford returned to training after a minor muscular issue. Ghana: match-specific confirmed injury or suspension information was unavailable.",
+        "predicted_lineup_notes": "Noni Madueke was expected to start again on England's right, with Saka likely on the bench. Rice and Rashford trained, but Rashford was competing with Anthony Gordon on the left. Ghana's confirmed XI and changes from the Panama win were unavailable.",
+        "motivation_group_state": "Group L after one match: England 3 pts, GD +2; Ghana 3 pts, GD +1. The winner would take sole control and be strongly placed to qualify; a draw would leave both unbeaten before the final round.",
+        "weather_venue_notes": "Boston Stadium is the open-air Gillette Stadium in Foxborough, listed at about 65,000 capacity for the tournament, with a 16:00 local kickoff. A reliable match-time weather forecast was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/2026/jun/21/england-declan-rice-hamstring-nerve-pain-arsenal-schedule-world-cup",
+          "https://www.theguardian.com/football/2026/jun/20/rashford-and-rice-give-england-boost-for-ghana-but-saka-set-for-bench-again",
+          "https://nypost.com/2026/06/16/sports/englands-tino-livramento-out-of-world-cup-in-injury-blow/",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:47:58-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-23-pan-cro",
+      "kickoff_lima": "2026-06-23T18:00:00-05:00",
+      "kickoff_utc": "2026-06-23T23:00:00Z",
+      "fixture": {
+        "en": "Panama vs Croatia",
+        "es": "Panamá vs Croacia"
+      },
+      "group": "L",
+      "venue": "Toronto Stadium, Toronto, Canada",
+      "probabilities": {
+        "team_a_win": 0.197763,
+        "draw": 0.286524,
+        "team_b_win": 0.515713
+      },
+      "expected_goals": {
+        "team_a": 0.924,
+        "team_b": 1.659
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Panamá",
+        "line": "",
+        "odds": 6.3,
+        "p_win": 0.197763,
+        "p_push": 0.0,
+        "ev_pct": 24.59,
+        "stressed_ev_pct": 5.69,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7549.PNG",
+        "source_sha256": "f3cf9196c3c8b0c29e802a722d65ff8037bef227dcb73d893a1fd8fafceeae6d"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "current_snapshot",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "low",
+        "team_news": "Panama lost 1-0 to Ghana on 2026-06-17; Croatia lost 4-2 to England the same day after England pulled away in the second half. Both entered their second match without a point.",
+        "injuries_suspensions": "No match-specific confirmed injuries or suspensions for Panama or Croatia were found by the 2026-06-21 cutoff; unavailable.",
+        "predicted_lineup_notes": "Confirmed lineups and credible match-specific predicted changes were unavailable. Any assumption that Croatia would retain its veteran midfield or that Panama would change its attack is unconfirmed and therefore omitted.",
+        "motivation_group_state": "Group L after one match: Croatia 0 pts, GD -2; Panama 0 pts, GD -1. This was a must-improve contest: defeat would put either team close to elimination, while a win would revive top-two and best-third-place prospects.",
+        "weather_venue_notes": "Toronto Stadium is the expanded, open-air BMO Field, listed around 45,000 capacity for the tournament, with a 19:00 local kickoff. A reliable match-time weather forecast was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide",
+          "https://www.fourfourtwo.com/features/fifa-world-cup-2026-dates-fixtures-stadiums-tickets-and-everything-you-need-to-know",
+          "https://www.timesunion.com/sports/article/2026-fifa-world-cup-group-capsules-soccer-usa-22221288.php"
+        ],
+        "accessed_at": "2026-06-21T23:47:58-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-23-col-cod",
+      "kickoff_lima": "2026-06-23T21:00:00-05:00",
+      "kickoff_utc": "2026-06-24T02:00:00Z",
+      "fixture": {
+        "en": "Colombia vs Congo DR",
+        "es": "Colombia vs RD Congo"
+      },
+      "group": "K",
+      "venue": "Guadalajara Stadium, Guadalajara, Mexico",
+      "probabilities": {
+        "team_a_win": 0.544539,
+        "draw": 0.278791,
+        "team_b_win": 0.17667
+      },
+      "expected_goals": {
+        "team_a": 1.713,
+        "team_b": 0.869
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "RD Congo",
+        "line": "",
+        "odds": 6.5,
+        "p_win": 0.17667,
+        "p_push": 0.0,
+        "ev_pct": 14.84,
+        "stressed_ev_pct": -4.66,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7552.PNG",
+        "source_sha256": "fb00e1103d62e4d7f00b5228263d09bdd298b8bac7d26ad0688fe612dd84226a"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "current_snapshot",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium-low",
+        "team_news": "Colombia beat Uzbekistan 3-1 on 2026-06-17; Congo DR drew 1-1 with Portugal. Colombia midfielder Juan Camilo Portilla suffered the death of his grandfather during the camp; the Colombian federation issued condolences, but the cited 2026-06-20 report did not say he had left camp or was unavailable.",
+        "injuries_suspensions": "No match-specific confirmed injuries or suspensions for Colombia or Congo DR were found by the 2026-06-21 cutoff; unavailable. Portilla's bereavement is team news, not an injury, and his playing status was unavailable.",
+        "predicted_lineup_notes": "No confirmed XI was available. Pre-tournament analysis identified Luis Diaz and James Rodriguez as Colombia's primary attacking creators and Yoane Wissa as Congo DR's key forward, but changes from the opening matches were unavailable.",
+        "motivation_group_state": "Group K after one match: Colombia 3 pts, GD +2; Congo DR 1 pt, GD 0. A Colombia win could secure or nearly secure advancement depending on the earlier Portugal-Uzbekistan result; Congo DR could take a major step toward qualification with a result.",
+        "weather_venue_notes": "Estadio Guadalajara is the open-air Estadio Akron in Zapopan, listed around 48,000 capacity, with a 20:00 local kickoff. A reliable match-time weather forecast was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.tropicanafm.com/2026/jugador-de-la-seleccion-colombia-tuvo-dolorosa-perdida-en-pleno-mundial-juro-hacerte-sentir-orgulloso-468348.html",
+          "https://nypost.com/2026/06/10/sports/world-cup-2026-group-k-preview-prediction-odds-full-team-overviews/",
+          "https://www.starsandstripesfc.com/copa-america/44201/2026-world-cup-group-k-preview",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:47:58-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-24-sui-can",
+      "kickoff_lima": "2026-06-24T14:00:00-05:00",
+      "kickoff_utc": "2026-06-24T19:00:00Z",
+      "fixture": {
+        "en": "Switzerland vs Canada",
+        "es": "Suiza vs Canadá"
+      },
+      "group": "B",
+      "venue": "BC Place Vancouver, Vancouver, Canada",
+      "probabilities": {
+        "team_a_win": 0.315874,
+        "draw": 0.333793,
+        "team_b_win": 0.350333
+      },
+      "expected_goals": {
+        "team_a": 1.249,
+        "team_b": 1.334
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "2",
+        "line": "",
+        "odds": 3.3,
+        "p_win": 0.350333,
+        "p_push": 0.0,
+        "ev_pct": 15.61,
+        "stressed_ev_pct": 5.71,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7559.PNG",
+        "source_sha256": "19d3e0b4cd0f29004cf04b422435c0457a6286f1427524b5bd0d80557123dcb7"
+      },
+      "supported_markets_evaluated": 6,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "high",
+        "team_news": "Switzerland followed a 1-1 draw with Qatar by beating Bosnia and Herzegovina 4-1. Canada followed a 1-1 draw with Bosnia and Herzegovina by beating nine-man Qatar 6-0; Jonathan David scored a hat-trick, but the win was overshadowed by Ismael Kone's severe injury.",
+        "injuries_suspensions": "Canada: Ismael Kone suffered fractures of the left tibia and fibula, underwent successful surgery and is out for the tournament. Alphonso Davies had not played in Canada's first two matches while returning to fitness; match-specific availability for Switzerland was unavailable. Confirmed suspensions: none found for either team.",
+        "predicted_lineup_notes": "Canada are likely to replace Kone in midfield with Nathan Saliba, who came on and scored against Qatar. Davies' starting status remained unconfirmed by the cutoff. No confirmed XI or reliable Switzerland change report was available; Switzerland could retain the core that beat Bosnia 4-1.",
+        "motivation_group_state": "Group B: Canada 4 pts, GD +6; Switzerland 4 pts, GD +3. A draw sends both through and leaves Canada first. The loser could be caught on four points by the Bosnia-Qatar winner, so neither side is mathematically secure before kickoff.",
+        "weather_venue_notes": "BC Place is an enclosed/retractable-roof venue, limiting direct weather exposure if the roof is closed. A reliable roof decision and match-time forecast for June 24 were unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/2026/jun/18/ismael-kone-injury-reaction-canada",
+          "https://as.com/futbol/mundial/millonada-en-italia-tras-la-gravisima-lesion-de-kone-f202606-n/",
+          "https://www.welt.de/newsticker/dpa_nt/infoline_nt/sport_nt/article6a3481beaf14c0b52895f024/schockszene-bei-kanada-spiel-kone-mit-trage-vom-platz.html",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-24-bih-qat",
+      "kickoff_lima": "2026-06-24T14:00:00-05:00",
+      "kickoff_utc": "2026-06-24T19:00:00Z",
+      "fixture": {
+        "en": "Bosnia and Herzegovina vs Qatar",
+        "es": "Bosnia y Herzegovina vs Catar"
+      },
+      "group": "B",
+      "venue": "Seattle Stadium, Seattle, Washington, USA",
+      "probabilities": {
+        "team_a_win": 0.456512,
+        "draw": 0.302843,
+        "team_b_win": 0.240644
+      },
+      "expected_goals": {
+        "team_a": 1.545,
+        "team_b": 1.037
+      },
+      "recommendation": {
+        "app": "Betsson",
+        "market_id": "match_result",
+        "market_original": "Match Result",
+        "selection_original": "Qatar",
+        "line": "",
+        "odds": 6.7,
+        "p_win": 0.240644,
+        "p_push": 0.0,
+        "ev_pct": 61.23,
+        "stressed_ev_pct": 41.13,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7657.PNG",
+        "source_sha256": "714ec4965d52db7fe892b63ca5b317577903da7deeeb916645617abcd44ad080"
+      },
+      "supported_markets_evaluated": 6,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium-high",
+        "team_news": "Bosnia and Herzegovina drew 1-1 with Canada before losing 4-1 to Switzerland. Qatar drew 1-1 with Switzerland, then lost 6-0 to Canada in a match in which they finished with nine players.",
+        "injuries_suspensions": "Qatar: Homam Ahmed and Assim Madibo are suspended after red cards against Canada; Madibo was sent off for the challenge that broke Ismael Kone's leg. Bosnia and Herzegovina: match-specific confirmed injuries or suspensions were unavailable.",
+        "predicted_lineup_notes": "Qatar must make at least two changes because Ahmed and Madibo are suspended. Bosnia's confirmed XI was unavailable; an attacking approach is expected because a draw is insufficient for a realistic qualification route, but personnel and formation are unconfirmed.",
+        "motivation_group_state": "Group B: Bosnia and Herzegovina 1 pt, GD -3; Qatar 1 pt, GD -6. Both need a win. The winner reaches four points and could take second if Switzerland or Canada loses by enough, or otherwise contend for a best-third-place berth; a draw almost certainly eliminates both.",
+        "weather_venue_notes": "Seattle Stadium is the open-air Lumen Field. A reliable match-time forecast for the 12:00 local kickoff on June 24 was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/2026/jun/18/ismael-kone-injury-reaction-canada",
+          "https://nypost.com/2026/06/18/sports/ismael-kone-leaves-world-cup-game-early-with-serious-leg-injury/",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-24-sco-bra",
+      "kickoff_lima": "2026-06-24T17:00:00-05:00",
+      "kickoff_utc": "2026-06-24T22:00:00Z",
+      "fixture": {
+        "en": "Scotland vs Brazil",
+        "es": "Escocia vs Brasil"
+      },
+      "group": "C",
+      "venue": "Miami Stadium, Miami Gardens, Florida, USA",
+      "probabilities": {
+        "team_a_win": 0.176095,
+        "draw": 0.278583,
+        "team_b_win": 0.545322
+      },
+      "expected_goals": {
+        "team_a": 0.868,
+        "team_b": 1.715
+      },
+      "recommendation": {
+        "app": "Betsson",
+        "market_id": "match_result",
+        "market_original": "Match Result",
+        "selection_original": "Scotland",
+        "line": "",
+        "odds": 8.7,
+        "p_win": 0.176095,
+        "p_push": 0.0,
+        "ev_pct": 53.2,
+        "stressed_ev_pct": 27.1,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7661.PNG",
+        "source_sha256": "299a67ee24dd0212a79b5bb7848ceb2fce629a5defc43ad192174eb754306dac"
+      },
+      "supported_markets_evaluated": 6,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "high",
+        "team_news": "Scotland beat Haiti 1-0 and then lost 1-0 to Morocco. Brazil drew 1-1 with Morocco and beat Haiti 3-0. Scotland reporting emphasized that their qualification fate remained in their own hands despite limited attacking output.",
+        "injuries_suspensions": "Brazil: Raphinha has a right-hamstring muscle injury and is ruled out of this match. Neymar was expected to be available after his calf rehabilitation, but his exact role was unconfirmed. Scotland: Aaron Hickey was not expected back unless Scotland advanced; Scott McKenna and Lewis Ferguson were being monitored. Confirmed suspensions were unavailable.",
+        "predicted_lineup_notes": "Brazil must replace Raphinha; Neymar could enter the XI or receive managed minutes, but no confirmed lineup was available. Scotland indicated a balanced rather than purely defensive plan. McKenna/Ferguson fitness could affect selection; otherwise a major reshuffle was not confirmed.",
+        "motivation_group_state": "Group C: Brazil 4 pts, GD +3; Morocco 4 pts, GD +1; Scotland 3 pts, GD 0; Haiti 0 pts, GD -4. Brazil guarantee advancement with a draw and can win the group. Scotland qualify with a win; a draw gives four points and a strong best-third-place chance but may not secure the top two.",
+        "weather_venue_notes": "Miami Stadium is the open-air Hard Rock Stadium in Miami Gardens, where heat, humidity and storms can matter. A reliable match-time forecast for June 24 was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.barcablaugranes.com/world-cup-2026/124120/brazil-confirm-raphinha-injury-in-fresh-update-on-barcelona-star",
+          "https://www.thetimes.com/sport/scottish/article/scotland-brazil-world-cup-neymar-jack-hendry-scott-mctominay-spjzh7gfl",
+          "https://www.theguardian.com/football/2026/jun/20/scotland-2026-world-cup-destiny-morocco-brazil-steve-clarke",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-24-mar-hai",
+      "kickoff_lima": "2026-06-24T17:00:00-05:00",
+      "kickoff_utc": "2026-06-24T22:00:00Z",
+      "fixture": {
+        "en": "Morocco vs Haiti",
+        "es": "Marruecos vs Haití"
+      },
+      "group": "C",
+      "venue": "Atlanta Stadium, Atlanta, Georgia, USA",
+      "probabilities": {
+        "team_a_win": 0.657944,
+        "draw": 0.249577,
+        "team_b_win": 0.09248
+      },
+      "expected_goals": {
+        "team_a": 1.926,
+        "team_b": 0.657
+      },
+      "recommendation": {
+        "app": "Betsson",
+        "market_id": "match_result",
+        "market_original": "Match Result",
+        "selection_original": "Haiti",
+        "line": "",
+        "odds": 21.0,
+        "p_win": 0.09248,
+        "p_push": 0.0,
+        "ev_pct": 94.21,
+        "stressed_ev_pct": 31.21,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7665.PNG",
+        "source_sha256": "d5838dac258224c999a038f520817735e3d8966a317481cca004be70cb730672"
+      },
+      "supported_markets_evaluated": 6,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium",
+        "team_news": "Morocco drew 1-1 with Brazil and beat Scotland 1-0. Haiti lost 1-0 to Scotland and 3-0 to Brazil. Haiti's pre-tournament identity was a disciplined, transition-focused 4-4-2/4-2-3-1 built around Johny Placide, Jean-Ricner Bellegarde and Duckens Nazon.",
+        "injuries_suspensions": "Morocco: Abde Ezzalzouli suffered a medial-knee-ligament sprain before the tournament and was expected to miss three to four weeks; Noussair Mazraoui had a shoulder issue but was expected to be fit. Haiti: match-specific confirmed injuries and suspensions were unavailable. Confirmed suspensions for Morocco were unavailable.",
+        "predicted_lineup_notes": "Morocco are expected to continue without Ezzalzouli, with Achraf Hakimi and Brahim Diaz central to progression and chance creation; rotation is possible but unconfirmed. Haiti's likely structure remains compact and counterattacking, with Placide in goal and Nazon/Pierrot as attacking references; no confirmed XI was available.",
+        "motivation_group_state": "Group C: Morocco 4 pts, GD +1; Haiti 0 pts, GD -4. Morocco guarantee advancement with a draw and can win the group. Haiti must win to reach three points and then need Scotland to lose plus favorable goal-difference and best-third-place results; elimination remains the overwhelmingly likely outcome.",
+        "weather_venue_notes": "Atlanta Stadium is Mercedes-Benz Stadium, a retractable-roof, climate-controlled venue. Roof status and a reliable match-time forecast were unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.fourfourtwo.com/person/player/scotland-world-cup-opponents-suffer-huge-blow-as-28-goal-star-man-injured-on-eve-of-tournament",
+          "https://www.theguardian.com/football/2026/may/30/haiti-world-cup-2026-team-guide",
+          "https://www.starsandstripesfc.com/fifa-world-cup/43930/2026-world-cup-group-c-preview",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-24-rsa-kor",
+      "kickoff_lima": "2026-06-24T20:00:00-05:00",
+      "kickoff_utc": "2026-06-25T01:00:00Z",
+      "fixture": {
+        "en": "South Africa vs South Korea",
+        "es": "Sudáfrica vs Corea del Sur"
+      },
+      "group": "A",
+      "venue": "Monterrey Stadium, Guadalupe, Nuevo Leon, Mexico",
+      "probabilities": {
+        "team_a_win": 0.27151,
+        "draw": 0.315148,
+        "team_b_win": 0.413342
+      },
+      "expected_goals": {
+        "team_a": 1.122,
+        "team_b": 1.461
+      },
+      "recommendation": {
+        "app": "Betsson",
+        "market_id": "match_result",
+        "market_original": "Match Result",
+        "selection_original": "South Afri...",
+        "line": "",
+        "odds": 5.75,
+        "p_win": 0.27151,
+        "p_push": 0.0,
+        "ev_pct": 56.12,
+        "stressed_ev_pct": 38.87,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7669.PNG",
+        "source_sha256": "bad31435fe3d6595979a36bc2e17886db7757b1a39350ebb7afc351e70d54d48"
+      },
+      "supported_markets_evaluated": 6,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "low",
+        "team_news": "South Africa lost 2-0 to Mexico and drew 1-1 with Czechia. South Korea beat Czechia 2-1 and lost 1-0 to Mexico. No reliable match-specific team-news report was found by the cutoff.",
+        "injuries_suspensions": "Match-specific confirmed injuries and suspensions for South Africa and South Korea were unavailable.",
+        "predicted_lineup_notes": "Confirmed XIs and reliable predicted changes were unavailable. South Korea's established attacking reference is captain Son Heung-min, while South Africa need a more aggressive approach than in the opening loss; specific personnel or shape changes are unconfirmed.",
+        "motivation_group_state": "Group A: South Korea 3 pts, GD 0; South Africa 1 pt, GD -2. South Korea guarantee at least second with a win; a draw may be enough depending on Czechia-Mexico. South Africa must win and then compare points, goal difference and the parallel result for second or third.",
+        "weather_venue_notes": "Monterrey Stadium is the open-air Estadio BBVA in Guadalupe. Heat can be significant at an 19:00 local kickoff, but a reliable match-time forecast for June 24 was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.starsandstripesfc.com/copa-america/43910/2026-world-cup-group-a-preview",
+          "https://www.fourfourtwo.com/team/czech-republic-world-cup-2026-squad",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-24-cze-mex",
+      "kickoff_lima": "2026-06-24T20:00:00-05:00",
+      "kickoff_utc": "2026-06-25T01:00:00Z",
+      "fixture": {
+        "en": "Czechia vs Mexico",
+        "es": "Chequia vs México"
+      },
+      "group": "A",
+      "venue": "Mexico City Stadium, Mexico City, Mexico",
+      "probabilities": {
+        "team_a_win": 0.261477,
+        "draw": 0.311093,
+        "team_b_win": 0.427431
+      },
+      "expected_goals": {
+        "team_a": 1.094,
+        "team_b": 1.489
+      },
+      "recommendation": {
+        "app": "Betsson",
+        "market_id": "match_result",
+        "market_original": "Match Result",
+        "selection_original": "Draw",
+        "line": "",
+        "odds": 3.8,
+        "p_win": 0.311093,
+        "p_push": 0.0,
+        "ev_pct": 18.22,
+        "stressed_ev_pct": 6.82,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7675.PNG",
+        "source_sha256": "547440b590586a047fd690f032eabd27d1b89b0e1e19976217d28a393114ea0c"
+      },
+      "supported_markets_evaluated": 6,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium-low",
+        "team_news": "Czechia lost 2-1 to South Korea and drew 1-1 with South Africa. Host Mexico beat South Africa 2-0 and South Korea 1-0, taking maximum points without conceding. Current match-specific reporting was limited by the cutoff.",
+        "injuries_suspensions": "Match-specific confirmed injuries and suspensions for Czechia and Mexico were unavailable. Czechia's final squad omitted goalkeepers Vitezslav Jaros and Antonin Kinsky, but those were roster decisions/availability before the tournament rather than new match injuries.",
+        "predicted_lineup_notes": "No confirmed XI was available. Czechia's attacking plan is expected to continue through Patrik Schick, supported by players such as Adam Hlozek, Pavel Sulc and Lukas Provod. Mexico may rotate after securing advancement, but any changes around Raul Jimenez or the defensive unit are unconfirmed.",
+        "motivation_group_state": "Group A: Mexico 6 pts, GD +3 and are guaranteed a top-two place; a draw secures first. Czechia have 1 pt, GD -1 and must win to reach four points, then need the South Korea-South Africa result and tiebreakers to determine second or a best-third-place route.",
+        "weather_venue_notes": "Mexico City Stadium is the open-air Estadio Azteca at roughly 2,200 metres elevation, making altitude a material factor. A reliable match-time forecast for June 24 was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.fourfourtwo.com/team/czech-republic-world-cup-2026-squad",
+          "https://www.starsandstripesfc.com/copa-america/43910/2026-world-cup-group-a-preview",
+          "https://www.theguardian.com/football/2026/jun/11/mexico-hoping-football-emerges-from-the-chaos-surrounding-world-cup",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-25-ecu-ger",
+      "kickoff_lima": "2026-06-25T15:00:00-05:00",
+      "kickoff_utc": "2026-06-25T20:00:00Z",
+      "fixture": {
+        "en": "Ecuador vs Germany",
+        "es": "Ecuador vs Alemania"
+      },
+      "group": "E",
+      "venue": "New York New Jersey Stadium, East Rutherford, New Jersey, USA",
+      "probabilities": {
+        "team_a_win": 0.195846,
+        "draw": 0.285813,
+        "team_b_win": 0.518341
+      },
+      "expected_goals": {
+        "team_a": 0.919,
+        "team_b": 1.664
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Empate",
+        "line": "",
+        "odds": 3.85,
+        "p_win": 0.285813,
+        "p_push": 0.0,
+        "ev_pct": 10.04,
+        "stressed_ev_pct": -1.51,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7574.PNG",
+        "source_sha256": "24445c17eeb8eaa2e0f67b2f8aaa97658cb8dc0b5225580348b1d8d3a8b48a07"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium-high",
+        "team_news": "Ecuador lost 1-0 to Ivory Coast and drew 0-0 with Curacao despite generating heavy pressure. Germany beat Curacao 7-1 and came from behind to beat Ivory Coast 2-1; substitute Deniz Undav scored twice and Germany clinched advancement.",
+        "injuries_suspensions": "No match-specific confirmed Ecuador injuries or suspensions were found. Germany: no confirmed new absence was reported after the Ivory Coast match; confirmed suspensions were unavailable.",
+        "predicted_lineup_notes": "Germany may start Undav after his two-goal substitute appearance and could change midfield after Aleksandar Pavlovic's subdued display; rotation is plausible because qualification is secured, but no XI was confirmed. Ecuador need more finishing threat after failing to score in two matches; specific changes were unavailable.",
+        "motivation_group_state": "Group E: Germany 6 pts, GD +7 and are qualified; a draw wins the group. Ecuador 1 pt, GD -1 and must beat Germany to reach four points, then need the Curacao-Ivory Coast result and tiebreakers for second or third.",
+        "weather_venue_notes": "New York New Jersey Stadium is the open-air MetLife Stadium in East Rutherford. A reliable match-time forecast for the 16:00 local kickoff on June 25 was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.bavarianfootballworks.com/fifa-world-cup/219089/match-analysis-observations-world-cup-germany-ivory-coast",
+          "https://www.thesun.ie/sport/17153642/man-uttd-antonio-valencia-ecuador-world-cup/",
+          "https://nypost.com/2026/06/10/sports/world-cup-2026-group-e-preview-prediction-odds-full-team-overviews/",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-25-cur-civ",
+      "kickoff_lima": "2026-06-25T15:00:00-05:00",
+      "kickoff_utc": "2026-06-25T20:00:00Z",
+      "fixture": {
+        "en": "Curacao vs Ivory Coast",
+        "es": "Curazao vs Costa de Marfil"
+      },
+      "group": "E",
+      "venue": "Philadelphia Stadium, Philadelphia, Pennsylvania, USA",
+      "probabilities": {
+        "team_a_win": 0.18376,
+        "draw": 0.28137,
+        "team_b_win": 0.53487
+      },
+      "expected_goals": {
+        "team_a": 0.888,
+        "team_b": 1.695
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Curazao",
+        "line": "",
+        "odds": 20.0,
+        "p_win": 0.18376,
+        "p_push": 0.0,
+        "ev_pct": 267.52,
+        "stressed_ev_pct": 207.52,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7578.PNG",
+        "source_sha256": "c6e325a0c2c829f84b01c579de61a8c7643ed2f66e4aaf7f9ac1e822c3bb301d"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "high",
+        "team_news": "Curacao rebounded from a 7-1 loss to Germany by drawing 0-0 with Ecuador, with goalkeeper Eloy Room making a reported 15 saves. Ivory Coast beat Ecuador 1-0 and then lost 2-1 to Germany after leading through Franck Kessie.",
+        "injuries_suspensions": "Ivory Coast: Wilfried Singo suffered a left-hamstring injury against Germany and was considered highly unlikely to play again in the tournament, although the exact grade was unavailable. Curacao: no match-specific confirmed injuries or suspensions were found. Confirmed suspensions for either team were unavailable.",
+        "predicted_lineup_notes": "Curacao are expected to retain Eloy Room after his exceptional display and again use a compact, reactive setup. Ivory Coast must replace Singo at right-back; Franck Kessie and Yan Diomande remain key based on the Germany match. No confirmed XI was available.",
+        "motivation_group_state": "Group E: Ivory Coast 3 pts, GD 0; Curacao 1 pt, GD -6. Ivory Coast guarantee advancement with a win and may advance with a draw depending on Ecuador-Germany. Curacao must win to reach four points and then rely on the parallel result and substantial tiebreaker help.",
+        "weather_venue_notes": "Philadelphia Stadium is the open-air Lincoln Financial Field. A reliable match-time forecast for the 16:00 local kickoff on June 25 was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.thesun.co.uk/sport/39486180/ivory-coast-wilfried-singo-world-cup-injury/",
+          "https://www.the-sun.com/sport/16551183/world-cup-curacao-ecuador-eloy-room-tribute-former-teammate/",
+          "https://www.bavarianfootballworks.com/fifa-world-cup/219089/match-analysis-observations-world-cup-germany-ivory-coast",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-25-tun-ned",
+      "kickoff_lima": "2026-06-25T18:00:00-05:00",
+      "kickoff_utc": "2026-06-25T23:00:00Z",
+      "fixture": {
+        "en": "Tunisia vs Netherlands",
+        "es": "Túnez vs Países Bajos"
+      },
+      "group": "F",
+      "venue": "Kansas City Stadium, Kansas City, Missouri, USA",
+      "probabilities": {
+        "team_a_win": 0.095081,
+        "draw": 0.250444,
+        "team_b_win": 0.654475
+      },
+      "expected_goals": {
+        "team_a": 0.663,
+        "team_b": 1.919
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Túnez",
+        "line": "",
+        "odds": 22.0,
+        "p_win": 0.095081,
+        "p_push": 0.0,
+        "ev_pct": 109.18,
+        "stressed_ev_pct": 43.18,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7582.PNG",
+        "source_sha256": "376f4b70de6283860f9ac8c3709a0b379fdbc529c1b9f567c6dc574bf662c10d"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "high",
+        "team_news": "Tunisia lost 5-1 to Sweden, dismissed coach Sabri Lamouchi, appointed Herve Renard, and then lost 4-0 to Japan. The Netherlands drew 2-2 with Japan and beat Sweden 5-1.",
+        "injuries_suspensions": "Netherlands: Frenkie de Jong played about an hour against Sweden despite a minor issue and said he still felt manageable pain; his availability/workload for this match was uncertain. Tunisia: no match-specific confirmed player injuries or suspensions were found. Managerial change is confirmed.",
+        "predicted_lineup_notes": "The Netherlands may manage or rest De Jong and could rotate, but still need a result to secure their exact finishing position. Tunisia changed goalkeeper and shape/personnel under Renard against Japan, using a back three and moving Hannibal Mejbri into a midfield two; further changes are unconfirmed.",
+        "motivation_group_state": "Group F: Netherlands 4 pts, GD +4; Japan 4 pts, GD +4; Sweden 3 pts, GD 0; Tunisia 0 pts, GD -8. Tunisia are eliminated. The Netherlands guarantee advancement with a win and should advance with a draw; first place depends on Japan-Sweden and tiebreakers.",
+        "weather_venue_notes": "Kansas City Stadium is the open-air Arrowhead Stadium. A reliable match-time forecast for the 18:00 local kickoff on June 25 was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/live/2026/jun/21/fifa-world-cup-2026-live-tunisia-v-japan-updates-tun-vs-jpn-group-f-match-score-latest",
+          "https://www.barcablaugranes.com/world-cup-2026/124115/im-feeling-a-bit-of-pain-frenkie-de-jong-shares-injury-update-after-netherlands-win",
+          "https://people.com/tunisia-soccer-team-fires-head-coach-one-game-into-painful-2026-world-cup-12000166",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-25-jpn-swe",
+      "kickoff_lima": "2026-06-25T18:00:00-05:00",
+      "kickoff_utc": "2026-06-25T23:00:00Z",
+      "fixture": {
+        "en": "Japan vs Sweden",
+        "es": "Japón vs Suecia"
+      },
+      "group": "F",
+      "venue": "Dallas Stadium, Arlington, Texas, USA",
+      "probabilities": {
+        "team_a_win": 0.451676,
+        "draw": 0.304204,
+        "team_b_win": 0.24412
+      },
+      "expected_goals": {
+        "team_a": 1.536,
+        "team_b": 1.047
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Suecia",
+        "line": "",
+        "odds": 4.3,
+        "p_win": 0.24412,
+        "p_push": 0.0,
+        "ev_pct": 4.97,
+        "stressed_ev_pct": -7.93,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7586.PNG",
+        "source_sha256": "ed73c40ca93f4da0258424ba807578f03600afb69baeefa5cadc7bfeabc1e75e"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "high",
+        "team_news": "Japan drew 2-2 with the Netherlands and beat Tunisia 4-0, with Ayase Ueda scoring twice in a 3-4-3. Sweden beat Tunisia 5-1 but then lost 5-1 to the Netherlands.",
+        "injuries_suspensions": "Japan: Takefusa Kubo missed the Tunisia match with a knee injury; Kaoru Mitoma and Takumi Minamino were absent from the tournament, and Wataru Endo was also unavailable for the Tunisia match. Match-specific Sweden injuries or suspensions were unavailable.",
+        "predicted_lineup_notes": "Japan are likely to retain the 3-4-3 and Ueda as the central forward; Kubo's return was unconfirmed, while Tomiyasu and Itakura strengthened the back three against Tunisia. Sweden are expected to continue building around Viktor Gyokeres and Alexander Isak, but no confirmed XI or reliable change report was available.",
+        "motivation_group_state": "Group F: Japan 4 pts, GD +4; Sweden 3 pts, GD 0. Japan guarantee advancement with a draw and can win the group. Sweden qualify with a win; a draw gives four points and may be enough as a best third-placed team depending on other groups.",
+        "weather_venue_notes": "Dallas Stadium is AT&T Stadium, a retractable-roof, climate-controlled venue. Roof status and a reliable match-time external forecast were unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/live/2026/jun/21/fifa-world-cup-2026-live-tunisia-v-japan-updates-tun-vs-jpn-group-f-match-score-latest",
+          "https://omni.se/ny-skada-for-sveriges-kommande-motstandare/a/k0QjEk",
+          "https://www.starsandstripesfc.com/fifa-world-cup/44036/2026-world-cup-group-f-preview",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-25-par-aus",
+      "kickoff_lima": "2026-06-25T21:00:00-05:00",
+      "kickoff_utc": "2026-06-26T02:00:00Z",
+      "fixture": {
+        "en": "Paraguay vs Australia",
+        "es": "Paraguay vs Australia"
+      },
+      "group": "D",
+      "venue": "San Francisco Bay Area Stadium, Santa Clara, California, USA",
+      "probabilities": {
+        "team_a_win": 0.360666,
+        "draw": 0.330676,
+        "team_b_win": 0.308658
+      },
+      "expected_goals": {
+        "team_a": 1.355,
+        "team_b": 1.228
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Australia",
+        "line": "",
+        "odds": 3.75,
+        "p_win": 0.308658,
+        "p_push": 0.0,
+        "ev_pct": 15.75,
+        "stressed_ev_pct": 4.5,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7589.PNG",
+        "source_sha256": "6246c34fe79c33faa4ddb63c724ab31fe19ed83f3e942db6fea32847549ed266"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "high",
+        "team_news": "Paraguay lost 4-1 to the USA and beat Turkiye 1-0. Australia beat Turkiye 2-0 and lost 2-0 to the USA. Australia described Paraguay as unpredictable, aggressive and physically demanding ahead of a match likely to decide second place.",
+        "injuries_suspensions": "Paraguay: Miguel Almiron is suspended after a red card against Turkiye. Julio Enciso suffered an injury before the tournament; an early report suggested a possible return for the Australia match, but his availability remained unconfirmed by the cutoff. Australia: match-specific confirmed injuries or suspensions were unavailable.",
+        "predicted_lineup_notes": "Paraguay must replace Almiron; Enciso's potential return cannot be assumed. Australia are likely to retain Tony Popovic's aggressive 3-4-2-1 framework with Jackson Irvine and Aiden O'Neill central, Harry Souttar in defence and Nestory Irankunda/Mohamed Toure among the attacking options; no confirmed XI was available.",
+        "motivation_group_state": "Group D: Australia 3 pts, GD 0; Paraguay 3 pts, GD -2. The winner reaches six points and secures advancement. A draw leaves both on four and sends second place/two best-third-place prospects to goal difference and the Turkiye-USA result.",
+        "weather_venue_notes": "San Francisco Bay Area Stadium is the open-air Levi's Stadium in Santa Clara. A reliable match-time forecast for the 18:00 local kickoff on June 25 was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/2026/jun/21/australias-jackson-irvine-has-no-sympathy-for-paraguay-after-historic-world-cup-red-card",
+          "https://nypost.com/2026/06/06/sports/paraguay-loses-star-player-julio-enciso-one-week-before-world-cup/",
+          "https://www.starsandstripesfc.com/fifa-world-cup/44271/usa-vs-australia-2026-world-cup-scouting-australia",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-25-tur-usa",
+      "kickoff_lima": "2026-06-25T21:00:00-05:00",
+      "kickoff_utc": "2026-06-26T02:00:00Z",
+      "fixture": {
+        "en": "Turkiye vs USA",
+        "es": "Turquía vs Estados Unidos"
+      },
+      "group": "D",
+      "venue": "Los Angeles Stadium, Inglewood, California, USA",
+      "probabilities": {
+        "team_a_win": 0.221404,
+        "draw": 0.295416,
+        "team_b_win": 0.48318
+      },
+      "expected_goals": {
+        "team_a": 0.986,
+        "team_b": 1.597
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Empate",
+        "line": "",
+        "odds": 3.9,
+        "p_win": 0.295416,
+        "p_push": 0.0,
+        "ev_pct": 15.21,
+        "stressed_ev_pct": 3.51,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7592.PNG",
+        "source_sha256": "c0abff75c968cedea866d0ab6f58c24dcb547285ddafa50348af1c943250fff6"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "high",
+        "team_news": "Turkiye lost 2-0 to Australia and 1-0 to Paraguay. The USA beat Paraguay 4-1 and Australia 2-0 to clinch knockout-stage qualification. Without Christian Pulisic against Australia, Mauricio Pochettino used Ricardo Pepi alongside Folarin Balogun in a successful two-striker setup.",
+        "injuries_suspensions": "USA: Christian Pulisic missed the Australia match with a left-calf injury; his recovery was progressing, but availability for Turkiye was not confirmed by the cutoff. Turkiye: match-specific confirmed injuries or suspensions were unavailable.",
+        "predicted_lineup_notes": "The USA could retain Pepi-Balogun, revert to a one-striker system, or rotate because qualification is secured; Pulisic's status is the main selection variable. Turkiye's expected creative core includes Arda Guler, Kenan Yildiz and Hakan Calhanoglu in a fluid 4-2-3-1, but no confirmed XI was available.",
+        "motivation_group_state": "Group D: USA 6 pts, GD +5 and are qualified; a draw secures first. Turkiye 0 pts, GD -3 must beat the USA to reach three points and also need a loser in Paraguay-Australia plus favorable goal-difference and best-third-place comparisons.",
+        "weather_venue_notes": "Los Angeles Stadium is SoFi Stadium in Inglewood, covered by a fixed translucent roof but open at the sides. Direct rain is limited, though temperature/airflow can still matter. A reliable match-time forecast was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://people.com/us-tops-australia-without-injured-star-christian-pulisic-as-team-advances-to-world-cup-knockout-stage-12003321",
+          "https://nypost.com/2026/06/21/sports/ricardo-pepi-rewarding-usmnts-world-cup-trust-after-injury-struggles/",
+          "https://www.theguardian.com/football/2026/jun/18/usmnt-christian-pulisic-status-mauricio-pochettino",
+          "https://www.theguardian.com/football/blog/2026/jun/12/world-cup-group-d-matches-turkey-national-football-team-strengths-weaknesses",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:53:08-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-26-nor-fra",
+      "kickoff_lima": "2026-06-26T14:00:00-05:00",
+      "kickoff_utc": "2026-06-26T19:00:00Z",
+      "fixture": {
+        "en": "Norway vs France",
+        "es": "Noruega vs Francia"
+      },
+      "group": "I",
+      "venue": "Boston Stadium, Foxborough, Massachusetts, USA",
+      "probabilities": {
+        "team_a_win": 0.219667,
+        "draw": 0.294754,
+        "team_b_win": 0.485578
+      },
+      "expected_goals": {
+        "team_a": 0.981,
+        "team_b": 1.601
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Empate",
+        "line": "",
+        "odds": 3.9,
+        "p_win": 0.294754,
+        "p_push": 0.0,
+        "ev_pct": 14.95,
+        "stressed_ev_pct": 3.25,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7595.PNG",
+        "source_sha256": "13afed4fc17a80e1a9c9b80a36e091efd20de5b04d2c5597072c4036d603148f"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium",
+        "team_news": "Norway opened with a 4-1 win over Iraq, led by two Erling Haaland goals and a Leo Ostigard goal; France beat Senegal 3-1, with Kylian Mbappe scoring twice. Their June 22 second matches had not been played by the June 21 cutoff, so later form and team news were unavailable.",
+        "injuries_suspensions": "No match-specific confirmed Norway or France injury absence was found by the cutoff. France defender William Saliba was reported to be managing persistent niggles while continuing to play; his June 26 availability was unavailable. Confirmed suspensions: unavailable because the June 22 matches could still create them.",
+        "predicted_lineup_notes": "No confirmed XI was available. Norway's established attacking structure centers on Haaland with Martin Odegaard supplying chances; Ostigard had started and scored against Iraq. France's opening-match attack was led by Mbappe, while Bradley Barcola was a plausible option after scoring as a substitute; changes after the intervening June 22 match were unknowable at the cutoff.",
+        "motivation_group_state": "Group I as of June 21: Norway 3 pts, GD +3; France 3 pts, GD +2; Senegal 0, Iraq 0. Both teams still had June 22 matches, so the exact qualification requirement and rotation incentive for this final fixture were unavailable. The match was positioned to have first-place significance, but that was not yet guaranteed.",
+        "weather_venue_notes": "Boston Stadium is the open-air Gillette Stadium in Foxborough, with a 15:00 local kickoff. Late-June heat or storms are possible, but a reliable match-time forecast for June 26 and any heat-protocol decision were unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/live/2026/jun/16/iraq-v-norway-world-cup-2026-live",
+          "https://www.managingmadrid.com/real-madrid-cf-players/109066/kylian-mbappe-becomes-frances-record-goalscorer-to-beat-senegal",
+          "https://www.theguardian.com/football/2026/jun/21/england-declan-rice-hamstring-nerve-pain-arsenal-schedule-world-cup",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-26-sen-irq",
+      "kickoff_lima": "2026-06-26T14:00:00-05:00",
+      "kickoff_utc": "2026-06-26T19:00:00Z",
+      "fixture": {
+        "en": "Senegal vs Iraq",
+        "es": "Senegal vs Irak"
+      },
+      "group": "I",
+      "venue": "Toronto Stadium, Toronto, Canada",
+      "probabilities": {
+        "team_a_win": 0.566915,
+        "draw": 0.272879,
+        "team_b_win": 0.160206
+      },
+      "expected_goals": {
+        "team_a": 1.755,
+        "team_b": 0.827
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Irak",
+        "line": "",
+        "odds": 11.0,
+        "p_win": 0.160206,
+        "p_push": 0.0,
+        "ev_pct": 76.23,
+        "stressed_ev_pct": 43.23,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7598.PNG",
+        "source_sha256": "af29c71f5baf16a1e2dca531a20007b1e396c5f0d72eb5b116004a234fb7fe55"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium-low",
+        "team_news": "Senegal lost 3-1 to France in their opener. Iraq lost 4-1 to Norway after equalizing and producing a spell of pressure before Norway pulled away. Their June 22 second matches had not been played by the cutoff; reliable later team news was unavailable.",
+        "injuries_suspensions": "Match-specific confirmed injuries for Senegal or Iraq were unavailable. Confirmed suspensions were also unavailable because cards or dismissals in the intervening June 22 matches could affect June 26.",
+        "predicted_lineup_notes": "No confirmed XI was available. Senegal changes after the France defeat were unavailable. Iraq's opener showed they could press and create against Norway, but the goalkeeper error that restored Norway's lead and subsequent defensive concessions could prompt changes; personnel and formation were unconfirmed.",
+        "motivation_group_state": "Group I as of June 21: Senegal 0 pts, GD -2; Iraq 0 pts, GD -3. Both still had June 22 matches, so the exact final-round qualification state was unavailable. At the cutoff both needed points in match two to avoid arriving in Toronto near elimination; June 26 could still decide second or a best-third-place route.",
+        "weather_venue_notes": "Toronto Stadium is the expanded, open-air BMO Field, with a 15:00 local kickoff. A reliable match-time forecast for June 26 was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/live/2026/jun/16/iraq-v-norway-world-cup-2026-live",
+          "https://www.nypost.com/2026/06/10/sports/world-cup-2026-group-i-preview-prediction-odds-full-team-overviews/",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-26-uru-esp",
+      "kickoff_lima": "2026-06-26T19:00:00-05:00",
+      "kickoff_utc": "2026-06-27T00:00:00Z",
+      "fixture": {
+        "en": "Uruguay vs Spain",
+        "es": "Uruguay vs España"
+      },
+      "group": "H",
+      "venue": "Guadalajara Stadium, Guadalajara, Mexico",
+      "probabilities": {
+        "team_a_win": 0.15481,
+        "draw": 0.270964,
+        "team_b_win": 0.574227
+      },
+      "expected_goals": {
+        "team_a": 0.814,
+        "team_b": 1.769
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Empate",
+        "line": "",
+        "odds": 4.3,
+        "p_win": 0.270964,
+        "p_push": 0.0,
+        "ev_pct": 16.51,
+        "stressed_ev_pct": 3.61,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7604.PNG",
+        "source_sha256": "101454a684d270657b5185a563f4c680962fee77d79fcd0d62d1a259933fb2f8"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "low",
+        "team_news": "Reliable post-opening-match updates were unavailable by the June 21 research cutoff.",
+        "injuries_suspensions": "Unavailable by the June 21 cutoff; later match reports were excluded.",
+        "predicted_lineup_notes": "No confirmed lineup was available by the June 21 cutoff.",
+        "motivation_group_state": "Final-round qualification state depended on intervening matches and was unavailable by the cutoff.",
+        "weather_venue_notes": "Venue is documented in the canonical fixture file; reliable match-time weather was unavailable.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-26-cpv-ksa",
+      "kickoff_lima": "2026-06-26T19:00:00-05:00",
+      "kickoff_utc": "2026-06-27T00:00:00Z",
+      "fixture": {
+        "en": "Cape Verde vs Saudi Arabia",
+        "es": "Cabo Verde vs Arabia Saudita"
+      },
+      "group": "H",
+      "venue": "Houston Stadium, Houston, Texas, USA",
+      "probabilities": {
+        "team_a_win": 0.363371,
+        "draw": 0.329864,
+        "team_b_win": 0.306765
+      },
+      "expected_goals": {
+        "team_a": 1.36,
+        "team_b": 1.222
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Empate",
+        "line": "",
+        "odds": 3.45,
+        "p_win": 0.329864,
+        "p_push": 0.0,
+        "ev_pct": 13.8,
+        "stressed_ev_pct": 3.45,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7601.PNG",
+        "source_sha256": "89ae0102a598d962aa9df1524397bfdb9804d5c45668cafe1e3978d265ccc780"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "low",
+        "team_news": "Reliable post-opening-match updates were unavailable by the June 21 research cutoff.",
+        "injuries_suspensions": "Unavailable by the June 21 cutoff; later match reports were excluded.",
+        "predicted_lineup_notes": "No confirmed lineup was available by the June 21 cutoff.",
+        "motivation_group_state": "Final-round qualification state depended on intervening matches and was unavailable by the cutoff.",
+        "weather_venue_notes": "Venue is documented in the canonical fixture file; reliable match-time weather was unavailable.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-26-egy-irn",
+      "kickoff_lima": "2026-06-26T22:00:00-05:00",
+      "kickoff_utc": "2026-06-27T03:00:00Z",
+      "fixture": {
+        "en": "Egypt vs Iran",
+        "es": "Egipto vs Irán"
+      },
+      "group": "G",
+      "venue": "Seattle Stadium, Seattle, Washington, USA",
+      "probabilities": {
+        "team_a_win": 0.348695,
+        "draw": 0.33429,
+        "team_b_win": 0.317016
+      },
+      "expected_goals": {
+        "team_a": 1.33,
+        "team_b": 1.252
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Irán",
+        "line": "",
+        "odds": 3.8,
+        "p_win": 0.317016,
+        "p_push": 0.0,
+        "ev_pct": 20.47,
+        "stressed_ev_pct": 9.07,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7608.PNG",
+        "source_sha256": "0059344a099c74e76bad33596a821a596916a19bcf51036602353a68348ea98e"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "low",
+        "team_news": "Reliable post-opening-match updates were unavailable by the June 21 research cutoff.",
+        "injuries_suspensions": "Unavailable by the June 21 cutoff; later match reports were excluded.",
+        "predicted_lineup_notes": "No confirmed lineup was available by the June 21 cutoff.",
+        "motivation_group_state": "Final-round qualification state depended on intervening matches and was unavailable by the cutoff.",
+        "weather_venue_notes": "Venue is documented in the canonical fixture file; reliable match-time weather was unavailable.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-26-nzl-bel",
+      "kickoff_lima": "2026-06-26T22:00:00-05:00",
+      "kickoff_utc": "2026-06-27T03:00:00Z",
+      "fixture": {
+        "en": "New Zealand vs Belgium",
+        "es": "Nueva Zelanda vs Bélgica"
+      },
+      "group": "G",
+      "venue": "BC Place Vancouver, Vancouver, Canada",
+      "probabilities": {
+        "team_a_win": 0.120702,
+        "draw": 0.259099,
+        "team_b_win": 0.620199
+      },
+      "expected_goals": {
+        "team_a": 0.728,
+        "team_b": 1.855
+      },
+      "recommendation": {
+        "app": "Betano",
+        "market_id": "match_result",
+        "market_original": "Resultado del partido",
+        "selection_original": "Nueva Zelanda",
+        "line": "",
+        "odds": 13.5,
+        "p_win": 0.120702,
+        "p_push": 0.0,
+        "ev_pct": 62.95,
+        "stressed_ev_pct": 22.45,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7611.PNG",
+        "source_sha256": "b5be6ba05e46bd44237f76029c06935e7ab6c0eb84656c8330d3e0e89ce940a7"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "low",
+        "team_news": "Reliable post-opening-match updates were unavailable by the June 21 research cutoff.",
+        "injuries_suspensions": "Unavailable by the June 21 cutoff; later match reports were excluded.",
+        "predicted_lineup_notes": "No confirmed lineup was available by the June 21 cutoff.",
+        "motivation_group_state": "Final-round qualification state depended on intervening matches and was unavailable by the cutoff.",
+        "weather_venue_notes": "Venue is documented in the canonical fixture file; reliable match-time weather was unavailable.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-27-cro-gha",
+      "kickoff_lima": "2026-06-27T16:00:00-05:00",
+      "kickoff_utc": "2026-06-27T21:00:00Z",
+      "fixture": {
+        "en": "Croatia vs Ghana",
+        "es": "Croacia vs Ghana"
+      },
+      "group": "L",
+      "venue": "Philadelphia Stadium, Philadelphia, Pennsylvania, USA",
+      "probabilities": {
+        "team_a_win": 0.400224,
+        "draw": 0.31896,
+        "team_b_win": 0.280816
+      },
+      "expected_goals": {
+        "team_a": 1.435,
+        "team_b": 1.148
+      },
+      "recommendation": {
+        "app": "Betsson",
+        "market_id": "match_result",
+        "market_original": "Match Result",
+        "selection_original": "Ghana",
+        "line": "",
+        "odds": 5.95,
+        "p_win": 0.280816,
+        "p_push": 0.0,
+        "ev_pct": 67.09,
+        "stressed_ev_pct": 49.24,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7722.PNG",
+        "source_sha256": "57224569e8aaff212aaeb08e44af3e358e76f36c63520b45951daad930260d79"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium",
+        "team_news": "Croatia lost 4-2 to England in their opener; Ghana beat Panama 1-0. Both had an intervening June 23 match after the cutoff, so form, cards and lineup developments entering June 27 were unavailable.",
+        "injuries_suspensions": "Croatia: no match-specific confirmed injury or suspension was found by the cutoff. Ghana: Thomas Partey missed the Canada-based opener because he was denied entry but was reported eligible for the June 23 match in the United States; his June 27 status was not a fitness issue but remained unavailable after the intervening game. Other injuries/suspensions: unavailable.",
+        "predicted_lineup_notes": "No confirmed XI was available. Croatia could retain its veteran midfield while addressing defensive problems exposed by England, but specific changes were unavailable. Ghana's Partey could become a midfield option in the United States; selection after the June 23 England match was unknowable at the cutoff.",
+        "motivation_group_state": "Group L as of June 21: Ghana 3 pts, GD +1; Croatia 0 pts, GD -2. Ghana still had England and Croatia still had Panama on June 23, so the exact final-round qualification state was unavailable. This fixture could decide a top-two or best-third-place berth, but no precise points requirement was knowable.",
+        "weather_venue_notes": "Philadelphia Stadium is the open-air Lincoln Financial Field, with a 17:00 local kickoff. Late-June heat and thunderstorms can matter; a reliable match-time forecast was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/2026/jun/21/thomas-partey-england-ghana-handshake",
+          "https://www.bavarianfootballworks.com/fifa-world-cup/218962/harry-kane-over-the-moon-to-reach-10-world-cup-goals-with-england",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-27-pan-eng",
+      "kickoff_lima": "2026-06-27T16:00:00-05:00",
+      "kickoff_utc": "2026-06-27T21:00:00Z",
+      "fixture": {
+        "en": "Panama vs England",
+        "es": "Panamá vs Inglaterra"
+      },
+      "group": "L",
+      "venue": "New York New Jersey Stadium, East Rutherford, New Jersey, USA",
+      "probabilities": {
+        "team_a_win": 0.075484,
+        "draw": 0.243962,
+        "team_b_win": 0.680554
+      },
+      "expected_goals": {
+        "team_a": 0.614,
+        "team_b": 1.968
+      },
+      "recommendation": {
+        "app": "Betsson",
+        "market_id": "match_result",
+        "market_original": "Match Result",
+        "selection_original": "Draw",
+        "line": "",
+        "odds": 6.2,
+        "p_win": 0.243962,
+        "p_push": 0.0,
+        "ev_pct": 51.26,
+        "stressed_ev_pct": 32.66,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7726.PNG",
+        "source_sha256": "029898d02952307f4346fe2a415c6f797dc76c56a020a913e3e65866a6ccaf13"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "high",
+        "team_news": "Panama lost 1-0 to Ghana in their opener. England beat Croatia 4-2, with Harry Kane scoring twice. Their June 23 second matches had not occurred by the cutoff, so final-round team news was unavailable.",
+        "injuries_suspensions": "England: Tino Livramento was ruled out of the tournament with a calf injury and replaced by Trevoh Chalobah. Bukayo Saka was managing an Achilles issue; Declan Rice said he was fit despite neural pain in his upper hamstring/lower back; Marcus Rashford had returned to training after a minor muscular issue. Panama injuries were unavailable. Suspensions for June 27 were unavailable because of the June 23 matches.",
+        "predicted_lineup_notes": "England's right side was expected to feature Noni Madueke with Saka's minutes managed, while Rice was available and Kane was the central striker; rotation for the third match could not be assessed before June 23. Panama's confirmed XI and credible predicted changes were unavailable.",
+        "motivation_group_state": "Group L as of June 21: England 3 pts, GD +2; Panama 0 pts, GD -1. Both had June 23 matches, so England's qualification/rotation incentive and Panama's survival requirement for June 27 were unavailable at the cutoff.",
+        "weather_venue_notes": "New York New Jersey Stadium is the open-air MetLife Stadium in East Rutherford, with a 17:00 local kickoff. Heat, humidity and thunderstorms are relevant seasonal risks, but a reliable match-time forecast was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/2026/jun/21/england-declan-rice-hamstring-nerve-pain-arsenal-schedule-world-cup",
+          "https://www.theguardian.com/football/2026/jun/20/rashford-and-rice-give-england-boost-for-ghana-but-saka-set-for-bench-again",
+          "https://nypost.com/2026/06/16/sports/englands-tino-livramento-out-of-world-cup-in-injury-blow/",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-27-col-por",
+      "kickoff_lima": "2026-06-27T18:30:00-05:00",
+      "kickoff_utc": "2026-06-27T23:30:00Z",
+      "fixture": {
+        "en": "Colombia vs Portugal",
+        "es": "Colombia vs Portugal"
+      },
+      "group": "K",
+      "venue": "Miami Stadium, Miami Gardens, Florida, USA",
+      "probabilities": {
+        "team_a_win": 0.267389,
+        "draw": 0.313476,
+        "team_b_win": 0.419135
+      },
+      "expected_goals": {
+        "team_a": 1.11,
+        "team_b": 1.472
+      },
+      "recommendation": {
+        "app": "Betsson",
+        "market_id": "match_result",
+        "market_original": "Match Result",
+        "selection_original": "Draw",
+        "line": "",
+        "odds": 3.45,
+        "p_win": 0.313476,
+        "p_push": 0.0,
+        "ev_pct": 8.15,
+        "stressed_ev_pct": -2.2,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7730.PNG",
+        "source_sha256": "d05f101c96a0af5faf677f542d5b3c16ff496fb2d49a4642711fd33bd3cd8e94"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium",
+        "team_news": "Colombia beat Uzbekistan 3-1 in their opener; Portugal drew 1-1 with Congo DR. Colombia midfielder Juan Camilo Portilla suffered a family bereavement during camp, but the cited report did not say he left camp or was unavailable. Both teams had June 23 matches after the cutoff.",
+        "injuries_suspensions": "No match-specific confirmed injury or suspension for Colombia or Portugal was found by the cutoff. Portilla's bereavement is team news, not an injury, and his availability was unavailable. June 23 cards could create June 27 suspensions, so final suspension status was unavailable.",
+        "predicted_lineup_notes": "No confirmed XI was available. Colombia's primary attacking creators were Luis Diaz and James Rodriguez. Portugal's key selection question remained how Cristiano Ronaldo fit with Bruno Fernandes and a tactically flexible back-three/back-four structure. Changes after June 23 were unknowable.",
+        "motivation_group_state": "Group K as of June 21: Colombia 3 pts, GD +2; Portugal 1 pt, GD 0. Colombia still had Congo DR and Portugal had Uzbekistan on June 23, so the exact first-place, qualification and rotation implications for June 27 were unavailable.",
+        "weather_venue_notes": "Miami Stadium is the open-air Hard Rock Stadium in Miami Gardens, with a 19:30 local kickoff. Heat, humidity and thunderstorms are material risks; a reliable match-time forecast was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.tropicanafm.com/2026/jugador-de-la-seleccion-colombia-tuvo-dolorosa-perdida-en-pleno-mundial-juro-hacerte-sentir-orgulloso-468348.html",
+          "https://www.nypost.com/2026/06/10/sports/world-cup-2026-group-k-preview-prediction-odds-full-team-overviews/",
+          "https://www.starsandstripesfc.com/copa-america/44201/2026-world-cup-group-k-preview",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-27-cod-uzb",
+      "kickoff_lima": "2026-06-27T21:00:00-05:00",
+      "kickoff_utc": "2026-06-28T02:00:00Z",
+      "fixture": {
+        "en": "Congo DR vs Uzbekistan",
+        "es": "RD Congo vs Uzbekistán"
+      },
+      "group": "K",
+      "venue": "Atlanta Stadium, Atlanta, Georgia, USA",
+      "probabilities": {
+        "team_a_win": 0.341176,
+        "draw": 0.336576,
+        "team_b_win": 0.322247
+      },
+      "expected_goals": {
+        "team_a": 1.315,
+        "team_b": 1.268
+      },
+      "recommendation": {
+        "app": "Betsson",
+        "market_id": "match_result",
+        "market_original": "Match Result",
+        "selection_original": "Draw",
+        "line": "",
+        "odds": 3.5,
+        "p_win": 0.336576,
+        "p_push": 0.0,
+        "ev_pct": 17.8,
+        "stressed_ev_pct": 7.3,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7734.PNG",
+        "source_sha256": "cdb9f126cbdb6841ee926884413f49cffa22cbdfd289810fc1ad9601c70b7a85"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium-low",
+        "team_news": "Congo DR drew 1-1 with Portugal in their opener; Uzbekistan lost 3-1 to Colombia in their first World Cup match. Both had intervening June 23 matches after the cutoff, so current final-round form and team news were unavailable.",
+        "injuries_suspensions": "No match-specific confirmed injury or suspension for Congo DR or Uzbekistan was found by the cutoff. June 23 cards could create June 27 suspensions; final suspension status was unavailable.",
+        "predicted_lineup_notes": "No confirmed XI was available. Pre-tournament analysis identified Yoane Wissa as Congo DR's key forward. Uzbekistan were expected to retain a compact, defence-first structure featuring Abdukodir Khusanov, but changes after the Colombia loss and June 23 match were unavailable.",
+        "motivation_group_state": "Group K as of June 21: Congo DR 1 pt, GD 0; Uzbekistan 0 pts, GD -2. Both still had June 23 matches, so the exact June 27 qualification requirement was unavailable. The match could decide second place or a best-third-place route.",
+        "weather_venue_notes": "Atlanta Stadium is Mercedes-Benz Stadium, a retractable-roof, climate-controlled venue, with a 22:00 local kickoff. Roof status and a reliable external forecast were unavailable; a closed roof would limit direct heat and storm exposure.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.nypost.com/2026/06/10/sports/world-cup-2026-group-k-preview-prediction-odds-full-team-overviews/",
+          "https://www.starsandstripesfc.com/copa-america/44201/2026-world-cup-group-k-preview",
+          "https://www.fourfourtwo.com/team/uzbekistan-world-cup-2026-squad",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-27-jor-arg",
+      "kickoff_lima": "2026-06-27T21:00:00-05:00",
+      "kickoff_utc": "2026-06-28T02:00:00Z",
+      "fixture": {
+        "en": "Jordan vs Argentina",
+        "es": "Jordania vs Argentina"
+      },
+      "group": "J",
+      "venue": "Dallas Stadium, Arlington, Texas, USA",
+      "probabilities": {
+        "team_a_win": 0.061656,
+        "draw": 0.239456,
+        "team_b_win": 0.698888
+      },
+      "expected_goals": {
+        "team_a": 0.579,
+        "team_b": 2.003
+      },
+      "recommendation": {
+        "app": "Betsson",
+        "market_id": "match_result",
+        "market_original": "Match Result",
+        "selection_original": "Draw",
+        "line": "",
+        "odds": 6.3,
+        "p_win": 0.239456,
+        "p_push": 0.0,
+        "ev_pct": 50.86,
+        "stressed_ev_pct": 31.96,
+        "strength": "HALT",
+        "confidence": 35,
+        "source_image": "IMG_7738.PNG",
+        "source_sha256": "09c06494a1d67191083020af156f470beed38240e1ae9d318d146d013942946b"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium",
+        "team_news": "Jordan lost 3-1 to Austria but generated four shots on target and Ali Olwan scored the country's first World Cup goal. Argentina beat Algeria 3-0. Both had June 22 second matches after the cutoff, making final-round form and team news unavailable.",
+        "injuries_suspensions": "Jordan: star striker Yazan Al-Naimat was reported out of the tournament through injury. Argentina: Cristian Romero had carried a recent injury into the squad, but his June 27 availability was unavailable. Suspensions were unavailable because the June 22 matches had not occurred.",
+        "predicted_lineup_notes": "Jordan must continue without Al-Naimat; otherwise no confirmed XI was available. Argentina were expected to retain an experienced core around Lionel Messi, Julian Alvarez/Lautaro Martinez and the established midfield, but rotation or workload management for June 27 could not be assessed before the June 22 Austria match.",
+        "motivation_group_state": "Group J as of June 21: Argentina 3 pts, GD +3; Jordan 0 pts, GD -2. Argentina still had Austria and Jordan had Algeria on June 22, so the exact qualification and rotation state for June 27 was unavailable.",
+        "weather_venue_notes": "Dallas Stadium is AT&T Stadium in Arlington, a retractable-roof, climate-controlled venue, with a 21:00 local kickoff. Roof status and a reliable external forecast were unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/live/2026/jun/17/fifa-world-cup-2026-live-austria-v-jordan-updates-aut-vs-jor-group-j-match-score-latest",
+          "https://www.starsandstripesfc.com/fifa-world-cup/44091/2026-world-cup-group-j-preview",
+          "https://www.fourfourtwo.com/team/argentina-world-cup-2026-squad",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    },
+    {
+      "fixture_id": "2026-06-27-alg-aut",
+      "kickoff_lima": "2026-06-27T21:00:00-05:00",
+      "kickoff_utc": "2026-06-28T02:00:00Z",
+      "fixture": {
+        "en": "Algeria vs Austria",
+        "es": "Argelia vs Austria"
+      },
+      "group": "J",
+      "venue": "Kansas City Stadium, Kansas City, Missouri, USA",
+      "probabilities": {
+        "team_a_win": 0.260432,
+        "draw": 0.310673,
+        "team_b_win": 0.428895
+      },
+      "expected_goals": {
+        "team_a": 1.091,
+        "team_b": 1.492
+      },
+      "recommendation": {
+        "app": "Betsson",
+        "market_id": "match_result",
+        "market_original": "Match Result",
+        "selection_original": "Austria",
+        "line": "",
+        "odds": 2.45,
+        "p_win": 0.428895,
+        "p_push": 0.0,
+        "ev_pct": 5.08,
+        "stressed_ev_pct": -2.27,
+        "strength": "PASS",
+        "confidence": 30,
+        "source_image": "IMG_7742.PNG",
+        "source_sha256": "aef68d42a2a06d02f7f2b4033af5c1e2e1b64ac6222fe4f497fbb6a528ed567d"
+      },
+      "supported_markets_evaluated": 3,
+      "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+      "freshness_status": "conditional_requires_rerun_after_intervening_matches",
+      "risk_notes": {
+        "en": [
+          "Football outcomes remain high variance even when expected value is positive.",
+          "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
+          "Re-check the exact app price before any decision; moved odds change expected value."
+        ],
+        "es": [
+          "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
+          "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
+          "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado."
+        ]
+      },
+      "research": {
+        "confidence": "medium",
+        "team_news": "Algeria lost 3-0 to Argentina. Austria beat Jordan 3-1 after the match remained level until the 77th minute. Both had June 22 second matches after the cutoff, so later form, cards and availability were unavailable.",
+        "injuries_suspensions": "Austria: Christoph Baumgartner was reported before the tournament as missing through injury. Algeria: match-specific confirmed injury information was unavailable. Suspensions for June 27 were unavailable because the June 22 matches had not occurred.",
+        "predicted_lineup_notes": "Austria's expected core included David Alaba, Konrad Laimer, Marcel Sabitzer and Marko Arnautovic, with Baumgartner unavailable. Algeria's expected core included Riyad Mahrez, Amine Gouiri, Houssem Aouar, Ibrahim Maza, Rayan Ait-Nouri and Ramy Bensebaini. No confirmed XI or post-June 22 changes were available.",
+        "motivation_group_state": "Group J as of June 21: Austria 3 pts, GD +2; Algeria 0 pts, GD -3. Austria still had Argentina and Algeria had Jordan on June 22, so the exact qualification requirement for this final fixture was unavailable.",
+        "weather_venue_notes": "Kansas City Stadium is the open-air Arrowhead Stadium, with a 21:00 local kickoff. Late-June heat, humidity and thunderstorms can matter; a reliable match-time forecast was unavailable by the cutoff.",
+        "source_urls": [
+          "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center",
+          "https://www.theguardian.com/football/live/2026/jun/17/fifa-world-cup-2026-live-austria-v-jordan-updates-aut-vs-jor-group-j-match-score-latest",
+          "https://www.starsandstripesfc.com/fifa-world-cup/44091/2026-world-cup-group-j-preview",
+          "https://www.theguardian.com/football/2026/jun/01/world-cup-2026-stadium-guide"
+        ],
+        "accessed_at": "2026-06-21T23:59:00-05:00"
+      }
+    }
+  ],
+  "glossary": {
+    "ev": {
+      "en": "Expected value estimates average long-run return, not the outcome of one match.",
+      "es": "El valor esperado estima el retorno promedio a largo plazo, no el resultado de un solo partido."
+    },
+    "strength": {
+      "en": "PASS means no actionable recommendation. HALT means the apparent edge requires investigation and must not be treated as a bet.",
+      "es": "PASS significa que no hay recomendación accionable. HALT significa que la ventaja aparente requiere investigación y no debe tratarse como apuesta."
+    }
+  }
+}
