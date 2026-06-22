@@ -19,15 +19,15 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R2.3: Parameter/model selection uses only pre-holdout chronological windows.
 - R2.4: Final holdout remains untouched until evaluation.
 - R2.5: Report Brier, log loss, sample sizes, calibration parameters, and simple baselines.
-- R2.6: Current production recommendations are standard full-time 1X2 comparisons only.
-- R2.7: Poisson score outputs are descriptive, not recommendation-policy validated.
+- R2.6: Exactly one best-available sourced recommendation is produced per fixture from validated-settlement 1X2, totals, BTTS, double-chance, Asian-handicap, or supported combo markets.
+- R2.7: Score-model outputs may drive rankings, but profitability remains explicitly unvalidated without historical executable prices.
 - R2.8: No production ensemble/stack may be claimed unless weights are selected out-of-fold and beat simpler baselines on untouched data.
 - R2.9: No profitability, ROI, CLV, or staking tier may be claimed without timestamped historical odds and untouched policy evaluation after vig and selection effects.
 
 ## R3 — Safety and classification
 
-- R3.1: Allowed classes are `PASS` and investigative `HALT`.
-- R3.2: Both classes are non-actionable; report language must not instruct a wager.
+- R3.1: Every fixture has one `BEST_AVAILABLE` decision plus a `PASS` or investigative `HALT` diagnostic.
+- R3.2: `BEST_AVAILABLE` is a comparative recommendation, not a guarantee; cards must show risk grade, stress case, source price, and profitability-validation status.
 - R3.3: No “surefire,” “certain,” or “easy multiplier” claim is permitted.
 - R3.4: A low-odds candidate must be rejected unless its conservative lower probability bound exceeds vig-adjusted break-even.
 - R3.5: Conditional forecasts visibly require rerunning after intervening matches or material lineup/odds changes.
@@ -47,7 +47,7 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R5.1: Exactly one JSON-driven `bg-slate-900` card exists per canonical fixture.
 - R5.2: All visible application text, errors, diagrams, filters, and explanations switch English/Spanish.
 - R5.3: Displayed values match JSON within explicit display tolerance.
-- R5.4: The report states zero actionable bets when the policy is abstention-only.
+- R5.4: The report shows exactly one best-available recommendation per fixture and clearly distinguishes recommendation from validated profitability or certainty.
 - R5.5: Cards show current/conditional freshness and audit status.
 - R5.6: Report shows holdout metrics, sample size, baselines, and profitability limitations.
 - R5.7: Workflow visualization represents only implemented/validated model components.

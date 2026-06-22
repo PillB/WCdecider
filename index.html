@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="a997b4a9ad7a9077ba7576c7974ca637702b777833e4b3d41f79ccc119818b59">
+  <meta name="wcdecider-audit-sha256" content="2e21d548296354fb4318667bb6ff29c93f9c9eb0ab2aaa736b5b896c666c1b32">
   <title>WCdecider • June 22–27, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -68,10 +68,10 @@
             <text x="92" y="52"><tspan class="en">Dataset A/B</tspan><tspan class="es">Dataset A/B</tspan></text><text x="92" y="72"><tspan class="en">temporal history</tspan><tspan class="es">historia temporal</tspan></text>
             <text x="92" y="140"><tspan class="en">Elapsed WC</tspan><tspan class="es">Mundial jugado</tspan></text><text x="92" y="160"><tspan class="en">40 results</tspan><tspan class="es">40 resultados</tspan></text>
             <text x="92" y="228"><tspan class="en">Screenshots</tspan><tspan class="es">Capturas</tspan></text><text x="92" y="248">Betano + Betsson</text>
-            <text x="277" y="106">Elo 1X2</text><text x="277" y="130"><tspan class="en">walk-forward selection</tspan><tspan class="es">selección walk-forward</tspan></text>
-            <text x="277" y="154"><tspan class="en">untouched holdout</tspan><tspan class="es">holdout intacto</tspan></text><text x="277" y="178"><tspan class="en">calibration + stress</tspan><tspan class="es">calibración + estrés</tspan></text>
-            <text x="445" y="52"><tspan class="en">Probabilities</tspan><tspan class="es">Probabilidades</tspan></text><text x="445" y="72">1X2</text>
-            <text x="445" y="140">PASS / HALT</text><text x="445" y="160"><tspan class="en">no actionable bets</tspan><tspan class="es">sin apuestas accionables</tspan></text>
+            <text x="277" y="106"><tspan class="en">Elo + score model</tspan><tspan class="es">Elo + modelo de goles</tspan></text><text x="277" y="130"><tspan class="en">walk-forward tuning</tspan><tspan class="es">ajuste walk-forward</tspan></text>
+            <text x="277" y="154"><tspan class="en">untouched holdout</tspan><tspan class="es">holdout intacto</tspan></text><text x="277" y="178"><tspan class="en">Poisson + DC shadow</tspan><tspan class="es">Poisson + DC sombra</tspan></text>
+            <text x="445" y="52"><tspan class="en">Probabilities</tspan><tspan class="es">Probabilidades</tspan></text><text x="445" y="72"><tspan class="en">1X2 + goals + AH</tspan><tspan class="es">1X2 + goles + AH</tspan></text>
+            <text x="445" y="140">BEST AVAILABLE</text><text x="445" y="160"><tspan class="en">risk-ranked pick</tspan><tspan class="es">opción por riesgo</tspan></text>
             <text x="445" y="228">JSON + audit</text><text x="445" y="248"><tspan class="en">32 synced cards</tspan><tspan class="es">32 tarjetas sincronizadas</tspan></text>
           </g>
           <g stroke="#34d399" stroke-width="3" fill="none" marker-end="url(#arrow)">
@@ -86,8 +86,8 @@
       <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
         <h2 class="text-xl font-bold text-white"><span class="en">How to read this analysis</span><span class="es">Cómo leer este análisis</span></h2>
         <ol class="mt-3 space-y-2 text-sm text-slate-300 list-decimal pl-5">
-          <li><span class="en">There are zero actionable bets in this release.</span><span class="es">No hay apuestas accionables en esta versión.</span></li>
-          <li><span class="en">PASS means the betting policy is not validated; HALT means the apparent edge is suspicious and needs investigation.</span><span class="es">PASS significa que la política de apuestas no está validada; HALT significa que la ventaja aparente es sospechosa y necesita investigación.</span></li>
+          <li><span class="en">Every match has one best-available recommendation; none is a guarantee.</span><span class="es">Cada partido tiene una recomendación de mejor opción disponible; ninguna es garantía.</span></li>
+          <li><span class="en">PASS means the comparison is within investigation limits; HALT means all model edges were suspicious, so the safest market-consensus fallback is shown.</span><span class="es">PASS significa que la comparación está dentro de límites de investigación; HALT significa que todas las ventajas del modelo fueron sospechosas y se muestra la alternativa más segura según el consenso del mercado.</span></li>
           <li><span class="en">Conditional forecasts must be rerun after intervening matches and new lineups/odds.</span><span class="es">Los pronósticos condicionales deben recalcularse después de partidos intermedios y nuevas alineaciones/cuotas.</span></li>
           <li><span class="en">Displayed prices are source evidence, not instructions to place a bet.</span><span class="es">Las cuotas mostradas son evidencia de fuente, no instrucciones para apostar.</span></li>
         </ol>
@@ -98,8 +98,13 @@
           <p><span class="tip" tabindex="0">1X2<span><span class="en">1 = first team wins, X = draw, 2 = second team wins.</span><span class="es">1 = gana el primer equipo, X = empate, 2 = gana el segundo.</span></span></span>: <span class="en">the three full-time result choices.</span><span class="es">las tres opciones de resultado final.</span></p>
           <p><span class="tip" tabindex="0">EV<span><span class="en">Expected value is the estimated average return over many similar bets, not certainty in one match.</span><span class="es">Valor esperado es el retorno promedio estimado en muchas apuestas similares, no certeza en un partido.</span></span></span>: <span class="en">positive does not mean guaranteed.</span><span class="es">positivo no significa garantizado.</span></p>
           <p><span class="tip" tabindex="0">HALT<span><span class="en">The apparent edge is too extreme or disagrees too much with the market, so extra verification is required.</span><span class="es">La ventaja aparente es extrema o discrepa demasiado del mercado, por lo que requiere verificación extra.</span></span></span>: <span class="en">do not treat it as actionable.</span><span class="es">no lo trates como accionable.</span></p>
-          <p><span class="tip" tabindex="0">PASS<span><span class="en">The comparison is published for transparency, but no profitable betting policy has been validated.</span><span class="es">La comparación se publica por transparencia, pero no se ha validado una política de apuestas rentable.</span></span></span>: <span class="en">abstain.</span><span class="es">abstenerse.</span></p>
+          <p><span class="tip" tabindex="0">BEST AVAILABLE<span><span class="en">The highest-ranked sourced choice after stress, market disagreement and family-risk penalties. It can still lose and may have negative stressed EV.</span><span class="es">La opción con mejor ranking después de estrés, desacuerdo con el mercado y penalizaciones de riesgo. Puede perder y tener EV estresado negativo.</span></span></span>: <span class="en">a recommendation, not certainty.</span><span class="es">una recomendación, no certeza.</span></p>
           <p><span class="tip" tabindex="0"><span class="en">Stress EV</span><span class="es">EV estresado</span><span><span class="en">EV after reducing the selected outcome probability by three percentage points; this is a simple robustness check, not a confidence interval.</span><span class="es">EV después de reducir tres puntos porcentuales la probabilidad seleccionada; es una prueba simple de robustez, no un intervalo de confianza.</span></span></span></p>
+          <p><span class="tip" tabindex="0">BTTS<span><span class="en">Both teams to score: Yes wins only if each team scores at least once.</span><span class="es">Ambos equipos marcan: Sí gana solo si cada equipo anota al menos una vez.</span></span></span>: <span class="en">both teams to score.</span><span class="es">ambos equipos marcan.</span></p>
+          <p><span class="tip" tabindex="0"><span class="en">Asian handicap</span><span class="es">Hándicap asiático</span><span><span class="en">A virtual goal adjustment. Quarter lines split the stake across two neighboring half-lines and can create half wins or half losses.</span><span class="es">Un ajuste virtual de goles. Las líneas de cuarto dividen la apuesta entre dos medias líneas y pueden producir media ganancia o media pérdida.</span></span></span>: <span class="en">modeled with win, push and loss settlement.</span><span class="es">modelado con liquidación de victoria, nulo y derrota.</span></p>
+          <p><span class="tip" tabindex="0"><span class="en">Fair odds</span><span class="es">Cuota justa</span><span><span class="en">The model's break-even decimal price before bookmaker margin. It is not a guarantee or a quoted app price.</span><span class="es">La cuota decimal de equilibrio del modelo antes del margen de la casa. No es garantía ni cuota mostrada por una app.</span></span></span>: <span class="en">model price, not sportsbook price.</span><span class="es">precio del modelo, no de la casa.</span></p>
+          <p><span class="tip" tabindex="0">Brier<span><span class="en">A probability error score; lower is better. It checks the whole probability forecast, not only whether the favorite won.</span><span class="es">Una medida de error probabilístico; menor es mejor. Evalúa todo el pronóstico, no solo si ganó el favorito.</span></span></span> / <span class="tip" tabindex="0">NLL<span><span class="en">Negative log likelihood penalizes confident wrong score predictions heavily; lower is better.</span><span class="es">La log-verosimilitud negativa penaliza mucho los marcadores erróneos con alta confianza; menor es mejor.</span></span></span></p>
+          <p><span class="tip" tabindex="0"><span class="en">Decision EV</span><span class="es">EV de decisión</span><span><span class="en">Expected value after shrinking the model toward the de-vigged market. It is still an estimate, not proven profit.</span><span class="es">Valor esperado después de acercar el modelo al mercado sin margen. Sigue siendo una estimación, no beneficio probado.</span></span></span> · <span class="tip" tabindex="0"><span class="en">Win equivalent</span><span class="es">Victoria equivalente</span><span><span class="en">Asian lines can split a stake into full/half wins, pushes, or losses; this is the probability-weighted winning share.</span><span class="es">Las líneas asiáticas pueden dividir la apuesta en ganancias completas/medias, nulos o pérdidas; es la proporción ganadora ponderada.</span></span></span></p>
         </div>
       </div>
     </section>
@@ -118,6 +123,29 @@
     <section id="error" class="hidden rounded-3xl border border-red-800 bg-red-950 p-6 mb-8"></section>
     <section id="cards" class="grid lg:grid-cols-2 gap-6"></section>
 
+    <section class="mt-10 grid lg:grid-cols-2 gap-5">
+      <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
+        <h2 class="text-xl font-bold text-white"><span class="en">ELI5: find the market in Betano</span><span class="es">ELI5: encuentra el mercado en Betano</span></h2>
+        <ol class="mt-3 list-decimal pl-5 space-y-2 text-sm text-slate-300">
+          <li><span class="en">Open Football → World Cup and search for the exact teams and kickoff date.</span><span class="es">Abre Fútbol → Mundial y busca los equipos y la fecha exacta.</span></li>
+          <li><span class="en">Open the match, then choose Result, Total Goals, Both Teams Score, or Asian Handicap shown on the card.</span><span class="es">Abre el partido y elige Resultado, Total de goles, Ambos marcan o Hándicap asiático indicado en la tarjeta.</span></li>
+          <li><span class="en">Match the selection and line exactly; +1, +1.25, Over 0.5, and Draw are different bets.</span><span class="es">Haz coincidir exactamente selección y línea; +1, +1,25, Más de 0,5 y Empate son apuestas diferentes.</span></li>
+          <li><span class="en">Compare the current price with the screenshot price and fair odds. If it moved materially, the displayed EV is stale.</span><span class="es">Compara la cuota actual con la captura y la cuota justa. Si cambió mucho, el EV mostrado está desactualizado.</span></li>
+          <li><span class="en">Confirm full-time settlement and do not assume the recommendation is guaranteed or historically profitable.</span><span class="es">Confirma que liquida al tiempo reglamentario y no supongas que la recomendación está garantizada o es históricamente rentable.</span></li>
+        </ol>
+      </div>
+      <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
+        <h2 class="text-xl font-bold text-white"><span class="en">ELI5: find the market in Betsson</span><span class="es">ELI5: encuentra el mercado en Betsson</span></h2>
+        <ol class="mt-3 list-decimal pl-5 space-y-2 text-sm text-slate-300">
+          <li><span class="en">Open Sports → Football → World Cup and select the exact fixture.</span><span class="es">Abre Deportes → Fútbol → Mundial y selecciona el partido exacto.</span></li>
+          <li><span class="en">Expand Match Result, Total Goals, Both Teams to Score, Asian Handicap, or Handicap + Total as named.</span><span class="es">Despliega Resultado, Total de goles, Ambos marcan, Hándicap asiático o Hándicap + Total según el nombre.</span></li>
+          <li><span class="en">Verify team side, sign, line, and Over/Under leg before comparing the decimal price.</span><span class="es">Verifica equipo, signo, línea y parte Más/Menos antes de comparar la cuota decimal.</span></li>
+          <li><span class="en">Use the card's source filename to audit the old screenshot. Never substitute a similar-looking line.</span><span class="es">Usa el nombre de la captura de la tarjeta para auditar la evidencia. Nunca sustituyas una línea parecida.</span></li>
+          <li><span class="en">Re-check team news and price near kickoff; if either changed, rerun the model rather than relying on this snapshot.</span><span class="es">Revisa noticias y cuota cerca del inicio; si cambiaron, vuelve a ejecutar el modelo en vez de confiar en esta instantánea.</span></li>
+        </ol>
+      </div>
+    </section>
+
     <section class="mt-10 rounded-3xl border border-amber-800/60 bg-amber-950/30 p-5 text-sm text-amber-100">
       <p class="en">Betting carries real risk of financial loss. This is analysis only, not financial advice or a guarantee of outcomes. Past form and model edges do not predict individual match results. If gambling is no longer recreational, contact Peru's Línea 0800-1-3232 (MINCETUR) or Jugadores Anónimos Perú.</p>
       <p class="es">Apostar conlleva riesgo real de pérdida financiera. Esto es solo análisis, no consejo financiero ni garantía de resultados. El rendimiento pasado y las ventajas del modelo no predicen partidos individuales. Si apostar deja de ser recreativo, contacta la Línea 0800-1-3232 (MINCETUR) o Jugadores Anónimos Perú.</p>
@@ -132,16 +160,59 @@ let DATA=null,METRICS=null,AUDIT_COUNT=0;
 function metric(label,value){return `<div class="rounded-2xl border border-slate-800 bg-slate-950 p-3"><div class="text-xs text-slate-500">${label}</div><div class="text-lg font-black text-white">${value}</div></div>`}
 function renderSummary(rows){
  const halted=rows.filter(x=>x.recommendation?.strength==='HALT').length;
- $('#summary').innerHTML=metric('<span class="en">Fixtures</span><span class="es">Partidos</span>',rows.length)+metric('<span class="en">Actionable bets</span><span class="es">Apuestas accionables</span>',0)+metric('HALT',halted)+metric('<span class="en">Holdout Brier</span><span class="es">Brier holdout</span>',Number(METRICS.calibration.holdout_brier).toFixed(4));
+ $('#summary').innerHTML=metric('<span class="en">Fixtures</span><span class="es">Partidos</span>',rows.length)+metric('<span class="en">Best available picks</span><span class="es">Mejores opciones</span>',rows.filter(x=>x.recommendation?.decision_status==='BEST_AVAILABLE').length)+metric('<span class="en">Expanded prices</span><span class="es">Cuotas ampliadas</span>',METRICS.expanded_market_policy.priced_fixtures)+metric('<span class="en">Score NLL</span><span class="es">NLL de marcador</span>',Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4));
  $('#model-evidence').innerHTML=`<p class="font-bold text-white"><span class="en">Validation evidence and limitations</span><span class="es">Evidencia de validación y limitaciones</span></p>
  <p class="mt-2"><span class="en">Selection rows: ${METRICS.calibration.selection_rows}; untouched holdout: ${METRICS.calibration.holdout_rows}; Brier: ${Number(METRICS.calibration.holdout_brier).toFixed(4)}; log loss: ${Number(METRICS.calibration.holdout_log_loss).toFixed(4)}. Uniform baselines are 0.6667 Brier and 1.0986 log loss.</span><span class="es">Filas de selección: ${METRICS.calibration.selection_rows}; holdout intacto: ${METRICS.calibration.holdout_rows}; Brier: ${Number(METRICS.calibration.holdout_brier).toFixed(4)}; log loss: ${Number(METRICS.calibration.holdout_log_loss).toFixed(4)}. Las bases uniformes son 0,6667 Brier y 1,0986 log loss.</span></p>
- <p class="mt-2 text-amber-200"><span class="en">This validates forecast signal only. Historical closing odds are incomplete, so profitability, CLV, ROI and staking tiers are not validated.</span><span class="es">Esto valida solo señal predictiva. Las cuotas históricas de cierre están incompletas, por lo que rentabilidad, CLV, ROI y niveles de apuesta no están validados.</span></p>`;
+ <p class="mt-2"><span class="en">Score holdout: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Over 2.5 Brier ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, BTTS Brier ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles remains a shadow model because its paired-bootstrap confidence interval crosses zero.</span><span class="es">Holdout de goles: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Brier Más de 2,5 ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, Brier ambos marcan ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles sigue como modelo sombra porque su intervalo bootstrap pareado cruza cero.</span></p>
+ <p class="mt-2 text-amber-200"><span class="en">The report ranks one best-available pick per match. Historical closing odds are absent for expanded families, so profitability, CLV, ROI and staking tiers remain unvalidated.</span><span class="es">El informe ordena una mejor opción disponible por partido. No hay cuotas históricas de cierre para mercados ampliados, por lo que rentabilidad, CLV, ROI y niveles de apuesta siguen sin validarse.</span></p>`;
+}
+const pct=p=>`${(Number(p)*100).toFixed(1)}%`;
+const odds=o=>Number(o).toFixed(2);
+function marketLabel(row){
+ const labels={
+  '1x2':['1X2','1X2'],'total_goals':['Total goals','Total de goles'],
+  btts:['BTTS','Ambos marcan'],asian_handicap:['Asian handicap','Hándicap asiático'],
+  double_chance:['Double chance','Doble oportunidad'],
+  handicap_total_combo:['Handicap + total','Hándicap + total']
+ };
+ const value=labels[row.market_family]||[row.market_family,row.market_family];
+ return `<span class="en">${value[0]}</span><span class="es">${value[1]}</span>`;
+}
+function jsonLeaves(value,pointer=''){
+ if(Array.isArray(value))return value.flatMap((item,index)=>jsonLeaves(item,`${pointer}/${index}`));
+ if(value&&typeof value==='object')return Object.keys(value).sort().flatMap(key=>jsonLeaves(value[key],`${pointer}/${key.replaceAll('~','~0').replaceAll('/','~1')}`));
+ return [pointer||'/'];
+}
+function parseCsv(text){
+ const rows=[];let row=[],field='',quoted=false;
+ for(let i=0;i<text.length;i++){
+  const c=text[i],next=text[i+1];
+  if(quoted&&c==='"'&&next==='"'){field+='"';i++;continue}
+  if(c==='"'){quoted=!quoted;continue}
+  if(!quoted&&c===','){row.push(field);field='';continue}
+  if(!quoted&&(c==='\n'||c==='\r')){
+   if(c==='\r'&&next==='\n')i++;
+   row.push(field);field='';if(row.some(x=>x!==''))rows.push(row);row=[];continue
+  }
+  field+=c;
+ }
+ if(field||row.length){row.push(field);rows.push(row)}
+ const header=rows.shift()||[];
+ return rows.map(values=>Object.fromEntries(header.map((key,index)=>[key,values[index]??''])));
 }
 function card(row,index){
  const r=row.recommendation;
  const ptr=`/predictions/${index}`;
  const strength=r?.strength||'PASS';
  const rec=r?`${escapeHtml(r.selection_original)} ${r.line?`(${escapeHtml(r.line)})`:''} @ ${Number(r.odds).toFixed(2)}`:'No supported price / Sin cuota compatible';
+ const over25=row.common_markets.totals.find(x=>x.line===2.5);
+ const ah=row.common_markets.asian_handicap.find(x=>x.home_line===-0.5);
+ const comparisons=row.market_comparisons.slice(0,8).map((m,i)=>`<tr class="border-t border-slate-800">
+   <td class="py-2 pr-2">${i+1}. ${marketLabel(m)}</td>
+   <td class="py-2 pr-2">${escapeHtml(m.selection_original)}${m.handicap_line!==null&&m.handicap_line!==undefined?` (${m.handicap_line>0?'+':''}${m.handicap_line})`:''}</td>
+   <td class="py-2 pr-2 text-right">${odds(m.odds)}</td><td class="py-2 pr-2 text-right">${pct(m.p_win)}</td>
+   <td class="py-2 pr-2 text-right">${odds(m.fair_odds)}</td><td class="py-2 text-right ${m.ev_pct>=0?'text-emerald-300':'text-rose-300'}">${Number(m.ev_pct).toFixed(1)}%</td>
+  </tr>`).join('');
  const sources=(row.research?.source_urls||[]).map(u=>`<a class="text-cyan-400 hover:underline break-all" href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(new URL(u).hostname)}</a>`).join(' · ');
  return `<article class="card-anchor bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden" data-fixture-id="${escapeHtml(row.fixture_id)}" data-date="${row.kickoff_lima.slice(0,10)}" data-strength="${strength}">
    <header class="p-5 border-b border-slate-800 flex justify-between gap-4">
@@ -161,12 +232,34 @@ function card(row,index){
         :'<span class="en">Conditional forecast: rerun after intervening matches and before using updated lineups or odds.</span><span class="es">Pronóstico condicional: recalcular después de partidos intermedios y antes de usar alineaciones o cuotas actualizadas.</span>'}
     </div>
     <div class="mt-3 text-xs text-emerald-300"><span class="en">Field-level subagent audit: PASS</span><span class="es">Auditoría de subagentes por campo: PASS</span> • ${AUDIT_COUNT} <span class="en">manifest datapoints</span><span class="es">datos auditados</span></div>
-    <div class="mt-4 rounded-2xl border border-slate-700 bg-slate-950 p-4">
-      <div class="text-xs text-slate-500"><span class="en">Highest-EV screenshot comparison — not actionable</span><span class="es">Comparación de captura con mayor EV — no accionable</span></div>
-      <div class="mt-1 font-bold text-white" data-json-pointer="${ptr}/recommendation/selection_original">${rec}</div>
-      ${r?`<div class="mt-2 grid grid-cols-3 gap-2 text-sm"><div data-json-pointer="${ptr}/recommendation/ev_pct">EV <b>${r.ev_pct.toFixed(1)}%</b></div><div data-json-pointer="${ptr}/recommendation/stressed_ev_pct"><span class="en">Stress</span><span class="es">Estrés</span> <b>${r.stressed_ev_pct.toFixed(1)}%</b></div><div data-json-pointer="${ptr}/recommendation/confidence"><span class="en">Confidence</span><span class="es">Confianza</span> <b>${r.confidence}%</b></div></div>
-      <div class="mt-2 text-xs text-slate-400">${escapeHtml(r.app)} • ${escapeHtml(r.market_original)} • ${escapeHtml(r.source_image)}</div>`:''}
+    <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
+      <div data-json-pointer="${ptr}/expected_goals/team_a">${metric('<span class="en">Expected goals 1</span><span class="es">Goles esperados 1</span>',Number(row.expected_goals.team_a).toFixed(2))}</div>
+      <div data-json-pointer="${ptr}/expected_goals/team_b">${metric('<span class="en">Expected goals 2</span><span class="es">Goles esperados 2</span>',Number(row.expected_goals.team_b).toFixed(2))}</div>
+      <div data-json-pointer="${ptr}/common_markets/totals/2/over_probability">${metric('<span class="en">Over 2.5</span><span class="es">Más de 2,5</span>',`${pct(over25.over_probability)} · ${odds(over25.over_fair_odds)}`)}</div>
+      <div data-json-pointer="${ptr}/common_markets/btts/yes_probability">${metric('BTTS Yes / Sí',`${pct(row.common_markets.btts.yes_probability)} · ${odds(row.common_markets.btts.yes_fair_odds)}`)}</div>
     </div>
+    <div class="mt-3 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-sm">
+      <div class="font-semibold text-white"><span class="en">Common model markets — probabilities and fair odds</span><span class="es">Mercados comunes del modelo — probabilidades y cuotas justas</span></div>
+      <div class="mt-2 grid sm:grid-cols-3 gap-2 text-slate-300">
+        <div><span class="en">Under 2.5</span><span class="es">Menos de 2,5</span>: <b>${pct(over25.under_probability)}</b> · ${odds(over25.under_fair_odds)}</div>
+        <div>BTTS No: <b>${pct(row.common_markets.btts.no_probability)}</b> · ${odds(row.common_markets.btts.no_fair_odds)}</div>
+        <div><span class="en">Home -0.5 AH</span><span class="es">Local -0,5 HA</span>: <b>${pct(ah.home_probability)}</b> · ${odds(ah.home_fair_odds)}</div>
+      </div>
+      <p class="mt-2 text-xs text-amber-200"><span class="en">Model-derived and experimental. A fair odd is not an app quote or betting instruction.</span><span class="es">Derivado del modelo y experimental. Una cuota justa no es una cuota de app ni una instrucción de apuesta.</span></p>
+    </div>
+    <div class="mt-4 rounded-2xl border border-slate-700 bg-slate-950 p-4">
+      <div class="text-xs text-slate-500"><span class="en">Best available recommendation — risk grade ${r?.risk_grade||'D'}</span><span class="es">Mejor recomendación disponible — riesgo ${r?.risk_grade||'D'}</span></div>
+      <div class="mt-1 font-bold text-white" data-json-pointer="${ptr}/recommendation/selection_original">${rec}</div>
+      ${r?`<div class="mt-2 grid grid-cols-3 gap-2 text-sm"><div data-json-pointer="${ptr}/recommendation/ev_pct"><span class="en">Decision EV</span><span class="es">EV decisión</span> <b>${r.ev_pct.toFixed(1)}%</b></div><div data-json-pointer="${ptr}/recommendation/stressed_ev_pct"><span class="en">Stress</span><span class="es">Estrés</span> <b>${r.stressed_ev_pct.toFixed(1)}%</b></div><div data-json-pointer="${ptr}/recommendation/p_win"><span class="en">Decision probability</span><span class="es">Probabilidad decisión</span> <b>${pct(r.p_win)}</b></div></div>
+      <div class="mt-2 text-xs text-slate-400">${escapeHtml(r.app)} • ${escapeHtml(r.market_original)} • ${escapeHtml(r.source_image)} • <span class="en">fair</span><span class="es">justa</span> ${odds(r.fair_odds)}</div>
+      <div class="mt-2 text-xs text-amber-200"><span class="en">${r.selection_reason==='all_model_edges_halted_select_highest_market_probability'?'All model edges were HALT; selected the highest market-probability fallback.':'Selected by uncertainty-adjusted expected-profit utility.'} Profitability is not historically validated.</span><span class="es">${r.selection_reason==='all_model_edges_halted_select_highest_market_probability'?'Todas las ventajas fueron HALT; se eligió la alternativa con mayor probabilidad de mercado.':'Elegida por utilidad de beneficio esperado ajustada por incertidumbre.'} La rentabilidad no está validada históricamente.</span></div>`:''}
+    </div>
+    <details class="mt-4 rounded-2xl border border-slate-800 p-4">
+      <summary class="cursor-pointer font-semibold"><span class="en">Ranked screenshot market comparisons</span><span class="es">Comparaciones de cuotas de capturas ordenadas</span> (${row.market_comparisons.length})</summary>
+      ${comparisons?`<div class="overflow-x-auto mt-3"><table class="w-full min-w-[680px] text-xs text-slate-300"><thead><tr class="text-slate-500 text-left"><th class="pb-2"><span class="en">Market</span><span class="es">Mercado</span></th><th class="pb-2"><span class="en">Selection</span><span class="es">Selección</span></th><th class="pb-2 text-right"><span class="en">App odd</span><span class="es">Cuota app</span></th><th class="pb-2 text-right"><span class="en">Win eq.</span><span class="es">Victoria eq.</span></th><th class="pb-2 text-right"><span class="en">Fair</span><span class="es">Justa</span></th><th class="pb-2 text-right">EV</th></tr></thead><tbody>${comparisons}</tbody></table></div>
+      <p class="mt-2 text-xs text-amber-200"><span class="en">Ranked for audit inspection only; all rows are experimental and non-actionable.</span><span class="es">Ordenado solo para inspección de auditoría; todas las filas son experimentales y no accionables.</span></p>`
+      :`<p class="mt-3 text-sm text-slate-400"><span class="en">No complete expanded screenshot market was available. Model probabilities above remain available without fabricated prices or EV.</span><span class="es">No hubo un mercado ampliado completo en capturas. Las probabilidades del modelo siguen disponibles sin inventar cuotas ni EV.</span></p>`}
+    </details>
     <details class="mt-4 rounded-2xl border border-slate-800 p-4">
       <summary class="cursor-pointer font-semibold"><span class="en">Research, risks and ELI5</span><span class="es">Investigación, riesgos y ELI5</span></summary>
       <div class="mt-3 space-y-3 text-sm text-slate-300">
@@ -178,7 +271,7 @@ function card(row,index){
         <div class="es"><p><b>Notas OSINT:</b> Las notas originales se conservaron en inglés para no introducir una traducción no verificada. Consulta las fuentes enlazadas y el CSV de investigación para el texto exacto.</p></div>
         <div class="en"><ul class="list-disc pl-5">${row.risk_notes.en.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
         <div class="es"><ul class="list-disc pl-5">${row.risk_notes.es.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
-        <p><b>ELI5:</b> <span class="en">This row compares a model probability with an old screenshot price. PASS and HALT both mean “do not treat as a bet.” Use it to inspect the model, not to execute a wager.</span><span class="es">Esta fila compara una probabilidad del modelo con una cuota antigua de captura. PASS y HALT significan “no tratar como apuesta”. Úsala para inspeccionar el modelo, no para ejecutar una apuesta.</span></p>
+        <p><b>ELI5:</b> <span class="en">This is the model's best available choice among the sourced prices, after shrinking toward the market and stress-testing assumptions. It can still lose; re-check the exact price and current team news.</span><span class="es">Esta es la mejor opción disponible del modelo entre las cuotas con fuente, después de acercarse al mercado y probar escenarios de estrés. Puede perder; revisa la cuota exacta y las noticias actuales.</span></p>
         <p class="text-xs">${sources}</p>
       </div>
     </details>
@@ -201,8 +294,14 @@ async function load(){
   if(!auditResponse.ok)throw new Error(`audit.csv HTTP ${auditResponse.status}`);
   DATA=await response.json(); METRICS=await metricsResponse.json();
   const auditText=await auditResponse.text();
-  const auditRows=auditText.trim().split(/\r?\n/).slice(1);
-  if(!auditRows.length||auditRows.some(line=>!line.endsWith(',PASS')))throw new Error('Datapoint audit is incomplete or blocked');
+  const auditRows=parseCsv(auditText);
+  if(!auditRows.length||auditRows.some(row=>row.final_status!=='PASS'))throw new Error('Datapoint audit is incomplete or blocked');
+  const expectedPaths=new Set([
+   ...jsonLeaves(DATA).map(pointer=>`wc_june22_27_predictions.json:${pointer}`),
+   ...jsonLeaves(METRICS).map(pointer=>`wc_june22_27_model_metrics.json:${pointer}`)
+  ]);
+  const auditedPaths=new Set(auditRows.map(row=>`${row.output_artifact}:${row.json_pointer}`));
+  if(expectedPaths.size!==auditedPaths.size||[...expectedPaths].some(path=>!auditedPaths.has(path)))throw new Error('Datapoint audit does not exactly cover current JSON leaves');
   AUDIT_COUNT=auditRows.length;
   if(DATA.batch.fixture_count!==32||DATA.predictions.length!==32)throw new Error('Expected exactly 32 predictions');
   const ids=new Set(DATA.predictions.map(x=>x.fixture_id)); if(ids.size!==32)throw new Error('Duplicate fixture IDs');

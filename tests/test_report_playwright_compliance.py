@@ -75,12 +75,15 @@ def test_rendered_recommendations_match_json(page):
         card = browser_page.locator(f'[data-fixture-id="{item["fixture_id"]}"]')
         assert card.count() == 1
         rec = item["recommendation"]
-        if rec:
-            assert rec["selection_original"] in card.inner_text()
-            displayed = re.search(r"EV (-?\d+\.\d)%", card.inner_text())
-            assert displayed
-            assert float(displayed.group(1)) == pytest.approx(rec["ev_pct"], abs=0.11)
-            assert rec["strength"] in card.inner_text()
+        assert rec is not None
+        assert rec["decision_status"] == "BEST_AVAILABLE"
+        text = card.inner_text()
+        assert rec["selection_original"] in text
+        displayed = re.search(r"Decision EV (-?\d+\.\d)%", text)
+        assert displayed
+        assert float(displayed.group(1)) == pytest.approx(rec["ev_pct"], abs=0.11)
+        assert rec["strength"] in text
+        assert f"risk grade {rec['risk_grade']}" in text
 
 
 def test_forbidden_legacy_fixtures_are_absent(page):

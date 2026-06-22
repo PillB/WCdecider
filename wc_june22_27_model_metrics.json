@@ -1,5 +1,5 @@
 {
-  "version": "june22_27_integrity_v1",
+  "version": "june22_27_best_available_v3",
   "seed": 42,
   "dataset_a_rows": 132,
   "dataset_b_rows": 121,
@@ -33,9 +33,77 @@
     "holdout_brier": 0.573469096305491,
     "holdout_log_loss": 0.9375854971036603
   },
+  "score_market_calibration": {
+    "mu_total": 2.5,
+    "allocation": 0.35,
+    "gap_scale": 350.0,
+    "gap_intensity": 0.15,
+    "mean_score_nll": 2.9521401458657976,
+    "mean_over_2_5_brier": 0.24796195435812196,
+    "mean_btts_brier": 0.24723298510644978,
+    "selection_rows": 215,
+    "holdout_rows": 38,
+    "production_model": "tuned_elo_independent_poisson",
+    "production_holdout": {
+      "score_nll": 3.0492461988649198,
+      "over_2_5_brier": 0.2503893428777757,
+      "btts_brier": 0.25295341412252137
+    },
+    "shadow_model": "dixon_coles_low_score_correction",
+    "shadow_rho": -0.15,
+    "shadow_selection": {
+      "rho": -0.15,
+      "mean_score_nll": 2.9397050158054947,
+      "mean_over_2_5_brier": 0.24796195435812196,
+      "mean_btts_brier": 0.24810756992326496
+    },
+    "shadow_holdout": {
+      "score_nll": 3.03931254460748,
+      "over_2_5_brier": 0.2503893428777757,
+      "btts_brier": 0.24918005263712031
+    },
+    "holdout_selection_rate_baselines": {
+      "selection_over_2_5_rate": 0.43164488017429326,
+      "selection_btts_rate": 0.4286492374727682,
+      "over_2_5_brier": 0.2582700602919503,
+      "btts_brier": 0.2663568411859382
+    },
+    "shadow_paired_bootstrap": {
+      "score_nll": {
+        "challenger_minus_production_mean": -0.009933654257440194,
+        "ci_95_lower": -0.043253606108184274,
+        "ci_95_upper": 0.025483860627948805,
+        "iterations": 2000,
+        "statistically_secure_improvement": false
+      },
+      "over_2_5_brier": {
+        "challenger_minus_production_mean": 4.382459307730881e-18,
+        "ci_95_lower": -7.304098846218135e-18,
+        "ci_95_upper": 1.7529837230923523e-17,
+        "iterations": 2000,
+        "statistically_secure_improvement": false
+      },
+      "btts_brier": {
+        "challenger_minus_production_mean": -0.0037733614854011358,
+        "ci_95_lower": -0.008954249992824796,
+        "ci_95_upper": 0.0016432678852956188,
+        "iterations": 2000,
+        "statistically_secure_improvement": false
+      }
+    },
+    "policy_status": "experimental_non_actionable_no_historical_market_odds"
+  },
   "mu_dataset_a": 2.628787878787879,
   "mu_dataset_b": 2.4441964285714297,
-  "mu_production": 2.582640016233767,
+  "mu_production": 2.5,
+  "expanded_market_policy": {
+    "status": "best_available_recommendations_unvalidated_profitability",
+    "reason": "No timestamped historical totals, BTTS, Asian-handicap, or combo prices exist for untouched profitability validation.",
+    "priced_fixtures": 12,
+    "all_fixture_probability_coverage": 32,
+    "recommendations_required": 32,
+    "selection_rule": "maximize minimum(base EV, stressed EV) minus 0.35*model-market divergence and market-family uncertainty penalties"
+  },
   "input_hashes": {
     "wc_backtest_historical_dataset.csv": "41a5c7732582314e32d42135ee09f212a7e4fe70f398d491df8b80f6275b3add",
     "wc_2026_results_through_june21.csv": "478fe45b6945af10e10cdf637ba84dc876dc92bc62795074c064a0035ae37c7a",
@@ -49,5 +117,5 @@
     "research_june24_25.csv": "d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517",
     "research_june26_27.csv": "5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60"
   },
-  "pipeline_sha256": "71b5e149b0884d081fdb12b87e513a971ce44532bbc2971a7b3ac68bc69eef3e"
+  "pipeline_sha256": "b6af5946a54443424f04ca170e1a78ead21cf582c8e9681e1d7e01fe116588af"
 }

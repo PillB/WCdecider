@@ -79,9 +79,16 @@ def source_for(artifact: str, pointer: str, fixture_id: str) -> Tuple[str, str, 
         return "wc_odds_june_22-27.csv", fixture_id, (
             f"{PREDICTIONS.name}:{base}/probabilities/team_a_win;"
             f"{PREDICTIONS.name}:{base}/probabilities/draw;"
-            f"{PREDICTIONS.name}:{base}/probabilities/team_b_win"
+            f"{PREDICTIONS.name}:{base}/probabilities/team_b_win;"
+            f"{PREDICTIONS.name}:{base}/expected_goals/team_a;"
+            f"{PREDICTIONS.name}:{base}/expected_goals/team_b"
         )
-    if any(token in pointer for token in ("/probabilities/", "/expected_goals/")):
+    if "/market_comparisons/" in pointer:
+        return "wc_odds_june_22-27.csv", fixture_id, "/model/pipeline_sha256"
+    if any(token in pointer for token in (
+        "/probabilities/", "/expected_goals/", "/common_markets/",
+        "/score_market_model/",
+    )):
         return "wc_june22_27_model_dataset.csv", fixture_id, (
             "/model/calibration;/model/mu_production"
         )

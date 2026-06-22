@@ -1,25 +1,25 @@
 {
-  "git_commit": "PENDING_CORRECTED_RELEASE",
+  "git_commit": "PENDING_BEST_AVAILABLE_RELEASE",
   "global": {
     "owner": {
-      "id": "019eefef-6d6d-7550-98c9-f22314357e29",
+      "id": "019ef0d8-4409-72d3-a318-e97de6517cc0",
       "status": "PASS",
-      "evidence": "Independent model/backtest audit: holdout metrics, policy, hashes, no 1.10 near-certain bet."
+      "evidence": "Fresh model-owner audit passed: 215/38 chronological split; gap_intensity 0.15 improved score NLL, Over 2.5 and BTTS holdout metrics; 15 double-chance rows matched; 32 BEST_AVAILABLE recommendations and six all-HALT fallbacks reproduced; neural candidates rejected; no certainty claim."
     },
     "replication_1": {
-      "id": "019ef029-089c-7e72-9a44-4d21cb9e2af7",
+      "id": "019ef0d8-45a9-7c61-9ba9-e5cb01265fea",
       "status": "PASS",
-      "evidence": "Isolated rebuild and 1,565-leaf manifest coverage passed; hashes, distinct roles, fail-closed behavior, 32 fixtures, policy and freshness reproduced."
+      "evidence": "Independent re-audit confirmed exact 20,875/20,875 leaf coverage, zero missing/extra/duplicate paths, all canonical/source/pipeline/mission hashes, four distinct current reviewer IDs, and prior byte-identical reproduction of all nine artifacts and 32 recommendations."
     },
     "replication_2": {
-      "id": "019ef029-1b89-7eb1-9112-678204b56464",
+      "id": "019ef0d8-4795-73f2-8f4a-f91fa92909b7",
       "status": "PASS",
-      "evidence": "Byte-identical nine-artifact rebuild, chronology/holdout, calibration, hashes, 32 fixtures and deterministic 1,565-leaf all-PASS manifest simulation verified."
+      "evidence": "Read-only re-audit confirmed exact 20,875/20,875 leaf coverage, all value/source/pipeline/mission and 32 recommendation hashes, recommendation formulas/rankings, six all-HALT fallbacks, and four distinct current reviewer IDs."
     },
     "editor": {
-      "id": "019ef029-2ef9-71a3-b8bc-3b5d90a32306",
+      "id": "019eeff0-0d5c-7643-92f4-16b639c9afb0",
       "status": "PASS",
-      "evidence": "Final element-by-element corrected-report audit passed with no remaining editor/UIUX blocker."
+      "evidence": "Final independent editor audit verified exact 20,875-leaf audit-pointer coverage and fail-closed rendering; 32 recommendation/EV/risk/source/freshness parity; bilingual jargon help and five-step Betano/Betsson navigation; accessibility/responsive controls; no stale fixtures; and comparative, non-guaranteed, profitability-unvalidated wording."
     }
   },
   "fixtures": {}

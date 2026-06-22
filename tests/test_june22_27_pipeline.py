@@ -60,6 +60,81 @@ def test_asian_quarter_lines_split_into_adjacent_half_lines():
     assert pipeline.split_quarter_line(-1.0) == (-1.0,)
 
 
+def test_asian_quarter_settlement_has_half_win_and_half_push():
+    assert pipeline.settle_asian_handicap(1, -0.75, 2.0) == pytest.approx(
+        (0.5, 0.5, 0.0, 0.5)
+    )
+    assert pipeline.settle_asian_handicap(0, 0.25, 2.0) == pytest.approx(
+        (0.5, 0.5, 0.0, 0.5)
+    )
+    assert pipeline.settle_asian_handicap(-1, 0.75, 2.0) == pytest.approx(
+        (0.0, 0.5, 0.5, -0.5)
+    )
+
+
+def test_handicap_total_parser_requires_two_explicit_lines():
+    assert pipeline.parse_handicap_total_market(
+        "-1.5 Handicap + Total Goals 2.5"
+    ) == (-1.5, 2.5)
+    assert pipeline.parse_handicap_total_market("Price Boost") is None
+
+
+def test_expanded_market_schema_has_only_complete_supported_groups():
+    fixtures = read_rows("wc_2026_matches_june_22-27.csv")
+    rows = pipeline.load_and_merge_odds(fixtures)
+    supported = {
+        "1x2", "total_goals", "btts", "double_chance",
+        "asian_handicap", "handicap_total_combo",
+    }
+    groups = {}
+    for row in rows:
+        if row["market_group_id"]:
+            groups.setdefault(row["market_group_id"], []).append(row)
+    assert sum(row["market_family"] == "total_goals" for row in rows) == 224
+    assert sum(row["market_family"] == "btts" for row in rows) == 36
+    assert sum(row["market_family"] == "asian_handicap" for row in rows) == 110
+    assert sum(row["market_family"] == "handicap_total_combo" for row in rows) == 48
+    for group in groups.values():
+        family = group[0]["market_family"]
+        if family not in supported or group[0]["is_complete_market"] != "true":
+            continue
+        selections = {row["selection_canonical"] for row in group}
+        if family == "total_goals":
+            assert selections == {"over", "under"}
+        elif family == "btts":
+            assert selections == {"yes", "no"}
+        elif family == "asian_handicap":
+            assert selections == {"home", "away"}
+            lines = sorted(float(row["handicap_selected_line"]) for row in group)
+            assert lines[0] == pytest.approx(-lines[-1])
+        elif family == "handicap_total_combo":
+            assert selections == {"home_over", "home_under", "away_over", "away_under"}
+
+
+def test_score_market_calibration_is_chronological_and_non_actionable():
+    config = pipeline.calibrate_score_model(pipeline.load_historical())
+    assert config["selection_rows"] == 215
+    assert config["holdout_rows"] == 38
+    assert config["production_model"] == "tuned_elo_independent_poisson"
+    assert config["shadow_model"] == "dixon_coles_low_score_correction"
+    assert config["policy_status"].startswith("experimental_non_actionable")
+    assert config["production_holdout"]["score_nll"] > 0
+    assert config["production_holdout"]["over_2_5_brier"] < 1
+    assert config["production_holdout"]["btts_brier"] < 1
+    baselines = config["holdout_selection_rate_baselines"]
+    assert 0.0 < baselines["selection_over_2_5_rate"] < 1.0
+    assert 0.0 < baselines["selection_btts_rate"] < 1.0
+    for comparison in config["shadow_paired_bootstrap"].values():
+        assert comparison["iterations"] == 2000
+        assert comparison["ci_95_lower"] <= comparison["ci_95_upper"]
+    assert (
+        config["shadow_paired_bootstrap"]["score_nll"][
+            "statistically_secure_improvement"
+        ]
+        is False
+    )
+
+
 def test_dataset_a_and_b_are_disjoint_by_competition():
     rows = pipeline.load_historical()
     finals = {"WC_2018_GROUP", "WC_2022_GROUP", "WC_2026_GROUP"}
@@ -173,6 +248,95 @@ def test_audit_generator_is_deterministic():
         text=True,
     )
     assert (ROOT / "wc_june22_27_datapoint_audit.csv").read_bytes() == first
+
+
+def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
+    payload = json.loads(
+        (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    assert len(payload["predictions"]) == 32
+    priced = 0
+    recommendations = 0
+    for row in payload["predictions"]:
+        assert row["common_markets"]["policy_status"] == "experimental_non_actionable"
+        assert len(row["common_markets"]["totals"]) == 6
+        assert len(row["common_markets"]["asian_handicap"]) == 7
+        assert len(row["common_markets"]["total_goals_buckets"]) == 6
+        assert len(row["common_markets"]["top_correct_scores"]) == 5
+        assert sum(
+            bucket["probability"]
+            for bucket in row["common_markets"]["total_goals_buckets"]
+        ) == pytest.approx(1.0, abs=6e-6)
+        double_chance = row["common_markets"]["double_chance"]
+        assert 0.0 < double_chance["home_or_draw_probability"] < 1.0
+        assert 0.0 < double_chance["home_or_away_probability"] < 1.0
+        assert 0.0 < double_chance["draw_or_away_probability"] < 1.0
+        assert row["score_market_model"]["policy_status"] == "experimental_non_actionable"
+        for comparison in row["market_comparisons"]:
+            assert comparison["source_image"]
+            assert len(comparison["source_sha256"]) == 64
+            assert comparison["policy_status"] == "experimental_non_actionable"
+        if any(row["expanded_price_coverage"].values()):
+            priced += 1
+        recommendation = row["recommendation"]
+        assert recommendation is not None
+        recommendations += 1
+        assert recommendation["decision_status"] == "BEST_AVAILABLE"
+        assert recommendation["risk_grade"] in {"A", "B", "C", "D"}
+        assert recommendation["profitability_validation"] == (
+            "not_validated_historical_market_odds"
+        )
+        assert recommendation["source_image"]
+        assert len(recommendation["source_sha256"]) == 64
+        assert recommendation["fair_odds"] > 1.0
+        matching = [
+            comparison for comparison in row["market_comparisons"]
+            if comparison["app"] == recommendation["app"]
+            and comparison["source_image"] == recommendation["source_image"]
+            and comparison["market_family"] == recommendation["market_family"]
+            and comparison["market_original"] == recommendation["market_original"]
+            and comparison["selection_original"] == recommendation["selection_original"]
+        ]
+        assert matching
+        selected_comparison = next(
+            comparison for comparison in matching
+            if comparison["recommendation_utility"]
+            == recommendation["recommendation_utility"]
+        )
+        non_halt = [
+            comparison for comparison in row["market_comparisons"]
+            if comparison["strength"] != "HALT"
+        ]
+        if non_halt:
+            assert recommendation["selection_reason"] == (
+                "highest_uncertainty_adjusted_expected_profit"
+            )
+            assert selected_comparison["recommendation_utility"] == max(
+                comparison["recommendation_utility"]
+                for comparison in non_halt
+            )
+        else:
+            assert recommendation["selection_reason"] == (
+                "all_model_edges_halted_select_highest_market_probability"
+            )
+            assert selected_comparison["market_probability"] == max(
+                comparison["market_probability"]
+                for comparison in row["market_comparisons"]
+            )
+        common_dc = row["common_markets"]["double_chance"]
+        for comparison in row["market_comparisons"]:
+            if comparison["market_family"] != "double_chance":
+                continue
+            expected = {
+                "AD": common_dc["home_or_draw_probability"],
+                "AB": common_dc["home_or_away_probability"],
+                "DB": common_dc["draw_or_away_probability"],
+            }[comparison["selection_canonical"]]
+            assert comparison["p_win"] == pytest.approx(expected, abs=2e-6)
+    assert priced == 12
+    assert recommendations == 32
+    assert payload["model"]["expanded_market_policy"]["priced_fixtures"] == 12
+    assert payload["model"]["expanded_market_policy"]["recommendations_required"] == 32
 
 
 def test_full_build_emits_exactly_32_predictions_when_inputs_are_complete(tmp_path, monkeypatch):

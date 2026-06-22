@@ -18,9 +18,22 @@ Column derivations:
 - probabilities: chronologically calibrated Elo three-way conversion.
 - parameter grid: divisor {350,400,450,500}; draw_base {.14,.16,.18,.20,.22}; draw_slope {.06,.08,.10,.12}.
 - selection split: first 85% by time; final 15% untouched holdout. Selection rows use four ordered windows after the first 55%.
-- expected goals: 75% Dataset A mean + 25% Dataset B mean; team share = .5 + .34*tanh(Elo gap/420).
-- score grid: independent Poisson scores 0..10, renormalized. It is descriptive only in this release.
-- EV/recommendations: standard full-time 1X2 markets only in this release.
+- score-model parameter grid: base total goals {2.25,2.50,2.75,3.00}; allocation {.30,.35,.40}; Elo gap scale {350,420,500}; gap intensity {0,.15,.30,.45}.
+- expected goals: match total = base_mu + gap_intensity*abs(Elo gap)/400, bounded to [1.5,4.5], then split as .5 + allocation*tanh(Elo gap/gap_scale).
+- score grid: tuned independent Poisson scores 0..10, renormalized; Dixon-Coles rho {-0.15,-0.10,-0.05,0,.05,.10,.15} is evaluated as a shadow challenger only.
+- score-market outputs: totals 0.5–5.5, BTTS, double chance, total-goal buckets, top correct scores, and Asian handicaps are derived by exact score-grid summation.
+- Asian settlement: integer/half lines settle directly; quarter lines split the stake equally across adjacent half-lines and preserve win/push/loss equivalents.
+- handicap-plus-total settlement: the signed header handicap applies to selection 1/home and the opposite line to selection 2/away; the total leg and handicap leg are evaluated jointly on each score state.
+- visually checked combo semantics: IMG_7660.PNG confirms a negative home header; IMG_7677.PNG confirms the corresponding positive-home convention.
+- normalized odds schema: market family, period, settlement rule, selected team, canonical selection, handicap/total lines, combo legs, market group, completeness, transcription status, and confidence.
+- unsupported or ambiguous markets: result handicap, early payout, corners, heterogeneous boosts, and incomplete/truncated selections are retained as source rows but excluded from evaluation.
+- double-chance consistency: displayed fair prices and screenshot EV both use the same production score grid.
+- decision stack: 1X2 starts at 50% structural model / 50% de-vigged market; expanded families start at 35% / 65%; model weight shrinks further as divergence approaches 25pp.
+- recommendation utility: minimum(decision EV, stressed decision EV) minus 0.35*divergence, family uncertainty, and HALT penalties.
+- exactly one recommendation: choose the highest utility non-HALT row; if every row is HALT, select the highest de-vigged market-probability outcome and disclose the fallback.
+- expanded-market policy: recommendations are best-available comparisons; historical profitability remains unvalidated because the holdout has no timestamped totals/BTTS/Asian/combo prices for ROI or CLV.
+- price coverage: all 32 fixtures receive model probabilities/fair prices; EV is computed only for complete screenshot-derived source markets, currently on 12 fixtures.
+- recommendation labels: BEST_AVAILABLE is mandatory per fixture; PASS/HALT remain diagnostic and no label implies certainty.
 - stress EV: subtract 3 percentage points from selected win probability and add 3 points to loss probability.
 - classification: divergence >15pp or EV >25% HALT; all other selections PASS until recommendation-policy profitability is validated out of sample.
 - source_sha256: SHA-256 of the exact screenshot containing the price.
@@ -42,14 +55,14 @@ Input hashes:
 - wc_2026_results_through_june21.csv: 478fe45b6945af10e10cdf637ba84dc876dc92bc62795074c064a0035ae37c7a
 - wc_backtest_historical_dataset.csv: 41a5c7732582314e32d42135ee09f212a7e4fe70f398d491df8b80f6275b3add
 - wc_team_elo_baseline_june11.csv: f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b
-- pipeline: 71b5e149b0884d081fdb12b87e513a971ce44532bbc2971a7b3ac68bc69eef3e
+- pipeline: b6af5946a54443424f04ca170e1a78ead21cf582c8e9681e1d7e01fe116588af
 
 Generated artifact hashes:
 - wc_dataset_a_world_cups.csv: 7201bba4742ec97394b68c00056235996d6b4ea3df1bc4093e59857290b40be3
 - wc_dataset_b_supplementary.csv: ec3eac9206beb113cd88e27ea00610edf9ddce60c913910f61760517ec86d2db
-- wc_june22_27_model_dataset.csv: 0f136c404146c43bf0e826b52ff2419d25b4ae34d06a94a36a85c6b8474d7bc6
-- wc_june22_27_model_metrics.json: 2adaa7c7753b236bfc951875fa207915b92cd317eb13243099568ca91bf6c705
-- wc_june22_27_predictions.json: 948f8ef97466be624181f2fe7c8222e1e244022ac034ddf115a49c1b516a93a9
-- wc_odds_june_22-27.csv: 01f7ee6934cd2fe24500c5971c0c70b27d83bd3cc6cded5fe31be2197f3cc296
+- wc_june22_27_model_dataset.csv: 90e6d330db0fd7ca540d5f32137ca3a25fb8d65093285e8dcf14321a359162fc
+- wc_june22_27_model_metrics.json: d28dac737c1037dd7b9c797555916598e198cce3be05a48afbfc2dd96ba4eafb
+- wc_june22_27_predictions.json: 9c30f27045dff049ce66c210f77445331554e521459d85e6c27d065a08560703
+- wc_odds_june_22-27.csv: e110813231b42e04bbd020a59afc6d24ba1e36e4704af9ee529c4f6d05081317
 - wc_research_june22_27.csv: 1e7310c443256c70a9c31afebda811a04c557f7f88c59f5514da49128b88d22d
 - wc_screenshot_manifest_june22_27.csv: f19cbe911a219616ad492f879c3a04296ea05ba73928d3326e694ec15c0deab0

@@ -12,9 +12,11 @@ This file is the binding operating contract for every data, model, recommendatio
 - Model selection is chronological. The untouched holdout is not used for parameter or policy selection.
 - A positive point-estimate EV is not automatically actionable.
 - Football bets are never “surefire.” A price near 1.10 still has loss risk, model risk, void/settlement risk, and market-vig risk.
-- Do not publish `STRONG`, `MODERATE`, or `SPECULATIVE` tiers unless a separate out-of-sample betting-policy validation supports them. The current safe classes are:
-  - `PASS`: no actionable recommendation.
-  - `HALT`: apparent edge is extreme or conflicts with the market and requires investigation; it is not a bet recommendation.
+- Publish exactly one `BEST_AVAILABLE` recommendation per canonical fixture.
+- `BEST_AVAILABLE` means the highest-ranked sourced choice under the documented uncertainty-adjusted utility; it does not mean profitable, safe, or certain.
+- Retain diagnostic classes:
+  - `PASS`: the model-market comparison is within investigation limits.
+  - `HALT`: the model edge conflicts materially with the market. If every choice is HALT, recommend the highest de-vigged market-probability outcome and disclose that fallback.
 - Current match cards and all displayed numbers are generated from JSON, never hand-authored.
 - Every published datapoint must have subagent audit ownership recorded in the datapoint audit manifest.
 - The user makes all staking decisions. Analysis must contain uncertainty and responsible-gambling language.
@@ -107,7 +109,7 @@ Rules:
 - Complexity must beat a simpler baseline on untouched data and calibration, not only training fit.
 - Hyperparameters and ensemble weights are selected before the final holdout.
 - Report Brier score, log loss, calibration, sample size, and confidence intervals.
-- Do not use a market family for recommendations until its settlement and policy are independently validated.
+- A market family may enter the mandatory best-available ranking only when its settlement is validated and a complete sourced price exists. Unvalidated profitability must remain explicit.
 
 ## 7. “Near-certain” and low-odds analysis
 
@@ -132,7 +134,7 @@ The delivered pipeline must:
 5. Evaluate untouched holdout metrics.
 6. Update ratings using verified elapsed results.
 7. Generate probabilities and supported market comparisons.
-8. Apply conservative `PASS`/`HALT` policy.
+8. Rank exactly one `BEST_AVAILABLE` recommendation per fixture using stressed EV, market shrinkage, disagreement, and family-risk penalties while retaining `PASS`/`HALT` diagnostics.
 9. Export model dataset, normalized odds, metrics, predictions, provenance, research, screenshot manifest, and datapoint audit manifest.
 10. Produce deterministic outputs from the same inputs.
 

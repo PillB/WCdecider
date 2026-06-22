@@ -32,11 +32,13 @@ import csv
 import hashlib
 import json
 import math
+import random
+import re
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date, datetime
 from pathlib import Path
-from typing import Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
+from typing import Callable, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 ROOT = Path(__file__).resolve().parent
 HISTORICAL = ROOT / "wc_backtest_historical_dataset.csv"
@@ -437,10 +439,263 @@ def score_matrix(lam_a: float, lam_b: float, max_goals: int = 10) -> List[Tuple[
     return [(a, b, p / total) for a, b, p in matrix]
 
 
-def expected_lambdas(elo_a: float, elo_b: float, mu_total: float, adj_a: float, adj_b: float) -> Tuple[float, float]:
+def dixon_coles_score_matrix(
+    lam_a: float, lam_b: float, rho: float, max_goals: int = 10,
+) -> List[Tuple[int, int, float]]:
+    """Return a normalized Poisson score grid with low-score correction.
+
+    ``rho=0`` reproduces independent Poisson. The correction is used as a
+    shadow challenger until its improvement is statistically established.
+
+    Example:
+        >>> round(sum(p for _, _, p in dixon_coles_score_matrix(1.4, 1.1, -0.05)), 12)
+        1.0
+    """
+    matrix = []
+    for ga in range(max_goals + 1):
+        for gb in range(max_goals + 1):
+            tau = 1.0
+            if ga == 0 and gb == 0:
+                tau = 1.0 - lam_a * lam_b * rho
+            elif ga == 0 and gb == 1:
+                tau = 1.0 + lam_a * rho
+            elif ga == 1 and gb == 0:
+                tau = 1.0 + lam_b * rho
+            elif ga == 1 and gb == 1:
+                tau = 1.0 - rho
+            probability = poisson_pmf(lam_a, ga) * poisson_pmf(lam_b, gb)
+            matrix.append((ga, gb, max(EPS, tau) * probability))
+    total = sum(p for _, _, p in matrix)
+    return [(a, b, p / total) for a, b, p in matrix]
+
+
+def expected_lambdas(
+    elo_a: float, elo_b: float, mu_total: float, adj_a: float, adj_b: float,
+    allocation: float = 0.34, gap_scale: float = 420.0,
+    gap_intensity: float = 0.0,
+) -> Tuple[float, float]:
     gap = (elo_a + adj_a) - (elo_b + adj_b)
-    share = 0.5 + 0.34 * math.tanh(gap / 420.0)
-    return max(0.12, mu_total * share), max(0.12, mu_total * (1.0 - share))
+    match_mu = max(
+        1.5, min(4.5, mu_total + gap_intensity * abs(gap) / 400.0)
+    )
+    share = 0.5 + allocation * math.tanh(gap / gap_scale)
+    return (
+        max(0.12, match_mu * share),
+        max(0.12, match_mu * (1.0 - share)),
+    )
+
+
+def score_model_metrics(
+    rows: Sequence[HistoricalRow], mu_total: float, allocation: float,
+    gap_scale: float, gap_intensity: float = 0.0, rho: float = 0.0,
+) -> Dict[str, float]:
+    """Evaluate a score model with proper scores on chronological rows."""
+    nll = over25 = btts = weight_sum = 0.0
+    for row in rows:
+        la, lb = expected_lambdas(
+            row.elo_a, row.elo_b, mu_total, 0.0, 0.0, allocation, gap_scale,
+            gap_intensity,
+        )
+        matrix = dixon_coles_score_matrix(la, lb, rho)
+        observed = next(
+            (prob for ga, gb, prob in matrix if ga == row.score_a and gb == row.score_b),
+            EPS,
+        )
+        p_over25 = event_probability(matrix, lambda ga, gb: ga + gb > 2.5)
+        p_btts = event_probability(matrix, lambda ga, gb: ga > 0 and gb > 0)
+        y_over25 = 1.0 if row.score_a + row.score_b > 2.5 else 0.0
+        y_btts = 1.0 if row.score_a > 0 and row.score_b > 0 else 0.0
+        nll += -math.log(max(EPS, observed)) * row.weight
+        over25 += (p_over25 - y_over25) ** 2 * row.weight
+        btts += (p_btts - y_btts) ** 2 * row.weight
+        weight_sum += row.weight
+    return {
+        "score_nll": nll / weight_sum,
+        "over_2_5_brier": over25 / weight_sum,
+        "btts_brier": btts / weight_sum,
+    }
+
+
+def score_model_row_losses(
+    rows: Sequence[HistoricalRow], mu_total: float, allocation: float,
+    gap_scale: float, gap_intensity: float = 0.0, rho: float = 0.0,
+) -> List[Dict[str, float]]:
+    """Return row-level proper-score losses for paired model comparison."""
+    losses = []
+    for row in rows:
+        la, lb = expected_lambdas(
+            row.elo_a, row.elo_b, mu_total, 0.0, 0.0, allocation, gap_scale,
+            gap_intensity,
+        )
+        matrix = dixon_coles_score_matrix(la, lb, rho)
+        observed = next(
+            (prob for ga, gb, prob in matrix if ga == row.score_a and gb == row.score_b),
+            EPS,
+        )
+        p_over25 = event_probability(matrix, lambda ga, gb: ga + gb > 2.5)
+        p_btts = event_probability(matrix, lambda ga, gb: ga > 0 and gb > 0)
+        losses.append({
+            "weight": row.weight,
+            "score_nll": -math.log(max(EPS, observed)),
+            "over_2_5_brier": (
+                p_over25 - (1.0 if row.score_a + row.score_b > 2.5 else 0.0)
+            ) ** 2,
+            "btts_brier": (
+                p_btts - (1.0 if row.score_a > 0 and row.score_b > 0 else 0.0)
+            ) ** 2,
+        })
+    return losses
+
+
+def paired_bootstrap_mean_difference(
+    production: Sequence[Mapping[str, float]],
+    challenger: Sequence[Mapping[str, float]],
+    metric: str,
+    iterations: int = 2000,
+) -> Dict[str, float]:
+    """Bootstrap challenger-minus-production loss on the same holdout rows."""
+    if len(production) != len(challenger) or not production:
+        raise ValueError("Paired bootstrap requires equal non-empty row losses")
+    differences = [
+        challenger[index][metric] - production[index][metric]
+        for index in range(len(production))
+    ]
+    rng = random.Random(SEED)
+    sampled_means = []
+    for _ in range(iterations):
+        sample = [
+            differences[rng.randrange(len(differences))]
+            for _ in range(len(differences))
+        ]
+        sampled_means.append(sum(sample) / len(sample))
+    sampled_means.sort()
+    lower = sampled_means[int(iterations * 0.025)]
+    upper = sampled_means[int(iterations * 0.975)]
+    return {
+        "challenger_minus_production_mean": sum(differences) / len(differences),
+        "ci_95_lower": lower,
+        "ci_95_upper": upper,
+        "iterations": iterations,
+        "statistically_secure_improvement": upper < 0.0,
+    }
+
+
+def calibrate_score_model(rows: Sequence[HistoricalRow]) -> Dict[str, object]:
+    """Select Elo-Poisson parameters before the untouched final holdout.
+
+    Dixon-Coles is retained as a shadow challenger. Production remains
+    independent Poisson unless a statistically secure improvement is shown.
+    """
+    holdout_start = int(len(rows) * 0.85)
+    selection_rows = rows[:holdout_start]
+    holdout_rows = rows[holdout_start:]
+    windows = temporal_folds(selection_rows)
+    candidates = []
+    for mu_total in (2.25, 2.5, 2.75, 3.0):
+        for allocation in (0.30, 0.35, 0.40):
+            for gap_scale in (350.0, 420.0, 500.0):
+                for gap_intensity in (0.0, 0.15, 0.30, 0.45):
+                    fold_metrics = [
+                        score_model_metrics(
+                            window, mu_total, allocation, gap_scale,
+                            gap_intensity,
+                        )
+                        for window in windows
+                    ]
+                    candidates.append({
+                        "mu_total": mu_total,
+                        "allocation": allocation,
+                        "gap_scale": gap_scale,
+                        "gap_intensity": gap_intensity,
+                        "mean_score_nll": sum(x["score_nll"] for x in fold_metrics) / len(fold_metrics),
+                        "mean_over_2_5_brier": sum(x["over_2_5_brier"] for x in fold_metrics) / len(fold_metrics),
+                        "mean_btts_brier": sum(x["btts_brier"] for x in fold_metrics) / len(fold_metrics),
+                    })
+    best = min(
+        candidates,
+        key=lambda item: (
+            item["mean_score_nll"], item["mean_over_2_5_brier"],
+            item["mean_btts_brier"],
+        ),
+    )
+    shadow = []
+    for rho in (-0.15, -0.10, -0.05, 0.0, 0.05, 0.10, 0.15):
+        fold_metrics = [
+            score_model_metrics(
+                window, best["mu_total"], best["allocation"],
+                best["gap_scale"], best["gap_intensity"], rho,
+            )
+            for window in windows
+        ]
+        shadow.append({
+            "rho": rho,
+            "mean_score_nll": sum(x["score_nll"] for x in fold_metrics) / len(fold_metrics),
+            "mean_over_2_5_brier": sum(x["over_2_5_brier"] for x in fold_metrics) / len(fold_metrics),
+            "mean_btts_brier": sum(x["btts_brier"] for x in fold_metrics) / len(fold_metrics),
+        })
+    best_shadow = min(shadow, key=lambda item: item["mean_score_nll"])
+    production_holdout = score_model_metrics(
+        holdout_rows, best["mu_total"], best["allocation"], best["gap_scale"],
+        best["gap_intensity"],
+    )
+    shadow_holdout = score_model_metrics(
+        holdout_rows, best["mu_total"], best["allocation"],
+        best["gap_scale"], best["gap_intensity"], best_shadow["rho"],
+    )
+    production_losses = score_model_row_losses(
+        holdout_rows, best["mu_total"], best["allocation"], best["gap_scale"],
+        best["gap_intensity"],
+    )
+    shadow_losses = score_model_row_losses(
+        holdout_rows, best["mu_total"], best["allocation"],
+        best["gap_scale"], best["gap_intensity"], best_shadow["rho"],
+    )
+    selection_weight = sum(row.weight for row in selection_rows)
+    selection_over_rate = sum(
+        row.weight * (row.score_a + row.score_b > 2.5)
+        for row in selection_rows
+    ) / selection_weight
+    selection_btts_rate = sum(
+        row.weight * (row.score_a > 0 and row.score_b > 0)
+        for row in selection_rows
+    ) / selection_weight
+    holdout_weight = sum(row.weight for row in holdout_rows)
+    baseline_over_brier = sum(
+        row.weight * (
+            selection_over_rate - (row.score_a + row.score_b > 2.5)
+        ) ** 2
+        for row in holdout_rows
+    ) / holdout_weight
+    baseline_btts_brier = sum(
+        row.weight * (
+            selection_btts_rate - (row.score_a > 0 and row.score_b > 0)
+        ) ** 2
+        for row in holdout_rows
+    ) / holdout_weight
+    return {
+        **best,
+        "selection_rows": len(selection_rows),
+        "holdout_rows": len(holdout_rows),
+        "production_model": "tuned_elo_independent_poisson",
+        "production_holdout": production_holdout,
+        "shadow_model": "dixon_coles_low_score_correction",
+        "shadow_rho": best_shadow["rho"],
+        "shadow_selection": best_shadow,
+        "shadow_holdout": shadow_holdout,
+        "holdout_selection_rate_baselines": {
+            "selection_over_2_5_rate": selection_over_rate,
+            "selection_btts_rate": selection_btts_rate,
+            "over_2_5_brier": baseline_over_brier,
+            "btts_brier": baseline_btts_brier,
+        },
+        "shadow_paired_bootstrap": {
+            metric: paired_bootstrap_mean_difference(
+                production_losses, shadow_losses, metric
+            )
+            for metric in ("score_nll", "over_2_5_brier", "btts_brier")
+        },
+        "policy_status": "experimental_non_actionable_no_historical_market_odds",
+    }
 
 
 def settle_line(value: float, line: float) -> float:
@@ -454,6 +709,148 @@ def split_quarter_line(line: float) -> Tuple[float, ...]:
     if abs(doubled - round(doubled)) < 1e-9:
         return (line,)
     return (math.floor(doubled) / 2.0, math.ceil(doubled) / 2.0)
+
+
+def settle_asian_handicap(
+    margin: int, line: float, price: float,
+) -> Tuple[float, float, float, float]:
+    """Return win/push/loss equivalents and expected net for one score.
+
+    Quarter lines split the stake equally over adjacent half-lines.
+
+    Example:
+        >>> settle_asian_handicap(1, -0.75, 2.0)
+        (0.5, 0.5, 0.0, 0.5)
+    """
+    returns = []
+    for subline in split_quarter_line(line):
+        result = settle_line(margin, subline)
+        returns.append(price if result > 0 else 1.0 if result == 0 else 0.0)
+    gross = sum(returns) / len(returns)
+    win_equivalent = max(0.0, min(1.0, (gross - 1.0) / (price - 1.0)))
+    push_equivalent = sum(abs(value - 1.0) < 1e-9 for value in returns) / len(returns)
+    loss_equivalent = max(0.0, 1.0 - win_equivalent - push_equivalent)
+    return win_equivalent, push_equivalent, loss_equivalent, gross - 1.0
+
+
+def parse_handicap_total_market(market_original: str) -> Optional[Tuple[float, float]]:
+    """Extract the signed home-handicap and total lines from a combo label."""
+    numbers = re.findall(r"[-+]?\d+(?:\.\d+)?", market_original)
+    if len(numbers) < 2:
+        return None
+    return float(numbers[0]), float(numbers[-1])
+
+
+def event_probability(
+    matrix: Sequence[Tuple[int, int, float]],
+    predicate: Callable[[int, int], bool],
+) -> float:
+    """Sum score-grid probability for a Boolean event."""
+    return sum(probability for ga, gb, probability in matrix if predicate(ga, gb))
+
+
+def fair_decimal(p_win: float, p_push: float = 0.0) -> Optional[float]:
+    """Return break-even decimal odds, accounting for push probability."""
+    p_loss = max(0.0, 1.0 - p_win - p_push)
+    return None if p_win <= EPS else 1.0 + p_loss / p_win
+
+
+def asian_probability(
+    matrix: Sequence[Tuple[int, int, float]], selected_home: bool, line: float,
+) -> Dict[str, float]:
+    """Return price-independent Asian win/push/loss stake equivalents."""
+    p_win = p_push = p_loss = 0.0
+    sublines = split_quarter_line(line)
+    for ga, gb, probability in matrix:
+        margin = ga - gb if selected_home else gb - ga
+        results = [settle_line(margin, subline) for subline in sublines]
+        p_win += probability * sum(result > 0 for result in results) / len(results)
+        p_push += probability * sum(result == 0 for result in results) / len(results)
+        p_loss += probability * sum(result < 0 for result in results) / len(results)
+    return {"p_win": p_win, "p_push": p_push, "p_loss": p_loss}
+
+
+def common_market_probabilities(
+    matrix: Sequence[Tuple[int, int, float]],
+) -> Dict[str, object]:
+    """Generate standard score-derived markets for every fixture."""
+    p_home = event_probability(matrix, lambda ga, gb: ga > gb)
+    p_draw = event_probability(matrix, lambda ga, gb: ga == gb)
+    p_away = event_probability(matrix, lambda ga, gb: ga < gb)
+    totals = []
+    for line in (0.5, 1.5, 2.5, 3.5, 4.5, 5.5):
+        p_over = event_probability(matrix, lambda ga, gb, ln=line: ga + gb > ln)
+        p_under = 1.0 - p_over
+        totals.append({
+            "line": line,
+            "over_probability": round(p_over, 6),
+            "over_fair_odds": round(1.0 / p_over, 3),
+            "under_probability": round(p_under, 6),
+            "under_fair_odds": round(1.0 / p_under, 3),
+        })
+    p_btts = event_probability(matrix, lambda ga, gb: ga > 0 and gb > 0)
+    exact_goal_buckets = []
+    for total in range(5):
+        probability = event_probability(
+            matrix, lambda ga, gb, target=total: ga + gb == target
+        )
+        exact_goal_buckets.append({
+            "total_goals": str(total),
+            "probability": round(probability, 6),
+            "fair_odds": round(1.0 / probability, 3),
+        })
+    p_five_plus = event_probability(matrix, lambda ga, gb: ga + gb >= 5)
+    exact_goal_buckets.append({
+        "total_goals": "5+",
+        "probability": round(p_five_plus, 6),
+        "fair_odds": round(1.0 / p_five_plus, 3),
+    })
+    top_correct_scores = sorted(
+        matrix, key=lambda score: score[2], reverse=True
+    )[:5]
+    handicaps = []
+    for home_line in (-2.5, -1.5, -0.5, 0.0, 0.5, 1.5, 2.5):
+        home = asian_probability(matrix, True, home_line)
+        away = asian_probability(matrix, False, -home_line)
+        handicaps.append({
+            "home_line": home_line,
+            "home_probability": round(home["p_win"], 6),
+            "home_push": round(home["p_push"], 6),
+            "home_fair_odds": round(fair_decimal(home["p_win"], home["p_push"]) or 0.0, 3),
+            "away_line": -home_line,
+            "away_probability": round(away["p_win"], 6),
+            "away_push": round(away["p_push"], 6),
+            "away_fair_odds": round(fair_decimal(away["p_win"], away["p_push"]) or 0.0, 3),
+        })
+    return {
+        "totals": totals,
+        "btts": {
+            "yes_probability": round(p_btts, 6),
+            "yes_fair_odds": round(1.0 / p_btts, 3),
+            "no_probability": round(1.0 - p_btts, 6),
+            "no_fair_odds": round(1.0 / (1.0 - p_btts), 3),
+        },
+        "double_chance": {
+            "home_or_draw_probability": round(p_home + p_draw, 6),
+            "home_or_draw_fair_odds": round(1.0 / (p_home + p_draw), 3),
+            "home_or_away_probability": round(p_home + p_away, 6),
+            "home_or_away_fair_odds": round(1.0 / (p_home + p_away), 3),
+            "draw_or_away_probability": round(p_draw + p_away, 6),
+            "draw_or_away_fair_odds": round(1.0 / (p_draw + p_away), 3),
+        },
+        "total_goals_buckets": exact_goal_buckets,
+        "top_correct_scores": [
+            {
+                "home_goals": ga,
+                "away_goals": gb,
+                "probability": round(probability, 6),
+                "fair_odds": round(1.0 / probability, 3),
+            }
+            for ga, gb, probability in top_correct_scores
+        ],
+        "asian_handicap": handicaps,
+        "policy_status": "experimental_non_actionable",
+    }
 
 
 def probability_and_ev(
@@ -482,23 +879,32 @@ def probability_and_ev(
         ev = probability * price - 1.0
         return {"p_win": probability, "p_push": 0.0, "p_loss": 1.0 - probability, "ev": ev}
 
-    if market in {"total_goals", "number_of_goals", "number_of_goals_full_time"}:
+    family = odd.get("market_family", "")
+    if family == "total_goals" or market in {"total_goals", "number_of_goals", "number_of_goals_full_time"}:
         try:
-            line = float(odd["line"])
+            line = float(odd.get("total_line") or odd["line"])
         except (TypeError, ValueError):
             return None
-        over = selection.startswith("over")
-        under = selection.startswith("under")
+        over = odd.get("selection_canonical") == "over" or selection.startswith(("over", "mas de"))
+        under = odd.get("selection_canonical") == "under" or selection.startswith(("under", "menos"))
         if not (over or under):
             return None
         for ga, gb, prob in matrix:
-            value = (ga + gb) - line if over else line - (ga + gb)
-            result = 1.0 if value > 1e-9 else -1.0 if value < -1e-9 else 0.0
-            if result > 0: p_win += prob
-            elif result == 0: p_push += prob
-            else: p_loss += prob
+            net = 0.0
+            win_eq = push_eq = loss_eq = 0.0
+            for subline in split_quarter_line(line):
+                value = (ga + gb) - subline if over else subline - (ga + gb)
+                result = 1.0 if value > 1e-9 else -1.0 if value < -1e-9 else 0.0
+                net += (price - 1.0 if result > 0 else 0.0 if result == 0 else -1.0)
+                win_eq += 1.0 if result > 0 else 0.0
+                push_eq += 1.0 if result == 0 else 0.0
+                loss_eq += 1.0 if result < 0 else 0.0
+            divisor = len(split_quarter_line(line))
+            p_win += prob * win_eq / divisor
+            p_push += prob * push_eq / divisor
+            p_loss += prob * loss_eq / divisor
 
-    elif market in {"both_teams_to_score", "btts"}:
+    elif family == "btts" or market in {"both_teams_to_score", "btts"}:
         yes = selection in {"yes", "si", "sí"} or selection_id == "yes"
         no = selection == "no" or selection_id == "no"
         if not (yes or no):
@@ -510,38 +916,71 @@ def probability_and_ev(
             else:
                 p_loss += prob
 
-    elif market == "asian_handicap":
+    elif family == "double_chance":
+        canonical = odd.get("selection_canonical")
+        p_home = event_probability(matrix, lambda ga, gb: ga > gb)
+        p_draw = event_probability(matrix, lambda ga, gb: ga == gb)
+        p_away = event_probability(matrix, lambda ga, gb: ga < gb)
+        probability = {
+            "AD": p_home + p_draw,
+            "AB": p_home + p_away,
+            "DB": p_draw + p_away,
+        }.get(canonical)
+        if probability is None:
+            return None
+        return {
+            "p_win": probability, "p_push": 0.0,
+            "p_loss": 1.0 - probability, "ev": probability * price - 1.0,
+        }
+
+    elif family == "asian_handicap" or market == "asian_handicap":
         try:
-            line = float(odd["line"])
+            line = float(odd.get("handicap_selected_line") or odd["line"])
         except (TypeError, ValueError):
             return None
-        selected = TEAM_ALIASES.get(selection)
-        if selected is None and selection_id.startswith(("home", "1")):
+        selected = odd.get("selected_team") or TEAM_ALIASES.get(selection)
+        if selected is None and selection_id.startswith(("home", "visible_home", "1")):
             selected = team_a
-        if selected is None and selection_id.startswith(("away", "2")):
+        if selected is None and selection_id.startswith(("away", "visible_away", "2")):
             selected = team_b
         if selected not in {team_a, team_b}:
             return None
-        lines = split_quarter_line(line)
         expected_net = 0.0
         full_win_equivalent = 0.0
         full_push_equivalent = 0.0
+        full_loss_equivalent = 0.0
         for ga, gb, prob in matrix:
             margin = ga - gb if selected == team_a else gb - ga
-            returns = []
-            for subline in lines:
-                result = settle_line(margin, subline)
-                returns.append(price if result > 0 else 1.0 if result == 0 else 0.0)
-            gross = sum(returns) / len(returns)
-            expected_net += prob * (gross - 1.0)
-            full_win_equivalent += prob * max(0.0, min(1.0, (gross - 1.0) / (price - 1.0)))
-            full_push_equivalent += prob * (1.0 if abs(gross - 1.0) < 1e-9 else 0.0)
+            win_eq, push_eq, loss_eq, net = settle_asian_handicap(margin, line, price)
+            expected_net += prob * net
+            full_win_equivalent += prob * win_eq
+            full_push_equivalent += prob * push_eq
+            full_loss_equivalent += prob * loss_eq
         return {
             "p_win": full_win_equivalent,
             "p_push": full_push_equivalent,
-            "p_loss": max(0.0, 1.0 - full_win_equivalent - full_push_equivalent),
+            "p_loss": full_loss_equivalent,
             "ev": expected_net,
         }
+    elif family == "handicap_total_combo":
+        try:
+            handicap = float(odd["handicap_selected_line"])
+            total_line = float(odd["total_line"])
+        except (TypeError, ValueError):
+            return None
+        selected = odd.get("selected_team")
+        total_side = odd.get("combo_leg_2_selection")
+        if selected not in {team_a, team_b} or total_side not in {"over", "under"}:
+            return None
+        for ga, gb, prob in matrix:
+            margin = ga - gb if selected == team_a else gb - ga
+            handicap_win = settle_line(margin, handicap) > 0
+            total = ga + gb
+            total_win = total > total_line if total_side == "over" else total < total_line
+            if handicap_win and total_win:
+                p_win += prob
+            else:
+                p_loss += prob
     else:
         return None
 
@@ -549,14 +988,158 @@ def probability_and_ev(
     return {"p_win": p_win, "p_push": p_push, "p_loss": p_loss, "ev": ev}
 
 
+def normalize_market_schema(
+    row: Dict[str, str], team_a: str, team_b: str,
+) -> Dict[str, str]:
+    """Attach explicit settlement fields without guessing ambiguous contracts."""
+    market = row["market_id"]
+    selection = normalize_text(row.get("selection_original", ""))
+    selection_id = normalize_text(row.get("selection_id", ""))
+    row.update({
+        "market_family": "unsupported",
+        "market_period": "full_time",
+        "settlement_rule_id": "",
+        "selected_team": "",
+        "selection_canonical": "",
+        "handicap_home_line": "",
+        "handicap_selected_line": "",
+        "total_line": "",
+        "combo_leg_1_type": "",
+        "combo_leg_1_selection": "",
+        "combo_leg_1_line": "",
+        "combo_leg_2_type": "",
+        "combo_leg_2_selection": "",
+        "combo_leg_2_line": "",
+        "market_group_id": "",
+        "is_complete_market": "false",
+        "transcription_status": "transcribed",
+        "transcription_confidence": "high",
+    })
+
+    if market == "match_result":
+        bucket = selection_bucket(row, team_a, team_b)
+        if bucket:
+            row["market_family"] = "1x2"
+            row["settlement_rule_id"] = "full_time_1x2_v1"
+            row["selection_canonical"] = bucket
+            row["market_group_id"] = f"{row['fixture_id']}|{row['app']}|1x2"
+    elif market in {"total_goals", "number_of_goals", "number_of_goals_full_time"}:
+        canonical = "over" if selection.startswith(("over", "mas de")) else "under" if selection.startswith(("under", "menos")) else ""
+        try:
+            line = float(row["line"])
+        except (TypeError, ValueError):
+            line = None
+        if canonical and line is not None:
+            row["market_family"] = "total_goals"
+            row["settlement_rule_id"] = "asian_total_score_grid_v1"
+            row["selection_canonical"] = canonical
+            row["total_line"] = str(line)
+            row["market_group_id"] = f"{row['fixture_id']}|{row['app']}|total|{line}"
+    elif market in {"both_teams_to_score", "btts"}:
+        canonical = "yes" if selection in {"yes", "si"} or selection_id == "yes" else "no" if selection == "no" or selection_id == "no" else ""
+        if canonical:
+            row["market_family"] = "btts"
+            row["settlement_rule_id"] = "btts_full_time_v1"
+            row["selection_canonical"] = canonical
+            row["market_group_id"] = f"{row['fixture_id']}|{row['app']}|btts"
+    elif market == "double_chance":
+        name_a = normalize_text(CODE_NAMES[team_a][0])
+        name_b = normalize_text(CODE_NAMES[team_b][0])
+        has_a = name_a in selection or normalize_text(CODE_NAMES[team_a][1]) in selection
+        has_b = name_b in selection or normalize_text(CODE_NAMES[team_b][1]) in selection
+        has_draw = "draw" in selection or "empate" in selection
+        canonical = "AB" if has_a and has_b else "AD" if has_a and has_draw else "DB" if has_b and has_draw else ""
+        if canonical:
+            row["market_family"] = "double_chance"
+            row["settlement_rule_id"] = "double_chance_1x2_v1"
+            row["selection_canonical"] = canonical
+            row["market_group_id"] = f"{row['fixture_id']}|{row['app']}|double_chance"
+    elif market == "asian_handicap":
+        try:
+            line = float(row["line"])
+        except (TypeError, ValueError):
+            line = None
+        selected = TEAM_ALIASES.get(selection)
+        if selected is None and selection_id.startswith(("home", "visible_home", "1")):
+            selected = team_a
+        if selected is None and selection_id.startswith(("away", "visible_away", "2")):
+            selected = team_b
+        if selected is None:
+            for alias, code in sorted(TEAM_ALIASES.items(), key=lambda item: -len(item[0])):
+                if selection_id.startswith(alias.replace(" ", "_")):
+                    selected = code
+                    break
+        if selected in {team_a, team_b} and line is not None:
+            row["market_family"] = "asian_handicap"
+            row["settlement_rule_id"] = "asian_handicap_score_grid_v1"
+            row["selected_team"] = selected
+            row["selection_canonical"] = "home" if selected == team_a else "away"
+            row["handicap_selected_line"] = str(line)
+            row["handicap_home_line"] = str(line if selected == team_a else -line)
+            row["market_group_id"] = (
+                f"{row['fixture_id']}|{row['app']}|asian|{abs(line)}"
+            )
+    elif market in {"handicap_total", "handicap_total_goals_2_5"}:
+        parsed = parse_handicap_total_market(row["market_original"])
+        side = "home" if selection_id.startswith(("home", "1")) else "away" if selection_id.startswith(("away", "2")) else ""
+        total_side = "over" if selection_id.endswith("over") else "under" if selection_id.endswith("under") else ""
+        if parsed and side and total_side:
+            home_line, total_line = parsed
+            selected = team_a if side == "home" else team_b
+            selected_line = home_line if side == "home" else -home_line
+            row["market_family"] = "handicap_total_combo"
+            row["settlement_rule_id"] = "asian_handicap_and_total_v1"
+            row["selected_team"] = selected
+            row["selection_canonical"] = f"{side}_{total_side}"
+            row["handicap_home_line"] = str(home_line)
+            row["handicap_selected_line"] = str(selected_line)
+            row["total_line"] = str(total_line)
+            row["combo_leg_1_type"] = "asian_handicap"
+            row["combo_leg_1_selection"] = side
+            row["combo_leg_1_line"] = str(selected_line)
+            row["combo_leg_2_type"] = "total_goals"
+            row["combo_leg_2_selection"] = total_side
+            row["combo_leg_2_line"] = str(total_line)
+            row["market_group_id"] = (
+                f"{row['fixture_id']}|{row['app']}|combo|{home_line}|{total_line}"
+            )
+    return row
+
+
+def mark_complete_markets(rows: List[Dict[str, str]]) -> None:
+    """Mark only structurally complete market groups as eligible for EV."""
+    grouped: Dict[str, List[Dict[str, str]]] = defaultdict(list)
+    for row in rows:
+        if row["market_group_id"]:
+            grouped[row["market_group_id"]].append(row)
+    for group in grouped.values():
+        family = group[0]["market_family"]
+        selections = {row["selection_canonical"] for row in group}
+        complete = (
+            (family == "1x2" and selections == {"A", "D", "B"})
+            or (family == "total_goals" and selections == {"over", "under"})
+            or (family == "btts" and selections == {"yes", "no"})
+            or (family == "double_chance" and selections == {"AD", "AB", "DB"})
+            or (family == "asian_handicap" and selections == {"home", "away"})
+            or (
+                family == "handicap_total_combo"
+                and selections == {"home_over", "home_under", "away_over", "away_under"}
+            )
+        )
+        for row in group:
+            row["is_complete_market"] = "true" if complete else "false"
+
+
 def load_and_merge_odds(fixtures: Sequence[Mapping[str, str]]) -> List[Dict[str, str]]:
     """Merge date-owned extractions and attach canonical fixture IDs."""
     canonical = {}
     canonical_ids = {fixture["fixture_id"] for fixture in fixtures}
     kickoff_by_id = {fixture["fixture_id"]: fixture["kickoff_lima"] for fixture in fixtures}
+    teams_by_id = {}
     for fixture in fixtures:
         a, b = split_fixture(fixture["match"])
         canonical[frozenset((a, b))] = fixture["fixture_id"]
+        teams_by_id[fixture["fixture_id"]] = (a, b)
     merged: List[Dict[str, str]] = []
     seen = set()
     for path in ODDS_PARTS:
@@ -572,6 +1155,7 @@ def load_and_merge_odds(fixtures: Sequence[Mapping[str, str]]) -> List[Dict[str,
                 row["fixture_id"] = canonical[key]
             row["source_sha256"] = sha256(ROOT / "Screenshots" / row["source_image"])
             row["kickoff_local"] = kickoff_by_id[row["fixture_id"]]
+            row = normalize_market_schema(row, *teams_by_id[row["fixture_id"]])
             unique = (
                 row["fixture_id"], row["app"], row["market_id"], row["selection_id"],
                 row["line"], row["odds"], row["source_image"],
@@ -580,6 +1164,7 @@ def load_and_merge_odds(fixtures: Sequence[Mapping[str, str]]) -> List[Dict[str,
                 continue
             seen.add(unique)
             merged.append(row)
+    mark_complete_markets(merged)
     merged.sort(key=lambda item: (
         item["fixture_id"], item["app"], item["market_id"],
         item["selection_id"], item["line"], item["source_image"],
@@ -678,6 +1263,43 @@ def classify(ev_pct: float, robust: bool, divergence_pp: float) -> Tuple[str, in
     return "PASS", 30
 
 
+def recommendation_utility(row: Mapping[str, object]) -> float:
+    """Rank sourced choices by stressed expected profit and model risk."""
+    family_penalty = {
+        "1x2": 0.0,
+        "total_goals": 1.5,
+        "btts": 2.0,
+        "double_chance": 2.0,
+        "asian_handicap": 3.0,
+        "handicap_total_combo": 6.0,
+    }
+    conservative_ev = min(
+        float(row["decision_ev_pct"]),
+        float(row["decision_stressed_ev_pct"]),
+    )
+    disagreement_penalty = 0.35 * float(row["divergence_pp"])
+    halt_penalty = 100.0 if row["strength"] == "HALT" else 0.0
+    return (
+        conservative_ev
+        - disagreement_penalty
+        - family_penalty.get(str(row["market_family"]), 8.0)
+        - halt_penalty
+    )
+
+
+def recommendation_risk_grade(row: Mapping[str, object]) -> str:
+    """Return an evidence-relative A–D risk grade, never a certainty grade."""
+    utility = float(row["recommendation_utility"])
+    divergence = float(row["divergence_pp"])
+    if utility >= 3.0 and divergence <= 7.5 and row["strength"] != "HALT":
+        return "A"
+    if utility >= 0.0 and divergence <= 10.0 and row["strength"] != "HALT":
+        return "B"
+    if utility >= -6.0 and divergence <= 15.0:
+        return "C"
+    return "D"
+
+
 def build() -> Dict[str, object]:
     fixtures = read_csv(FIXTURES)
     if len(fixtures) != 32 or len({row["fixture_id"] for row in fixtures}) != 32:
@@ -696,7 +1318,8 @@ def build() -> Dict[str, object]:
     best = calibrate_elo(historical)
     mu_a = sum((row.score_a + row.score_b) * row.weight for row in dataset_a) / sum(row.weight for row in dataset_a)
     mu_b = sum((row.score_a + row.score_b) * row.weight for row in dataset_b) / sum(row.weight for row in dataset_b)
-    mu_total = 0.75 * mu_a + 0.25 * mu_b
+    score_config = calibrate_score_model(historical)
+    mu_total = float(score_config["mu_total"])
 
     baseline_rows = read_csv(ELO_BASELINE)
     baseline = {row["team"]: float(row["elo"]) for row in baseline_rows}
@@ -736,11 +1359,20 @@ def build() -> Dict[str, object]:
             float(best["draw_base"]), float(best["draw_slope"]),
             fa + host_a, fb + host_b,
         )
-        la, lb = expected_lambdas(ratings[ta], ratings[tb], mu_total, fa + host_a, fb + host_b)
+        la, lb = expected_lambdas(
+            ratings[ta], ratings[tb], mu_total, fa + host_a, fb + host_b,
+            float(score_config["allocation"]), float(score_config["gap_scale"]),
+            float(score_config["gap_intensity"]),
+        )
         matrix = score_matrix(la, lb)
+        shadow_matrix = dixon_coles_score_matrix(
+            la, lb, float(score_config["shadow_rho"])
+        )
         candidate_rows = []
-        # Compute a de-vigged consensus for complete standard 1X2 markets.
+        expanded_rows = []
+        # Compute de-vigged comparison probabilities for complete source markets.
         market_consensus: Dict[Tuple[str, str], float] = {}
+        market_overround: Dict[str, float] = {}
         grouped: Dict[str, Dict[str, Dict[str, str]]] = defaultdict(dict)
         for odd in odds_by_fixture[fixture["fixture_id"]]:
             if odd["market_id"] != "match_result":
@@ -755,30 +1387,116 @@ def build() -> Dict[str, object]:
             total_inv = sum(inv.values())
             for key in ("A", "D", "B"):
                 market_consensus[(app, key)] = inv[key] / total_inv
+        source_groups: Dict[str, List[Dict[str, str]]] = defaultdict(list)
         for odd in odds_by_fixture[fixture["fixture_id"]]:
-            if odd["market_id"] != "match_result":
+            if odd["is_complete_market"] == "true":
+                source_groups[odd["market_group_id"]].append(odd)
+        for group_id, selections in source_groups.items():
+            inverse_sum = sum(1.0 / float(row["odds"]) for row in selections)
+            market_overround[group_id] = inverse_sum - 1.0
+            for row in selections:
+                market_consensus[(group_id, row["selection_canonical"])] = (
+                    (1.0 / float(row["odds"])) / inverse_sum
+                )
+
+        stress_matrices = []
+        for mu_multiplier, allocation_shift in (
+            (0.90, 0.0), (1.10, 0.0), (1.0, -0.05), (1.0, 0.05)
+        ):
+            stress_la, stress_lb = expected_lambdas(
+                ratings[ta], ratings[tb], mu_total * mu_multiplier, 0.0, 0.0,
+                max(0.20, float(score_config["allocation"]) + allocation_shift),
+                float(score_config["gap_scale"]),
+                float(score_config["gap_intensity"]),
+            )
+            stress_matrices.append(score_matrix(stress_la, stress_lb))
+
+        for odd in odds_by_fixture[fixture["fixture_id"]]:
+            if odd["is_complete_market"] != "true":
+                continue
+            if odd["market_family"] not in {
+                "1x2", "total_goals", "btts", "double_chance",
+                "asian_handicap", "handicap_total_combo",
+            }:
                 continue
             evaluated = probability_and_ev(odd, ta, tb, p_base, matrix)
             if evaluated is None:
                 continue
             ev_pct = evaluated["ev"] * 100.0
-            # Conservative stress: move three percentage points against the selection.
-            stressed_ev = ((max(0.0, evaluated["p_win"] - 0.03) * (float(odd["odds"]) - 1.0))
-                           - min(1.0, evaluated["p_loss"] + 0.03)) * 100.0
-            bucket = selection_bucket(odd, ta, tb)
-            implied = market_consensus.get((odd["app"], bucket), 1.0 / float(odd["odds"]))
+            if odd["market_family"] == "1x2":
+                stressed_ev = (
+                    max(0.0, evaluated["p_win"] - 0.03)
+                    * (float(odd["odds"]) - 1.0)
+                    - min(1.0, evaluated["p_loss"] + 0.03)
+                ) * 100.0
+                bucket = selection_bucket(odd, ta, tb)
+                implied = market_consensus.get(
+                    (odd["app"], bucket), 1.0 / float(odd["odds"])
+                )
+            else:
+                stress_values = [
+                    probability_and_ev(odd, ta, tb, p_base, stress_matrix)
+                    for stress_matrix in stress_matrices
+                ]
+                stressed_ev = min(
+                    value["ev"] * 100.0
+                    for value in stress_values if value is not None
+                )
+                implied = market_consensus.get(
+                    (odd["market_group_id"], odd["selection_canonical"]),
+                    1.0 / float(odd["odds"]),
+                )
             divergence = abs(evaluated["p_win"] - implied) * 100.0
             strength, confidence = classify(ev_pct, stressed_ev > 0.0, divergence)
-            candidate_rows.append({
+            base_model_weight = 0.50 if odd["market_family"] == "1x2" else 0.35
+            # Large model-market disagreements are precisely where model risk
+            # is highest. Shrink harder toward the de-vigged source market.
+            model_weight = base_model_weight * max(
+                0.10, 1.0 - divergence / 25.0
+            )
+            market_ev_pct = (implied * float(odd["odds"]) - 1.0) * 100.0
+            decision_ev_pct = (
+                model_weight * ev_pct + (1.0 - model_weight) * market_ev_pct
+            )
+            decision_stressed_ev_pct = (
+                model_weight * stressed_ev
+                + (1.0 - model_weight) * market_ev_pct
+            )
+            evaluated_row = {
                 **odd,
                 **evaluated,
                 "ev_pct": ev_pct,
                 "stressed_ev_pct": stressed_ev,
                 "divergence_pp": divergence,
+                "market_overround_pct": market_overround.get(
+                    odd["market_group_id"], 0.0
+                ) * 100.0,
+                "decision_probability": (
+                    model_weight * evaluated["p_win"]
+                    + (1.0 - model_weight) * implied
+                ),
+                "market_probability": implied,
+                "decision_ev_pct": decision_ev_pct,
+                "decision_stressed_ev_pct": decision_stressed_ev_pct,
+                "decision_model_weight": model_weight,
                 "strength": strength,
                 "confidence": confidence,
-            })
+                "policy_status": "experimental_non_actionable",
+            }
+            evaluated_row["recommendation_utility"] = recommendation_utility(
+                evaluated_row
+            )
+            expanded_rows.append(evaluated_row)
+            if odd["market_family"] == "1x2":
+                candidate_rows.append(evaluated_row)
         ranked = sorted(candidate_rows, key=lambda row: row["ev_pct"], reverse=True)
+        expanded_ranked = sorted(
+            expanded_rows,
+            key=lambda row: (
+                row["market_family"], -row["ev_pct"],
+                row["app"], row["selection_canonical"],
+            ),
+        )
         complete_apps = [
             app for app, selections in grouped.items()
             if set(selections) == {"A", "D", "B"}
@@ -787,8 +1505,32 @@ def build() -> Dict[str, object]:
             raise ValueError(
                 f"Fixture lacks a complete supported 1X2 market: {fixture['fixture_id']}"
             )
-        halted = [row for row in ranked if row["strength"] == "HALT"]
-        recommendation = halted[0] if halted else (ranked[0] if ranked else None)
+        recommendation_pool = [
+            row for row in expanded_rows if row["strength"] != "HALT"
+        ]
+        if recommendation_pool:
+            recommendation = max(
+                recommendation_pool,
+                key=lambda row: (
+                    row["recommendation_utility"],
+                    row["decision_stressed_ev_pct"],
+                    row["decision_ev_pct"],
+                    -float(row["odds"]),
+                ),
+            )
+            recommendation_reason = "highest_uncertainty_adjusted_expected_profit"
+        elif expanded_rows:
+            recommendation = max(
+                expanded_rows,
+                key=lambda row: (
+                    row["market_probability"],
+                    -float(row["odds"]),
+                ),
+            )
+            recommendation_reason = "all_model_edges_halted_select_highest_market_probability"
+        else:
+            recommendation = None
+            recommendation_reason = "no_complete_sourced_market"
         last_a = last_dates.get(ta)
         last_b = last_dates.get(tb)
         rest_a = (kickoff.date() - last_a).days if last_a else None
@@ -822,6 +1564,43 @@ def build() -> Dict[str, object]:
         model_rows.append(model_row)
         names_a, names_b = CODE_NAMES[ta], CODE_NAMES[tb]
         rec = recommendation
+        market_comparisons = [{
+            "app": row["app"],
+            "market_family": row["market_family"],
+            "market_original": row["market_original"],
+            "selection_original": row["selection_original"],
+            "selection_canonical": row["selection_canonical"],
+            "selected_team": row["selected_team"],
+            "handicap_line": (
+                float(row["handicap_selected_line"])
+                if row["handicap_selected_line"] else None
+            ),
+            "total_line": float(row["total_line"]) if row["total_line"] else None,
+            "odds": float(row["odds"]),
+            "p_win": round(row["p_win"], 6),
+            "p_push": round(row["p_push"], 6),
+            "fair_odds": round(
+                fair_decimal(row["p_win"], row["p_push"]) or 0.0, 3
+            ),
+            "ev_pct": round(row["ev_pct"], 2),
+            "stressed_ev_pct": round(row["stressed_ev_pct"], 2),
+            "decision_probability": round(row["decision_probability"], 6),
+            "decision_ev_pct": round(row["decision_ev_pct"], 2),
+            "decision_stressed_ev_pct": round(
+                row["decision_stressed_ev_pct"], 2
+            ),
+            "decision_model_weight": round(row["decision_model_weight"], 6),
+            "market_probability": round(row["market_probability"], 6),
+            "recommendation_utility": round(
+                row["recommendation_utility"], 2
+            ),
+            "divergence_pp": round(row["divergence_pp"], 2),
+            "market_overround_pct": round(row["market_overround_pct"], 2),
+            "strength": row["strength"],
+            "policy_status": row["policy_status"],
+            "source_image": row["source_image"],
+            "source_sha256": row["source_sha256"],
+        } for row in expanded_ranked]
         predictions.append({
             "fixture_id": fixture["fixture_id"],
             "kickoff_lima": fixture["kickoff_lima"],
@@ -833,20 +1612,73 @@ def build() -> Dict[str, object]:
                 "team_b_win": round(p_base[2], 6),
             },
             "expected_goals": {"team_a": round(la, 3), "team_b": round(lb, 3)},
+            "score_market_model": {
+                "production": "tuned_elo_independent_poisson",
+                "shadow": "dixon_coles",
+                "shadow_rho": score_config["shadow_rho"],
+                "shadow_btts_yes_probability": round(
+                    event_probability(
+                        shadow_matrix, lambda ga, gb: ga > 0 and gb > 0
+                    ),
+                    6,
+                ),
+                "policy_status": "experimental_non_actionable",
+            },
+            "common_markets": common_market_probabilities(matrix),
+            "market_comparisons": market_comparisons,
+            "expanded_price_coverage": {
+                "has_total_price": any(
+                    row["market_family"] == "total_goals"
+                    for row in expanded_ranked
+                ),
+                "has_btts_price": any(
+                    row["market_family"] == "btts" for row in expanded_ranked
+                ),
+                "has_asian_handicap_price": any(
+                    row["market_family"] == "asian_handicap"
+                    for row in expanded_ranked
+                ),
+                "has_combo_price": any(
+                    row["market_family"] == "handicap_total_combo"
+                    for row in expanded_ranked
+                ),
+            },
             "recommendation": None if rec is None else {
                 "app": rec["app"], "market_id": rec["market_id"],
+                "market_family": rec["market_family"],
                 "market_original": rec["market_original"],
                 "selection_original": rec["selection_original"],
+                "selection_canonical": rec["selection_canonical"],
                 "line": rec["line"], "odds": float(rec["odds"]),
-                "p_win": round(rec["p_win"], 6), "p_push": round(rec["p_push"], 6),
-                "ev_pct": round(rec["ev_pct"], 2),
-                "stressed_ev_pct": round(rec["stressed_ev_pct"], 2),
+                "p_win": round(rec["decision_probability"], 6),
+                "model_p_win": round(rec["p_win"], 6),
+                "p_push": round(rec["p_push"], 6),
+                "fair_odds": round(
+                    fair_decimal(
+                        rec["decision_probability"], rec["p_push"]
+                    ) or 0.0,
+                    3,
+                ),
+                "ev_pct": round(rec["decision_ev_pct"], 2),
+                "stressed_ev_pct": round(
+                    rec["decision_stressed_ev_pct"], 2
+                ),
+                "raw_model_ev_pct": round(rec["ev_pct"], 2),
+                "decision_model_weight": rec["decision_model_weight"],
+                "divergence_pp": round(rec["divergence_pp"], 2),
                 "strength": rec["strength"], "confidence": rec["confidence"],
+                "recommendation_utility": round(
+                    rec["recommendation_utility"], 2
+                ),
+                "risk_grade": recommendation_risk_grade(rec),
+                "decision_status": "BEST_AVAILABLE",
+                "selection_reason": recommendation_reason,
+                "profitability_validation": "not_validated_historical_market_odds",
                 "source_image": rec["source_image"],
                 "source_sha256": rec["source_sha256"],
             },
-            "supported_markets_evaluated": len(candidate_rows),
-            "recommendation_scope": "standard full-time 1X2 only; other markets are displayed as source data but not recommended",
+            "supported_markets_evaluated": len(expanded_rows),
+            "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
             "freshness_status": freshness_status(kickoff),
             "risk_notes": {
                 "en": [
@@ -879,15 +1711,31 @@ def build() -> Dict[str, object]:
         (HISTORICAL, RESULTS_2026, ELO_BASELINE, FIXTURES, *ODDS_PARTS, *RESEARCH_PARTS)
     }
     metrics = {
-        "version": "june22_27_integrity_v1",
+        "version": "june22_27_best_available_v3",
         "seed": SEED,
         "dataset_a_rows": len(dataset_a),
         "dataset_b_rows": len(dataset_b),
         "elapsed_wc2026_rows": len(results),
         "calibration": best,
+        "score_market_calibration": score_config,
         "mu_dataset_a": mu_a,
         "mu_dataset_b": mu_b,
         "mu_production": mu_total,
+        "expanded_market_policy": {
+            "status": "best_available_recommendations_unvalidated_profitability",
+            "reason": "No timestamped historical totals, BTTS, Asian-handicap, or combo prices exist for untouched profitability validation.",
+            "priced_fixtures": len({
+                row["fixture_id"] for row in odds
+                if row["market_family"] in {
+                    "total_goals", "btts", "asian_handicap",
+                    "handicap_total_combo",
+                }
+                and row["is_complete_market"] == "true"
+            }),
+            "all_fixture_probability_coverage": 32,
+            "recommendations_required": 32,
+            "selection_rule": "maximize minimum(base EV, stressed EV) minus 0.35*model-market divergence and market-family uncertainty penalties",
+        },
         "input_hashes": input_hashes,
         "pipeline_sha256": sha256(Path(__file__)),
     }
@@ -937,9 +1785,22 @@ def build() -> Dict[str, object]:
             "- probabilities: chronologically calibrated Elo three-way conversion.",
             "- parameter grid: divisor {350,400,450,500}; draw_base {.14,.16,.18,.20,.22}; draw_slope {.06,.08,.10,.12}.",
             "- selection split: first 85% by time; final 15% untouched holdout. Selection rows use four ordered windows after the first 55%.",
-            "- expected goals: 75% Dataset A mean + 25% Dataset B mean; team share = .5 + .34*tanh(Elo gap/420).",
-            "- score grid: independent Poisson scores 0..10, renormalized. It is descriptive only in this release.",
-            "- EV/recommendations: standard full-time 1X2 markets only in this release.",
+            "- score-model parameter grid: base total goals {2.25,2.50,2.75,3.00}; allocation {.30,.35,.40}; Elo gap scale {350,420,500}; gap intensity {0,.15,.30,.45}.",
+            "- expected goals: match total = base_mu + gap_intensity*abs(Elo gap)/400, bounded to [1.5,4.5], then split as .5 + allocation*tanh(Elo gap/gap_scale).",
+            "- score grid: tuned independent Poisson scores 0..10, renormalized; Dixon-Coles rho {-0.15,-0.10,-0.05,0,.05,.10,.15} is evaluated as a shadow challenger only.",
+            "- score-market outputs: totals 0.5–5.5, BTTS, double chance, total-goal buckets, top correct scores, and Asian handicaps are derived by exact score-grid summation.",
+            "- Asian settlement: integer/half lines settle directly; quarter lines split the stake equally across adjacent half-lines and preserve win/push/loss equivalents.",
+            "- handicap-plus-total settlement: the signed header handicap applies to selection 1/home and the opposite line to selection 2/away; the total leg and handicap leg are evaluated jointly on each score state.",
+            "- visually checked combo semantics: IMG_7660.PNG confirms a negative home header; IMG_7677.PNG confirms the corresponding positive-home convention.",
+            "- normalized odds schema: market family, period, settlement rule, selected team, canonical selection, handicap/total lines, combo legs, market group, completeness, transcription status, and confidence.",
+            "- unsupported or ambiguous markets: result handicap, early payout, corners, heterogeneous boosts, and incomplete/truncated selections are retained as source rows but excluded from evaluation.",
+            "- double-chance consistency: displayed fair prices and screenshot EV both use the same production score grid.",
+            "- decision stack: 1X2 starts at 50% structural model / 50% de-vigged market; expanded families start at 35% / 65%; model weight shrinks further as divergence approaches 25pp.",
+            "- recommendation utility: minimum(decision EV, stressed decision EV) minus 0.35*divergence, family uncertainty, and HALT penalties.",
+            "- exactly one recommendation: choose the highest utility non-HALT row; if every row is HALT, select the highest de-vigged market-probability outcome and disclose the fallback.",
+            "- expanded-market policy: recommendations are best-available comparisons; historical profitability remains unvalidated because the holdout has no timestamped totals/BTTS/Asian/combo prices for ROI or CLV.",
+            "- price coverage: all 32 fixtures receive model probabilities/fair prices; EV is computed only for complete screenshot-derived source markets, currently on 12 fixtures.",
+            "- recommendation labels: BEST_AVAILABLE is mandatory per fixture; PASS/HALT remain diagnostic and no label implies certainty.",
             "- stress EV: subtract 3 percentage points from selected win probability and add 3 points to loss probability.",
             "- classification: divergence >15pp or EV >25% HALT; all other selections PASS until recommendation-policy profitability is validated out of sample.",
             "- source_sha256: SHA-256 of the exact screenshot containing the price.",
