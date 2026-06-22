@@ -1438,6 +1438,194 @@ def recommendation_risk_grade(row: Mapping[str, object]) -> str:
     return "D"
 
 
+def allocate_app_budget(
+    rows: Sequence[Dict[str, object]], budget: float = 100.0,
+    base_stake: float = 1.0, max_stake: float = 10.0,
+) -> Dict[str, float]:
+    """Allocate a fixed educational bankroll across one app's recommendations.
+
+    Every sourced recommendation receives a small base amount because the user
+    requested all-match coverage. Remaining money is weighted toward stronger
+    stressed EV and lower diagnostic risk, with a hard 10% per-bet cap. The
+    output is rounded to S/0.10 and sums exactly to the declared budget.
+    """
+    if not rows:
+        return {}
+    if base_stake * len(rows) > budget or max_stake * len(rows) < budget:
+        raise ValueError("Bankroll constraints cannot cover the selected rows")
+
+    scores = {}
+    for row in rows:
+        rec = row["recommendation"]
+        risk_bonus = {
+            "A": 1.5,
+            "B": 1.0,
+            "C": 0.5,
+            "D": 0.0,
+        }[str(rec["risk_grade"])]
+        score = (
+            0.25
+            + max(0.0, float(rec["stressed_ev_pct"])) / 5.0
+            + max(0.0, float(rec["ev_pct"])) / 10.0
+            + risk_bonus
+        )
+        scores[row["fixture_id"]] = score
+    stakes = {row["fixture_id"]: base_stake for row in rows}
+    remaining = budget - base_stake * len(rows)
+    active = set(stakes)
+    while remaining > 1e-9 and active:
+        total_score = sum(scores[key] for key in active)
+        if total_score <= 0:
+            total_score = float(len(active))
+        allocations = {
+            key: remaining * (
+                scores[key] / total_score if total_score else 1.0 / len(active)
+            )
+            for key in active
+        }
+        used = 0.0
+        capped = set()
+        for key, extra in allocations.items():
+            room = max_stake - stakes[key]
+            addition = min(room, extra)
+            stakes[key] += addition
+            used += addition
+            if room <= extra + 1e-9:
+                capped.add(key)
+        remaining -= used
+        active -= capped
+        if used <= 1e-9:
+            break
+
+    rounded = {
+        key: math.floor(value * 10.0 + 1e-9) / 10.0
+        for key, value in stakes.items()
+    }
+    tenths_left = int(round((budget - sum(rounded.values())) * 10))
+    order = sorted(
+        rounded,
+        key=lambda key: (
+            stakes[key] - rounded[key], scores[key], key
+        ),
+        reverse=True,
+    )
+    index = 0
+    while tenths_left > 0:
+        key = order[index % len(order)]
+        if rounded[key] + 0.1 <= max_stake + 1e-9:
+            rounded[key] = round(rounded[key] + 0.1, 1)
+            tenths_left -= 1
+        index += 1
+    if abs(sum(rounded.values()) - budget) > 1e-6:
+        raise ValueError("Rounded bankroll allocation does not sum to budget")
+    return rounded
+
+
+def app_navigation_steps(
+    app: str, fixture: Mapping[str, object], recommendation: Mapping[str, object],
+    stake: float,
+) -> Dict[str, List[str]]:
+    """Return bilingual novice steps for locating one exact sourced market."""
+    family = str(recommendation["market_family"])
+    market_names = {
+        "1x2": ("Match Result", "Resultado del partido"),
+        "total_goals": ("Total Goals", "Total de goles"),
+        "btts": ("Both Teams to Score", "Ambos equipos marcan"),
+        "double_chance": ("Double Chance", "Doble oportunidad"),
+        "asian_handicap": ("Asian Handicap", "Hándicap asiático"),
+        "handicap_total_combo": (
+            "Handicap + Total Goals", "Hándicap + Total de goles"
+        ),
+    }
+    market_en, market_es = market_names.get(
+        family, (str(recommendation["market_original"]),
+                 str(recommendation["market_original"]))
+    )
+    selection = str(recommendation["selection_original"])
+    line = str(recommendation.get("line") or "").strip()
+    selection_with_line = f"{selection} {line}".strip()
+    fixture_en = fixture["fixture"]["en"]
+    fixture_es = fixture["fixture"]["es"]
+    fair = float(recommendation["fair_odds"])
+    source_price = float(recommendation["odds"])
+    return {
+        "en": [
+            f"Open {app}, then Sports → Football → World Cup.",
+            f"Search for {fixture_en} and confirm the kickoff date shown on this card.",
+            f"Open the market named “{market_en}”.",
+            f"Choose exactly “{selection_with_line}”. Do not substitute a nearby handicap or total line.",
+            f"Check the current decimal price. The saved screenshot price is {source_price:.2f}; the model fair-price threshold is {fair:.2f}.",
+            f"Enter S/{stake:.2f} only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action.",
+        ],
+        "es": [
+            f"Abre {app} y entra a Deportes → Fútbol → Mundial.",
+            f"Busca {fixture_es} y confirma la fecha de inicio mostrada en esta tarjeta.",
+            f"Abre el mercado llamado “{market_es}”.",
+            f"Elige exactamente “{selection_with_line}”. No sustituyas por una línea de hándicap o total parecida.",
+            f"Revisa la cuota decimal actual. La cuota guardada en la captura es {source_price:.2f}; el umbral de cuota justa del modelo es {fair:.2f}.",
+            f"Ingresa S/{stake:.2f} solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real.",
+        ],
+    }
+
+
+def attach_bankroll_simulation(
+    predictions: Sequence[Dict[str, object]],
+) -> Dict[str, object]:
+    """Attach a S/100 educational plan to each app's sourced recommendations."""
+    summary = {
+        "currency": "PEN",
+        "budget_per_app": 100.0,
+        "policy": "forced_all_match_coverage_educational_simulation",
+        "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada.",
+        },
+        "apps": {},
+    }
+    for app in ("Betano", "Betsson"):
+        app_rows = [
+            row for row in predictions
+            if row["recommendation"]["app"] == app
+        ]
+        stakes = allocate_app_budget(app_rows)
+        expected_net = gross_if_all_win = 0.0
+        for row in app_rows:
+            rec = row["recommendation"]
+            stake = stakes[row["fixture_id"]]
+            gross_return = stake * float(rec["odds"])
+            expected_net += stake * float(rec["ev_pct"]) / 100.0
+            gross_if_all_win += gross_return
+            rec["budget_simulation"] = {
+                "app_budget": 100.0,
+                "stake": stake,
+                "share_of_app_budget_pct": round(stake, 1),
+                "screenshot_odds": float(rec["odds"]),
+                "minimum_model_fair_odds": float(rec["fair_odds"]),
+                "price_gate_status": (
+                    "at_or_above_model_fair_price"
+                    if float(rec["odds"]) >= float(rec["fair_odds"])
+                    else "below_model_fair_price_forced_coverage_only"
+                ),
+                "gross_return_if_full_win": round(gross_return, 2),
+                "profit_if_full_win": round(gross_return - stake, 2),
+                "steps": app_navigation_steps(app, row, rec, stake),
+                "warning": summary["warning"],
+            }
+        summary["apps"][app] = {
+            "fixture_count": len(app_rows),
+            "total_stake": round(sum(stakes.values()), 2),
+            "model_estimated_net": round(expected_net, 2),
+            "gross_return_if_every_pick_fully_wins": round(
+                gross_if_all_win, 2
+            ),
+            "risk_note": {
+                "en": "Gross return assumes every selection fully wins; Asian pushes or half-results can reduce it. The model-estimated net is not historically validated.",
+                "es": "El retorno bruto supone que todas las selecciones ganan completamente; nulos o medias liquidaciones asiáticas pueden reducirlo. El neto estimado no está validado históricamente.",
+            },
+        }
+    return summary
+
+
 def build() -> Dict[str, object]:
     fixtures = read_csv(FIXTURES)
     if len(fixtures) != 32 or len({row["fixture_id"] for row in fixtures}) != 32:
@@ -1855,6 +2043,7 @@ def build() -> Dict[str, object]:
 
     model_fields = list(model_rows[0].keys())
     write_csv(MODEL_DATA_OUT, model_rows, model_fields)
+    bankroll_simulation = attach_bankroll_simulation(predictions)
     input_hashes = {
         path.name: sha256(path) for path in
         (HISTORICAL, RESULTS_2026, ELO_BASELINE, FIXTURES, *ODDS_PARTS, *RESEARCH_PARTS)
@@ -1893,6 +2082,7 @@ def build() -> Dict[str, object]:
         "generated_at": "2026-06-21T23:59:00-05:00",
         "batch": {"start": "2026-06-22", "end": "2026-06-27", "fixture_count": 32},
         "model": metrics,
+        "bankroll_simulation": bankroll_simulation,
         "predictions": predictions,
         "glossary": {
             "ev": {
@@ -1951,6 +2141,8 @@ def build() -> Dict[str, object]:
             "- price coverage: all 32 fixtures receive model probabilities/fair prices; EV is computed only for complete screenshot-derived source markets, currently on 12 fixtures.",
             "- recommendation labels: BEST_AVAILABLE is mandatory per fixture; PASS/HALT remain diagnostic and no label implies certainty.",
             "- metric_explanations: bilingual educational JSON generated from the published fixture values for 1/X/2, expected goals, totals, BTTS, and Asian handicap; these fields do not alter model probabilities.",
+            "- bankroll simulation: S/100 is allocated separately within the recommendation's sourced app only; every assigned match receives at least S/1, no match exceeds S/10, remaining funds use positive stressed/base EV plus monotonic A>B>C>D risk bonuses, and stakes round to S/0.10 with exact app totals.",
+            "- bankroll warnings: forced all-match coverage may include negative-EV/below-fair-price picks; gross return assumes a full win and the model-estimated net is explicitly unvalidated.",
             "- stress EV: subtract 3 percentage points from selected win probability and add 3 points to loss probability.",
             "- classification: divergence >15pp or EV >25% HALT; all other selections PASS until recommendation-policy profitability is validated out of sample.",
             "- source_sha256: SHA-256 of the exact screenshot containing the price.",

@@ -125,7 +125,38 @@
       "research_june24_25.csv": "d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517",
       "research_june26_27.csv": "5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60"
     },
-    "pipeline_sha256": "85aca15d860b37b07c6114d54357169825c9dd5fbf95f63368b8565d042c4d9b"
+    "pipeline_sha256": "9b792d4485ed74e0f99a0ef3647b2a776df7556b199aa14707ae5594d1aeec7f"
+  },
+  "bankroll_simulation": {
+    "currency": "PEN",
+    "budget_per_app": 100.0,
+    "policy": "forced_all_match_coverage_educational_simulation",
+    "warning": {
+      "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+      "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+    },
+    "apps": {
+      "Betano": {
+        "fixture_count": 21,
+        "total_stake": 100.0,
+        "model_estimated_net": 1.09,
+        "gross_return_if_every_pick_fully_wins": 391.65,
+        "risk_note": {
+          "en": "Gross return assumes every selection fully wins; Asian pushes or half-results can reduce it. The model-estimated net is not historically validated.",
+          "es": "El retorno bruto supone que todas las selecciones ganan completamente; nulos o medias liquidaciones asiáticas pueden reducirlo. El neto estimado no está validado históricamente."
+        }
+      },
+      "Betsson": {
+        "fixture_count": 11,
+        "total_stake": 100.0,
+        "model_estimated_net": 2.32,
+        "gross_return_if_every_pick_fully_wins": 260.08,
+        "risk_note": {
+          "en": "Gross return assumes every selection fully wins; Asian pushes or half-results can reduce it. The model-estimated net is not historically validated.",
+          "es": "El retorno bruto supone que todas las selecciones ganan completamente; nulos o medias liquidaciones asiáticas pueden reducirlo. El neto estimado no está validado históricamente."
+        }
+      }
+    }
   },
   "predictions": [
     {
@@ -611,7 +642,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7523.PNG",
-        "source_sha256": "27805ab6312c44ceda3e1d6d2075c5538365bb5be54e40b0f02dc4f77d75130d"
+        "source_sha256": "27805ab6312c44ceda3e1d6d2075c5538365bb5be54e40b0f02dc4f77d75130d",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 2.4,
+          "share_of_app_budget_pct": 2.4,
+          "screenshot_odds": 3.95,
+          "minimum_model_fair_odds": 3.955,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 9.48,
+          "profit_if_full_win": 7.08,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Argentina vs Austria and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Empate”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.95; the model fair-price threshold is 3.96.",
+              "Enter S/2.40 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Argentina vs Austria y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Empate”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.95; el umbral de cuota justa del modelo es 3.96.",
+              "Ingresa S/2.40 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -1128,7 +1191,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7529.PNG",
-        "source_sha256": "0ce76a49456a799cef2f4772115d846721d5f4fc0d43c6b85d5cb6e3f5878825"
+        "source_sha256": "0ce76a49456a799cef2f4772115d846721d5f4fc0d43c6b85d5cb6e3f5878825",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 2.4,
+          "share_of_app_budget_pct": 2.4,
+          "screenshot_odds": 17.0,
+          "minimum_model_fair_odds": 17.744,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 40.8,
+          "profit_if_full_win": 38.4,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for France vs Iraq and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Irak”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 17.00; the model fair-price threshold is 17.74.",
+              "Enter S/2.40 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Francia vs Irak y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Irak”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 17.00; el umbral de cuota justa del modelo es 17.74.",
+              "Ingresa S/2.40 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -1645,7 +1740,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7533.PNG",
-        "source_sha256": "9d84659a733aeaae98f0b87bb0d218058863317ad2974538a5fed2642faed642"
+        "source_sha256": "9d84659a733aeaae98f0b87bb0d218058863317ad2974538a5fed2642faed642",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 5.8,
+          "share_of_app_budget_pct": 5.8,
+          "screenshot_odds": 3.5,
+          "minimum_model_fair_odds": 3.456,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 20.3,
+          "profit_if_full_win": 14.5,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Norway vs Senegal and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Empate”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.50; the model fair-price threshold is 3.46.",
+              "Enter S/5.80 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Noruega vs Senegal y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Empate”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.50; el umbral de cuota justa del modelo es 3.46.",
+              "Ingresa S/5.80 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -2162,7 +2289,39 @@
         "selection_reason": "all_model_edges_halted_select_highest_market_probability",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7537.PNG",
-        "source_sha256": "0050afec82338869985b68ec0590d799fe45776692c30a056ced586f2b0def5a"
+        "source_sha256": "0050afec82338869985b68ec0590d799fe45776692c30a056ced586f2b0def5a",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 2.4,
+          "share_of_app_budget_pct": 2.4,
+          "screenshot_odds": 1.6,
+          "minimum_model_fair_odds": 1.768,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 3.84,
+          "profit_if_full_win": 1.44,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Jordan vs Algeria and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Argelia”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.60; the model fair-price threshold is 1.77.",
+              "Enter S/2.40 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Jordania vs Argelia y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Argelia”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.60; el umbral de cuota justa del modelo es 1.77.",
+              "Ingresa S/2.40 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -2678,7 +2837,39 @@
         "selection_reason": "all_model_edges_halted_select_highest_market_probability",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7541.PNG",
-        "source_sha256": "83b6b5892e1c82bb385179ae35d2e3239aaf1fab33dcbc4f0f9b1a51f73f1804"
+        "source_sha256": "83b6b5892e1c82bb385179ae35d2e3239aaf1fab33dcbc4f0f9b1a51f73f1804",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 2.4,
+          "share_of_app_budget_pct": 2.4,
+          "screenshot_odds": 1.23,
+          "minimum_model_fair_odds": 1.344,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 2.95,
+          "profit_if_full_win": 0.55,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Portugal vs Uzbekistan and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Portugal”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.23; the model fair-price threshold is 1.34.",
+              "Enter S/2.40 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Portugal vs Uzbekistán y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Portugal”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.23; el umbral de cuota justa del modelo es 1.34.",
+              "Ingresa S/2.40 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -3195,7 +3386,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7545.PNG",
-        "source_sha256": "32786a7ef9c2039851806a24a007def1b9434a806832e3903a160647f15a71c6"
+        "source_sha256": "32786a7ef9c2039851806a24a007def1b9434a806832e3903a160647f15a71c6",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 2.4,
+          "share_of_app_budget_pct": 2.4,
+          "screenshot_odds": 1.25,
+          "minimum_model_fair_odds": 1.362,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 3.0,
+          "profit_if_full_win": 0.6,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for England vs Ghana and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Inglaterra”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.25; the model fair-price threshold is 1.36.",
+              "Enter S/2.40 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Inglaterra vs Ghana y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Inglaterra”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.25; el umbral de cuota justa del modelo es 1.36.",
+              "Ingresa S/2.40 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -3712,7 +3935,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7549.PNG",
-        "source_sha256": "f3cf9196c3c8b0c29e802a722d65ff8037bef227dcb73d893a1fd8fafceeae6d"
+        "source_sha256": "f3cf9196c3c8b0c29e802a722d65ff8037bef227dcb73d893a1fd8fafceeae6d",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 9.0,
+          "share_of_app_budget_pct": 9.0,
+          "screenshot_odds": 6.3,
+          "minimum_model_fair_odds": 5.885,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 56.7,
+          "profit_if_full_win": 47.7,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Panama vs Croatia and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Panamá”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 6.30; the model fair-price threshold is 5.88.",
+              "Enter S/9.00 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Panamá vs Croacia y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Panamá”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 6.30; el umbral de cuota justa del modelo es 5.88.",
+              "Ingresa S/9.00 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -4228,7 +4483,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7552.PNG",
-        "source_sha256": "fb00e1103d62e4d7f00b5228263d09bdd298b8bac7d26ad0688fe612dd84226a"
+        "source_sha256": "fb00e1103d62e4d7f00b5228263d09bdd298b8bac7d26ad0688fe612dd84226a",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 5.9,
+          "share_of_app_budget_pct": 5.9,
+          "screenshot_odds": 3.95,
+          "minimum_model_fair_odds": 3.894,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 23.31,
+          "profit_if_full_win": 17.41,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Colombia vs Congo DR and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Empate”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.95; the model fair-price threshold is 3.89.",
+              "Enter S/5.90 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Colombia vs RD Congo y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Empate”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.95; el umbral de cuota justa del modelo es 3.89.",
+              "Ingresa S/5.90 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -6033,7 +6320,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7559.PNG",
-        "source_sha256": "19d3e0b4cd0f29004cf04b422435c0457a6286f1427524b5bd0d80557123dcb7"
+        "source_sha256": "19d3e0b4cd0f29004cf04b422435c0457a6286f1427524b5bd0d80557123dcb7",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 6.8,
+          "share_of_app_budget_pct": 6.8,
+          "screenshot_odds": 3.3,
+          "minimum_model_fair_odds": 3.202,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 22.44,
+          "profit_if_full_win": 15.64,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Switzerland vs Canada and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “2”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.30; the model fair-price threshold is 3.20.",
+              "Enter S/6.80 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Suiza vs Canadá y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “2”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.30; el umbral de cuota justa del modelo es 3.20.",
+              "Ingresa S/6.80 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 49,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -7950,7 +8269,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7660.PNG",
-        "source_sha256": "0fcc58e07c01ad60f0b57bff9291909255d2d585dd5db7437601b9b8c1401fd5"
+        "source_sha256": "0fcc58e07c01ad60f0b57bff9291909255d2d585dd5db7437601b9b8c1401fd5",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 10.0,
+          "share_of_app_budget_pct": 10.0,
+          "screenshot_odds": 1.81,
+          "minimum_model_fair_odds": 1.612,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 18.1,
+          "profit_if_full_win": 8.1,
+          "steps": {
+            "en": [
+              "Open Betsson, then Sports → Football → World Cup.",
+              "Search for Bosnia and Herzegovina vs Qatar and confirm the kickoff date shown on this card.",
+              "Open the market named “Asian Handicap”.",
+              "Choose exactly “Qatar +1.25 +1.25”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.81; the model fair-price threshold is 1.61.",
+              "Enter S/10.00 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betsson y entra a Deportes → Fútbol → Mundial.",
+              "Busca Bosnia y Herzegovina vs Catar y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Hándicap asiático”.",
+              "Elige exactamente “Qatar +1.25 +1.25”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.81; el umbral de cuota justa del modelo es 1.61.",
+              "Ingresa S/10.00 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 53,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -9866,7 +10217,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7664.PNG",
-        "source_sha256": "c9eee07749b25671c0e70bbf8108cd6139451713a3d96dddf2713790f7f3cc68"
+        "source_sha256": "c9eee07749b25671c0e70bbf8108cd6139451713a3d96dddf2713790f7f3cc68",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 9.2,
+          "share_of_app_budget_pct": 9.2,
+          "screenshot_odds": 2.31,
+          "minimum_model_fair_odds": 1.844,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 21.25,
+          "profit_if_full_win": 12.05,
+          "steps": {
+            "en": [
+              "Open Betsson, then Sports → Football → World Cup.",
+              "Search for Scotland vs Brazil and confirm the kickoff date shown on this card.",
+              "Open the market named “Asian Handicap”.",
+              "Choose exactly “Scotland +1 +1”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 2.31; the model fair-price threshold is 1.84.",
+              "Enter S/9.20 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betsson y entra a Deportes → Fútbol → Mundial.",
+              "Busca Escocia vs Brasil y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Hándicap asiático”.",
+              "Elige exactamente “Scotland +1 +1”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 2.31; el umbral de cuota justa del modelo es 1.84.",
+              "Ingresa S/9.20 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 53,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -11839,7 +12222,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7668.PNG",
-        "source_sha256": "f2a1cac3500bee620deac11702e3fac1f10967b3ceec2dfa155b6dec107c29ed"
+        "source_sha256": "f2a1cac3500bee620deac11702e3fac1f10967b3ceec2dfa155b6dec107c29ed",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 10.0,
+          "share_of_app_budget_pct": 10.0,
+          "screenshot_odds": 1.83,
+          "minimum_model_fair_odds": 1.486,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 18.3,
+          "profit_if_full_win": 8.3,
+          "steps": {
+            "en": [
+              "Open Betsson, then Sports → Football → World Cup.",
+              "Search for Morocco vs Haiti and confirm the kickoff date shown on this card.",
+              "Open the market named “Asian Handicap”.",
+              "Choose exactly “Haiti +2 +2”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.83; the model fair-price threshold is 1.49.",
+              "Enter S/10.00 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betsson y entra a Deportes → Fútbol → Mundial.",
+              "Busca Marruecos vs Haití y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Hándicap asiático”.",
+              "Elige exactamente “Haiti +2 +2”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.83; el umbral de cuota justa del modelo es 1.49.",
+              "Ingresa S/10.00 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 55,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -13756,7 +14171,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7669.PNG",
-        "source_sha256": "bad31435fe3d6595979a36bc2e17886db7757b1a39350ebb7afc351e70d54d48"
+        "source_sha256": "bad31435fe3d6595979a36bc2e17886db7757b1a39350ebb7afc351e70d54d48",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 10.0,
+          "share_of_app_budget_pct": 10.0,
+          "screenshot_odds": 3.9,
+          "minimum_model_fair_odds": 3.675,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 39.0,
+          "profit_if_full_win": 29.0,
+          "steps": {
+            "en": [
+              "Open Betsson, then Sports → Football → World Cup.",
+              "Search for South Africa vs South Korea and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Draw”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.90; the model fair-price threshold is 3.67.",
+              "Enter S/10.00 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betsson y entra a Deportes → Fútbol → Mundial.",
+              "Busca Sudáfrica vs Corea del Sur y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Draw”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.90; el umbral de cuota justa del modelo es 3.67.",
+              "Ingresa S/10.00 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 53,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -15420,7 +15867,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7675.PNG",
-        "source_sha256": "547440b590586a047fd690f032eabd27d1b89b0e1e19976217d28a393114ea0c"
+        "source_sha256": "547440b590586a047fd690f032eabd27d1b89b0e1e19976217d28a393114ea0c",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 10.0,
+          "share_of_app_budget_pct": 10.0,
+          "screenshot_odds": 3.8,
+          "minimum_model_fair_odds": 3.622,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 38.0,
+          "profit_if_full_win": 28.0,
+          "steps": {
+            "en": [
+              "Open Betsson, then Sports → Football → World Cup.",
+              "Search for Czechia vs Mexico and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Draw”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.80; the model fair-price threshold is 3.62.",
+              "Enter S/10.00 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betsson y entra a Deportes → Fútbol → Mundial.",
+              "Busca Chequia vs México y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Draw”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.80; el umbral de cuota justa del modelo es 3.62.",
+              "Ingresa S/10.00 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 44,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -15937,7 +16416,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7574.PNG",
-        "source_sha256": "24445c17eeb8eaa2e0f67b2f8aaa97658cb8dc0b5225580348b1d8d3a8b48a07"
+        "source_sha256": "24445c17eeb8eaa2e0f67b2f8aaa97658cb8dc0b5225580348b1d8d3a8b48a07",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 5.9,
+          "share_of_app_budget_pct": 5.9,
+          "screenshot_odds": 3.85,
+          "minimum_model_fair_odds": 3.794,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 22.72,
+          "profit_if_full_win": 16.82,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Ecuador vs Germany and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Empate”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.85; the model fair-price threshold is 3.79.",
+              "Enter S/5.90 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Ecuador vs Alemania y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Empate”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.85; el umbral de cuota justa del modelo es 3.79.",
+              "Ingresa S/5.90 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -16454,7 +16965,39 @@
         "selection_reason": "all_model_edges_halted_select_highest_market_probability",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7578.PNG",
-        "source_sha256": "c6e325a0c2c829f84b01c579de61a8c7643ed2f66e4aaf7f9ac1e822c3bb301d"
+        "source_sha256": "c6e325a0c2c829f84b01c579de61a8c7643ed2f66e4aaf7f9ac1e822c3bb301d",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 2.4,
+          "share_of_app_budget_pct": 2.4,
+          "screenshot_odds": 1.16,
+          "minimum_model_fair_odds": 1.241,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 2.78,
+          "profit_if_full_win": 0.38,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Curacao vs Ivory Coast and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Costa de Marfil”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.16; the model fair-price threshold is 1.24.",
+              "Enter S/2.40 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Curazao vs Costa de Marfil y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Costa de Marfil”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.16; el umbral de cuota justa del modelo es 1.24.",
+              "Ingresa S/2.40 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -16971,7 +17514,39 @@
         "selection_reason": "all_model_edges_halted_select_highest_market_probability",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7582.PNG",
-        "source_sha256": "376f4b70de6283860f9ac8c3709a0b379fdbc529c1b9f567c6dc574bf662c10d"
+        "source_sha256": "376f4b70de6283860f9ac8c3709a0b379fdbc529c1b9f567c6dc574bf662c10d",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 2.4,
+          "share_of_app_budget_pct": 2.4,
+          "screenshot_odds": 1.15,
+          "minimum_model_fair_odds": 1.245,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 2.76,
+          "profit_if_full_win": 0.36,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Tunisia vs Netherlands and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Países Bajos”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.15; the model fair-price threshold is 1.25.",
+              "Enter S/2.40 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Túnez vs Países Bajos y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Países Bajos”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.15; el umbral de cuota justa del modelo es 1.25.",
+              "Ingresa S/2.40 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -17488,7 +18063,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7586.PNG",
-        "source_sha256": "ed73c40ca93f4da0258424ba807578f03600afb69baeefa5cadc7bfeabc1e75e"
+        "source_sha256": "ed73c40ca93f4da0258424ba807578f03600afb69baeefa5cadc7bfeabc1e75e",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 2.4,
+          "share_of_app_budget_pct": 2.4,
+          "screenshot_odds": 4.3,
+          "minimum_model_fair_odds": 4.313,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 10.32,
+          "profit_if_full_win": 7.92,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Japan vs Sweden and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Suecia”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 4.30; the model fair-price threshold is 4.31.",
+              "Enter S/2.40 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Japón vs Suecia y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Suecia”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 4.30; el umbral de cuota justa del modelo es 4.31.",
+              "Ingresa S/2.40 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -18005,7 +18612,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7589.PNG",
-        "source_sha256": "6246c34fe79c33faa4ddb63c724ab31fe19ed83f3e942db6fea32847549ed266"
+        "source_sha256": "6246c34fe79c33faa4ddb63c724ab31fe19ed83f3e942db6fea32847549ed266",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 7.0,
+          "share_of_app_budget_pct": 7.0,
+          "screenshot_odds": 3.75,
+          "minimum_model_fair_odds": 3.625,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 26.25,
+          "profit_if_full_win": 19.25,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Paraguay vs Australia and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Australia”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.75; the model fair-price threshold is 3.62.",
+              "Enter S/7.00 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Paraguay vs Australia y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Australia”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.75; el umbral de cuota justa del modelo es 3.62.",
+              "Ingresa S/7.00 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -18522,7 +19161,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7592.PNG",
-        "source_sha256": "c0abff75c968cedea866d0ab6f58c24dcb547285ddafa50348af1c943250fff6"
+        "source_sha256": "c0abff75c968cedea866d0ab6f58c24dcb547285ddafa50348af1c943250fff6",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 7.0,
+          "share_of_app_budget_pct": 7.0,
+          "screenshot_odds": 3.9,
+          "minimum_model_fair_odds": 3.773,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 27.3,
+          "profit_if_full_win": 20.3,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Turkiye vs USA and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Empate”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.90; the model fair-price threshold is 3.77.",
+              "Enter S/7.00 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Turquía vs Estados Unidos y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Empate”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.90; el umbral de cuota justa del modelo es 3.77.",
+              "Ingresa S/7.00 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -19040,7 +19711,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7595.PNG",
-        "source_sha256": "13afed4fc17a80e1a9c9b80a36e091efd20de5b04d2c5597072c4036d603148f"
+        "source_sha256": "13afed4fc17a80e1a9c9b80a36e091efd20de5b04d2c5597072c4036d603148f",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 6.9,
+          "share_of_app_budget_pct": 6.9,
+          "screenshot_odds": 3.9,
+          "minimum_model_fair_odds": 3.775,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 26.91,
+          "profit_if_full_win": 20.01,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Norway vs France and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Empate”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.90; the model fair-price threshold is 3.77.",
+              "Enter S/6.90 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Noruega vs Francia y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Empate”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.90; el umbral de cuota justa del modelo es 3.77.",
+              "Ingresa S/6.90 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -19557,7 +20260,39 @@
         "selection_reason": "all_model_edges_halted_select_highest_market_probability",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7598.PNG",
-        "source_sha256": "af29c71f5baf16a1e2dca531a20007b1e396c5f0d72eb5b116004a234fb7fe55"
+        "source_sha256": "af29c71f5baf16a1e2dca531a20007b1e396c5f0d72eb5b116004a234fb7fe55",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 2.4,
+          "share_of_app_budget_pct": 2.4,
+          "screenshot_odds": 1.31,
+          "minimum_model_fair_odds": 1.433,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 3.14,
+          "profit_if_full_win": 0.74,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Senegal vs Iraq and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Senegal”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.31; the model fair-price threshold is 1.43.",
+              "Enter S/2.40 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Senegal vs Irak y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Senegal”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.31; el umbral de cuota justa del modelo es 1.43.",
+              "Ingresa S/2.40 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -20073,7 +20808,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7604.PNG",
-        "source_sha256": "101454a684d270657b5185a563f4c680962fee77d79fcd0d62d1a259933fb2f8"
+        "source_sha256": "101454a684d270657b5185a563f4c680962fee77d79fcd0d62d1a259933fb2f8",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 7.1,
+          "share_of_app_budget_pct": 7.1,
+          "screenshot_odds": 4.3,
+          "minimum_model_fair_odds": 4.152,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 30.53,
+          "profit_if_full_win": 23.43,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Uruguay vs Spain and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Empate”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 4.30; the model fair-price threshold is 4.15.",
+              "Enter S/7.10 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Uruguay vs España y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Empate”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 4.30; el umbral de cuota justa del modelo es 4.15.",
+              "Ingresa S/7.10 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -20586,7 +21353,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7601.PNG",
-        "source_sha256": "89ae0102a598d962aa9df1524397bfdb9804d5c45668cafe1e3978d265ccc780"
+        "source_sha256": "89ae0102a598d962aa9df1524397bfdb9804d5c45668cafe1e3978d265ccc780",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 6.6,
+          "share_of_app_budget_pct": 6.6,
+          "screenshot_odds": 3.45,
+          "minimum_model_fair_odds": 3.359,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 22.77,
+          "profit_if_full_win": 16.17,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Cape Verde vs Saudi Arabia and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Empate”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.45; the model fair-price threshold is 3.36.",
+              "Enter S/6.60 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Cabo Verde vs Arabia Saudita y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Empate”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.45; el umbral de cuota justa del modelo es 3.36.",
+              "Ingresa S/6.60 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -21099,7 +21898,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7608.PNG",
-        "source_sha256": "0059344a099c74e76bad33596a821a596916a19bcf51036602353a68348ea98e"
+        "source_sha256": "0059344a099c74e76bad33596a821a596916a19bcf51036602353a68348ea98e",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 8.0,
+          "share_of_app_budget_pct": 8.0,
+          "screenshot_odds": 3.8,
+          "minimum_model_fair_odds": 3.636,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 30.4,
+          "profit_if_full_win": 22.4,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for Egypt vs Iran and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Irán”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.80; the model fair-price threshold is 3.64.",
+              "Enter S/8.00 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Egipto vs Irán y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Irán”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.80; el umbral de cuota justa del modelo es 3.64.",
+              "Ingresa S/8.00 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -21612,7 +22443,39 @@
         "selection_reason": "all_model_edges_halted_select_highest_market_probability",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7611.PNG",
-        "source_sha256": "b5be6ba05e46bd44237f76029c06935e7ab6c0eb84656c8330d3e0e89ce940a7"
+        "source_sha256": "b5be6ba05e46bd44237f76029c06935e7ab6c0eb84656c8330d3e0e89ce940a7",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 2.4,
+          "share_of_app_budget_pct": 2.4,
+          "screenshot_odds": 1.23,
+          "minimum_model_fair_odds": 1.348,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 2.95,
+          "profit_if_full_win": 0.55,
+          "steps": {
+            "en": [
+              "Open Betano, then Sports → Football → World Cup.",
+              "Search for New Zealand vs Belgium and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Bélgica”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.23; the model fair-price threshold is 1.35.",
+              "Enter S/2.40 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betano y entra a Deportes → Fútbol → Mundial.",
+              "Busca Nueva Zelanda vs Bélgica y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Bélgica”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.23; el umbral de cuota justa del modelo es 1.35.",
+              "Ingresa S/2.40 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 3,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -22909,7 +23772,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7725.PNG",
-        "source_sha256": "6649c83f373e08b48b9061b328c5b73cf24b588ac9fa248e019b26858c7f388f"
+        "source_sha256": "6649c83f373e08b48b9061b328c5b73cf24b588ac9fa248e019b26858c7f388f",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 10.0,
+          "share_of_app_budget_pct": 10.0,
+          "screenshot_odds": 1.72,
+          "minimum_model_fair_odds": 1.394,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 17.2,
+          "profit_if_full_win": 7.2,
+          "steps": {
+            "en": [
+              "Open Betsson, then Sports → Football → World Cup.",
+              "Search for Croatia vs Ghana and confirm the kickoff date shown on this card.",
+              "Open the market named “Asian Handicap”.",
+              "Choose exactly “Ghana +1”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.72; the model fair-price threshold is 1.39.",
+              "Enter S/10.00 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betsson y entra a Deportes → Fútbol → Mundial.",
+              "Busca Croacia vs Ghana y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Hándicap asiático”.",
+              "Elige exactamente “Ghana +1”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.72; el umbral de cuota justa del modelo es 1.39.",
+              "Ingresa S/10.00 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 31,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -24209,7 +25104,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7727.PNG",
-        "source_sha256": "803330f5889d7e1a34396ced76dd93296c18f91ad7ef06a2c155f4abe5d45391"
+        "source_sha256": "803330f5889d7e1a34396ced76dd93296c18f91ad7ef06a2c155f4abe5d45391",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 8.1,
+          "share_of_app_budget_pct": 8.1,
+          "screenshot_odds": 1.03,
+          "minimum_model_fair_odds": 1.065,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 8.34,
+          "profit_if_full_win": 0.24,
+          "steps": {
+            "en": [
+              "Open Betsson, then Sports → Football → World Cup.",
+              "Search for Panama vs England and confirm the kickoff date shown on this card.",
+              "Open the market named “Total Goals”.",
+              "Choose exactly “Over 0.5 0.5”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.03; the model fair-price threshold is 1.06.",
+              "Enter S/8.10 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betsson y entra a Deportes → Fútbol → Mundial.",
+              "Busca Panamá vs Inglaterra y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Total de goles”.",
+              "Elige exactamente “Over 0.5 0.5”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.03; el umbral de cuota justa del modelo es 1.06.",
+              "Ingresa S/8.10 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 31,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -25454,7 +26381,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7730.PNG",
-        "source_sha256": "d05f101c96a0af5faf677f542d5b3c16ff496fb2d49a4642711fd33bd3cd8e94"
+        "source_sha256": "d05f101c96a0af5faf677f542d5b3c16ff496fb2d49a4642711fd33bd3cd8e94",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 9.3,
+          "share_of_app_budget_pct": 9.3,
+          "screenshot_odds": 3.45,
+          "minimum_model_fair_odds": 3.407,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 32.09,
+          "profit_if_full_win": 22.79,
+          "steps": {
+            "en": [
+              "Open Betsson, then Sports → Football → World Cup.",
+              "Search for Colombia vs Portugal and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Draw”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.45; the model fair-price threshold is 3.41.",
+              "Enter S/9.30 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betsson y entra a Deportes → Fútbol → Mundial.",
+              "Busca Colombia vs Portugal y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Draw”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.45; el umbral de cuota justa del modelo es 3.41.",
+              "Ingresa S/9.30 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 29,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -26699,7 +27658,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7734.PNG",
-        "source_sha256": "cdb9f126cbdb6841ee926884413f49cffa22cbdfd289810fc1ad9601c70b7a85"
+        "source_sha256": "cdb9f126cbdb6841ee926884413f49cffa22cbdfd289810fc1ad9601c70b7a85",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 10.0,
+          "share_of_app_budget_pct": 10.0,
+          "screenshot_odds": 3.5,
+          "minimum_model_fair_odds": 3.357,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 35.0,
+          "profit_if_full_win": 25.0,
+          "steps": {
+            "en": [
+              "Open Betsson, then Sports → Football → World Cup.",
+              "Search for Congo DR vs Uzbekistan and confirm the kickoff date shown on this card.",
+              "Open the market named “Match Result”.",
+              "Choose exactly “Draw”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 3.50; the model fair-price threshold is 3.36.",
+              "Enter S/10.00 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betsson y entra a Deportes → Fútbol → Mundial.",
+              "Busca RD Congo vs Uzbekistán y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Resultado del partido”.",
+              "Elige exactamente “Draw”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 3.50; el umbral de cuota justa del modelo es 3.36.",
+              "Ingresa S/10.00 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 29,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -28000,7 +28991,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7739.PNG",
-        "source_sha256": "767edc0c17a40421b35b627cce33a7bbcf5ebd84bdd1747507988ea94867f682"
+        "source_sha256": "767edc0c17a40421b35b627cce33a7bbcf5ebd84bdd1747507988ea94867f682",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 3.4,
+          "share_of_app_budget_pct": 3.4,
+          "screenshot_odds": 1.03,
+          "minimum_model_fair_odds": 1.07,
+          "price_gate_status": "below_model_fair_price_forced_coverage_only",
+          "gross_return_if_full_win": 3.5,
+          "profit_if_full_win": 0.1,
+          "steps": {
+            "en": [
+              "Open Betsson, then Sports → Football → World Cup.",
+              "Search for Jordan vs Argentina and confirm the kickoff date shown on this card.",
+              "Open the market named “Total Goals”.",
+              "Choose exactly “Over 0.5 0.5”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 1.03; the model fair-price threshold is 1.07.",
+              "Enter S/3.40 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betsson y entra a Deportes → Fútbol → Mundial.",
+              "Busca Jordania vs Argentina y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Total de goles”.",
+              "Elige exactamente “Over 0.5 0.5”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 1.03; el umbral de cuota justa del modelo es 1.07.",
+              "Ingresa S/3.40 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 31,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
@@ -29245,7 +30268,39 @@
         "selection_reason": "highest_uncertainty_adjusted_expected_profit",
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": "IMG_7745.PNG",
-        "source_sha256": "73b7c4f695f538f34f69b612e9a1fd0b77f2d19a6f0168e0b3b6682ea3dec844"
+        "source_sha256": "73b7c4f695f538f34f69b612e9a1fd0b77f2d19a6f0168e0b3b6682ea3dec844",
+        "budget_simulation": {
+          "app_budget": 100.0,
+          "stake": 10.0,
+          "share_of_app_budget_pct": 10.0,
+          "screenshot_odds": 2.93,
+          "minimum_model_fair_odds": 2.616,
+          "price_gate_status": "at_or_above_model_fair_price",
+          "gross_return_if_full_win": 29.3,
+          "profit_if_full_win": 19.3,
+          "steps": {
+            "en": [
+              "Open Betsson, then Sports → Football → World Cup.",
+              "Search for Algeria vs Austria and confirm the kickoff date shown on this card.",
+              "Open the market named “Asian Handicap”.",
+              "Choose exactly “Austria -0.75”. Do not substitute a nearby handicap or total line.",
+              "Check the current decimal price. The saved screenshot price is 2.93; the model fair-price threshold is 2.62.",
+              "Enter S/10.00 only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action."
+            ],
+            "es": [
+              "Abre Betsson y entra a Deportes → Fútbol → Mundial.",
+              "Busca Argelia vs Austria y confirma la fecha de inicio mostrada en esta tarjeta.",
+              "Abre el mercado llamado “Hándicap asiático”.",
+              "Elige exactamente “Austria -0.75”. No sustituyas por una línea de hándicap o total parecida.",
+              "Revisa la cuota decimal actual. La cuota guardada en la captura es 2.93; el umbral de cuota justa del modelo es 2.62.",
+              "Ingresa S/10.00 solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real."
+            ]
+          },
+          "warning": {
+            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
+            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada."
+          }
+        }
       },
       "supported_markets_evaluated": 29,
       "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",

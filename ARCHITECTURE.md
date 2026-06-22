@@ -4,6 +4,10 @@
 
 WCdecider is a flat, file-based Python pipeline producing a static GitHub Pages report. This document describes the implementation that exists now; future package ideas are not presented as current code.
 
+The cross-cutting behavioral and validation contract is
+`WCDECIDER_SYSTEM_DESIGN.md`; this architecture document remains the concise
+implemented component map.
+
 ## Data flow
 
 ```text

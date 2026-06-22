@@ -15,7 +15,7 @@ This is the release checklist for every new WCdecider match batch. Replace `<bat
 
 ## Phase 0 — Read state and define scope
 
-- [ ] Read `AGENT_STATE.md`, `PROJECT_UNDERSTANDING.md`, `ARCHITECTURE.md`, and this protocol.
+- [ ] Read `AGENT_STATE.md`, `WCDECIDER_SYSTEM_DESIGN.md`, `PROJECT_UNDERSTANDING.md`, `ARCHITECTURE.md`, and this protocol.
 - [ ] Create the canonical `<batch>_matches.csv` with stable fixture IDs and timezone-aware kickoffs.
 - [ ] Record the source cutoff and separate elapsed matches from future matches.
 
@@ -24,6 +24,7 @@ Done tests:
 1. Fixture IDs, teams, and kickoff timestamps are unique and non-empty.
 2. The batch contains no already-completed fixture presented as a future prediction.
 3. `AGENT_STATE.md` names the exact active task, next dependency, and immutable constraints.
+4. The update is consistent with every applicable contract in `WCDECIDER_SYSTEM_DESIGN.md`.
 
 ## Phase 1 — Screenshot inventory and odds
 

@@ -5,6 +5,10 @@
 **Active prediction batch:** FIFA World Cup matches from 2026-06-22 through 2026-06-27
 **Repository:** flat, file-based Python + static HTML deployed to GitHub Pages
 
+`WCDECIDER_SYSTEM_DESIGN.md` is the mandatory cross-cutting contract for data,
+modeling, recommendations, bankroll simulation, UI behavior, governance, tests,
+and deployment.
+
 ## Current Source-of-Truth Direction
 
 The project is being consolidated around these canonical artifacts:
@@ -58,7 +62,7 @@ The project is being consolidated around these canonical artifacts:
 
 Every update follows:
 
-1. Read `AGENT_STATE.md`.
+1. Read `AGENT_STATE.md` and `WCDECIDER_SYSTEM_DESIGN.md`.
 2. Inventory screenshots and fixtures.
 3. Build canonical odds/data/provenance.
 4. Update historical outcomes and retrain with temporal validation.

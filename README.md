@@ -58,4 +58,7 @@ Follow [FUTURE_UPDATE_PROTOCOL.md](FUTURE_UPDATE_PROTOCOL.md). At minimum:
 6. Run two independent replication iterations and the full test matrix.
 7. Build, push, require green GitHub Actions, and validate the exact commit live.
 
-See [PROJECT_UNDERSTANDING.md](PROJECT_UNDERSTANDING.md) for the implemented architecture and source-of-truth map.
+Read [WCDECIDER_SYSTEM_DESIGN.md](WCDECIDER_SYSTEM_DESIGN.md) first for the
+canonical data, modeling, recommendation, bankroll, UI, audit, test, and
+deployment contracts. See [PROJECT_UNDERSTANDING.md](PROJECT_UNDERSTANDING.md)
+for the implemented source-of-truth map.

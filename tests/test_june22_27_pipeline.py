@@ -190,6 +190,21 @@ def test_ci_builds_site_before_browser_tests():
     assert "needs: build-test" in workflow
 
 
+def test_canonical_system_design_is_mandatory_and_cross_referenced():
+    design = (ROOT / "WCDECIDER_SYSTEM_DESIGN.md").read_text(encoding="utf-8")
+    assert "S/100-per-app bankroll simulation" in design
+    assert "Tooltip and responsive UI design" in design
+    assert "Datapoint governance" in design
+    assert "Deployment design" in design
+    for filename in (
+        "AGENT.md", "FUTURE_UPDATE_PROTOCOL.md",
+        "PROJECT_UNDERSTANDING.md", "README.md", "ARCHITECTURE.md",
+    ):
+        assert "WCDECIDER_SYSTEM_DESIGN.md" in (
+            ROOT / filename
+        ).read_text(encoding="utf-8")
+
+
 def test_datapoint_audit_covers_all_json_leaves_with_distinct_passed_reviewers():
     manifest_path = ROOT / "wc_june22_27_datapoint_audit.csv"
     assert manifest_path.exists()
@@ -355,6 +370,33 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
     assert recommendations == 32
     assert payload["model"]["expanded_market_policy"]["priced_fixtures"] == 12
     assert payload["model"]["expanded_market_policy"]["recommendations_required"] == 32
+    plan = payload["bankroll_simulation"]
+    assert plan["currency"] == "PEN"
+    assert plan["budget_per_app"] == 100.0
+    app_counts = {"Betano": 0, "Betsson": 0}
+    app_stakes = {"Betano": 0.0, "Betsson": 0.0}
+    for row in payload["predictions"]:
+        recommendation = row["recommendation"]
+        budget = recommendation["budget_simulation"]
+        app = recommendation["app"]
+        app_counts[app] += 1
+        app_stakes[app] += budget["stake"]
+        assert 1.0 <= budget["stake"] <= 10.0
+        assert budget["gross_return_if_full_win"] == pytest.approx(
+            budget["stake"] * recommendation["odds"], abs=0.011
+        )
+        assert len(budget["steps"]["en"]) == 6
+        assert len(budget["steps"]["es"]) == 6
+        assert f'S/{budget["stake"]:.2f}' in budget["steps"]["en"][-1]
+        assert budget["price_gate_status"] in {
+            "at_or_above_model_fair_price",
+            "below_model_fair_price_forced_coverage_only",
+        }
+    assert app_counts == {"Betano": 21, "Betsson": 11}
+    assert app_stakes["Betano"] == pytest.approx(100.0)
+    assert app_stakes["Betsson"] == pytest.approx(100.0)
+    assert plan["apps"]["Betano"]["total_stake"] == 100.0
+    assert plan["apps"]["Betsson"]["total_stake"] == 100.0
 
 
 def test_full_build_emits_exactly_32_predictions_when_inputs_are_complete(tmp_path, monkeypatch):

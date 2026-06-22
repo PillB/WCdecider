@@ -26,8 +26,9 @@ This file is the binding operating contract for every data, model, recommendatio
 For every phase:
 
 1. Read `AGENT_STATE.md`.
-2. Execute only the active sub-task.
-3. Immediately update `AGENT_STATE.md` with the action, evidence, result, and next step.
+2. Read `WCDECIDER_SYSTEM_DESIGN.md` and the relevant project/context files.
+3. Execute only the active sub-task.
+4. Immediately update `AGENT_STATE.md` with the action, evidence, result, and next step.
 
 No gate is complete without command output, artifact evidence, or an independent review result.
 
@@ -190,6 +191,7 @@ The live validation test is the only test allowed to skip before deployment, and
 ## 12. Required files
 
 - `AGENT_STATE.md`
+- `WCDECIDER_SYSTEM_DESIGN.md`
 - `PROJECT_UNDERSTANDING.md`
 - `FUTURE_UPDATE_PROTOCOL.md`
 - `ARCHITECTURE.md`

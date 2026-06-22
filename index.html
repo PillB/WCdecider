@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="0024c690662cfb0e911b8f5d62bf803bc5d7e9f6ec9ec04ad03b71d4025999bf">
+  <meta name="wcdecider-audit-sha256" content="96fb2fde0a4dc2e082d5e8d633a05eaab4c8db1807a1729a06a46199c386b650">
   <title>WCdecider • June 22–27, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .lang-es .en,.lang-en .es{display:none!important}
     .tip{position:relative;border-bottom:1px dotted #94a3b8;cursor:help}
-    .tip>span{display:none;position:absolute;z-index:60;left:50%;bottom:calc(100% + .5rem);
-      transform:translateX(-50%);width:min(22rem,85vw);padding:.65rem;border:1px solid #475569;
+    .tip>span{display:none;position:fixed;z-index:100;left:0;top:0;
+      width:min(24rem,calc(100vw - 1rem));max-height:min(22rem,calc(100vh - 1rem));
+      overflow:auto;padding:.65rem;border:1px solid #475569;
       border-radius:.75rem;background:#020617;color:#e2e8f0;font-size:.75rem;line-height:1.25rem;
-      white-space:normal;box-shadow:0 12px 30px #0008}
+      white-space:normal;box-shadow:0 12px 30px #0008;pointer-events:none}
     .tip:hover>span,.tip:focus>span{display:block}
     .card-anchor{scroll-margin-top:6rem}
   </style>
@@ -120,6 +121,7 @@
       </label>
     </section>
 
+    <section id="bankroll-plan" class="mb-8 grid lg:grid-cols-2 gap-5"></section>
     <section id="error" class="hidden rounded-3xl border border-red-800 bg-red-950 p-6 mb-8"></section>
     <section id="cards" class="grid lg:grid-cols-2 gap-6"></section>
 
@@ -175,6 +177,26 @@ function renderSummary(rows){
  <p class="mt-2"><span class="en">Score holdout: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Over 2.5 Brier ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, BTTS Brier ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles remains a shadow model because its paired-bootstrap confidence interval crosses zero.</span><span class="es">Holdout de goles: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Brier Más de 2,5 ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, Brier ambos marcan ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles sigue como modelo sombra porque su intervalo bootstrap pareado cruza cero.</span></p>
  <p class="mt-2 text-amber-200"><span class="en">The report ranks one best-available pick per match. Historical closing odds are absent for expanded families, so profitability, CLV, ROI and staking tiers remain unvalidated.</span><span class="es">El informe ordena una mejor opción disponible por partido. No hay cuotas históricas de cierre para mercados ampliados, por lo que rentabilidad, CLV, ROI y niveles de apuesta siguen sin validarse.</span></p>`;
 }
+function renderBankrollPlan(){
+ const plan=DATA.bankroll_simulation;
+ $('#bankroll-plan').innerHTML=['Betano','Betsson'].map(app=>{
+  const item=plan.apps[app];
+  return `<article class="rounded-3xl border border-cyan-900/70 bg-slate-900 p-5">
+   <div class="flex items-start justify-between gap-4">
+    <div><h2 class="text-xl font-black text-white">${app} · S/${Number(plan.budget_per_app).toFixed(2)}</h2>
+    <p class="mt-1 text-sm text-slate-400"><span class="en">${item.fixture_count} sourced match picks in this app</span><span class="es">${item.fixture_count} selecciones con fuente en esta app</span></p></div>
+    <span class="rounded-full border border-amber-700 px-3 py-1 text-xs text-amber-200"><span class="en">Simulation</span><span class="es">Simulación</span></span>
+   </div>
+   <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+    ${metric('<span class="en">Allocated</span><span class="es">Asignado</span>',`S/${Number(item.total_stake).toFixed(2)}`)}
+    ${metric('<span class="en">Unvalidated model net</span><span class="es">Neto del modelo no validado</span>',`S/${Number(item.model_estimated_net).toFixed(2)}`)}
+    ${metric('<span class="en">All-win gross</span><span class="es">Bruto si todas ganan</span>',`S/${Number(item.gross_return_if_every_pick_fully_wins).toFixed(2)}`)}
+   </div>
+   <p class="mt-3 text-xs text-amber-200"><span class="en">${escapeHtml(plan.warning.en)}</span><span class="es">${escapeHtml(plan.warning.es)}</span></p>
+   <p class="mt-2 text-xs text-slate-400"><span class="en">${escapeHtml(item.risk_note.en)}</span><span class="es">${escapeHtml(item.risk_note.es)}</span></p>
+  </article>`;
+ }).join('');
+}
 const pct=p=>`${(Number(p)*100).toFixed(1)}%`;
 const odds=o=>Number(o).toFixed(2);
 function marketLabel(row){
@@ -191,6 +213,32 @@ function jsonLeaves(value,pointer=''){
  if(Array.isArray(value))return value.flatMap((item,index)=>jsonLeaves(item,`${pointer}/${index}`));
  if(value&&typeof value==='object')return Object.keys(value).sort().flatMap(key=>jsonLeaves(value[key],`${pointer}/${key.replaceAll('~','~0').replaceAll('/','~1')}`));
  return [pointer||'/'];
+}
+function placeTip(tip){
+ const popup=tip.querySelector(':scope > span');if(!popup)return;
+ popup.style.display='block';popup.style.visibility='hidden';
+ popup.style.left='8px';popup.style.top='8px';
+ const trigger=tip.getBoundingClientRect(),box=popup.getBoundingClientRect(),gap=8,pad=8;
+ const left=Math.max(pad,Math.min(window.innerWidth-box.width-pad,trigger.left+trigger.width/2-box.width/2));
+ const above=trigger.top-box.height-gap;
+ const top=above>=pad?above:Math.min(window.innerHeight-box.height-pad,trigger.bottom+gap);
+ popup.style.left=`${Math.round(left)}px`;popup.style.top=`${Math.max(pad,Math.round(top))}px`;
+ popup.style.visibility='visible';tip.setAttribute('aria-expanded','true');
+}
+function hideTip(tip){
+ const popup=tip.querySelector(':scope > span');if(!popup)return;
+ popup.style.removeProperty('display');popup.style.removeProperty('visibility');
+ popup.style.removeProperty('left');popup.style.removeProperty('top');
+ tip.setAttribute('aria-expanded','false');
+}
+function bindTips(){
+ document.querySelectorAll('.tip:not([data-tip-bound])').forEach(tip=>{
+  tip.dataset.tipBound='true';tip.setAttribute('aria-expanded','false');
+  tip.addEventListener('mouseenter',()=>placeTip(tip));
+  tip.addEventListener('mouseleave',()=>hideTip(tip));
+  tip.addEventListener('focus',()=>placeTip(tip));
+  tip.addEventListener('blur',()=>hideTip(tip));
+ });
 }
 function parseCsv(text){
  const rows=[];let row=[],field='',quoted=false;
@@ -215,6 +263,7 @@ function card(row,index){
  const help=row.metric_explanations;
  const strength=r?.strength||'PASS';
  const rec=r?`${escapeHtml(r.selection_original)} ${r.line?`(${escapeHtml(r.line)})`:''} @ ${Number(r.odds).toFixed(2)}`:'No supported price / Sin cuota compatible';
+ const budget=r?.budget_simulation;
  const over25=row.common_markets.totals.find(x=>x.line===2.5);
  const ah=row.common_markets.asian_handicap.find(x=>x.home_line===-0.5);
  const comparisons=row.market_comparisons.slice(0,8).map((m,i)=>`<tr class="border-t border-slate-800">
@@ -264,6 +313,24 @@ function card(row,index){
       <div class="mt-2 text-xs text-slate-400">${escapeHtml(r.app)} • ${escapeHtml(r.market_original)} • ${escapeHtml(r.source_image)} • <span class="en">fair</span><span class="es">justa</span> ${odds(r.fair_odds)}</div>
       <div class="mt-2 text-xs text-amber-200"><span class="en">${r.selection_reason==='all_model_edges_halted_select_highest_market_probability'?'All model edges were HALT; selected the highest market-probability fallback.':'Selected by uncertainty-adjusted expected-profit utility.'} Profitability is not historically validated.</span><span class="es">${r.selection_reason==='all_model_edges_halted_select_highest_market_probability'?'Todas las ventajas fueron HALT; se eligió la alternativa con mayor probabilidad de mercado.':'Elegida por utilidad de beneficio esperado ajustada por incertidumbre.'} La rentabilidad no está validada históricamente.</span></div>`:''}
     </div>
+    ${budget?`<details class="mt-4 rounded-2xl border border-cyan-900 bg-cyan-950/20 p-4">
+      <summary class="cursor-pointer font-semibold text-cyan-200"><span class="en">S/100 app-budget simulation: stake S/${Number(budget.stake).toFixed(2)} in ${escapeHtml(r.app)}</span><span class="es">Simulación de S/100 en la app: monto S/${Number(budget.stake).toFixed(2)} en ${escapeHtml(r.app)}</span></summary>
+      <div class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
+       ${metric('<span class="en">Stake</span><span class="es">Monto</span>',`S/${Number(budget.stake).toFixed(2)}`)}
+       ${metric('<span class="en">Saved odd</span><span class="es">Cuota guardada</span>',Number(budget.screenshot_odds).toFixed(2))}
+       ${metric('<span class="en">Model fair threshold</span><span class="es">Umbral justo</span>',Number(budget.minimum_model_fair_odds).toFixed(2))}
+       ${metric('<span class="en">Full-win gross</span><span class="es">Bruto si gana</span>',`S/${Number(budget.gross_return_if_full_win).toFixed(2)}`)}
+      </div>
+      <div class="mt-3 rounded-xl border ${budget.price_gate_status==='at_or_above_model_fair_price'?'border-emerald-800 bg-emerald-950/30':'border-red-800 bg-red-950/30'} p-3 text-xs">
+       ${budget.price_gate_status==='at_or_above_model_fair_price'
+        ?'<span class="en">Saved price is at or above the model fair threshold. Still re-check the live price and news.</span><span class="es">La cuota guardada está en o sobre el umbral justo. Revisa igualmente cuota y noticias actuales.</span>'
+        :'<span class="en">Saved price is below the model fair threshold. This stake exists only because the requested simulation forces every match; disciplined real-money use would pause here.</span><span class="es">La cuota guardada está debajo del umbral justo. Este monto existe solo porque la simulación solicitada fuerza todos los partidos; un uso disciplinado con dinero real se detendría aquí.</span>'}
+      </div>
+      <h3 class="mt-4 font-bold text-white"><span class="en">Step by step in ${escapeHtml(r.app)}</span><span class="es">Paso a paso en ${escapeHtml(r.app)}</span></h3>
+      <ol class="en mt-2 list-decimal pl-5 space-y-2 text-sm text-slate-300">${budget.steps.en.map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol>
+      <ol class="es mt-2 list-decimal pl-5 space-y-2 text-sm text-slate-300">${budget.steps.es.map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol>
+      <p class="mt-3 text-xs text-amber-200"><span class="en">${escapeHtml(budget.warning.en)}</span><span class="es">${escapeHtml(budget.warning.es)}</span></p>
+    </details>`:''}
     <details class="mt-4 rounded-2xl border border-slate-800 p-4">
       <summary class="cursor-pointer font-semibold"><span class="en">Ranked screenshot market comparisons</span><span class="es">Comparaciones de cuotas de capturas ordenadas</span> (${row.market_comparisons.length})</summary>
       ${comparisons?`<div class="overflow-x-auto mt-3"><table class="w-full min-w-[680px] text-xs text-slate-300"><thead><tr class="text-slate-500 text-left"><th class="pb-2"><span class="en">Market</span><span class="es">Mercado</span></th><th class="pb-2"><span class="en">Selection</span><span class="es">Selección</span></th><th class="pb-2 text-right"><span class="en">App odd</span><span class="es">Cuota app</span></th><th class="pb-2 text-right"><span class="en">Win eq.</span><span class="es">Victoria eq.</span></th><th class="pb-2 text-right"><span class="en">Fair</span><span class="es">Justa</span></th><th class="pb-2 text-right">EV</th></tr></thead><tbody>${comparisons}</tbody></table></div>
@@ -316,7 +383,9 @@ async function load(){
   if(DATA.batch.fixture_count!==32||DATA.predictions.length!==32)throw new Error('Expected exactly 32 predictions');
   const ids=new Set(DATA.predictions.map(x=>x.fixture_id)); if(ids.size!==32)throw new Error('Duplicate fixture IDs');
   renderSummary(DATA.predictions);
+  renderBankrollPlan();
   $('#cards').innerHTML=DATA.predictions.map(card).join('');
+  bindTips();
   [...new Set(DATA.predictions.map(x=>x.kickoff_lima.slice(0,10)))].forEach(d=>$('#date-filter').insertAdjacentHTML('beforeend',`<option value="${d}">${d}</option>`));
  $('#status').innerHTML='<span class="en">Verified JSON loaded</span><span class="es">JSON verificado cargado</span>';
  }catch(error){
