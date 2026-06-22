@@ -258,6 +258,24 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
     priced = 0
     recommendations = 0
     for row in payload["predictions"]:
+        explanations = row["metric_explanations"]
+        assert set(explanations) == {
+            "team_a_win", "draw", "team_b_win",
+            "expected_goals_team_a", "expected_goals_team_b",
+            "over_2_5", "under_2_5", "btts_yes", "btts_no",
+            "home_minus_0_5",
+        }
+        for explanation in explanations.values():
+            assert set(explanation) == {"en", "es"}
+            for language in ("en", "es"):
+                assert set(explanation[language]) == {
+                    "title", "category_meaning", "number_meaning",
+                    "what_you_can_do",
+                }
+                assert all(explanation[language].values())
+        assert f'{row["expected_goals"]["team_b"]:.2f}' in (
+            explanations["expected_goals_team_b"]["en"]["number_meaning"]
+        )
         assert row["common_markets"]["policy_status"] == "experimental_non_actionable"
         assert len(row["common_markets"]["totals"]) == 6
         assert len(row["common_markets"]["asian_handicap"]) == 7

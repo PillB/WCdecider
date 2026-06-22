@@ -853,6 +853,144 @@ def common_market_probabilities(
     }
 
 
+def metric_explanations(
+    team_a_names: Tuple[str, str], team_b_names: Tuple[str, str],
+    p_1x2: Tuple[float, float, float], lambda_a: float, lambda_b: float,
+    common: Mapping[str, object],
+) -> Dict[str, Dict[str, Dict[str, str]]]:
+    """Create bilingual, fixture-specific help for every compact metric box.
+
+    Each explanation separates the category definition, the exact displayed
+    value, and a practical interpretation. These are educational UI fields,
+    not additional model inputs or betting instructions.
+    """
+    over_25 = next(
+        row for row in common["totals"] if float(row["line"]) == 2.5
+    )
+    ah_minus_half = next(
+        row for row in common["asian_handicap"]
+        if float(row["home_line"]) == -0.5
+    )
+
+    def entry(
+        en_title: str, es_title: str, en_meaning: str, es_meaning: str,
+        en_number: str, es_number: str, en_action: str, es_action: str,
+    ) -> Dict[str, Dict[str, str]]:
+        return {
+            "en": {
+                "title": en_title,
+                "category_meaning": en_meaning,
+                "number_meaning": en_number,
+                "what_you_can_do": en_action,
+            },
+            "es": {
+                "title": es_title,
+                "category_meaning": es_meaning,
+                "number_meaning": es_number,
+                "what_you_can_do": es_action,
+            },
+        }
+
+    probability_action_en = (
+        "Use it to compare outcomes and fair prices. It is not certainty; "
+        "check the current app price and late team news before deciding."
+    )
+    probability_action_es = (
+        "Úsalo para comparar resultados y cuotas justas. No es certeza; "
+        "revisa la cuota actual y noticias tardías antes de decidir."
+    )
+    team_a_en, team_a_es = team_a_names
+    team_b_en, team_b_es = team_b_names
+    return {
+        "team_a_win": entry(
+            f"{team_a_en} win probability", f"Probabilidad de victoria de {team_a_es}",
+            "The model probability that the first listed team wins after 90 minutes.",
+            "La probabilidad del modelo de que el primer equipo gane tras 90 minutos.",
+            f"{p_1x2[0] * 100:.1f}% means roughly {p_1x2[0] * 100:.0f} wins in 100 comparable model scenarios.",
+            f"{p_1x2[0] * 100:.1f}% significa aproximadamente {p_1x2[0] * 100:.0f} victorias en 100 escenarios comparables del modelo.",
+            probability_action_en, probability_action_es,
+        ),
+        "draw": entry(
+            "Draw probability", "Probabilidad de empate",
+            "The model probability that the score is level after 90 minutes.",
+            "La probabilidad del modelo de que el marcador termine igualado tras 90 minutos.",
+            f"{p_1x2[1] * 100:.1f}% means roughly {p_1x2[1] * 100:.0f} draws in 100 comparable model scenarios.",
+            f"{p_1x2[1] * 100:.1f}% significa aproximadamente {p_1x2[1] * 100:.0f} empates en 100 escenarios comparables del modelo.",
+            probability_action_en, probability_action_es,
+        ),
+        "team_b_win": entry(
+            f"{team_b_en} win probability", f"Probabilidad de victoria de {team_b_es}",
+            "The model probability that the second listed team wins after 90 minutes.",
+            "La probabilidad del modelo de que el segundo equipo gane tras 90 minutos.",
+            f"{p_1x2[2] * 100:.1f}% means roughly {p_1x2[2] * 100:.0f} wins in 100 comparable model scenarios.",
+            f"{p_1x2[2] * 100:.1f}% significa aproximadamente {p_1x2[2] * 100:.0f} victorias en 100 escenarios comparables del modelo.",
+            probability_action_en, probability_action_es,
+        ),
+        "expected_goals_team_a": entry(
+            f"Expected goals: {team_a_en}", f"Goles esperados: {team_a_es}",
+            "Expected goals here is the model's average goal count for the first listed team across many simulated versions of this match.",
+            "Goles esperados es el promedio de goles del modelo para el primer equipo en muchas simulaciones de este partido.",
+            f"{lambda_a:.2f} is an average, not a score prediction. For example, 0.51 means about half a goal per simulated match, so both 0 and 1 goal remain common outcomes.",
+            f"{lambda_a:.2f} es un promedio, no un marcador exacto. Por ejemplo, 0,51 significa cerca de medio gol por simulación, por lo que 0 y 1 gol siguen siendo resultados comunes.",
+            "Use it to understand scoring strength and to inspect team-total, BTTS, or handicap markets. Do not read 0.51 as a 51% chance.",
+            "Úsalo para entender la capacidad goleadora y revisar totales de equipo, ambos marcan o hándicap. No interpretes 0,51 como 51% de probabilidad.",
+        ),
+        "expected_goals_team_b": entry(
+            f"Expected goals: {team_b_en}", f"Goles esperados: {team_b_es}",
+            "Expected goals here is the model's average goal count for the second listed team across many simulated versions of this match.",
+            "Goles esperados es el promedio de goles del modelo para el segundo equipo en muchas simulaciones de este partido.",
+            f"{lambda_b:.2f} is an average, not a score prediction. A value below 1.00 suggests a lower scoring outlook but does not mean the team cannot score.",
+            f"{lambda_b:.2f} es un promedio, no un marcador exacto. Un valor menor que 1,00 sugiere menor expectativa goleadora, pero no significa que el equipo no pueda marcar.",
+            "Use it to understand the second team's scoring outlook and to inspect team-total, BTTS, or handicap markets. It is not a percentage.",
+            "Úsalo para entender la expectativa goleadora del segundo equipo y revisar totales, ambos marcan o hándicap. No es un porcentaje.",
+        ),
+        "over_2_5": entry(
+            "Over 2.5 total goals", "Más de 2,5 goles totales",
+            "This wins when the match has at least 3 total goals after 90 minutes.",
+            "Gana cuando el partido termina con al menos 3 goles totales tras 90 minutos.",
+            f"{over_25['over_probability'] * 100:.1f}% is the model probability; {over_25['over_fair_odds']:.2f} is the model's break-even decimal price before bookmaker margin.",
+            f"{over_25['over_probability'] * 100:.1f}% es la probabilidad del modelo; {over_25['over_fair_odds']:.2f} es la cuota decimal de equilibrio antes del margen de la casa.",
+            "Compare the current Over 2.5 price with the fair price. A higher app price may be more attractive, but model and lineup risk still apply.",
+            "Compara la cuota actual de Más de 2,5 con la cuota justa. Una cuota mayor puede ser más atractiva, pero siguen existiendo riesgos del modelo y alineaciones.",
+        ),
+        "under_2_5": entry(
+            "Under 2.5 total goals", "Menos de 2,5 goles totales",
+            "This wins when the match has 0, 1, or 2 total goals after 90 minutes.",
+            "Gana cuando el partido termina con 0, 1 o 2 goles totales tras 90 minutos.",
+            f"{over_25['under_probability'] * 100:.1f}% is the model probability; {over_25['under_fair_odds']:.2f} is its break-even decimal price.",
+            f"{over_25['under_probability'] * 100:.1f}% es la probabilidad del modelo; {over_25['under_fair_odds']:.2f} es su cuota decimal de equilibrio.",
+            probability_action_en, probability_action_es,
+        ),
+        "btts_yes": entry(
+            "Both teams to score: Yes", "Ambos equipos marcan: Sí",
+            "This wins only when each team scores at least one goal after 90 minutes.",
+            "Gana solo cuando cada equipo marca al menos un gol tras 90 minutos.",
+            f"{common['btts']['yes_probability'] * 100:.1f}% is the model probability; {common['btts']['yes_fair_odds']:.2f} is the fair decimal price.",
+            f"{common['btts']['yes_probability'] * 100:.1f}% es la probabilidad del modelo; {common['btts']['yes_fair_odds']:.2f} es la cuota decimal justa.",
+            "Compare with the app's BTTS Yes price and inspect both teams' expected goals. One weak attack can make this fragile.",
+            "Compara con la cuota Ambos marcan Sí y revisa los goles esperados de ambos equipos. Un ataque débil puede volverla frágil.",
+        ),
+        "btts_no": entry(
+            "Both teams to score: No", "Ambos equipos marcan: No",
+            "This wins when at least one team finishes with zero goals.",
+            "Gana cuando al menos un equipo termina con cero goles.",
+            f"{common['btts']['no_probability'] * 100:.1f}% is the model probability; {common['btts']['no_fair_odds']:.2f} is the fair decimal price.",
+            f"{common['btts']['no_probability'] * 100:.1f}% es la probabilidad del modelo; {common['btts']['no_fair_odds']:.2f} es la cuota decimal justa.",
+            "Inspect the weaker team's expected goals and compare the current BTTS No price with the fair price.",
+            "Revisa los goles esperados del equipo más débil y compara la cuota Ambos marcan No con la cuota justa.",
+        ),
+        "home_minus_0_5": entry(
+            f"{team_a_en} -0.5 Asian handicap", f"{team_a_es} -0,5 hándicap asiático",
+            "At -0.5, the first listed team must win after 90 minutes; a draw or loss loses the selection.",
+            "Con -0,5, el primer equipo debe ganar tras 90 minutos; empate o derrota pierde la selección.",
+            f"{ah_minus_half['home_probability'] * 100:.1f}% is the model win probability; {ah_minus_half['home_fair_odds']:.2f} is the break-even decimal price.",
+            f"{ah_minus_half['home_probability'] * 100:.1f}% es la probabilidad de victoria del modelo; {ah_minus_half['home_fair_odds']:.2f} es la cuota decimal de equilibrio.",
+            "Compare the current -0.5 price with the fair price. This is effectively a match-win bet without a draw refund.",
+            "Compara la cuota actual -0,5 con la cuota justa. Es equivalente a apostar por la victoria, sin devolución por empate.",
+        ),
+    }
+
+
 def probability_and_ev(
     odd: Mapping[str, str], team_a: str, team_b: str,
     p_1x2: Tuple[float, float, float], matrix: Sequence[Tuple[int, int, float]],
@@ -1563,6 +1701,13 @@ def build() -> Dict[str, object]:
         }
         model_rows.append(model_row)
         names_a, names_b = CODE_NAMES[ta], CODE_NAMES[tb]
+        published_lambda_a = round(la, 3)
+        published_lambda_b = round(lb, 3)
+        common_markets = common_market_probabilities(matrix)
+        explanations = metric_explanations(
+            names_a, names_b, p_base, published_lambda_a,
+            published_lambda_b, common_markets
+        )
         rec = recommendation
         market_comparisons = [{
             "app": row["app"],
@@ -1611,7 +1756,10 @@ def build() -> Dict[str, object]:
                 "team_a_win": round(p_base[0], 6), "draw": round(p_base[1], 6),
                 "team_b_win": round(p_base[2], 6),
             },
-            "expected_goals": {"team_a": round(la, 3), "team_b": round(lb, 3)},
+            "expected_goals": {
+                "team_a": published_lambda_a,
+                "team_b": published_lambda_b,
+            },
             "score_market_model": {
                 "production": "tuned_elo_independent_poisson",
                 "shadow": "dixon_coles",
@@ -1624,7 +1772,8 @@ def build() -> Dict[str, object]:
                 ),
                 "policy_status": "experimental_non_actionable",
             },
-            "common_markets": common_market_probabilities(matrix),
+            "common_markets": common_markets,
+            "metric_explanations": explanations,
             "market_comparisons": market_comparisons,
             "expanded_price_coverage": {
                 "has_total_price": any(
@@ -1801,6 +1950,7 @@ def build() -> Dict[str, object]:
             "- expanded-market policy: recommendations are best-available comparisons; historical profitability remains unvalidated because the holdout has no timestamped totals/BTTS/Asian/combo prices for ROI or CLV.",
             "- price coverage: all 32 fixtures receive model probabilities/fair prices; EV is computed only for complete screenshot-derived source markets, currently on 12 fixtures.",
             "- recommendation labels: BEST_AVAILABLE is mandatory per fixture; PASS/HALT remain diagnostic and no label implies certainty.",
+            "- metric_explanations: bilingual educational JSON generated from the published fixture values for 1/X/2, expected goals, totals, BTTS, and Asian handicap; these fields do not alter model probabilities.",
             "- stress EV: subtract 3 percentage points from selected win probability and add 3 points to loss probability.",
             "- classification: divergence >15pp or EV >25% HALT; all other selections PASS until recommendation-policy profitability is validated out of sample.",
             "- source_sha256: SHA-256 of the exact screenshot containing the price.",

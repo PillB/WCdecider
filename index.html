@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="2e21d548296354fb4318667bb6ff29c93f9c9eb0ab2aaa736b5b896c666c1b32">
+  <meta name="wcdecider-audit-sha256" content="0024c690662cfb0e911b8f5d62bf803bc5d7e9f6ec9ec04ad03b71d4025999bf">
   <title>WCdecider • June 22–27, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -157,7 +157,16 @@ const $=s=>document.querySelector(s);
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let DATA=null,METRICS=null,AUDIT_COUNT=0;
  const strengthColor=s=>({HALT:'text-red-300 border-red-700',PASS:'text-slate-300 border-slate-700'}[s]||'text-slate-300 border-slate-700');
-function metric(label,value){return `<div class="rounded-2xl border border-slate-800 bg-slate-950 p-3"><div class="text-xs text-slate-500">${label}</div><div class="text-lg font-black text-white">${value}</div></div>`}
+function explanationTip(help){
+ if(!help)return '';
+ return `<span class="tip inline-flex ml-1 h-5 w-5 items-center justify-center rounded-full border border-slate-600 text-[11px] text-cyan-300" tabindex="0" aria-label="${escapeHtml(help.en.title)} help">?
+  <span class="text-left">
+   <span class="en"><b class="text-white">${escapeHtml(help.en.title)}</b><br><b>What it is:</b> ${escapeHtml(help.en.category_meaning)}<br><b>What this number means:</b> ${escapeHtml(help.en.number_meaning)}<br><b>What you can do:</b> ${escapeHtml(help.en.what_you_can_do)}</span>
+   <span class="es"><b class="text-white">${escapeHtml(help.es.title)}</b><br><b>Qué es:</b> ${escapeHtml(help.es.category_meaning)}<br><b>Qué significa este número:</b> ${escapeHtml(help.es.number_meaning)}<br><b>Qué puedes hacer:</b> ${escapeHtml(help.es.what_you_can_do)}</span>
+  </span>
+ </span>`;
+}
+function metric(label,value,help=null){return `<div class="rounded-2xl border border-slate-800 bg-slate-950 p-3"><div class="text-xs text-slate-500 flex items-center justify-center">${label}${explanationTip(help)}</div><div class="text-lg font-black text-white">${value}</div></div>`}
 function renderSummary(rows){
  const halted=rows.filter(x=>x.recommendation?.strength==='HALT').length;
  $('#summary').innerHTML=metric('<span class="en">Fixtures</span><span class="es">Partidos</span>',rows.length)+metric('<span class="en">Best available picks</span><span class="es">Mejores opciones</span>',rows.filter(x=>x.recommendation?.decision_status==='BEST_AVAILABLE').length)+metric('<span class="en">Expanded prices</span><span class="es">Cuotas ampliadas</span>',METRICS.expanded_market_policy.priced_fixtures)+metric('<span class="en">Score NLL</span><span class="es">NLL de marcador</span>',Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4));
@@ -203,6 +212,7 @@ function parseCsv(text){
 function card(row,index){
  const r=row.recommendation;
  const ptr=`/predictions/${index}`;
+ const help=row.metric_explanations;
  const strength=r?.strength||'PASS';
  const rec=r?`${escapeHtml(r.selection_original)} ${r.line?`(${escapeHtml(r.line)})`:''} @ ${Number(r.odds).toFixed(2)}`:'No supported price / Sin cuota compatible';
  const over25=row.common_markets.totals.find(x=>x.line===2.5);
@@ -222,9 +232,9 @@ function card(row,index){
    </header>
    <div class="p-5">
     <div class="grid grid-cols-3 gap-2 text-center">
-     <div data-json-pointer="${ptr}/probabilities/team_a_win">${metric('1',`${(row.probabilities.team_a_win*100).toFixed(1)}%`)}</div>
-     <div data-json-pointer="${ptr}/probabilities/draw">${metric('X',`${(row.probabilities.draw*100).toFixed(1)}%`)}</div>
-     <div data-json-pointer="${ptr}/probabilities/team_b_win">${metric('2',`${(row.probabilities.team_b_win*100).toFixed(1)}%`)}</div>
+     <div data-json-pointer="${ptr}/probabilities/team_a_win">${metric('1',`${(row.probabilities.team_a_win*100).toFixed(1)}%`,help.team_a_win)}</div>
+     <div data-json-pointer="${ptr}/probabilities/draw">${metric('X',`${(row.probabilities.draw*100).toFixed(1)}%`,help.draw)}</div>
+     <div data-json-pointer="${ptr}/probabilities/team_b_win">${metric('2',`${(row.probabilities.team_b_win*100).toFixed(1)}%`,help.team_b_win)}</div>
     </div>
     <div class="mt-3 rounded-xl border ${row.freshness_status==='current_snapshot'?'border-emerald-800 bg-emerald-950/30':'border-amber-800 bg-amber-950/30'} p-3 text-xs">
       ${row.freshness_status==='current_snapshot'
@@ -233,17 +243,17 @@ function card(row,index){
     </div>
     <div class="mt-3 text-xs text-emerald-300"><span class="en">Field-level subagent audit: PASS</span><span class="es">Auditoría de subagentes por campo: PASS</span> • ${AUDIT_COUNT} <span class="en">manifest datapoints</span><span class="es">datos auditados</span></div>
     <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
-      <div data-json-pointer="${ptr}/expected_goals/team_a">${metric('<span class="en">Expected goals 1</span><span class="es">Goles esperados 1</span>',Number(row.expected_goals.team_a).toFixed(2))}</div>
-      <div data-json-pointer="${ptr}/expected_goals/team_b">${metric('<span class="en">Expected goals 2</span><span class="es">Goles esperados 2</span>',Number(row.expected_goals.team_b).toFixed(2))}</div>
-      <div data-json-pointer="${ptr}/common_markets/totals/2/over_probability">${metric('<span class="en">Over 2.5</span><span class="es">Más de 2,5</span>',`${pct(over25.over_probability)} · ${odds(over25.over_fair_odds)}`)}</div>
-      <div data-json-pointer="${ptr}/common_markets/btts/yes_probability">${metric('BTTS Yes / Sí',`${pct(row.common_markets.btts.yes_probability)} · ${odds(row.common_markets.btts.yes_fair_odds)}`)}</div>
+      <div data-json-pointer="${ptr}/expected_goals/team_a">${metric('<span class="en">Expected goals 1</span><span class="es">Goles esperados 1</span>',Number(row.expected_goals.team_a).toFixed(2),help.expected_goals_team_a)}</div>
+      <div data-json-pointer="${ptr}/expected_goals/team_b">${metric('<span class="en">Expected goals 2</span><span class="es">Goles esperados 2</span>',Number(row.expected_goals.team_b).toFixed(2),help.expected_goals_team_b)}</div>
+      <div data-json-pointer="${ptr}/common_markets/totals/2/over_probability">${metric('<span class="en">Over 2.5</span><span class="es">Más de 2,5</span>',`${pct(over25.over_probability)} · ${odds(over25.over_fair_odds)}`,help.over_2_5)}</div>
+      <div data-json-pointer="${ptr}/common_markets/btts/yes_probability">${metric('BTTS Yes / Sí',`${pct(row.common_markets.btts.yes_probability)} · ${odds(row.common_markets.btts.yes_fair_odds)}`,help.btts_yes)}</div>
     </div>
     <div class="mt-3 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-sm">
       <div class="font-semibold text-white"><span class="en">Common model markets — probabilities and fair odds</span><span class="es">Mercados comunes del modelo — probabilidades y cuotas justas</span></div>
-      <div class="mt-2 grid sm:grid-cols-3 gap-2 text-slate-300">
-        <div><span class="en">Under 2.5</span><span class="es">Menos de 2,5</span>: <b>${pct(over25.under_probability)}</b> · ${odds(over25.under_fair_odds)}</div>
-        <div>BTTS No: <b>${pct(row.common_markets.btts.no_probability)}</b> · ${odds(row.common_markets.btts.no_fair_odds)}</div>
-        <div><span class="en">Home -0.5 AH</span><span class="es">Local -0,5 HA</span>: <b>${pct(ah.home_probability)}</b> · ${odds(ah.home_fair_odds)}</div>
+      <div class="mt-2 grid sm:grid-cols-3 gap-2 text-center">
+        ${metric('<span class="en">Under 2.5</span><span class="es">Menos de 2,5</span>',`${pct(over25.under_probability)} · ${odds(over25.under_fair_odds)}`,help.under_2_5)}
+        ${metric('BTTS No',`${pct(row.common_markets.btts.no_probability)} · ${odds(row.common_markets.btts.no_fair_odds)}`,help.btts_no)}
+        ${metric('<span class="en">Home -0.5 AH</span><span class="es">Local -0,5 HA</span>',`${pct(ah.home_probability)} · ${odds(ah.home_fair_odds)}`,help.home_minus_0_5)}
       </div>
       <p class="mt-2 text-xs text-amber-200"><span class="en">Model-derived and experimental. A fair odd is not an app quote or betting instruction.</span><span class="es">Derivado del modelo y experimental. Una cuota justa no es una cuota de app ni una instrucción de apuesta.</span></p>
     </div>

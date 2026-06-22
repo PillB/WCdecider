@@ -96,3 +96,31 @@ def test_mobile_layout_has_no_horizontal_overflow(page):
     browser_page, _ = page
     browser_page.set_viewport_size({"width": 390, "height": 844})
     assert browser_page.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1")
+
+
+def test_metric_boxes_have_json_driven_newbie_hover_help(page):
+    browser_page, _ = page
+    payload = json.loads((SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8"))
+    first = payload["predictions"][0]
+    card = browser_page.locator(f'[data-fixture-id="{first["fixture_id"]}"]')
+    assert card.locator(".tip").count() >= 10
+
+    expected_goals_box = card.locator(
+        '[data-json-pointer="/predictions/0/expected_goals/team_b"]'
+    )
+    help_button = expected_goals_box.locator(".tip")
+    help_button.hover()
+    popup = help_button.locator(":scope > span")
+    assert popup.is_visible()
+    assert first["metric_explanations"]["expected_goals_team_b"]["en"][
+        "category_meaning"
+    ] in popup.inner_text()
+    assert first["metric_explanations"]["expected_goals_team_b"]["en"][
+        "number_meaning"
+    ] in popup.inner_text()
+    assert first["metric_explanations"]["expected_goals_team_b"]["en"][
+        "what_you_can_do"
+    ] in popup.inner_text()
+    browser_page.mouse.move(0, 0)
+    help_button.focus()
+    assert popup.is_visible()

@@ -2,24 +2,24 @@
   "git_commit": "PENDING_BEST_AVAILABLE_RELEASE",
   "global": {
     "owner": {
-      "id": "019ef0d8-4409-72d3-a318-e97de6517cc0",
+      "id": "019ef054-1e38-73c0-b54a-e356d297aab0",
       "status": "PASS",
-      "evidence": "Fresh model-owner audit passed: 215/38 chronological split; gap_intensity 0.15 improved score NLL, Over 2.5 and BTTS holdout metrics; 15 double-chance rows matched; 32 BEST_AVAILABLE recommendations and six all-HALT fallbacks reproduced; neural candidates rejected; no certainty claim."
+      "evidence": "Fresh owner audit verified 32 fixtures times ten bilingual metric explanation objects, 2,560 new leaves, exact displayed-value interpretation, expected goals as averages rather than percentages, output-only semantics, and exact 23,435/23,435 manifest coverage and hashes."
     },
     "replication_1": {
-      "id": "019ef0d8-45a9-7c61-9ba9-e5cb01265fea",
+      "id": "019ef054-ba99-7773-8beb-52864811855a",
       "status": "PASS",
-      "evidence": "Independent re-audit confirmed exact 20,875/20,875 leaf coverage, zero missing/extra/duplicate paths, all canonical/source/pipeline/mission hashes, four distinct current reviewer IDs, and prior byte-identical reproduction of all nine artifacts and 32 recommendations."
+      "evidence": "Independent replication reproduced byte-identical artifacts and exactly 2,560 bilingual metric explanation leaves; verified schema, EN/ES completeness, value references, hashes, and exact 23,435/23,435 coverage with zero missing, extra, duplicate, blocked, or mismatched records."
     },
     "replication_2": {
-      "id": "019ef0d8-4795-73f2-8f4a-f91fa92909b7",
-      "status": "PASS",
-      "evidence": "Read-only re-audit confirmed exact 20,875/20,875 leaf coverage, all value/source/pipeline/mission and 32 recommendation hashes, recommendation formulas/rankings, six all-HALT fallbacks, and four distinct current reviewer IDs."
-    },
-    "editor": {
       "id": "019eeff0-0d5c-7643-92f4-16b639c9afb0",
       "status": "PASS",
-      "evidence": "Final independent editor audit verified exact 20,875-leaf audit-pointer coverage and fail-closed rendering; 32 recommendation/EV/risk/source/freshness parity; bilingual jargon help and five-step Betano/Betsson navigation; accessibility/responsive controls; no stale fixtures; and comparative, non-guaranteed, profitability-unvalidated wording."
+      "evidence": "Independent statistics audit verified 23,435/23,435 leaves and hashes, semantic parity of prior model outputs after excluding explanation-only fields, all 320 bilingual objects, expected goals as averages, probability/fair-price text parity, and non-guaranteed practical guidance."
+    },
+    "editor": {
+      "id": "019ef121-bc26-79d0-ac93-5a4caf96e9e3",
+      "status": "PASS",
+      "evidence": "Editor verified all 32 fixtures expose ten JSON-driven bilingual explanations with category, exact value interpretation and practical action; hover and keyboard focus passed, and expected goals are clearly averages rather than percentages."
     }
   },
   "fixtures": {}
