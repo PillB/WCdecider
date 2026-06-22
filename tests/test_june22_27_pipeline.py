@@ -96,16 +96,23 @@ def test_research_tables_cover_every_fixture_with_direct_urls():
 
 def test_ci_builds_site_before_browser_tests():
     workflow = (ROOT / ".github" / "workflows" / "deploy.yml").read_text(encoding="utf-8")
-    test_job = workflow.split("\n  build:", 1)[0]
-    assert test_job.index("- name: Generate field-level subagent audit manifest") < test_job.index(
+    build_test_job = workflow.split("\n  deploy:", 1)[0]
+    assert "actions/configure-pages@v5" in build_test_job
+    assert "actions/upload-pages-artifact@v4" in build_test_job
+    assert build_test_job.count("scripts/build_site.py") == 1
+    assert build_test_job.index("- name: Generate field-level subagent audit manifest") < build_test_job.index(
         "- name: Generate JSON-driven report"
     )
-    assert test_job.index("- name: Generate JSON-driven report") < test_job.index(
+    assert build_test_job.index("- name: Generate JSON-driven report") < build_test_job.index(
         "- name: Build exact site artifact"
     )
-    assert test_job.index("- name: Build exact site artifact") < test_job.index(
+    assert build_test_job.index("- name: Build exact site artifact") < build_test_job.index(
         "- name: Run full pytest matrix"
     )
+    assert build_test_job.index("- name: Run full pytest matrix") < build_test_job.index(
+        "- name: Upload exact tested Pages artifact"
+    )
+    assert "needs: build-test" in workflow
 
 
 def test_datapoint_audit_covers_all_json_leaves_with_distinct_passed_reviewers():
