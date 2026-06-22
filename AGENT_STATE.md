@@ -82,6 +82,7 @@
 - 059 | Regenerate after provenance EOF fix | Pipeline and site rebuilt successfully; nine pipeline integrity tests passed | Success
 - 060 | Pass final staged-diff gate | `git diff --cached --check` is clean across 381 intended files; only the three explicitly excluded unrelated files remain untracked | Success
 - 061 | Create local release commit | Created commit `50e9b36` (`feat: publish June 22-27 World Cup analysis`) containing the reviewed 381-file release scope | Success
+- 062 | Finalize and push release commit | Amended final release SHA is `ccf98ee71383a879f02906298d241dca6433c110`; push to `origin/main` succeeded and triggered the deployment workflow | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Prior production paths and documentation overstated reproducibility through hard-coded odds, optional silent TGNN fallback, and target extraction from prose; the June 22–27 path removes those dependencies.
@@ -98,6 +99,6 @@
 - App-truncated team labels must be mapped only when the source fixture context is unambiguous; the first full run correctly failed closed on `Congo Democra...`.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Release — finalize the state ledger in the release commit and push it to `origin/main`.
-- [ ] Next Step: Monitor GitHub Actions and validate the exact live commit.
+- [ ] Active Step: Deployment — persist the post-push ledger, then monitor GitHub Actions and Pages.
+- [ ] Next Step: Validate CI and the exact live commit.
 - [ ] Future Milestone: verify GitHub Actions and the live GitHub Pages deployment against the exact release commit.
