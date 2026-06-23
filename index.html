@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="cc869b48ac09bc03deac2dccb6629eb3d8f4d15aaf20fcbae0a50341ede47953">
+  <meta name="wcdecider-audit-sha256" content="95043f1d234c0e90ad4e7c5c782e1bb2a3cc7af6fb39c93ed24ef0e51078c6e3">
   <title>WCdecider • June 22–27, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -32,6 +32,9 @@
       </div>
       <div class="flex items-center gap-2">
         <span id="status" class="text-xs text-amber-300" aria-live="polite"><span class="en">Loading verified JSON…</span><span class="es">Cargando JSON verificado…</span></span>
+        <button id="research-toggle" class="rounded-xl border border-violet-700 bg-violet-950/50 px-3 py-2 text-sm font-semibold text-violet-100 disabled:opacity-50" type="button" disabled aria-pressed="false">
+          <span class="en">Research mode: off</span><span class="es">Modo investigación: apagado</span>
+        </button>
         <button id="lang" class="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm font-semibold" type="button">ES</button>
       </div>
     </div>
@@ -97,6 +100,7 @@
           <li><span class="en">PASS means the comparison is within investigation limits; HALT means all model edges were suspicious, so the safest market-consensus fallback is shown.</span><span class="es">PASS significa que la comparación está dentro de límites de investigación; HALT significa que todas las ventajas del modelo fueron sospechosas y se muestra la alternativa más segura según el consenso del mercado.</span></li>
           <li><span class="en">Conditional forecasts must be rerun after intervening matches and new lineups/odds.</span><span class="es">Los pronósticos condicionales deben recalcularse después de partidos intermedios y nuevas alineaciones/cuotas.</span></li>
           <li><span class="en">Displayed prices are source evidence, not instructions to place a bet.</span><span class="es">Las cuotas mostradas son evidencia de fuente, no instrucciones para apostar.</span></li>
+          <li><span class="en">Research mode exposes the best gated shadow model for learning and sensitivity analysis; it does not replace production recommendations.</span><span class="es">El modo investigación muestra el mejor modelo sombra limitado por evidencia para aprendizaje y sensibilidad; no reemplaza las recomendaciones de producción.</span></li>
         </ol>
       </div>
       <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
@@ -139,6 +143,7 @@
     </section>
     <section id="bankroll-plan" class="mb-8 grid lg:grid-cols-2 gap-5"></section>
     <section id="error" class="hidden rounded-3xl border border-red-800 bg-red-950 p-6 mb-8"></section>
+    <section id="diagnostics" class="hidden rounded-3xl border border-amber-800 bg-amber-950/40 p-5 mb-8 text-xs text-amber-100" aria-live="polite"></section>
     <section id="cards" class="grid lg:grid-cols-2 gap-6"></section>
 
     <section class="mt-10 grid lg:grid-cols-2 gap-5">
@@ -189,12 +194,32 @@
 const $=s=>document.querySelector(s);
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let DATA=null,METRICS=null,AUDIT_COUNT=0,APP_READY=false;
+const DIAGNOSTICS=[];
 const setText=(selector,value)=>{const el=$(selector);if(el)el.textContent=value};
 const setHtml=(selector,value)=>{const el=$(selector);if(el)el.innerHTML=value};
+function recordDiagnostic(stage,detail={}){
+ DIAGNOSTICS.push({stage,detail,time:new Date().toISOString()});
+ if(new URLSearchParams(location.search).has('debug'))renderDiagnostics();
+}
+function renderDiagnostics(error){
+ const el=$('#diagnostics'); if(!el)return;
+ const build=document.querySelector('meta[name="wcdecider-build"]')?.content||'unknown';
+ const audit=document.querySelector('meta[name="wcdecider-audit-sha256"]')?.content||'unknown';
+ const rows=DIAGNOSTICS.slice(-20).map(item=>`<li><b>${escapeHtml(item.stage)}</b> <span class="text-amber-200">${escapeHtml(JSON.stringify(item.detail))}</span></li>`).join('');
+ el.classList.remove('hidden');
+ el.innerHTML=`<h2 class="font-bold text-white"><span class="en">Load diagnostics</span><span class="es">Diagnóstico de carga</span></h2>
+  ${error?`<p class="mt-2"><b>Error:</b> ${escapeHtml(error.message||error)}</p>`:''}
+  <p class="mt-2"><span class="en">If this happens on iPhone, screenshot this box and send it with the URL.</span><span class="es">Si ocurre en iPhone, toma captura de este cuadro y envíala con la URL.</span></p>
+  <ul class="mt-3 list-disc pl-5 space-y-1">${rows}</ul>
+  <p class="mt-3">URL: ${escapeHtml(location.href)}</p>
+  <p>Online: ${navigator.onLine?'yes':'no'} · Build: ${escapeHtml(build.slice(0,12))} · Audit: ${escapeHtml(audit.slice(0,12))}</p>
+  <p>User agent: ${escapeHtml(navigator.userAgent)}</p>`;
+}
 const showError=message=>{
  const err=$('#error'); if(err){err.classList.remove('hidden'); err.innerHTML=`<span class="en">Report data failed to load: ${escapeHtml(message)}</span><span class="es">No se pudieron cargar los datos del informe: ${escapeHtml(message)}</span>`;}
  const loading=$('#loading-shell'); if(loading)loading.classList.add('hidden');
  setHtml('#status','<span class="en">DATA ERROR</span><span class="es">ERROR DE DATOS</span>');
+ renderDiagnostics(new Error(message));
 };
  const strengthColor=s=>({HALT:'text-red-300 border-red-700',PASS:'text-slate-300 border-slate-700'}[s]||'text-slate-300 border-slate-700');
 function explanationTip(help){
@@ -215,6 +240,7 @@ function renderSummary(rows){
  <p class="mt-2"><span class="en">Score holdout: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Over 2.5 Brier ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, BTTS Brier ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles remains a shadow model because its paired-bootstrap confidence interval crosses zero.</span><span class="es">Holdout de goles: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Brier Más de 2,5 ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, Brier ambos marcan ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles sigue como modelo sombra porque su intervalo bootstrap pareado cruza cero.</span></p>
  <p class="mt-2"><span class="en">Model championship: ${METRICS.model_championship.registered_variants.length} registered variants. Strict nested outer folds selected ${escapeHtml(METRICS.model_championship.champion)}. No structural model or stack beat that market proxy across outer mean log loss, so added complexity is rejected on the available evidence.</span><span class="es">Campeonato de modelos: ${METRICS.model_championship.registered_variants.length} variantes registradas. Los pliegues externos anidados estrictos eligieron ${escapeHtml(METRICS.model_championship.champion)}. Ningún modelo estructural ni combinación superó a ese proxy de mercado en pérdida logarítmica externa promedio, por lo que se rechaza complejidad adicional con la evidencia disponible.</span></p>
  <p class="mt-2"><span class="en">Deep-learning research track: ${escapeHtml(METRICS.model_championship.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registered but gated')}. These variants need the published promotion gate before production use: more timestamped fixtures, enough repeated temporal edges per team, nested walk-forward selection, calibration checks, and closing-line profitability validation.</span><span class="es">Línea de investigación deep learning: ${escapeHtml(METRICS.model_championship.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registrada pero limitada')}. Estas variantes requieren la puerta de promoción publicada antes de usarse en producción: más partidos con marca de tiempo, suficientes aristas temporales repetidas por equipo, selección walk-forward anidada, calibración y validación de rentabilidad con líneas de cierre.</span></p>
+ <p class="mt-2 text-violet-200"><span class="en">Research-mode toggle: ${escapeHtml(METRICS.research_mode_policy?.selected_candidate||'not available')} is available as a gated shadow view. Production recommendations remain unchanged unless a candidate passes the published promotion gate.</span><span class="es">Toggle de modo investigación: ${escapeHtml(METRICS.research_mode_policy?.selected_candidate||'no disponible')} está disponible como vista sombra limitada. Las recomendaciones de producción no cambian salvo que un candidato supere la puerta de promoción publicada.</span></p>
  <p class="mt-2"><span class="en">Historical odds inventory: ${METRICS.historical_closing_odds.events} events and ${METRICS.historical_closing_odds.rows} selection rows retained as timestamp-unknown proxies; primary timestamp-verified validation rows: ${METRICS.historical_closing_odds.primary_validation_rows}.</span><span class="es">Inventario histórico de cuotas: ${METRICS.historical_closing_odds.events} eventos y ${METRICS.historical_closing_odds.rows} filas de selecciones conservadas como proxies sin hora verificable; filas primarias verificadas por tiempo: ${METRICS.historical_closing_odds.primary_validation_rows}.</span></p>
  <p class="mt-2 text-amber-200"><span class="en">The report ranks up to four distinct sourced picks per match. Genuine timestamped historical closes are not yet available, so profitability, CLV, ROI and staking tiers remain unvalidated.</span><span class="es">El informe ordena hasta cuatro opciones distintas con fuente por partido. Aún no hay cierres históricos genuinos con marca de tiempo, por lo que rentabilidad, CLV, ROI y niveles de apuesta siguen sin validarse.</span></p>`;
 }
@@ -287,28 +313,29 @@ function bindTips(){
   tip.addEventListener('blur',()=>hideTip(tip));
  });
 }
-function parseCsv(text){
- const rows=[];let row=[],field='',quoted=false;
- for(let i=0;i<text.length;i++){
-  const c=text[i],next=text[i+1];
-  if(quoted&&c==='"'&&next==='"'){field+='"';i++;continue}
-  if(c==='"'){quoted=!quoted;continue}
-  if(!quoted&&c===','){row.push(field);field='';continue}
-  if(!quoted&&(c==='\n'||c==='\r')){
-   if(c==='\r'&&next==='\n')i++;
-   row.push(field);field='';if(row.some(x=>x!==''))rows.push(row);row=[];continue
-  }
-  field+=c;
- }
- if(field||row.length){row.push(field);rows.push(row)}
- const header=rows.shift()||[];
- return rows.map(values=>Object.fromEntries(header.map((key,index)=>[key,values[index]??''])));
+async function sha256Hex(text){
+ if(typeof crypto==='undefined'||!crypto.subtle||typeof TextEncoder==='undefined'){recordDiagnostic('sha256_unavailable');return ''}
+ const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
+ return [...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('');
+}
+async function fetchTextArtifact(path){
+ recordDiagnostic('fetch_start',{path});
+ const response=await fetch(path,{cache:'no-store'});
+ recordDiagnostic('fetch_response',{path,status:response.status,ok:response.ok,url:response.url});
+ if(!response.ok)throw new Error(`${path} HTTP ${response.status}`);
+ const text=await response.text();
+ recordDiagnostic('fetch_text',{path,bytes:text.length});
+ return text;
 }
 function card(row,index){
  const r=row.recommendation;
  const topRecommendations=row.top_recommendations||[];
  const ptr=`/predictions/${index}`;
  const help=row.metric_explanations||{};
+ const research=row.research_mode||{};
+ const researchTotals=safeList(research.common_markets?.totals);
+ const researchOver25=researchTotals.find(x=>x.line===2.5)||{};
+ const researchBtts=research.common_markets?.btts||{};
  const strength=r?.strength||'PASS';
  const rec=r?`${escapeHtml(r.selection_original)} ${r.line?`(${escapeHtml(r.line)})`:''} @ ${Number(r.odds).toFixed(2)}`:'No supported price / Sin cuota compatible';
  const budget=r?.budget_simulation;
@@ -371,6 +398,25 @@ function card(row,index){
       <div data-json-pointer="${ptr}/common_markets/totals/2/over_probability">${metric('<span class="en">Over 2.5</span><span class="es">Más de 2,5</span>',`${safePct(over25.over_probability)} · ${safeOdds(over25.over_fair_odds)}`,help.over_2_5)}</div>
       <div data-json-pointer="${ptr}/common_markets/btts/yes_probability">${metric('BTTS Yes / Sí',`${safePct(common.btts?.yes_probability)} · ${safeOdds(common.btts?.yes_fair_odds)}`,help.btts_yes)}</div>
     </div>
+    <section class="research-panel hidden mt-4 rounded-2xl border border-violet-800 bg-violet-950/30 p-4 text-sm" data-research-candidate="${escapeHtml(research.selected_candidate||'')}">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <div class="font-bold text-violet-100"><span class="en">Research mode shadow model</span><span class="es">Modelo sombra de investigación</span></div>
+          <div class="mt-1 text-xs text-violet-200">${escapeHtml(research.selected_candidate||'unavailable')} · ${escapeHtml(research.promotion_status||'research_gated')}</div>
+        </div>
+        <span class="rounded-full border border-violet-700 px-2 py-1 text-[10px] text-violet-100"><span class="en">not production</span><span class="es">no producción</span></span>
+      </div>
+      <p class="en mt-2 text-slate-300">${escapeHtml(research.student_note?.en||'Research mode is unavailable for this row.')}</p>
+      <p class="es mt-2 text-slate-300">${escapeHtml(research.student_note?.es||'El modo investigación no está disponible para esta fila.')}</p>
+      <div class="mt-3 grid grid-cols-2 md:grid-cols-5 gap-2 text-center">
+        ${metric('1',`${safePct(research.probabilities?.team_a_win)} (${Number(research.deltas_vs_production?.team_a_win_pp||0).toFixed(2)}pp)`)}
+        ${metric('X',`${safePct(research.probabilities?.draw)} (${Number(research.deltas_vs_production?.draw_pp||0).toFixed(2)}pp)`)}
+        ${metric('2',`${safePct(research.probabilities?.team_b_win)} (${Number(research.deltas_vs_production?.team_b_win_pp||0).toFixed(2)}pp)`)}
+        ${metric('<span class="en">Over 2.5</span><span class="es">Más 2,5</span>',`${safePct(researchOver25.over_probability)} (${Number(research.deltas_vs_production?.over_2_5_pp||0).toFixed(2)}pp)`)}
+        ${metric('BTTS Yes',`${safePct(researchBtts.yes_probability)} (${Number(research.deltas_vs_production?.btts_yes_pp||0).toFixed(2)}pp)`)}
+      </div>
+      <p class="mt-3 text-xs text-amber-200"><span class="en">${escapeHtml(research.why_not_production||'This model has not passed production promotion gates.')}</span><span class="es">Este modelo no ha superado las puertas de promoción a producción; no cambia la recomendación ni valida rentabilidad.</span></p>
+    </section>
     <div class="mt-3 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-sm">
       <div class="font-semibold text-white"><span class="en">Common model markets — probabilities and fair odds</span><span class="es">Mercados comunes del modelo — probabilidades y cuotas justas</span></div>
       <div class="mt-2 grid sm:grid-cols-3 gap-2 text-center">
@@ -440,29 +486,41 @@ function applyFilters(){
  const d=$('#date-filter').value,s=$('#strength-filter').value;
  document.querySelectorAll('#cards article').forEach(c=>c.classList.toggle('hidden',(d&&c.dataset.date!==d)||(s&&c.dataset.strength!==s)));
 }
+function setResearchMode(enabled){
+ document.body.classList.toggle('research-on',enabled);
+ document.querySelectorAll('.research-panel').forEach(panel=>panel.classList.toggle('hidden',!enabled));
+ const button=$('#research-toggle');
+ if(button){
+  button.setAttribute('aria-pressed',enabled?'true':'false');
+  button.innerHTML=enabled?'<span class="en">Research mode: on</span><span class="es">Modo investigación: encendido</span>':'<span class="en">Research mode: off</span><span class="es">Modo investigación: apagado</span>';
+ }
+}
 async function load(){
  try{
-  const [response,metricsResponse,auditResponse]=await Promise.all([
-    fetch('wc_june22_27_predictions.json',{cache:'no-store'}),
-    fetch('wc_june22_27_model_metrics.json',{cache:'no-store'}),
-    fetch('wc_june22_27_datapoint_audit.csv',{cache:'no-store'})
+  recordDiagnostic('load_start');
+  const [predictionText,metricsText,auditSummaryText]=await Promise.all([
+    fetchTextArtifact('wc_june22_27_predictions.json'),
+    fetchTextArtifact('wc_june22_27_model_metrics.json'),
+    fetchTextArtifact('wc_june22_27_datapoint_audit_summary.json')
   ]);
-  if(!response.ok)throw new Error(`predictions.json HTTP ${response.status}`);
-  if(!metricsResponse.ok)throw new Error(`metrics.json HTTP ${metricsResponse.status}`);
-  if(!auditResponse.ok)throw new Error(`audit.csv HTTP ${auditResponse.status}`);
-  DATA=await response.json(); METRICS=await metricsResponse.json();
+  DATA=JSON.parse(predictionText); METRICS=JSON.parse(metricsText);
+  const auditSummary=JSON.parse(auditSummaryText);
   if(!DATA||!DATA.batch||!Array.isArray(DATA.predictions))throw new Error('Predictions JSON schema is invalid');
   if(!METRICS||!METRICS.calibration||!METRICS.score_market_calibration)throw new Error('Metrics JSON schema is invalid');
-  const auditText=await auditResponse.text();
-  const auditRows=parseCsv(auditText);
-  if(!auditRows.length||auditRows.some(row=>row.final_status!=='PASS'))throw new Error('Datapoint audit is incomplete or blocked');
+  if(!auditSummary||auditSummary.final_status!=='PASS'||auditSummary.blocked_rows!==0)throw new Error('Datapoint audit summary is incomplete or blocked');
   const expectedPaths=new Set([
    ...jsonLeaves(DATA).map(pointer=>`wc_june22_27_predictions.json:${pointer}`),
    ...jsonLeaves(METRICS).map(pointer=>`wc_june22_27_model_metrics.json:${pointer}`)
   ]);
-  const auditedPaths=new Set(auditRows.map(row=>`${row.output_artifact}:${row.json_pointer}`));
-  if(expectedPaths.size!==auditedPaths.size||[...expectedPaths].some(path=>!auditedPaths.has(path)))throw new Error('Datapoint audit does not exactly cover current JSON leaves');
-  AUDIT_COUNT=auditRows.length;
+  const expectedPathText=[...expectedPaths].sort().join('\n');
+  if(auditSummary.expected_json_leaf_count!==expectedPaths.size)throw new Error('Datapoint audit summary leaf count does not match current JSON');
+  const [predictionHash,metricsHash,expectedPathHash]=await Promise.all([
+   sha256Hex(predictionText),sha256Hex(metricsText),sha256Hex(expectedPathText)
+  ]);
+  if(predictionHash&&auditSummary.predictions_sha256!==predictionHash)throw new Error('Predictions JSON hash does not match audit summary');
+  if(metricsHash&&auditSummary.metrics_sha256!==metricsHash)throw new Error('Metrics JSON hash does not match audit summary');
+  if(expectedPathHash&&auditSummary.expected_paths_sha256!==expectedPathHash)throw new Error('Current JSON leaf hash does not match audit summary');
+  AUDIT_COUNT=auditSummary.audit_rows;
   if(DATA.batch.fixture_count!==32||DATA.predictions.length!==32)throw new Error('Expected exactly 32 predictions');
   const ids=new Set(DATA.predictions.map(x=>x.fixture_id)); if(ids.size!==32)throw new Error('Duplicate fixture IDs');
   setText('#last-updated',DATA.generated_at||'unknown');
@@ -473,22 +531,26 @@ async function load(){
   setHtml('#cards',DATA.predictions.map(card).join(''));
   bindTips();
   [...new Set(DATA.predictions.map(x=>x.kickoff_lima.slice(0,10)))].forEach(d=>$('#date-filter').insertAdjacentHTML('beforeend',`<option value="${d}">${d}</option>`));
-  ['#date-filter','#strength-filter'].forEach(selector=>{const el=$(selector);if(el)el.disabled=false;});
+  ['#date-filter','#strength-filter','#research-toggle'].forEach(selector=>{const el=$(selector);if(el)el.disabled=false;});
   const loading=$('#loading-shell'); if(loading)loading.classList.add('hidden');
   APP_READY=true;
   setHtml('#status','<span class="en">Verified JSON loaded</span><span class="es">JSON verificado cargado</span>');
+  recordDiagnostic('load_success',{fixtures:DATA.predictions.length,auditRows:AUDIT_COUNT});
  }catch(error){
+  recordDiagnostic('load_error',{message:error.message});
   showError(error.message);
  }
 }
 function boot(){
  const lang=$('#lang'); if(lang)lang.addEventListener('click',()=>{const es=document.body.classList.contains('lang-es');document.body.classList.toggle('lang-es',!es);document.body.classList.toggle('lang-en',es);lang.textContent=es?'ES':'EN';document.documentElement.lang=es?'en':'es';});
+ const researchToggle=$('#research-toggle'); if(researchToggle)researchToggle.addEventListener('click',()=>setResearchMode(researchToggle.getAttribute('aria-pressed')!=='true'));
  const date=$('#date-filter'),strength=$('#strength-filter');
  if(date)date.addEventListener('change',applyFilters); if(strength)strength.addEventListener('change',applyFilters);
  bindTips();
  load();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
-window.addEventListener('error',event=>{if(!APP_READY)showError(event.message||'Unexpected startup error')});
+window.addEventListener('error',event=>{recordDiagnostic('window_error',{message:event.message,filename:event.filename,lineno:event.lineno});if(!APP_READY)showError(event.message||'Unexpected startup error')});
+window.addEventListener('unhandledrejection',event=>{recordDiagnostic('unhandled_rejection',{reason:String(event.reason&&event.reason.message?event.reason.message:event.reason)});if(!APP_READY)showError(event.reason&&event.reason.message?event.reason.message:'Unexpected async startup error')});
 </script>
 </body></html>

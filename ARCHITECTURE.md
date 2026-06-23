@@ -74,9 +74,9 @@ historical data ─────────┼──── elapsed WC results
 - English/Spanish fixture text
 - field-level audit status and conditional freshness
 
-The HTML contains only batch-independent layout, glossary, workflow visualization, and rendering code. Dynamic content is escaped before insertion and JSON load failures are visible.
+The HTML contains only batch-independent layout, glossary, workflow visualization, and rendering code. Dynamic content is escaped before insertion and JSON load failures are visible with diagnostics.
 
-Every prediction/metrics JSON leaf is enumerated in the datapoint audit manifest with source/model/mission hashes and distinct owner, replication-1, replication-2, and editor identities. A non-PASS row blocks the site build.
+Every prediction/metrics JSON leaf is enumerated in the datapoint audit manifest with source/model/mission hashes and distinct owner, replication-1, replication-2, and editor identities. A non-PASS row blocks the site build. The browser does not download this large CSV; it verifies the small audit-summary JSON containing artifact hashes, row counts, and canonical leaf-path hash so mobile devices avoid memory pressure while preserving reproducibility.
 
 ## Validation and deployment
 

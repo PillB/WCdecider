@@ -49,6 +49,7 @@ def build() -> Path:
         ROOT / "wc_screenshot_manifest_june22_27.csv",
         ROOT / "wc_research_june22_27.csv",
         ROOT / "wc_june22_27_datapoint_audit.csv",
+        ROOT / "wc_june22_27_datapoint_audit_summary.json",
         ROOT / "historical_odds_coverage.json",
         ROOT / "historical_odds_provenance.txt",
         ROOT / "model_championship_results.json",

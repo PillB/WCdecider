@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import inspect
 import json
 import subprocess
@@ -135,6 +136,30 @@ def test_score_market_calibration_is_chronological_and_non_actionable():
     )
 
 
+def test_research_mode_policy_is_gated_and_non_production():
+    payload = json.loads((ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8"))
+    metrics = json.loads((ROOT / "wc_june22_27_model_metrics.json").read_text(encoding="utf-8"))
+    policy = metrics["research_mode_policy"]
+    assert policy["toggle_available"] is True
+    assert policy["selected_candidate"] == "dixon_coles_low_score_correction_shadow"
+    assert policy["status"] == "research_gated_not_production"
+    assert policy["production_recommendations_unchanged"] is True
+    assert policy["promotion_requirements"]["minimum_timestamped_fixtures"] == 2000
+    assert policy["promotion_requirements"]["minimum_temporal_edges_per_team"] == 30
+    for row in payload["predictions"]:
+        research = row["research_mode"]
+        assert research["toggle_available"] is True
+        assert research["default_state"] == "off_production_mode"
+        assert research["selected_candidate"] == policy["selected_candidate"]
+        assert research["promotion_status"] == "research_gated_not_production"
+        assert research["production_recommendations_unchanged"] is True
+        assert set(research["probabilities"]) == {"team_a_win", "draw", "team_b_win"}
+        assert sum(research["probabilities"].values()) == pytest.approx(1.0, abs=2e-6)
+        assert "common_markets" in research
+        assert research["common_markets"]["policy_status"] == "experimental_non_actionable"
+        assert row["recommendation"]["decision_status"] == "BEST_AVAILABLE"
+
+
 def test_dataset_a_and_b_are_disjoint_by_competition():
     rows = pipeline.load_historical()
     finals = {"WC_2018_GROUP", "WC_2022_GROUP", "WC_2026_GROUP"}
@@ -234,6 +259,35 @@ def test_datapoint_audit_covers_all_json_leaves_with_distinct_passed_reviewers()
         assert len(row["mission_sha256"]) == 64
 
 
+def test_datapoint_audit_summary_matches_full_manifest_and_current_json():
+    manifest_path = ROOT / "wc_june22_27_datapoint_audit.csv"
+    summary_path = ROOT / "wc_june22_27_datapoint_audit_summary.json"
+    assert manifest_path.exists()
+    assert summary_path.exists()
+    rows = read_rows(manifest_path.name)
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    expected_paths = []
+    for artifact in ("wc_june22_27_predictions.json", "wc_june22_27_model_metrics.json"):
+        payload = json.loads((ROOT / artifact).read_text(encoding="utf-8"))
+        expected_paths.extend(f"{artifact}:{pointer}" for pointer, _ in pipeline_json_leaves(payload))
+    expected_paths = sorted(expected_paths)
+    assert summary["final_status"] == "PASS"
+    assert summary["blocked_rows"] == 0
+    assert summary["audit_rows"] == len(rows)
+    assert summary["expected_json_leaf_count"] == len(expected_paths)
+    assert summary["artifact_bytes"] == manifest_path.stat().st_size
+    assert summary["artifact_sha256"] == hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    assert summary["predictions_sha256"] == hashlib.sha256(
+        (ROOT / "wc_june22_27_predictions.json").read_bytes()
+    ).hexdigest()
+    assert summary["metrics_sha256"] == hashlib.sha256(
+        (ROOT / "wc_june22_27_model_metrics.json").read_bytes()
+    ).hexdigest()
+    assert summary["expected_paths_sha256"] == hashlib.sha256(
+        "\n".join(expected_paths).encode("utf-8")
+    ).hexdigest()
+
+
 def pipeline_json_leaves(value, pointer=""):
     if isinstance(value, dict):
         for key in sorted(value):
@@ -255,6 +309,7 @@ def test_audit_generator_is_deterministic():
         text=True,
     )
     first = (ROOT / "wc_june22_27_datapoint_audit.csv").read_bytes()
+    first_summary = (ROOT / "wc_june22_27_datapoint_audit_summary.json").read_bytes()
     subprocess.run(
         [sys.executable, "-B", "scripts/generate_datapoint_audit.py"],
         cwd=ROOT,
@@ -263,6 +318,7 @@ def test_audit_generator_is_deterministic():
         text=True,
     )
     assert (ROOT / "wc_june22_27_datapoint_audit.csv").read_bytes() == first
+    assert (ROOT / "wc_june22_27_datapoint_audit_summary.json").read_bytes() == first_summary
 
 
 def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():

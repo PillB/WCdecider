@@ -24,6 +24,7 @@ METRICS = ROOT / "wc_june22_27_model_metrics.json"
 MISSION = ROOT / "governance" / "subagent_mission_v1.md"
 REVIEWS = ROOT / "governance" / "subagent_reviews_june22_27.json"
 OUT = ROOT / "wc_june22_27_datapoint_audit.csv"
+SUMMARY_OUT = ROOT / "wc_june22_27_datapoint_audit_summary.json"
 
 FIELDS = [
     "datapoint_id", "batch_id", "fixture_id", "output_artifact",
@@ -52,6 +53,11 @@ def sha256(path: Path) -> str:
 def canonical(value: Any) -> str:
     """Serialize a leaf value without locale- or platform-dependent output."""
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
+def sha256_text(value: str) -> str:
+    """Return SHA-256 for a UTF-8 string."""
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
 def leaves(value: Any, pointer: str = "") -> Iterator[Tuple[str, Any]]:
@@ -237,7 +243,40 @@ def main() -> None:
         writer.writerows(rows)
 
     blocked = sum(row["final_status"] != "PASS" for row in rows)
+    expected_paths = sorted(
+        f"{row['output_artifact']}:{row['json_pointer']}" for row in rows
+    )
+    status_counts = {}
+    artifact_counts = {}
+    for row in rows:
+        status_counts[row["final_status"]] = (
+            status_counts.get(row["final_status"], 0) + 1
+        )
+        artifact_counts[row["output_artifact"]] = (
+            artifact_counts.get(row["output_artifact"], 0) + 1
+        )
+    summary = {
+        "schema_version": "1.0",
+        "artifact": OUT.name,
+        "artifact_sha256": sha256(OUT),
+        "artifact_bytes": OUT.stat().st_size,
+        "predictions_sha256": sha256(PREDICTIONS),
+        "metrics_sha256": sha256(METRICS),
+        "audit_rows": len(rows),
+        "blocked_rows": blocked,
+        "status_counts": status_counts,
+        "artifact_counts": artifact_counts,
+        "expected_json_leaf_count": len(expected_paths),
+        "expected_paths_sha256": sha256_text("\n".join(expected_paths)),
+        "audit_paths_sha256": sha256_text("\n".join(expected_paths)),
+        "final_status": "PASS" if blocked == 0 else "BLOCKED",
+    }
+    SUMMARY_OUT.write_text(
+        json.dumps(summary, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     print(f"Wrote {OUT} with {len(rows)} datapoints; blocked={blocked}")
+    print(f"Wrote {SUMMARY_OUT} ({SUMMARY_OUT.stat().st_size} bytes)")
     if blocked:
         raise SystemExit("Datapoint audit contains non-PASS rows")
 

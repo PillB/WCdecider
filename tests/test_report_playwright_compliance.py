@@ -68,6 +68,26 @@ def test_no_dynamic_resource_failures(page):
     assert failed == []
 
 
+def test_mobile_page_uses_audit_summary_not_large_csv():
+    from playwright.sync_api import sync_playwright
+
+    with serve(SITE) as url, sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(
+            viewport={"width": 390, "height": 844},
+            is_mobile=True,
+            has_touch=True,
+        )
+        requested = []
+        page.on("request", lambda request: requested.append(request.url))
+        page.goto(url, wait_until="networkidle")
+        page.wait_for_selector("#cards article", timeout=15000)
+        assert any(url.endswith("wc_june22_27_datapoint_audit_summary.json") for url in requested)
+        assert not any(url.endswith("wc_june22_27_datapoint_audit.csv") for url in requested)
+        assert page.locator("#cards article").count() == 32
+        browser.close()
+
+
 def test_rendered_recommendations_match_json(page):
     browser_page, _ = page
     payload = json.loads((SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8"))
@@ -243,6 +263,30 @@ def test_footer_last_updated_version_and_build_marker(page):
     assert build[:12] in footer
 
 
+def test_research_mode_toggle_reveals_gated_shadow_model(page):
+    browser_page, _ = page
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    first = payload["predictions"][0]
+    toggle = browser_page.locator("#research-toggle")
+    assert toggle.is_enabled()
+    assert toggle.get_attribute("aria-pressed") == "false"
+    assert browser_page.locator(".research-panel").first.is_hidden()
+    toggle.click()
+    assert toggle.get_attribute("aria-pressed") == "true"
+    panel = browser_page.locator(
+        f'[data-fixture-id="{first["fixture_id"]}"] .research-panel'
+    )
+    assert panel.is_visible()
+    text = panel.inner_text()
+    assert first["research_mode"]["selected_candidate"] in text
+    assert "not production" in text
+    assert f'{first["research_mode"]["probabilities"]["team_a_win"] * 100:.1f}%' in text
+    toggle.click()
+    assert browser_page.locator(".research-panel").first.is_hidden()
+
+
 def test_mobile_missing_predictions_json_fails_visible_not_blank():
     from playwright.sync_api import sync_playwright
 
@@ -262,6 +306,8 @@ def test_mobile_missing_predictions_json_fails_visible_not_blank():
         page.goto(url, wait_until="domcontentloaded")
         page.wait_for_selector("#error:not(.hidden)", timeout=10000)
         assert "Report data failed to load" in page.locator("#error").inner_text()
+        assert page.locator("#diagnostics").is_visible()
+        assert "wc_june22_27_predictions.json" in page.locator("#diagnostics").inner_text()
         assert page.locator("#cards article").count() == 0
         assert page.locator("#date-filter").is_disabled()
         assert page.locator("#strength-filter").is_disabled()
@@ -296,6 +342,7 @@ def test_tampered_json_value_fails_closed_without_mobile_crash():
         page.goto(url, wait_until="domcontentloaded")
         page.wait_for_selector("#error:not(.hidden)", timeout=15000)
         assert "Report data failed to load" in page.locator("#error").inner_text()
+        assert page.locator("#diagnostics").is_visible()
         assert page.locator("#cards article").count() == 0
         assert page_errors == []
         browser.close()

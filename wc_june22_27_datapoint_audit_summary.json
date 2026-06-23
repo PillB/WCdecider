@@ -1,0 +1,21 @@
+{
+  "artifact": "wc_june22_27_datapoint_audit.csv",
+  "artifact_bytes": 89572255,
+  "artifact_counts": {
+    "wc_june22_27_model_metrics.json": 330,
+    "wc_june22_27_predictions.json": 35978
+  },
+  "artifact_sha256": "95043f1d234c0e90ad4e7c5c782e1bb2a3cc7af6fb39c93ed24ef0e51078c6e3",
+  "audit_paths_sha256": "8f75252fccde60a83dfe692c99ce8c7f7cf125bdcd8a33394b4f027babed9739",
+  "audit_rows": 36308,
+  "blocked_rows": 0,
+  "expected_json_leaf_count": 36308,
+  "expected_paths_sha256": "8f75252fccde60a83dfe692c99ce8c7f7cf125bdcd8a33394b4f027babed9739",
+  "final_status": "PASS",
+  "metrics_sha256": "482634bf192f652078632dfb5d45942a2b691e1531fea3b672303b1d54805578",
+  "predictions_sha256": "6d4dd02f60be5e1ac7ed4f347b07c832f4dde222e1416e415f44334b27a9ab80",
+  "schema_version": "1.0",
+  "status_counts": {
+    "PASS": 36308
+  }
+}
