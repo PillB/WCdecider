@@ -373,6 +373,8 @@
 - 322 | Regenerate fixed site artifacts | `scripts/generate_datapoint_audit.py` wrote 36,308 PASS datapoints and an 832-byte audit summary; `scripts/generate_report.py` wrote a 64,285-byte report; `scripts/build_site.py` copied the summary plus all required reproducibility artifacts | Success
 - 323 | Validate iPhone/mobile load fix | Focused audit-summary tests passed 3/3; Playwright report/mobile tests passed 15/15 including delayed mobile load, missing/tampered artifact diagnostics, research toggle, footer, and a regression proving no request is made for the full audit CSV | Success
 - 324 | Run complete release test matrix | Full sandbox run failed only because restricted sandbox denied `127.0.0.1` binding; rerun with approved escalation passed 87 tests with one expected live-deployment skip in 300.14s | Success
+- 325 | Publish reviewed branch and open draft PR | Committed `26b9c3e` (`feat: add research mode and mobile-safe diagnostics`), pushed `codex/research-mode-toggle`, and opened draft PR #3 by `gh` fallback after the GitHub connector returned 403 | Success
+- 326 | Inspect CI/CD trigger model | PR #3 has no status checks because `.github/workflows/deploy.yml` only runs on pushes to `main` or manual dispatch. Deployment requires merging/pushing to `main`; local validation remains the pre-merge evidence | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Prior production paths and documentation overstated reproducibility through hard-coded odds, optional silent TGNN fallback, and target extraction from prose; the June 22–27 path removes those dependencies.
@@ -396,6 +398,6 @@
 - Startup failures now need user-visible diagnostics because iOS may kill a tab before remote developer tools are available; the diagnostics panel records fetch stages, HTTP status, byte counts, URL, build SHA, audit hash, online status, and user agent.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Commit reviewed research-mode and iPhone diagnostic/mobile-load files, push PR, monitor CI/CD, and validate live exact SHA.
+- [ ] Active Step: Merge reviewed PR to `main`, monitor GitHub Pages CI/CD, and validate live exact SHA.
 - [ ] Next Step: Confirm live site no longer requests full audit CSV and diagnostics surface on artifact failure.
 - [ ] Future Milestone: Populate timestamp-verified historical closes after authenticated provider access and rerun the frozen profitability gate; until then the warning remains.
