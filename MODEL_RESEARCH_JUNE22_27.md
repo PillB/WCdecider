@@ -30,6 +30,34 @@ The historical totals comparison was tied at 0.2458 Brier for Dixon-Coles and in
 
 These implementations use deterministic graph/temporal featurizers with a trained classifier head. They do not beat the simpler Elo or market-based baselines and are not production graph neural networks trained end-to-end. They remain research artifacts only.
 
+## Deep-learning and graph-model upgrade path
+
+The current dataset can be represented as a temporal graph: teams are nodes, matches are timestamped edges, and edge/node features can include Elo gap, venue, tournament stage, rest, team news, odds state, and recent form. That representation is useful for feature engineering, diagnostics, and future architecture design. It is not enough by itself to justify a production temporal graph neural network.
+
+The promotion gate is now explicit in `model_championship.py`:
+
+- at least 2,000 timestamped fixtures before fitting high-capacity temporal graph or transformer models;
+- roughly 30 or more pre-event temporal edges per recurring team;
+- all features available before kickoff;
+- nested walk-forward tuning and model selection;
+- final untouched holdout that is not used for architecture choice;
+- paired bootstrap or blocked resampling on proper scores;
+- calibration checks, not only accuracy;
+- profitability and CLV claims only against timestamp-verified closing odds;
+- multiplicity control across searched architectures, hyperparameters, and staking rules.
+
+Candidate model families retained for research:
+
+| Family | Why it may help later | Current decision |
+|---|---|---|
+| CatBoost/LightGBM tabular rating model | Often strong on small-to-medium structured football datasets with engineered features | Keep as a sample-efficient challenger; no production promotion over market proxy yet |
+| Hierarchical dynamic Poisson / Dixon-Coles | Encodes team attack/defense and football score structure | Shadow only; current paired-bootstrap gain is not secure |
+| Temporal Graph Network / TGAT-style memory model | Can learn from ordered team/player interaction edges | Rejected by current sample-size gate |
+| GraphMixer / DyGFormer-style efficient temporal graph | Lower-overhead temporal graph alternatives for large dynamic graphs | Research registry only |
+| Sequence transformer over team histories | Can ingest long context windows and lineup/context tokens | Rejected by current sample-size gate |
+
+Hugging Face search did not identify an authoritative ready-made model card for this exact World Cup betting task. The relevant best practice from the Hugging Face/model-card ecosystem is reporting discipline: intended use, training data, evaluation data, limitations, and out-of-scope usage must be visible. The website now keeps profitability unvalidated while closing-line labels are missing, even when a model produces a ranked recommendation.
+
 ## Current score-model improvement
 
 The current pipeline added a chronologically selected Elo-gap intensity term:
@@ -71,6 +99,7 @@ Current fixture total intensity now varies instead of remaining fixed at 2.50.
 - Yeung et al., [Evaluating Soccer Match Prediction Models: A Deep Learning Approach and Feature Optimization for Gradient-Boosted Trees](https://arxiv.org/abs/2309.14807).
 - Bunker, Yeung, and Fujii, [Machine Learning for Soccer Match Result Prediction](https://arxiv.org/abs/2403.07669).
 - Ren and Susnjak, [Predicting Football Match Outcomes with Explainable Machine Learning and the Kelly Index](https://arxiv.org/abs/2211.15734).
+- Mitchell et al., [Model Cards for Model Reporting](https://arxiv.org/abs/1810.03993).
 
 The literature supports boosted trees with football-specific ratings on sufficiently rich tabular datasets and temporal/graph models when genuine interaction data exists. This repository currently has 253 team-level historical rows, not player-event or tracking graphs. Promoting a deep or graph model solely because it is more complex would not be evidence-based.
 

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="653eda9ff8d443b410a1fe12935a30b6a1a525f4d7a65d0ba2cedb76e62efd46">
+  <meta name="wcdecider-audit-sha256" content="cc869b48ac09bc03deac2dccb6629eb3d8f4d15aaf20fcbae0a50341ede47953">
   <title>WCdecider • June 22–27, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <span id="status" class="text-xs text-amber-300"><span class="en">Loading verified JSON…</span><span class="es">Cargando JSON verificado…</span></span>
+        <span id="status" class="text-xs text-amber-300" aria-live="polite"><span class="en">Loading verified JSON…</span><span class="es">Cargando JSON verificado…</span></span>
         <button id="lang" class="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm font-semibold" type="button">ES</button>
       </div>
     </div>
@@ -55,29 +55,35 @@
           <div id="summary" class="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3"></div>
           <div id="model-evidence" class="mt-4 rounded-2xl border border-slate-700 bg-slate-950/70 p-4 text-sm text-slate-300"></div>
         </div>
-        <svg viewBox="0 0 520 360" role="img" aria-labelledby="flow-title flow-desc" class="w-full">
+        <svg viewBox="0 0 640 430" role="img" aria-labelledby="flow-title flow-desc" class="w-full">
           <title id="flow-title"><tspan class="en">WCdecider model workflow</tspan><tspan class="es">Flujo del modelo WCdecider</tspan></title>
-          <desc id="flow-desc"><tspan class="en">Sources flow through chronological model selection, untouched holdout validation, market comparison, audit, JSON, and report generation.</tspan><tspan class="es">Las fuentes pasan por selección cronológica, validación holdout intacta, comparación de mercado, auditoría, JSON y generación del informe.</tspan></desc>
+          <desc id="flow-desc"><tspan class="en">Sources flow through immutable provenance, chronological model championship, score-distribution markets, market shrinkage, risk ranking, four-role audit, JSON, and a defensive mobile report shell.</tspan><tspan class="es">Las fuentes pasan por procedencia inmutable, campeonato cronológico de modelos, mercados por distribución de marcadores, ajuste hacia mercado, ranking de riesgo, auditoría de cuatro roles, JSON y una página móvil defensiva.</tspan></desc>
           <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#34d399"/></marker></defs>
           <g fill="#0f172a" stroke="#334155" stroke-width="2">
-            <rect x="20" y="25" width="145" height="64" rx="14"/><rect x="20" y="113" width="145" height="64" rx="14"/>
-            <rect x="20" y="201" width="145" height="64" rx="14"/><rect x="205" y="78" width="145" height="124" rx="18"/>
-            <rect x="390" y="25" width="110" height="64" rx="14"/><rect x="390" y="113" width="110" height="64" rx="14"/>
-            <rect x="390" y="201" width="110" height="64" rx="14"/>
+            <rect x="18" y="22" width="142" height="58" rx="14"/><rect x="18" y="100" width="142" height="58" rx="14"/>
+            <rect x="18" y="178" width="142" height="58" rx="14"/><rect x="18" y="256" width="142" height="58" rx="14"/>
+            <rect x="205" y="35" width="150" height="74" rx="16"/><rect x="205" y="132" width="150" height="74" rx="16"/>
+            <rect x="205" y="229" width="150" height="74" rx="16"/><rect x="400" y="35" width="150" height="74" rx="16"/>
+            <rect x="400" y="132" width="150" height="74" rx="16"/><rect x="400" y="229" width="150" height="74" rx="16"/>
+            <rect x="205" y="335" width="345" height="58" rx="16"/>
           </g>
-          <g fill="#e2e8f0" font-family="system-ui" font-size="14" text-anchor="middle">
-            <text x="92" y="52"><tspan class="en">Dataset A/B</tspan><tspan class="es">Dataset A/B</tspan></text><text x="92" y="72"><tspan class="en">temporal history</tspan><tspan class="es">historia temporal</tspan></text>
-            <text x="92" y="140"><tspan class="en">Elapsed WC</tspan><tspan class="es">Mundial jugado</tspan></text><text x="92" y="160"><tspan class="en">40 results</tspan><tspan class="es">40 resultados</tspan></text>
-            <text x="92" y="228"><tspan class="en">Screenshots</tspan><tspan class="es">Capturas</tspan></text><text x="92" y="248">Betano + Betsson</text>
-            <text x="277" y="106"><tspan class="en">Elo + score model</tspan><tspan class="es">Elo + modelo de goles</tspan></text><text x="277" y="130"><tspan class="en">walk-forward tuning</tspan><tspan class="es">ajuste walk-forward</tspan></text>
-            <text x="277" y="154"><tspan class="en">untouched holdout</tspan><tspan class="es">holdout intacto</tspan></text><text x="277" y="178"><tspan class="en">Poisson + DC shadow</tspan><tspan class="es">Poisson + DC sombra</tspan></text>
-            <text x="445" y="52"><tspan class="en">Probabilities</tspan><tspan class="es">Probabilidades</tspan></text><text x="445" y="72"><tspan class="en">1X2 + goals + AH</tspan><tspan class="es">1X2 + goles + AH</tspan></text>
-            <text x="445" y="140">BEST AVAILABLE</text><text x="445" y="160"><tspan class="en">risk-ranked pick</tspan><tspan class="es">opción por riesgo</tspan></text>
-            <text x="445" y="228">JSON + audit</text><text x="445" y="248"><tspan class="en">32 synced cards</tspan><tspan class="es">32 tarjetas sincronizadas</tspan></text>
+          <g fill="#e2e8f0" font-family="system-ui" font-size="13" text-anchor="middle">
+            <text x="89" y="47"><tspan class="en">Dataset A/B</tspan><tspan class="es">Dataset A/B</tspan></text><text x="89" y="65"><tspan class="en">253 results</tspan><tspan class="es">253 resultados</tspan></text>
+            <text x="89" y="125"><tspan class="en">Elapsed WC</tspan><tspan class="es">Mundial jugado</tspan></text><text x="89" y="143"><tspan class="en">40 results</tspan><tspan class="es">40 resultados</tspan></text>
+            <text x="89" y="203"><tspan class="en">Screenshots</tspan><tspan class="es">Capturas</tspan></text><text x="89" y="221">Betano + Betsson</text>
+            <text x="89" y="281"><tspan class="en">Historical odds</tspan><tspan class="es">Cuotas históricas</tspan></text><text x="89" y="299"><tspan class="en">proxy gated</tspan><tspan class="es">proxy limitado</tspan></text>
+            <text x="280" y="60"><tspan class="en">Provenance</tspan><tspan class="es">Procedencia</tspan></text><text x="280" y="80"><tspan class="en">hashes + source IDs</tspan><tspan class="es">hashes + fuentes</tspan></text>
+            <text x="280" y="157"><tspan class="en">Model championship</tspan><tspan class="es">Campeonato modelos</tspan></text><text x="280" y="177"><tspan class="en">nested chronology</tspan><tspan class="es">cronología anidada</tspan></text>
+            <text x="280" y="254"><tspan class="en">Score distribution</tspan><tspan class="es">Distribución goles</tspan></text><text x="280" y="274"><tspan class="en">Poisson + DC shadow</tspan><tspan class="es">Poisson + DC sombra</tspan></text>
+            <text x="475" y="60"><tspan class="en">Market shrinkage</tspan><tspan class="es">Ajuste a mercado</tspan></text><text x="475" y="80"><tspan class="en">vig removed</tspan><tspan class="es">sin margen</tspan></text>
+            <text x="475" y="157">BEST AVAILABLE</text><text x="475" y="177"><tspan class="en">utility ranking</tspan><tspan class="es">ranking utilidad</tspan></text>
+            <text x="475" y="254">JSON + audit</text><text x="475" y="274"><tspan class="en">31,319 PASS fields</tspan><tspan class="es">31.319 campos PASS</tspan></text>
+            <text x="378" y="360"><tspan class="en">Defensive report shell</tspan><tspan class="es">Página defensiva</tspan></text><text x="378" y="379"><tspan class="en">loading state · mobile safe · footer version</tspan><tspan class="es">carga · móvil seguro · versión en pie</tspan></text>
           </g>
           <g stroke="#34d399" stroke-width="3" fill="none" marker-end="url(#arrow)">
-            <path d="M165 57 C190 57 185 105 205 112"/><path d="M165 145 H205"/><path d="M165 233 C190 233 185 180 205 172"/>
-            <path d="M350 112 C370 100 370 65 390 57"/><path d="M350 140 H390"/><path d="M350 172 C370 185 370 225 390 233"/>
+            <path d="M160 51 H205"/><path d="M160 129 C184 129 181 72 205 72"/><path d="M160 207 C184 207 181 72 205 72"/><path d="M160 285 C184 285 181 72 205 72"/>
+            <path d="M280 109 V132"/><path d="M280 206 V229"/><path d="M355 169 H400"/><path d="M355 266 C380 266 375 72 400 72"/>
+            <path d="M475 109 V132"/><path d="M475 206 V229"/><path d="M475 303 C475 330 475 338 550 364"/><path d="M280 303 C280 330 280 338 205 364"/>
           </g>
         </svg>
       </div>
@@ -112,15 +118,25 @@
 
     <section class="mb-6 flex flex-wrap items-center gap-3">
       <label class="text-sm"><span class="en">Date</span><span class="es">Fecha</span>
-        <select id="date-filter" class="ml-2 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2"><option value="">All / Todos</option></select>
+        <select id="date-filter" disabled class="ml-2 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 disabled:opacity-50"><option value="">All / Todos</option></select>
       </label>
       <label class="text-sm"><span class="en">Strength</span><span class="es">Fuerza</span>
-        <select id="strength-filter" class="ml-2 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2">
+        <select id="strength-filter" disabled class="ml-2 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 disabled:opacity-50">
           <option value="">All / Todos</option><option>PASS</option><option>HALT</option>
         </select>
       </label>
     </section>
 
+    <section id="loading-shell" class="mb-8 rounded-3xl border border-slate-800 bg-slate-900 p-5 text-slate-300" aria-live="polite">
+      <div class="animate-pulse">
+        <div class="h-4 w-48 rounded bg-slate-700"></div>
+        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+          <div class="h-36 rounded-2xl bg-slate-800"></div>
+          <div class="h-36 rounded-2xl bg-slate-800"></div>
+        </div>
+      </div>
+      <p class="mt-4 text-sm"><span class="en">Loading the verified JSON bundle before rendering match cards. If this stays visible, refresh or check your connection.</span><span class="es">Cargando el paquete JSON verificado antes de mostrar tarjetas. Si esto permanece visible, actualiza o revisa tu conexión.</span></p>
+    </section>
     <section id="bankroll-plan" class="mb-8 grid lg:grid-cols-2 gap-5"></section>
     <section id="error" class="hidden rounded-3xl border border-red-800 bg-red-950 p-6 mb-8"></section>
     <section id="cards" class="grid lg:grid-cols-2 gap-6"></section>
@@ -153,11 +169,33 @@
       <p class="es">Apostar conlleva riesgo real de pérdida financiera. Esto es solo análisis, no consejo financiero ni garantía de resultados. El rendimiento pasado y las ventajas del modelo no predicen partidos individuales. Si apostar deja de ser recreativo, contacta la Línea 0800-1-3232 (MINCETUR) o Jugadores Anónimos Perú.</p>
     </section>
   </main>
+  <footer class="border-t border-slate-800 bg-slate-950">
+    <div class="mx-auto max-w-7xl px-4 py-5 text-xs text-slate-400 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+      <div>
+        <span class="font-semibold text-slate-300">WCdecider</span> ·
+        <span class="en">last updated</span><span class="es">última actualización</span>
+        <span id="last-updated">loading…</span>
+      </div>
+      <div>
+        <span class="en">Version</span><span class="es">Versión</span>
+        <span id="site-version">loading…</span> ·
+        <span class="en">Build</span><span class="es">Build</span>
+        <code id="build-sha" class="text-slate-300">__BUILD_SHA__</code>
+      </div>
+    </div>
+  </footer>
 
 <script>
 const $=s=>document.querySelector(s);
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let DATA=null,METRICS=null,AUDIT_COUNT=0;
+let DATA=null,METRICS=null,AUDIT_COUNT=0,APP_READY=false;
+const setText=(selector,value)=>{const el=$(selector);if(el)el.textContent=value};
+const setHtml=(selector,value)=>{const el=$(selector);if(el)el.innerHTML=value};
+const showError=message=>{
+ const err=$('#error'); if(err){err.classList.remove('hidden'); err.innerHTML=`<span class="en">Report data failed to load: ${escapeHtml(message)}</span><span class="es">No se pudieron cargar los datos del informe: ${escapeHtml(message)}</span>`;}
+ const loading=$('#loading-shell'); if(loading)loading.classList.add('hidden');
+ setHtml('#status','<span class="en">DATA ERROR</span><span class="es">ERROR DE DATOS</span>');
+};
  const strengthColor=s=>({HALT:'text-red-300 border-red-700',PASS:'text-slate-300 border-slate-700'}[s]||'text-slate-300 border-slate-700');
 function explanationTip(help){
  if(!help)return '';
@@ -176,6 +214,7 @@ function renderSummary(rows){
  <p class="mt-2"><span class="en">Selection rows: ${METRICS.calibration.selection_rows}; untouched holdout: ${METRICS.calibration.holdout_rows}; Brier: ${Number(METRICS.calibration.holdout_brier).toFixed(4)}; log loss: ${Number(METRICS.calibration.holdout_log_loss).toFixed(4)}. Uniform baselines are 0.6667 Brier and 1.0986 log loss.</span><span class="es">Filas de selección: ${METRICS.calibration.selection_rows}; holdout intacto: ${METRICS.calibration.holdout_rows}; Brier: ${Number(METRICS.calibration.holdout_brier).toFixed(4)}; log loss: ${Number(METRICS.calibration.holdout_log_loss).toFixed(4)}. Las bases uniformes son 0,6667 Brier y 1,0986 log loss.</span></p>
  <p class="mt-2"><span class="en">Score holdout: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Over 2.5 Brier ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, BTTS Brier ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles remains a shadow model because its paired-bootstrap confidence interval crosses zero.</span><span class="es">Holdout de goles: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Brier Más de 2,5 ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, Brier ambos marcan ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles sigue como modelo sombra porque su intervalo bootstrap pareado cruza cero.</span></p>
  <p class="mt-2"><span class="en">Model championship: ${METRICS.model_championship.registered_variants.length} registered variants. Strict nested outer folds selected ${escapeHtml(METRICS.model_championship.champion)}. No structural model or stack beat that market proxy across outer mean log loss, so added complexity is rejected on the available evidence.</span><span class="es">Campeonato de modelos: ${METRICS.model_championship.registered_variants.length} variantes registradas. Los pliegues externos anidados estrictos eligieron ${escapeHtml(METRICS.model_championship.champion)}. Ningún modelo estructural ni combinación superó a ese proxy de mercado en pérdida logarítmica externa promedio, por lo que se rechaza complejidad adicional con la evidencia disponible.</span></p>
+ <p class="mt-2"><span class="en">Deep-learning research track: ${escapeHtml(METRICS.model_championship.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registered but gated')}. These variants need the published promotion gate before production use: more timestamped fixtures, enough repeated temporal edges per team, nested walk-forward selection, calibration checks, and closing-line profitability validation.</span><span class="es">Línea de investigación deep learning: ${escapeHtml(METRICS.model_championship.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registrada pero limitada')}. Estas variantes requieren la puerta de promoción publicada antes de usarse en producción: más partidos con marca de tiempo, suficientes aristas temporales repetidas por equipo, selección walk-forward anidada, calibración y validación de rentabilidad con líneas de cierre.</span></p>
  <p class="mt-2"><span class="en">Historical odds inventory: ${METRICS.historical_closing_odds.events} events and ${METRICS.historical_closing_odds.rows} selection rows retained as timestamp-unknown proxies; primary timestamp-verified validation rows: ${METRICS.historical_closing_odds.primary_validation_rows}.</span><span class="es">Inventario histórico de cuotas: ${METRICS.historical_closing_odds.events} eventos y ${METRICS.historical_closing_odds.rows} filas de selecciones conservadas como proxies sin hora verificable; filas primarias verificadas por tiempo: ${METRICS.historical_closing_odds.primary_validation_rows}.</span></p>
  <p class="mt-2 text-amber-200"><span class="en">The report ranks up to four distinct sourced picks per match. Genuine timestamped historical closes are not yet available, so profitability, CLV, ROI and staking tiers remain unvalidated.</span><span class="es">El informe ordena hasta cuatro opciones distintas con fuente por partido. Aún no hay cierres históricos genuinos con marca de tiempo, por lo que rentabilidad, CLV, ROI y niveles de apuesta siguen sin validarse.</span></p>`;
 }
@@ -201,6 +240,8 @@ function renderBankrollPlan(){
 }
 const pct=p=>`${(Number(p)*100).toFixed(1)}%`;
 const odds=o=>Number(o).toFixed(2);
+const safePct=p=>Number.isFinite(Number(p))?pct(p):'n/a';
+const safeOdds=o=>Number.isFinite(Number(o))?odds(o):'n/a';
 function marketLabel(row){
  const labels={
   '1x2':['1X2','1X2'],'total_goals':['Total goals','Total de goles'],
@@ -210,6 +251,10 @@ function marketLabel(row){
  };
  const value=labels[row.market_family]||[row.market_family,row.market_family];
  return `<span class="en">${value[0]}</span><span class="es">${value[1]}</span>`;
+}
+function safeList(value){return Array.isArray(value)?value:[]}
+function safeUrlHost(url){
+ try{return new URL(url).hostname}catch(_error){return null}
 }
 function jsonLeaves(value,pointer=''){
  if(Array.isArray(value))return value.flatMap((item,index)=>jsonLeaves(item,`${pointer}/${index}`));
@@ -263,13 +308,14 @@ function card(row,index){
  const r=row.recommendation;
  const topRecommendations=row.top_recommendations||[];
  const ptr=`/predictions/${index}`;
- const help=row.metric_explanations;
+ const help=row.metric_explanations||{};
  const strength=r?.strength||'PASS';
  const rec=r?`${escapeHtml(r.selection_original)} ${r.line?`(${escapeHtml(r.line)})`:''} @ ${Number(r.odds).toFixed(2)}`:'No supported price / Sin cuota compatible';
  const budget=r?.budget_simulation;
- const over25=row.common_markets.totals.find(x=>x.line===2.5);
- const ah=row.common_markets.asian_handicap.find(x=>x.home_line===-0.5);
- const comparisons=row.market_comparisons.slice(0,8).map((m,i)=>`<tr class="border-t border-slate-800">
+ const common=row.common_markets||{};
+ const over25=safeList(common.totals).find(x=>x.line===2.5)||{};
+ const ah=safeList(common.asian_handicap).find(x=>x.home_line===-0.5)||{};
+ const comparisons=safeList(row.market_comparisons).slice(0,8).map((m,i)=>`<tr class="border-t border-slate-800">
    <td class="py-2 pr-2">${i+1}. ${marketLabel(m)}</td>
    <td class="py-2 pr-2">${escapeHtml(m.selection_original)}${m.handicap_line!==null&&m.handicap_line!==undefined?` (${m.handicap_line>0?'+':''}${m.handicap_line})`:''}</td>
    <td class="py-2 pr-2 text-right">${odds(m.odds)}</td><td class="py-2 pr-2 text-right">${pct(m.p_win)}</td>
@@ -295,7 +341,12 @@ function card(row,index){
     <ol class="es mt-2 list-decimal pl-5 space-y-1">${item.steps.es.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol>
    </details>
   </div>`).join('');
- const sources=(row.research?.source_urls||[]).map(u=>`<a class="text-cyan-400 hover:underline break-all" href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(new URL(u).hostname)}</a>`).join(' · ');
+ const sources=(row.research?.source_urls||[]).map(u=>{
+  const host=safeUrlHost(u);
+  return host?`<a class="text-cyan-400 hover:underline break-all" href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(host)}</a>`:`<span class="text-amber-200">${escapeHtml(u)}</span>`;
+ }).join(' · ');
+ const riskEn=safeList(row.risk_notes?.en);
+ const riskEs=safeList(row.risk_notes?.es);
  return `<article class="card-anchor bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden" data-fixture-id="${escapeHtml(row.fixture_id)}" data-date="${row.kickoff_lima.slice(0,10)}" data-strength="${strength}">
    <header class="p-5 border-b border-slate-800 flex justify-between gap-4">
     <div><div class="text-xs text-slate-500" data-json-pointer="${ptr}/kickoff_lima">${escapeHtml(row.kickoff_lima.replace('T',' ').slice(0,16))} • <span class="en">Group</span><span class="es">Grupo</span> <span data-json-pointer="${ptr}/group">${escapeHtml(row.group)}</span></div>
@@ -317,15 +368,15 @@ function card(row,index){
     <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
       <div data-json-pointer="${ptr}/expected_goals/team_a">${metric('<span class="en">Expected goals 1</span><span class="es">Goles esperados 1</span>',Number(row.expected_goals.team_a).toFixed(2),help.expected_goals_team_a)}</div>
       <div data-json-pointer="${ptr}/expected_goals/team_b">${metric('<span class="en">Expected goals 2</span><span class="es">Goles esperados 2</span>',Number(row.expected_goals.team_b).toFixed(2),help.expected_goals_team_b)}</div>
-      <div data-json-pointer="${ptr}/common_markets/totals/2/over_probability">${metric('<span class="en">Over 2.5</span><span class="es">Más de 2,5</span>',`${pct(over25.over_probability)} · ${odds(over25.over_fair_odds)}`,help.over_2_5)}</div>
-      <div data-json-pointer="${ptr}/common_markets/btts/yes_probability">${metric('BTTS Yes / Sí',`${pct(row.common_markets.btts.yes_probability)} · ${odds(row.common_markets.btts.yes_fair_odds)}`,help.btts_yes)}</div>
+      <div data-json-pointer="${ptr}/common_markets/totals/2/over_probability">${metric('<span class="en">Over 2.5</span><span class="es">Más de 2,5</span>',`${safePct(over25.over_probability)} · ${safeOdds(over25.over_fair_odds)}`,help.over_2_5)}</div>
+      <div data-json-pointer="${ptr}/common_markets/btts/yes_probability">${metric('BTTS Yes / Sí',`${safePct(common.btts?.yes_probability)} · ${safeOdds(common.btts?.yes_fair_odds)}`,help.btts_yes)}</div>
     </div>
     <div class="mt-3 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-sm">
       <div class="font-semibold text-white"><span class="en">Common model markets — probabilities and fair odds</span><span class="es">Mercados comunes del modelo — probabilidades y cuotas justas</span></div>
       <div class="mt-2 grid sm:grid-cols-3 gap-2 text-center">
-        ${metric('<span class="en">Under 2.5</span><span class="es">Menos de 2,5</span>',`${pct(over25.under_probability)} · ${odds(over25.under_fair_odds)}`,help.under_2_5)}
-        ${metric('BTTS No',`${pct(row.common_markets.btts.no_probability)} · ${odds(row.common_markets.btts.no_fair_odds)}`,help.btts_no)}
-        ${metric('<span class="en">Home -0.5 AH</span><span class="es">Local -0,5 HA</span>',`${pct(ah.home_probability)} · ${odds(ah.home_fair_odds)}`,help.home_minus_0_5)}
+        ${metric('<span class="en">Under 2.5</span><span class="es">Menos de 2,5</span>',`${safePct(over25.under_probability)} · ${safeOdds(over25.under_fair_odds)}`,help.under_2_5)}
+        ${metric('BTTS No',`${safePct(common.btts?.no_probability)} · ${safeOdds(common.btts?.no_fair_odds)}`,help.btts_no)}
+        ${metric('<span class="en">Home -0.5 AH</span><span class="es">Local -0,5 HA</span>',`${safePct(ah.home_probability)} · ${safeOdds(ah.home_fair_odds)}`,help.home_minus_0_5)}
       </div>
       <p class="mt-2 text-xs text-amber-200"><span class="en">Model-derived and experimental. A fair odd is not an app quote or betting instruction.</span><span class="es">Derivado del modelo y experimental. Una cuota justa no es una cuota de app ni una instrucción de apuesta.</span></p>
     </div>
@@ -375,8 +426,8 @@ function card(row,index){
           <p><b>Motivation:</b> ${escapeHtml(row.research?.motivation_group_state||'Unavailable')}</p>
         </div>
         <div class="es"><p><b>Notas OSINT:</b> Las notas originales se conservaron en inglés para no introducir una traducción no verificada. Consulta las fuentes enlazadas y el CSV de investigación para el texto exacto.</p></div>
-        <div class="en"><ul class="list-disc pl-5">${row.risk_notes.en.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
-        <div class="es"><ul class="list-disc pl-5">${row.risk_notes.es.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
+        <div class="en"><ul class="list-disc pl-5">${(riskEn.length?riskEn:['Risk notes unavailable in this JSON row; verify source files before use.']).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
+        <div class="es"><ul class="list-disc pl-5">${(riskEs.length?riskEs:['Notas de riesgo no disponibles en esta fila JSON; verifica los archivos fuente antes de usar.']).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
         <p><b>ELI5:</b> <span class="en">This is the model's best available choice among the sourced prices, after shrinking toward the market and stress-testing assumptions. It can still lose; re-check the exact price and current team news.</span><span class="es">Esta es la mejor opción disponible del modelo entre las cuotas con fuente, después de acercarse al mercado y probar escenarios de estrés. Puede perder; revisa la cuota exacta y las noticias actuales.</span></p>
         <p class="text-xs">${sources}</p>
       </div>
@@ -385,6 +436,7 @@ function card(row,index){
  </article>`;
 }
 function applyFilters(){
+ if(!APP_READY)return;
  const d=$('#date-filter').value,s=$('#strength-filter').value;
  document.querySelectorAll('#cards article').forEach(c=>c.classList.toggle('hidden',(d&&c.dataset.date!==d)||(s&&c.dataset.strength!==s)));
 }
@@ -399,6 +451,8 @@ async function load(){
   if(!metricsResponse.ok)throw new Error(`metrics.json HTTP ${metricsResponse.status}`);
   if(!auditResponse.ok)throw new Error(`audit.csv HTTP ${auditResponse.status}`);
   DATA=await response.json(); METRICS=await metricsResponse.json();
+  if(!DATA||!DATA.batch||!Array.isArray(DATA.predictions))throw new Error('Predictions JSON schema is invalid');
+  if(!METRICS||!METRICS.calibration||!METRICS.score_market_calibration)throw new Error('Metrics JSON schema is invalid');
   const auditText=await auditResponse.text();
   const auditRows=parseCsv(auditText);
   if(!auditRows.length||auditRows.some(row=>row.final_status!=='PASS'))throw new Error('Datapoint audit is incomplete or blocked');
@@ -411,19 +465,30 @@ async function load(){
   AUDIT_COUNT=auditRows.length;
   if(DATA.batch.fixture_count!==32||DATA.predictions.length!==32)throw new Error('Expected exactly 32 predictions');
   const ids=new Set(DATA.predictions.map(x=>x.fixture_id)); if(ids.size!==32)throw new Error('Duplicate fixture IDs');
+  setText('#last-updated',DATA.generated_at||'unknown');
+  setText('#site-version',DATA.model?.version||METRICS.version||DATA.schema_version||'unknown');
+  const build=$('#build-sha'); if(build&&build.textContent.length>12)build.textContent=build.textContent.slice(0,12);
   renderSummary(DATA.predictions);
   renderBankrollPlan();
-  $('#cards').innerHTML=DATA.predictions.map(card).join('');
+  setHtml('#cards',DATA.predictions.map(card).join(''));
   bindTips();
   [...new Set(DATA.predictions.map(x=>x.kickoff_lima.slice(0,10)))].forEach(d=>$('#date-filter').insertAdjacentHTML('beforeend',`<option value="${d}">${d}</option>`));
- $('#status').innerHTML='<span class="en">Verified JSON loaded</span><span class="es">JSON verificado cargado</span>';
+  ['#date-filter','#strength-filter'].forEach(selector=>{const el=$(selector);if(el)el.disabled=false;});
+  const loading=$('#loading-shell'); if(loading)loading.classList.add('hidden');
+  APP_READY=true;
+  setHtml('#status','<span class="en">Verified JSON loaded</span><span class="es">JSON verificado cargado</span>');
  }catch(error){
-  $('#error').classList.remove('hidden'); $('#error').innerHTML=`<span class="en">Report data failed to load: ${escapeHtml(error.message)}</span><span class="es">No se pudieron cargar los datos del informe: ${escapeHtml(error.message)}</span>`;
-  $('#status').innerHTML='<span class="en">DATA ERROR</span><span class="es">ERROR DE DATOS</span>';
+  showError(error.message);
  }
 }
-$('#lang').addEventListener('click',()=>{const es=document.body.classList.contains('lang-es');document.body.classList.toggle('lang-es',!es);document.body.classList.toggle('lang-en',es);$('#lang').textContent=es?'ES':'EN';document.documentElement.lang=es?'en':'es';});
-$('#date-filter').addEventListener('change',applyFilters);$('#strength-filter').addEventListener('change',applyFilters);
-load();
+function boot(){
+ const lang=$('#lang'); if(lang)lang.addEventListener('click',()=>{const es=document.body.classList.contains('lang-es');document.body.classList.toggle('lang-es',!es);document.body.classList.toggle('lang-en',es);lang.textContent=es?'ES':'EN';document.documentElement.lang=es?'en':'es';});
+ const date=$('#date-filter'),strength=$('#strength-filter');
+ if(date)date.addEventListener('change',applyFilters); if(strength)strength.addEventListener('change',applyFilters);
+ bindTips();
+ load();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+window.addEventListener('error',event=>{if(!APP_READY)showError(event.message||'Unexpected startup error')});
 </script>
 </body></html>

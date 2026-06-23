@@ -7,6 +7,12 @@ registered as research candidates but rejected from production before fitting:
 their parameter count and team sparsity make a credible untouched comparison
 impossible. This is evidence discipline, not a claim that those models are
 universally inferior.
+
+The graph/deep candidates are kept in the registry because they become relevant
+once the project has enough timestamped fixtures, player/team covariates, and
+closing-line labels to support nested chronological comparison. With the present
+data, a "big graph" of teams and matches is useful as a feature-engineering
+view, not as sufficient evidence to train a high-capacity temporal GNN.
 """
 
 from __future__ import annotations
@@ -25,6 +31,8 @@ from wc_june22_27_pipeline import (
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "model_championship_results.json"
 SEED = 42
+MIN_DEEP_FIXTURES = 2_000
+MIN_TEMPORAL_EDGES_PER_TEAM = 30
 
 
 Probability = Tuple[float, float, float]
@@ -302,6 +310,107 @@ def build() -> Dict[str, object]:
         holdout, predictors[champion_name],
         predictors["market_devigged_proxy"],
     )
+    deep_learning_research = {
+        "summary": (
+            "Deep and graph models remain research-track only. The available "
+            "complete 1X2 proxy-market corpus has 213 complete matches after "
+            "filtering and 253 total historical match rows, far below the "
+            "prespecified evidence gate for a production temporal GNN or "
+            "sequence transformer."
+        ),
+        "candidate_families": [
+            {
+                "name": "CatBoost/LightGBM tabular rating model",
+                "use_when": (
+                    "Hundreds to thousands of fixtures with stable engineered "
+                    "features; strong baseline before neural models."
+                ),
+                "current_status": (
+                    "Registered as regularized_multinomial_research; not "
+                    "promoted because market proxy dominates outer folds."
+                ),
+            },
+            {
+                "name": "Hierarchical dynamic Poisson / Dixon-Coles",
+                "use_when": (
+                    "Goal-score modeling with team attack/defense partial "
+                    "pooling and enough repeated team histories."
+                ),
+                "current_status": (
+                    "Dixon-Coles is shadow-only; paired-bootstrap improvement "
+                    "is not statistically secure."
+                ),
+            },
+            {
+                "name": "Temporal Graph Network / TGAT-style dynamic graph",
+                "use_when": (
+                    "Thousands of time-stamped team/player/match edges, node "
+                    "features, and strictly pre-event labels."
+                ),
+                "current_status": (
+                    "Rejected by evidence gate; current graph has too few "
+                    "temporal edges per team for credible fitting."
+                ),
+            },
+            {
+                "name": "GraphMixer / DyGFormer-style efficient temporal graph",
+                "use_when": (
+                    "Large temporal interaction graphs where memory/lightweight "
+                    "mixing architectures can be compared out of sample."
+                ),
+                "current_status": (
+                    "Research registry only; no production weight without "
+                    "outer-fold improvement over market baselines."
+                ),
+            },
+            {
+                "name": "Sequence transformer over team histories",
+                "use_when": (
+                    "Long sequential histories with lineup/player/context "
+                    "tokens and a separate untouched tournament holdout."
+                ),
+                "current_status": (
+                    "Rejected by sample-size gate; likely overfits current "
+                    "sparse World Cup/qualifier history."
+                ),
+            },
+        ],
+        "promotion_gate": {
+            "minimum_timestamped_fixtures": MIN_DEEP_FIXTURES,
+            "minimum_temporal_edges_per_team": MIN_TEMPORAL_EDGES_PER_TEAM,
+            "required_validation": (
+                "nested walk-forward model selection, final untouched holdout, "
+                "paired bootstrap for proper scores, calibration plots, "
+                "profitability/CLV only against timestamp-verified closing odds, "
+                "and multiple-testing correction across searched variants"
+            ),
+        },
+        "pitfalls_controlled": [
+            "look-ahead leakage from using future ratings or post-kickoff prices",
+            "same-day split leakage across matches in one matchday",
+            "winner's curse from trying many architectures on a tiny holdout",
+            "probability calibration ignored in favor of accuracy",
+            "profitability inferred without executable timestamped closing odds",
+            "naive stacking weights selected outside chronological folds",
+        ],
+        "research_sources": [
+            {
+                "title": "Temporal Graph Networks for Deep Learning on Dynamic Graphs",
+                "url": "https://arxiv.org/abs/2006.10637",
+                "applies_to": "TGN candidate registry and temporal-edge data requirements",
+            },
+            {
+                "title": "GraphMixer: Efficient Temporal Graph Learning with MLP-Mixer",
+                "url": "https://arxiv.org/abs/2302.11636",
+                "applies_to": "efficient temporal graph research-track architecture",
+            },
+            {
+                "title": "Model Cards for Model Reporting",
+                "url": "https://arxiv.org/abs/1810.03993",
+                "applies_to": "reporting limitations, intended use, and validation status",
+            },
+        ],
+    }
     return {
         "version": "nested_chronological_championship_v1",
         "rows": len(rows),
@@ -323,18 +432,30 @@ def build() -> Dict[str, object]:
             "elo_fixed_400",
             "elo_tuned_nested",
             "elo_market_stack_nested",
+            "catboost_lightgbm_tabular_research",
             "independent_poisson_score_model",
             "dixon_coles_shadow",
             "hierarchical_dynamic_poisson_research",
             "regularized_multinomial_research",
             "bayesian_model_averaging_research",
+            "temporal_graph_network_research_gate",
+            "graphmixer_temporal_graph_research_gate",
+            "dygformer_temporal_graph_research_gate",
             "temporal_graph_neural_network_rejected_low_sample",
             "transformer_sequence_model_rejected_low_sample",
         ],
         "capacity_rejections": {
             "temporal_graph_neural_network": (
-                "253 matches and sparse team histories are insufficient for a "
-                "credible high-capacity chronological comparison."
+                f"{len(all_rows)} matches and sparse team histories are "
+                f"insufficient for a credible high-capacity chronological "
+                f"comparison. Production gate requires at least "
+                f"{MIN_DEEP_FIXTURES} timestamped fixtures and roughly "
+                f"{MIN_TEMPORAL_EDGES_PER_TEAM} temporal edges per team."
+            ),
+            "graphmixer_or_dygformer": (
+                "Efficient temporal graph architectures are appropriate once "
+                "the graph has enough repeated pre-event interactions; current "
+                "outer folds still favor the de-vigged market proxy."
             ),
             "transformer_sequence_model": (
                 "Effective sample size is orders of magnitude below a defensible "
@@ -342,6 +463,7 @@ def build() -> Dict[str, object]:
                 "variance-driven selection."
             ),
         },
+        "deep_learning_research": deep_learning_research,
         "champion": champion_name,
         "holdout_metrics": holdout_metrics,
         "champion_vs_market_paired_bootstrap": comparison,
