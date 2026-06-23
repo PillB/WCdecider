@@ -49,6 +49,10 @@ def build() -> Path:
         ROOT / "wc_screenshot_manifest_june22_27.csv",
         ROOT / "wc_research_june22_27.csv",
         ROOT / "wc_june22_27_datapoint_audit.csv",
+        ROOT / "historical_odds_coverage.json",
+        ROOT / "historical_odds_provenance.txt",
+        ROOT / "model_championship_results.json",
+        ROOT / "HISTORICAL_ODDS_MODEL_CHAMPIONSHIP_PLAN.md",
     ]
     missing = [path.name for path in required if not path.exists()]
     if missing:

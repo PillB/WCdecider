@@ -7,7 +7,10 @@ Live report: https://pillb.github.io/WCdecider/
 ## Reproduce the current batch
 
 ```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -B historical_odds_pipeline.py build
+PYTHONDONTWRITEBYTECODE=1 python3 -B model_championship.py
 PYTHONDONTWRITEBYTECODE=1 python3 -B wc_june22_27_pipeline.py
+PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/merge_research_metrics.py
 PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/generate_datapoint_audit.py
 PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/generate_report.py
 PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/build_site.py
@@ -28,12 +31,28 @@ The pipeline requires:
 
 It generates the canonical model dataset, merged odds, Dataset A/B splits, model metrics, provenance, prediction JSON, and a leaf-field subagent audit manifest.
 
+Historical-market and championship artifacts:
+
+- `historical_odds_pipeline.py` segregates timestamp-verified closes from
+  timestampless and unknown-timestamp proxies. Authenticated raw provider data
+  remains private when redistribution is restricted.
+- `historical_odds_coverage.json` currently records 222 legacy proxy events,
+  666 selections, and zero primary-validation-eligible rows.
+- `model_championship.py` performs nested rolling-origin Elo/market comparisons;
+  its small holdout advantage is statistically insecure.
+- `HISTORICAL_ODDS_MODEL_CHAMPIONSHIP_PLAN.md` defines the completion and
+  profitability-promotion gates.
+- Each fixture publishes up to four economically distinct sourced alternatives;
+  20 source-limited fixtures currently have only three and disclose the missing
+  fourth rank.
+
 Current limitations:
 
 - The production model is calibrated Elo 1X2; Poisson outputs are descriptive.
 - The 38-match untouched holdout shows forecast signal, not validated profitability.
 - Historical closing odds are incomplete, so ROI, CLV, staking tiers, and “safe” low-odds bets are not supported.
-- The release contains zero actionable bets. `PASS` means abstain; `HALT` means investigate an implausible/model-market disagreement.
+- Ranked recommendations are relative sourced comparisons, not evidence of
+  profitability. `HALT` identifies material model-market disagreement.
 - June 24–27 forecasts are conditional and must be rerun after intervening results and material lineup/odds changes.
 
 ## Tests

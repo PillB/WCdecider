@@ -1,0 +1,21 @@
+{
+  "by_competition": {
+    "FRIENDLY": 159,
+    "WC_2018_GROUP": 144,
+    "WC_2022_GROUP": 132,
+    "WC_2026_GROUP": 27,
+    "WC_QUALIFIER": 204
+  },
+  "by_evidence_class": {
+    "legacy_proxy_unknown_timestamp": 666
+  },
+  "by_market_family": {
+    "1x2": 666
+  },
+  "events": 222,
+  "primary_validation_events": 0,
+  "primary_validation_rows": 0,
+  "profitability_validation_status": "blocked_no_timestamp_verified_closing_rows",
+  "rows": 666,
+  "schema_version": "historical_closing_odds_v1"
+}

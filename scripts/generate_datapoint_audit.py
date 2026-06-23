@@ -70,10 +70,18 @@ def leaves(value: Any, pointer: str = "") -> Iterator[Tuple[str, Any]]:
 def source_for(artifact: str, pointer: str, fixture_id: str) -> Tuple[str, str, str]:
     """Map an output field to its strongest canonical source artifact."""
     if artifact == METRICS.name:
+        if pointer.startswith("/model_championship/"):
+            return "model_championship_results.json", pointer, (
+                "wc_backtest_historical_dataset.csv"
+            )
+        if pointer.startswith("/historical_closing_odds/"):
+            return "historical_odds_coverage.json", pointer, (
+                "historical_odds_proxy.csv"
+            )
         return "wc_backtest_historical_dataset.csv", pointer, "historical rows + documented formula"
     if "/research/" in pointer:
         return "wc_research_june22_27.csv", fixture_id, ""
-    if "/recommendation/" in pointer:
+    if "/recommendation/" in pointer or "/top_recommendations/" in pointer:
         parts = pointer.strip("/").split("/")
         base = f"/predictions/{parts[1]}"
         return "wc_odds_june_22-27.csv", fixture_id, (

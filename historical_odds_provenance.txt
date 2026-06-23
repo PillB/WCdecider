@@ -1,0 +1,16 @@
+# Historical odds provenance
+
+Primary source contract:
+- The Odds API historical snapshots: timestamp-verified bounded close.
+- Betfair historical exchange stream: conditional independent benchmark.
+- Football-Data closing columns: secondary timestampless proxy only.
+
+Current public build:
+- Input: wc_backtest_historical_dataset.csv
+- Input SHA-256: 41a5c7732582314e32d42135ee09f212a7e4fe70f398d491df8b80f6275b3add
+- Rows: 666
+- Events: 222
+- Evidence class: legacy_proxy_unknown_timestamp
+- Primary profitability eligibility: zero rows.
+
+Reason: exact bookmaker, quote timestamp, kickoff time, and raw source payload are not row-verifiable in the legacy table. Values are retained for reconciliation only and cannot support ROI/CLV claims.

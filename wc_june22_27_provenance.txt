@@ -30,7 +30,7 @@ Column derivations:
 - double-chance consistency: displayed fair prices and screenshot EV both use the same production score grid.
 - decision stack: 1X2 starts at 50% structural model / 50% de-vigged market; expanded families start at 35% / 65%; model weight shrinks further as divergence approaches 25pp.
 - recommendation utility: minimum(decision EV, stressed decision EV) minus 0.35*divergence, family uncertainty, and HALT penalties.
-- exactly one recommendation: choose the highest utility non-HALT row; if every row is HALT, select the highest de-vigged market-probability outcome and disclose the fallback.
+- ranked recommendations: publish up to four score-state-distinct sourced events; rank one is the highest-utility non-HALT row, or the highest de-vigged market-probability fallback when every row is HALT. Missing ranks remain explicit.
 - expanded-market policy: recommendations are best-available comparisons; historical profitability remains unvalidated because the holdout has no timestamped totals/BTTS/Asian/combo prices for ROI or CLV.
 - price coverage: all 32 fixtures receive model probabilities/fair prices; EV is computed only for complete screenshot-derived source markets, currently on 12 fixtures.
 - recommendation labels: BEST_AVAILABLE is mandatory per fixture; PASS/HALT remain diagnostic and no label implies certainty.
@@ -58,14 +58,14 @@ Input hashes:
 - wc_2026_results_through_june21.csv: 478fe45b6945af10e10cdf637ba84dc876dc92bc62795074c064a0035ae37c7a
 - wc_backtest_historical_dataset.csv: 41a5c7732582314e32d42135ee09f212a7e4fe70f398d491df8b80f6275b3add
 - wc_team_elo_baseline_june11.csv: f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b
-- pipeline: 9b792d4485ed74e0f99a0ef3647b2a776df7556b199aa14707ae5594d1aeec7f
+- pipeline: 1d47462657c4e3756ced03e9532d957faf3151dd96a810a3730de2add64f1b66
 
 Generated artifact hashes:
 - wc_dataset_a_world_cups.csv: 7201bba4742ec97394b68c00056235996d6b4ea3df1bc4093e59857290b40be3
 - wc_dataset_b_supplementary.csv: ec3eac9206beb113cd88e27ea00610edf9ddce60c913910f61760517ec86d2db
 - wc_june22_27_model_dataset.csv: 90e6d330db0fd7ca540d5f32137ca3a25fb8d65093285e8dcf14321a359162fc
-- wc_june22_27_model_metrics.json: ed28d27e61563c1d9ee8888f7ef55a2fdf6b189d376c28ae932bd52ce37756d6
-- wc_june22_27_predictions.json: 6022ad257dda30a815466f0451a868f3fbff69903ad294458bbdf2d9a8763dbf
+- wc_june22_27_model_metrics.json: 9da76d7d5bae8363075fc210acd6cb1696d8d1881cfe3935754d15701b40f1b3
+- wc_june22_27_predictions.json: 3bfe9638ac29afdb90c51e2761688f8f5fc701406f0585ae0248ae98ea3b3fb5
 - wc_odds_june_22-27.csv: e110813231b42e04bbd020a59afc6d24ba1e36e4704af9ee529c4f6d05081317
 - wc_research_june22_27.csv: 1e7310c443256c70a9c31afebda811a04c557f7f88c59f5514da49128b88d22d
 - wc_screenshot_manifest_june22_27.csv: f19cbe911a219616ad492f879c3a04296ea05ba73928d3326e694ec15c0deab0
