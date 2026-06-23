@@ -19,10 +19,16 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R2.3: Parameter/model selection uses only pre-holdout chronological windows.
 - R2.4: Final holdout remains untouched until evaluation.
 - R2.5: Report Brier, log loss, sample sizes, calibration parameters, and simple baselines.
-- R2.6: Exactly one best-available sourced recommendation is produced per fixture from validated-settlement 1X2, totals, BTTS, double-chance, Asian-handicap, or supported combo markets.
+- R2.6: Rank one is the single backward-compatible `BEST_AVAILABLE`
+  recommendation; up to three additional economically distinct sourced
+  alternatives may be published from settlement-validated 1X2, totals, BTTS,
+  double-chance, Asian-handicap, or supported combo markets.
 - R2.7: Score-model outputs may drive rankings, but profitability remains explicitly unvalidated without historical executable prices.
 - R2.8: No production ensemble/stack may be claimed unless weights are selected out-of-fold and beat simpler baselines on untouched data.
 - R2.9: No profitability, ROI, CLV, or staking tier may be claimed without timestamped historical odds and untouched policy evaluation after vig and selection effects.
+- R2.10: Historical prices must carry an evidence class. Only complete named-bookmaker quotes with source and update timestamps strictly before kickoff are primary-validation eligible.
+- R2.11: Model championships use nested rolling-origin selection and an untouched final holdout; ROI cannot select the champion.
+- R2.12: High-capacity graph/neural candidates require adequate effective sample size and must beat simple baselines securely before production use.
 
 ## R3 — Safety and classification
 
@@ -32,6 +38,8 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R3.4: A low-odds candidate must be rejected unless its conservative lower probability bound exceeds vig-adjusted break-even.
 - R3.5: Conditional forecasts visibly require rerunning after intervening matches or material lineup/odds changes.
 - R3.6: Confidence is capped at 70% and described as model evidence, not outcome certainty.
+- R3.7: Publish up to four economically distinct sourced recommendations per fixture. Preserve rank one as `BEST_AVAILABLE`; disclose rather than fabricate any rank shortfall.
+- R3.8: Equivalent market/selection/line events across screenshots or apps cannot occupy multiple top-four ranks.
 
 ## R4 — Datapoint subagent governance
 
@@ -47,11 +55,14 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R5.1: Exactly one JSON-driven `bg-slate-900` card exists per canonical fixture.
 - R5.2: All visible application text, errors, diagrams, filters, and explanations switch English/Spanish.
 - R5.3: Displayed values match JSON within explicit display tolerance.
-- R5.4: The report shows exactly one best-available recommendation per fixture and clearly distinguishes recommendation from validated profitability or certainty.
+- R5.4: The report shows one rank-one `BEST_AVAILABLE` recommendation plus up
+  to three sourced alternatives per fixture and clearly distinguishes every
+  rank from validated profitability or certainty.
 - R5.5: Cards show current/conditional freshness and audit status.
 - R5.6: Report shows holdout metrics, sample size, baselines, and profitability limitations.
 - R5.7: Workflow visualization represents only implemented/validated model components.
 - R5.8: Tooltips and ELI5 text explain PASS, HALT, EV, stress, calibration, and uncertainty.
+- R5.9: Cards display ranked alternatives with app, market, line, source price, fair threshold, decision/stress EV, utility, risk, source, and profitability status.
 
 ## R6 — Pipeline and reproducibility
 

@@ -34,8 +34,17 @@ jobs:
           pip install -r requirements-ci.txt
           playwright install --with-deps chromium
 
+      - name: Build public historical-odds proxy inventory
+        run: python3 historical_odds_pipeline.py build
+
+      - name: Run nested chronological model championship
+        run: python3 model_championship.py
+
       - name: Run June 22-27 reproducible pipeline
         run: python3 wc_june22_27_pipeline.py
+
+      - name: Merge historical and championship metrics
+        run: python3 scripts/merge_research_metrics.py
 
       - name: Generate field-level subagent audit manifest
         run: python3 scripts/generate_datapoint_audit.py

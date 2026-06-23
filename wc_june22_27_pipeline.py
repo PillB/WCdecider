@@ -1438,6 +1438,176 @@ def recommendation_risk_grade(row: Mapping[str, object]) -> str:
     return "D"
 
 
+def recommendation_equivalence_key(
+    row: Mapping[str, object], team_a: str, team_b: str,
+) -> Tuple[object, ...]:
+    """Identify equivalent selections by their score-state settlement vector.
+
+    This catches differently labeled but identical contracts, such as home 1X2
+    and home -0.5 Asian handicap, without relying on translated market text.
+    """
+    family = str(row["market_family"])
+    states = []
+    for ga in range(11):
+        for gb in range(11):
+            win = push = loss = 0.0
+            if family == "1x2":
+                bucket = str(row["selection_canonical"])
+                event = "A" if ga > gb else "B" if gb > ga else "D"
+                win, loss = (1.0, 0.0) if bucket == event else (0.0, 1.0)
+            elif family == "double_chance":
+                bucket = str(row["selection_canonical"])
+                event = "A" if ga > gb else "B" if gb > ga else "D"
+                win, loss = (
+                    (1.0, 0.0) if event in set(bucket) else (0.0, 1.0)
+                )
+            elif family == "btts":
+                event = ga > 0 and gb > 0
+                selected = str(row["selection_canonical"]) == "yes"
+                win, loss = (1.0, 0.0) if event == selected else (0.0, 1.0)
+            elif family == "total_goals":
+                line = float(row["total_line"])
+                over = str(row["selection_canonical"]) == "over"
+                results = []
+                for subline in split_quarter_line(line):
+                    value = (
+                        ga + gb - subline if over else subline - (ga + gb)
+                    )
+                    results.append(
+                        1.0 if value > 1e-9 else
+                        -1.0 if value < -1e-9 else 0.0
+                    )
+                win = sum(value > 0 for value in results) / len(results)
+                push = sum(value == 0 for value in results) / len(results)
+                loss = sum(value < 0 for value in results) / len(results)
+            elif family == "asian_handicap":
+                line = float(row["handicap_selected_line"])
+                selected = str(row["selected_team"])
+                margin = ga - gb if selected == team_a else gb - ga
+                win, push, loss, _ = settle_asian_handicap(
+                    margin, line, 2.0
+                )
+            elif family == "handicap_total_combo":
+                handicap = float(row["handicap_selected_line"])
+                selected = str(row["selected_team"])
+                total_line = float(row["total_line"])
+                total_side = str(row["combo_leg_2_selection"])
+                margin = ga - gb if selected == team_a else gb - ga
+                handicap_win = settle_line(margin, handicap) > 0
+                total_win = (
+                    ga + gb > total_line if total_side == "over"
+                    else ga + gb < total_line
+                )
+                win, loss = (
+                    (1.0, 0.0)
+                    if handicap_win and total_win else (0.0, 1.0)
+                )
+            else:
+                return ("unsupported", family, row.get("selection_original"))
+            states.append((round(win, 3), round(push, 3), round(loss, 3)))
+    return (str(row.get("market_period") or "full_time"), tuple(states))
+
+
+def rank_distinct_recommendations(
+    rows: Sequence[Mapping[str, object]], team_a: str, team_b: str,
+    limit: int = 4,
+) -> List[Tuple[Mapping[str, object], str]]:
+    """Rank distinct sourced candidates without fabricating a fourth choice.
+
+    Non-HALT rows rank first by the frozen uncertainty-adjusted utility. HALT
+    rows may fill otherwise unavailable ranks, but remain visibly investigative.
+    Equivalent events from multiple screenshots/apps are deduplicated after
+    retaining the strongest executable sourced price.
+    """
+    ordered = sorted(
+        rows,
+        key=lambda row: (
+            row["strength"] == "HALT",
+            -float(row["recommendation_utility"]),
+            -float(row["decision_stressed_ev_pct"]),
+            -float(row["decision_ev_pct"]),
+            float(row["odds"]),
+            str(row["app"]),
+            str(row["source_image"]),
+        ),
+    )
+    if rows and not any(row["strength"] != "HALT" for row in rows):
+        fallback = max(
+            rows,
+            key=lambda row: (
+                float(row["market_probability"]),
+                -float(row["odds"]),
+            ),
+        )
+        ordered = [fallback] + [row for row in ordered if row is not fallback]
+    selected: List[Tuple[Mapping[str, object], str]] = []
+    seen = set()
+    for row in ordered:
+        key = recommendation_equivalence_key(row, team_a, team_b)
+        if key in seen:
+            continue
+        seen.add(key)
+        reason = (
+            "highest_uncertainty_adjusted_expected_profit"
+            if row["strength"] != "HALT"
+            else (
+                "all_model_edges_halted_select_highest_market_probability"
+                if not selected else
+                "investigative_halt_ranked_after_all_non_halt_candidates"
+            )
+        )
+        selected.append((row, reason))
+        if len(selected) == limit:
+            break
+    return selected
+
+
+def public_recommendation(
+    row: Mapping[str, object], rank: int, reason: str,
+) -> Dict[str, object]:
+    """Serialize one ranked recommendation from a normalized evaluated row."""
+    published_win = round(float(row["decision_probability"]), 6)
+    published_push = round(float(row["decision_push_probability"]), 6)
+    published_loss = round(1.0 - published_win - published_push, 6)
+    published_ev = (
+        published_win * (float(row["odds"]) - 1.0) - published_loss
+    ) * 100.0
+    published_fair = 1.0 + published_loss / published_win
+    return {
+        "rank": rank,
+        "app": row["app"], "market_id": row["market_id"],
+        "market_family": row["market_family"],
+        "market_original": row["market_original"],
+        "selection_original": row["selection_original"],
+        "selection_canonical": row["selection_canonical"],
+        "line": row["line"], "odds": float(row["odds"]),
+        "p_win": published_win,
+        "model_p_win": round(float(row["p_win"]), 6),
+        "p_push": published_push,
+        "p_loss": published_loss,
+        "fair_odds": round(published_fair, 3),
+        "ev_pct": round(published_ev, 2),
+        "stressed_ev_pct": round(
+            float(row["decision_stressed_ev_pct"]), 2
+        ),
+        "raw_model_ev_pct": round(float(row["ev_pct"]), 2),
+        "decision_model_weight": row["decision_model_weight"],
+        "divergence_pp": round(float(row["divergence_pp"]), 2),
+        "strength": row["strength"], "confidence": row["confidence"],
+        "recommendation_utility": round(
+            float(row["recommendation_utility"]), 2
+        ),
+        "risk_grade": recommendation_risk_grade(row),
+        "decision_status": (
+            "BEST_AVAILABLE" if rank == 1 else "RANKED_ALTERNATIVE"
+        ),
+        "selection_reason": reason,
+        "profitability_validation": "not_validated_historical_market_odds",
+        "source_image": row["source_image"],
+        "source_sha256": row["source_sha256"],
+    }
+
+
 def allocate_app_budget(
     rows: Sequence[Dict[str, object]], budget: float = 100.0,
     base_stake: float = 1.0, max_stake: float = 10.0,
@@ -1523,7 +1693,7 @@ def allocate_app_budget(
 
 def app_navigation_steps(
     app: str, fixture: Mapping[str, object], recommendation: Mapping[str, object],
-    stake: float,
+    stake: Optional[float],
 ) -> Dict[str, List[str]]:
     """Return bilingual novice steps for locating one exact sourced market."""
     family = str(recommendation["market_family"])
@@ -1548,6 +1718,24 @@ def app_navigation_steps(
     fixture_es = fixture["fixture"]["es"]
     fair = float(recommendation["fair_odds"])
     source_price = float(recommendation["odds"])
+    final_en = (
+        f"Enter S/{stake:.2f} only for this budget simulation, review the bet "
+        "slip, and confirm the selection, line, 90-minute settlement, and "
+        "possible gross return before any real action."
+        if stake is not None else
+        "Treat this as an alternative, not an extra forced bet. Recheck the "
+        "selection, line, 90-minute settlement, and current price before "
+        "deciding whether it should replace rank one."
+    )
+    final_es = (
+        f"Ingresa S/{stake:.2f} solo para esta simulación de presupuesto, "
+        "revisa el cupón y confirma selección, línea, liquidación a 90 minutos "
+        "y retorno bruto posible antes de cualquier acción real."
+        if stake is not None else
+        "Trátala como alternativa, no como apuesta adicional forzada. Revisa "
+        "selección, línea, liquidación a 90 minutos y cuota actual antes de "
+        "decidir si debe reemplazar al rango uno."
+    )
     return {
         "en": [
             f"Open {app}, then Sports → Football → World Cup.",
@@ -1555,7 +1743,7 @@ def app_navigation_steps(
             f"Open the market named “{market_en}”.",
             f"Choose exactly “{selection_with_line}”. Do not substitute a nearby handicap or total line.",
             f"Check the current decimal price. The saved screenshot price is {source_price:.2f}; the model fair-price threshold is {fair:.2f}.",
-            f"Enter S/{stake:.2f} only for this budget simulation, review the bet slip, and confirm the selection, line, 90-minute settlement, and possible gross return before any real action.",
+            final_en,
         ],
         "es": [
             f"Abre {app} y entra a Deportes → Fútbol → Mundial.",
@@ -1563,7 +1751,7 @@ def app_navigation_steps(
             f"Abre el mercado llamado “{market_es}”.",
             f"Elige exactamente “{selection_with_line}”. No sustituyas por una línea de hándicap o total parecida.",
             f"Revisa la cuota decimal actual. La cuota guardada en la captura es {source_price:.2f}; el umbral de cuota justa del modelo es {fair:.2f}.",
-            f"Ingresa S/{stake:.2f} solo para esta simulación de presupuesto, revisa el cupón y confirma selección, línea, liquidación a 90 minutos y retorno bruto posible antes de cualquier acción real.",
+            final_es,
         ],
     }
 
@@ -1780,10 +1968,35 @@ def build() -> Dict[str, object]:
             model_weight = base_model_weight * max(
                 0.10, 1.0 - divergence / 25.0
             )
-            market_ev_pct = (implied * float(odd["odds"]) - 1.0) * 100.0
-            decision_ev_pct = (
-                model_weight * ev_pct + (1.0 - model_weight) * market_ev_pct
+            # Preserve the model's push mass and interpret the de-vigged source
+            # probability conditionally over decisive outcomes. This yields one
+            # coherent decision win/push/loss distribution whose fair price and
+            # EV reproduce exactly, including Asian quarter/full lines.
+            market_push = float(evaluated["p_push"])
+            market_win = (1.0 - market_push) * implied
+            market_loss = (1.0 - market_push) * (1.0 - implied)
+            decision_win = (
+                model_weight * float(evaluated["p_win"])
+                + (1.0 - model_weight) * market_win
             )
+            decision_push = (
+                model_weight * float(evaluated["p_push"])
+                + (1.0 - model_weight) * market_push
+            )
+            decision_loss = (
+                model_weight * float(evaluated["p_loss"])
+                + (1.0 - model_weight) * market_loss
+            )
+            probability_total = decision_win + decision_push + decision_loss
+            decision_win /= probability_total
+            decision_push /= probability_total
+            decision_loss /= probability_total
+            market_ev_pct = (
+                market_win * (float(odd["odds"]) - 1.0) - market_loss
+            ) * 100.0
+            decision_ev_pct = (
+                decision_win * (float(odd["odds"]) - 1.0) - decision_loss
+            ) * 100.0
             decision_stressed_ev_pct = (
                 model_weight * stressed_ev
                 + (1.0 - model_weight) * market_ev_pct
@@ -1797,10 +2010,9 @@ def build() -> Dict[str, object]:
                 "market_overround_pct": market_overround.get(
                     odd["market_group_id"], 0.0
                 ) * 100.0,
-                "decision_probability": (
-                    model_weight * evaluated["p_win"]
-                    + (1.0 - model_weight) * implied
-                ),
+                "decision_probability": decision_win,
+                "decision_push_probability": decision_push,
+                "decision_loss_probability": decision_loss,
                 "market_probability": implied,
                 "decision_ev_pct": decision_ev_pct,
                 "decision_stressed_ev_pct": decision_stressed_ev_pct,
@@ -1831,32 +2043,16 @@ def build() -> Dict[str, object]:
             raise ValueError(
                 f"Fixture lacks a complete supported 1X2 market: {fixture['fixture_id']}"
             )
-        recommendation_pool = [
-            row for row in expanded_rows if row["strength"] != "HALT"
-        ]
-        if recommendation_pool:
-            recommendation = max(
-                recommendation_pool,
-                key=lambda row: (
-                    row["recommendation_utility"],
-                    row["decision_stressed_ev_pct"],
-                    row["decision_ev_pct"],
-                    -float(row["odds"]),
-                ),
-            )
-            recommendation_reason = "highest_uncertainty_adjusted_expected_profit"
-        elif expanded_rows:
-            recommendation = max(
-                expanded_rows,
-                key=lambda row: (
-                    row["market_probability"],
-                    -float(row["odds"]),
-                ),
-            )
-            recommendation_reason = "all_model_edges_halted_select_highest_market_probability"
-        else:
-            recommendation = None
-            recommendation_reason = "no_complete_sourced_market"
+        ranked_recommendations = rank_distinct_recommendations(
+            expanded_rows, ta, tb
+        )
+        recommendation = (
+            ranked_recommendations[0][0] if ranked_recommendations else None
+        )
+        recommendation_reason = (
+            ranked_recommendations[0][1]
+            if ranked_recommendations else "no_complete_sourced_market"
+        )
         last_a = last_dates.get(ta)
         last_b = last_dates.get(tb)
         rest_a = (kickoff.date() - last_a).days if last_a else None
@@ -1896,7 +2092,68 @@ def build() -> Dict[str, object]:
             names_a, names_b, p_base, published_lambda_a,
             published_lambda_b, common_markets
         )
-        rec = recommendation
+        public_ranked_recommendations = [
+            public_recommendation(row, rank, reason)
+            for rank, (row, reason) in enumerate(
+                ranked_recommendations, start=1
+            )
+        ]
+        fixture_names = {
+            "fixture": {
+                "en": f"{names_a[0]} vs {names_b[0]}",
+                "es": f"{names_a[1]} vs {names_b[1]}",
+            }
+        }
+        for item in public_ranked_recommendations:
+            item["price_gate_status"] = (
+                "at_or_above_model_fair_price"
+                if float(item["odds"]) >= float(item["fair_odds"])
+                else "below_model_fair_price"
+            )
+            item["uncertainty"] = {
+                "level": (
+                    "high" if item["strength"] == "HALT"
+                    or float(item["divergence_pp"]) > 10.0 else "material"
+                ),
+                "en": [
+                    "Small, shifted historical holdout.",
+                    "Screenshot price and team information can move before kickoff.",
+                    "Historical profitability is not validated.",
+                ],
+                "es": [
+                    "Holdout histórico pequeño y con cambio de régimen.",
+                    "La cuota y la información de equipos pueden cambiar antes del inicio.",
+                    "La rentabilidad histórica no está validada.",
+                ],
+            }
+            item["why_ranked"] = {
+                "en": (
+                    "Ranked by conservative expected-value utility after "
+                    "market disagreement and family-risk penalties."
+                ),
+                "es": (
+                    "Clasificada por utilidad conservadora de valor esperado "
+                    "tras penalizar desacuerdo de mercado y riesgo del mercado."
+                ),
+            }
+            item["steps"] = app_navigation_steps(
+                str(item["app"]), fixture_names, item, None
+            )
+            if int(item["rank"]) == 1:
+                item["steps"]["en"][-1] = (
+                    "Treat rank one as the primary comparison, not a mandatory "
+                    "bet. Recheck the selection, line, 90-minute settlement, "
+                    "current price, and team news before deciding."
+                )
+                item["steps"]["es"][-1] = (
+                    "Trata el rango uno como la comparación principal, no como "
+                    "apuesta obligatoria. Revisa selección, línea, liquidación "
+                    "a 90 minutos, cuota actual y noticias antes de decidir."
+                )
+        rec = (
+            public_ranked_recommendations[0]
+            if public_ranked_recommendations else None
+        )
         market_comparisons = [{
             "app": row["app"],
             "market_family": row["market_family"],
@@ -1980,42 +2237,19 @@ def build() -> Dict[str, object]:
                     for row in expanded_ranked
                 ),
             },
-            "recommendation": None if rec is None else {
-                "app": rec["app"], "market_id": rec["market_id"],
-                "market_family": rec["market_family"],
-                "market_original": rec["market_original"],
-                "selection_original": rec["selection_original"],
-                "selection_canonical": rec["selection_canonical"],
-                "line": rec["line"], "odds": float(rec["odds"]),
-                "p_win": round(rec["decision_probability"], 6),
-                "model_p_win": round(rec["p_win"], 6),
-                "p_push": round(rec["p_push"], 6),
-                "fair_odds": round(
-                    fair_decimal(
-                        rec["decision_probability"], rec["p_push"]
-                    ) or 0.0,
-                    3,
-                ),
-                "ev_pct": round(rec["decision_ev_pct"], 2),
-                "stressed_ev_pct": round(
-                    rec["decision_stressed_ev_pct"], 2
-                ),
-                "raw_model_ev_pct": round(rec["ev_pct"], 2),
-                "decision_model_weight": rec["decision_model_weight"],
-                "divergence_pp": round(rec["divergence_pp"], 2),
-                "strength": rec["strength"], "confidence": rec["confidence"],
-                "recommendation_utility": round(
-                    rec["recommendation_utility"], 2
-                ),
-                "risk_grade": recommendation_risk_grade(rec),
-                "decision_status": "BEST_AVAILABLE",
-                "selection_reason": recommendation_reason,
-                "profitability_validation": "not_validated_historical_market_odds",
-                "source_image": rec["source_image"],
-                "source_sha256": rec["source_sha256"],
-            },
+            "recommendation": rec,
+            "top_recommendations": public_ranked_recommendations,
+            "top_recommendations_requested": 4,
+            "top_recommendations_available": len(
+                public_ranked_recommendations
+            ),
+            "top_recommendations_shortfall_reason": (
+                ""
+                if len(public_ranked_recommendations) == 4
+                else "fewer_than_four_distinct_complete_sourced_events"
+            ),
             "supported_markets_evaluated": len(expanded_rows),
-            "recommendation_scope": "exactly one best-available sourced recommendation is ranked per fixture by stressed EV, disagreement, and family-validation penalties; historical profitability is not validated",
+            "recommendation_scope": "up to four distinct sourced recommendations are ranked per fixture by stressed EV, disagreement, and family-validation penalties; rank one remains the backward-compatible BEST_AVAILABLE field and historical profitability is not validated",
             "freshness_status": freshness_status(kickoff),
             "risk_notes": {
                 "en": [
@@ -2136,7 +2370,7 @@ def build() -> Dict[str, object]:
             "- double-chance consistency: displayed fair prices and screenshot EV both use the same production score grid.",
             "- decision stack: 1X2 starts at 50% structural model / 50% de-vigged market; expanded families start at 35% / 65%; model weight shrinks further as divergence approaches 25pp.",
             "- recommendation utility: minimum(decision EV, stressed decision EV) minus 0.35*divergence, family uncertainty, and HALT penalties.",
-            "- exactly one recommendation: choose the highest utility non-HALT row; if every row is HALT, select the highest de-vigged market-probability outcome and disclose the fallback.",
+            "- ranked recommendations: publish up to four score-state-distinct sourced events; rank one is the highest-utility non-HALT row, or the highest de-vigged market-probability fallback when every row is HALT. Missing ranks remain explicit.",
             "- expanded-market policy: recommendations are best-available comparisons; historical profitability remains unvalidated because the holdout has no timestamped totals/BTTS/Asian/combo prices for ROI or CLV.",
             "- price coverage: all 32 fixtures receive model probabilities/fair prices; EV is computed only for complete screenshot-derived source markets, currently on 12 fixtures.",
             "- recommendation labels: BEST_AVAILABLE is mandatory per fixture; PASS/HALT remain diagnostic and no label implies certainty.",

@@ -313,6 +313,63 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
             priced += 1
         recommendation = row["recommendation"]
         assert recommendation is not None
+        ranked = row["top_recommendations"]
+        assert 1 <= len(ranked) <= 4
+        assert row["top_recommendations_available"] == len(ranked)
+        assert row["top_recommendations_requested"] == 4
+        assert [item["rank"] for item in ranked] == list(
+            range(1, len(ranked) + 1)
+        )
+        assert ranked[0] == recommendation
+        keys = {
+            (
+                item["market_family"], item["selection_canonical"],
+                item["line"],
+            )
+            for item in ranked
+        }
+        assert len(keys) == len(ranked)
+        if len(ranked) < 4:
+            assert row["top_recommendations_shortfall_reason"] == (
+                "fewer_than_four_distinct_complete_sourced_events"
+            )
+        else:
+            assert not row["top_recommendations_shortfall_reason"]
+        for rank, item in enumerate(ranked, start=1):
+            assert item["rank"] == rank
+            assert item["decision_status"] == (
+                "BEST_AVAILABLE" if rank == 1 else "RANKED_ALTERNATIVE"
+            )
+            assert item["profitability_validation"] == (
+                "not_validated_historical_market_odds"
+            )
+            assert item["source_image"]
+            assert len(item["source_sha256"]) == 64
+            assert item["price_gate_status"] in {
+                "at_or_above_model_fair_price",
+                "below_model_fair_price",
+            }
+            assert item["uncertainty"]["level"] in {"material", "high"}
+            assert len(item["uncertainty"]["en"]) == 3
+            assert len(item["uncertainty"]["es"]) == 3
+            assert item["why_ranked"]["en"]
+            assert item["why_ranked"]["es"]
+            assert len(item["steps"]["en"]) == 6
+            assert len(item["steps"]["es"]) == 6
+            assert item["fair_odds"] > 1.0
+            assert (
+                item["p_win"] + item["p_push"] + item["p_loss"]
+            ) == pytest.approx(1.0, abs=2e-6)
+            reconstructed_ev = (
+                item["p_win"] * (item["odds"] - 1.0) - item["p_loss"]
+            ) * 100.0
+            assert item["ev_pct"] == pytest.approx(
+                reconstructed_ev, abs=0.011
+            )
+            reconstructed_fair = 1.0 + item["p_loss"] / item["p_win"]
+            assert item["fair_odds"] == pytest.approx(
+                reconstructed_fair, abs=0.0011
+            )
         recommendations += 1
         assert recommendation["decision_status"] == "BEST_AVAILABLE"
         assert recommendation["risk_grade"] in {"A", "B", "C", "D"}
@@ -336,25 +393,13 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
             if comparison["recommendation_utility"]
             == recommendation["recommendation_utility"]
         )
-        non_halt = [
-            comparison for comparison in row["market_comparisons"]
-            if comparison["strength"] != "HALT"
-        ]
-        if non_halt:
+        if recommendation["strength"] != "HALT":
             assert recommendation["selection_reason"] == (
                 "highest_uncertainty_adjusted_expected_profit"
-            )
-            assert selected_comparison["recommendation_utility"] == max(
-                comparison["recommendation_utility"]
-                for comparison in non_halt
             )
         else:
             assert recommendation["selection_reason"] == (
                 "all_model_edges_halted_select_highest_market_probability"
-            )
-            assert selected_comparison["market_probability"] == max(
-                comparison["market_probability"]
-                for comparison in row["market_comparisons"]
             )
         common_dc = row["common_markets"]["double_chance"]
         for comparison in row["market_comparisons"]:

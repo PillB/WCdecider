@@ -12,8 +12,12 @@ This file is the binding operating contract for every data, model, recommendatio
 - Model selection is chronological. The untouched holdout is not used for parameter or policy selection.
 - A positive point-estimate EV is not automatically actionable.
 - Football bets are never “surefire.” A price near 1.10 still has loss risk, model risk, void/settlement risk, and market-vig risk.
-- Publish exactly one `BEST_AVAILABLE` recommendation per canonical fixture.
-- `BEST_AVAILABLE` means the highest-ranked sourced choice under the documented uncertainty-adjusted utility; it does not mean profitable, safe, or certain.
+- Publish up to four economically distinct sourced recommendations per canonical
+  fixture; preserve rank one as `BEST_AVAILABLE`.
+- `BEST_AVAILABLE` means the highest-ranked sourced choice under the documented
+  uncertainty-adjusted utility; no rank means profitable, safe, or certain.
+- Do not fill missing ranks with equivalent app prices, unsupported markets, or
+  model-implied sportsbook odds.
 - Retain diagnostic classes:
   - `PASS`: the model-market comparison is within investigation limits.
   - `HALT`: the model edge conflicts materially with the market. If every choice is HALT, recommend the highest de-vigged market-probability outcome and disclose that fallback.
@@ -111,6 +115,9 @@ Rules:
 - Hyperparameters and ensemble weights are selected before the final holdout.
 - Report Brier score, log loss, calibration, sample size, and confidence intervals.
 - A market family may enter the mandatory best-available ranking only when its settlement is validated and a complete sourced price exists. Unvalidated profitability must remain explicit.
+- Historical odds must remain partitioned into timestamp-verified bounded
+  closes, provider-labeled timestampless closes, and unknown-timestamp proxies.
+  Only the first class can support primary profitability validation.
 
 ## 7. “Near-certain” and low-odds analysis
 
@@ -135,7 +142,10 @@ The delivered pipeline must:
 5. Evaluate untouched holdout metrics.
 6. Update ratings using verified elapsed results.
 7. Generate probabilities and supported market comparisons.
-8. Rank exactly one `BEST_AVAILABLE` recommendation per fixture using stressed EV, market shrinkage, disagreement, and family-risk penalties while retaining `PASS`/`HALT` diagnostics.
+8. Rank up to four economically distinct sourced recommendations per fixture
+   using stressed EV, market shrinkage, disagreement, and family-risk
+   penalties; preserve rank one as `BEST_AVAILABLE` and retain `PASS`/`HALT`
+   diagnostics.
 9. Export model dataset, normalized odds, metrics, predictions, provenance, research, screenshot manifest, and datapoint audit manifest.
 10. Produce deterministic outputs from the same inputs.
 

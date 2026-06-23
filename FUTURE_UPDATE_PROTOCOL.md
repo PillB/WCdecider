@@ -40,6 +40,10 @@ Done tests:
 
 ## Phase 2 — Dataset and provenance
 
+- [ ] Rebuild the historical-odds coverage artifact and keep timestamp-verified
+  closes physically/logically separate from provider averages and legacy proxies.
+- [ ] Run the nested model championship before adopting new model weights or
+  profitability language.
 - [ ] Verify elapsed results and update historical ratings chronologically.
 - [ ] Build explicit Dataset A (World Cup finals) and Dataset B (supplementary qualifier/friendly data).
 - [ ] Export the model dataset and provenance with formulas, source URLs, timestamps, transformations, and hashes.
@@ -49,18 +53,24 @@ Done tests:
 1. Every externally sourced field has a direct source and retrieval timestamp.
 2. Dataset A/B membership follows documented competition rules with no overlap.
 3. A clean rebuild reproduces all dataset hashes and row counts.
+4. Profitability remains blocked unless the primary historical-odds eligibility
+   and untouched-policy gates in `HISTORICAL_ODDS_MODEL_CHAMPIONSHIP_PLAN.md`
+   pass.
 
 ## Phase 3 — Model selection and output generation
 
 - [ ] Select model parameters only on chronological pre-holdout windows.
 - [ ] Evaluate the untouched holdout and record Brier score, log loss, and calibration diagnostics.
-- [ ] Generate probabilities, market comparison, stress values, `PASS`/`HALT`, and prediction JSON.
+- [ ] Generate probabilities, market comparison, stress values, `PASS`/`HALT`,
+  and up to four distinct sourced recommendation ranks in prediction JSON.
 
 Done tests:
 
 1. Each fixture has finite A/D/B probabilities summing to one within tolerance.
 2. Selection rows and holdout rows are disjoint and ordered in time.
 3. Re-running the pipeline produces byte-identical JSON and metrics.
+4. Rank one equals the compatibility `recommendation`; lower ranks have unique
+   settlement signatures or the source shortfall is explicit.
 
 ## Phase 4 — Independent replication iteration 1
 

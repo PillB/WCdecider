@@ -2,24 +2,24 @@
   "git_commit": "PENDING_BEST_AVAILABLE_RELEASE",
   "global": {
     "owner": {
-      "id": "019ef054-1e38-73c0-b54a-e356d297aab0",
+      "id": "019ef301-d049-7332-a5f6-7fddc8b678b5",
       "status": "PASS",
-      "evidence": "Owner audit verified monotonic A>B>C>D risk weighting, deterministic S/100 totals for 21 Betano and 11 Betsson recommendations, S/1-S/10 caps, exact same-app provenance, return/fair-price/warning arithmetic, no model or recommendation mutation, accurate canonical design, and exact 24,156/24,156 coverage."
+      "evidence": "Final owner audit verified exact metrics/provenance SHA 9da76d7d...b40f1b3, four strict outer folds with untouched 181/32 selection/holdout, 666 proxy rows/222 events/zero eligible closes, 32 fixtures and 108 distinct ranks, exact probability/EV/fair arithmetic, six correct all-HALT fallbacks, restored Betano S/100 semantics, zero source-hash mismatches, truthful profitability/+500 wording, and 24 focused tests."
     },
     "replication_1": {
-      "id": "019ef054-ba99-7773-8beb-52864811855a",
+      "id": "019ef301-e49e-70c1-bac7-6ac3da585dfd",
       "status": "PASS",
-      "evidence": "Replication-1 reproduced byte-identical predictions, metrics, and manifest; verified 21/11 app picks, exact S/100 totals, 32 stake/odds/return calculations, 20 passing and 12 forced price gates, six EN/ES steps, source app/market/line/image hashes, design references, and exact 24,156 coverage."
+      "evidence": "Final data/code replication completed the full seven-stage build twice; 19/19 generated/deployed artifacts were byte-identical. It verified 31,039 prediction leaves plus 280 metrics leaves, exact 31,319-row unique PASS manifest coverage, and final metrics/provenance SHA 9da76d7d...b40f1b3."
     },
     "replication_2": {
-      "id": "019eeff0-0d5c-7643-92f4-16b639c9afb0",
+      "id": "019ef308-e6eb-7341-ae5c-caa99ef21186",
       "status": "PASS",
-      "evidence": "Replication-2 verified allocation formula, S/1-S/10 caps, S/0.10 rounding, exact S/100 totals, estimated-net and gross arithmetic, same-app source integrity, 12 below-fair forced-coverage warnings, unchanged prior model semantics, and exact 24,156 coverage/hashes."
+      "evidence": "Final statistics audit verified all four train_end<test_start outer folds, untouched 181/32 split, market-proxy champion and rejection of unsupported complexity, 108/108 probability/fair/EV reconstructions, 19/19 Asian push cases, zero HALT-order violations, six correct all-HALT fallbacks, 222/666/0 historical coverage, truthful utility/profitability/rival wording, and 17 targeted tests."
     },
     "editor": {
-      "id": "019ef121-bc26-79d0-ac93-5a4caf96e9e3",
+      "id": "019ef302-33c1-7011-9434-ac2cdb25f558",
       "status": "PASS",
-      "evidence": "Editor/newbie audit verified S/100 app summaries, all 32 per-match stake/return/price-gate sections, six-step EN/ES instructions, forced-coverage warnings, mobile readability, viewport-fixed collision-aware hover/focus tooltips without tested clipping/occlusion, and canonical design compliance; focused browser suite 10/10 PASS."
+      "evidence": "Final editor/newbie audit verified 32 cards, exact 20x3/12x4 ranking distribution and 108 DOM rankings, rank-one and replace-not-stack wording, complete EN/ES reasons/uncertainty/six steps, negative utility and price/HALT visibility, no accumulator implication, exact manifest/JSON/site parity, 9 browser plus 17 static plus 2 translation tests, and all 320 mobile tooltips without clipping."
     }
   },
   "fixtures": {}

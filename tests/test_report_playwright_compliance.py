@@ -86,6 +86,30 @@ def test_rendered_recommendations_match_json(page):
         assert f"risk grade {rec['risk_grade']}" in text
 
 
+def test_top_ranked_recommendations_match_json_and_disclose_shortfalls(page):
+    browser_page, _ = page
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    for item in payload["predictions"]:
+        card = browser_page.locator(
+            f'[data-fixture-id="{item["fixture_id"]}"]'
+        )
+        ranked = card.locator("[data-recommendation-rank]")
+        assert ranked.count() == item["top_recommendations_available"]
+        assert 1 <= ranked.count() <= 4
+        for index, recommendation in enumerate(
+            item["top_recommendations"], start=1
+        ):
+            rendered = card.locator(
+                f'[data-recommendation-rank="{index}"]'
+            ).inner_text()
+            assert recommendation["selection_original"] in rendered
+            assert f'{recommendation["odds"]:.2f}' in rendered
+        if item["top_recommendations_available"] < 4:
+            assert "was not invented" in card.inner_text()
+
+
 def test_forbidden_legacy_fixtures_are_absent(page):
     text = page[0].locator("body").inner_text()
     for stale in ("England vs Bolivia", "Canada vs Jamaica", "Germany vs Iran", "Switzerland vs Serbia"):

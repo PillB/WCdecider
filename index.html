@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="96fb2fde0a4dc2e082d5e8d633a05eaab4c8db1807a1729a06a46199c386b650">
+  <meta name="wcdecider-audit-sha256" content="653eda9ff8d443b410a1fe12935a30b6a1a525f4d7a65d0ba2cedb76e62efd46">
   <title>WCdecider • June 22–27, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -87,7 +87,7 @@
       <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
         <h2 class="text-xl font-bold text-white"><span class="en">How to read this analysis</span><span class="es">Cómo leer este análisis</span></h2>
         <ol class="mt-3 space-y-2 text-sm text-slate-300 list-decimal pl-5">
-          <li><span class="en">Every match has one best-available recommendation; none is a guarantee.</span><span class="es">Cada partido tiene una recomendación de mejor opción disponible; ninguna es garantía.</span></li>
+          <li><span class="en">Every match has up to four distinct sourced recommendations; rank one remains the best available. None is a guarantee.</span><span class="es">Cada partido tiene hasta cuatro recomendaciones distintas con fuente; el rango uno sigue siendo la mejor disponible. Ninguna es garantía.</span></li>
           <li><span class="en">PASS means the comparison is within investigation limits; HALT means all model edges were suspicious, so the safest market-consensus fallback is shown.</span><span class="es">PASS significa que la comparación está dentro de límites de investigación; HALT significa que todas las ventajas del modelo fueron sospechosas y se muestra la alternativa más segura según el consenso del mercado.</span></li>
           <li><span class="en">Conditional forecasts must be rerun after intervening matches and new lineups/odds.</span><span class="es">Los pronósticos condicionales deben recalcularse después de partidos intermedios y nuevas alineaciones/cuotas.</span></li>
           <li><span class="en">Displayed prices are source evidence, not instructions to place a bet.</span><span class="es">Las cuotas mostradas son evidencia de fuente, no instrucciones para apostar.</span></li>
@@ -175,7 +175,9 @@ function renderSummary(rows){
  $('#model-evidence').innerHTML=`<p class="font-bold text-white"><span class="en">Validation evidence and limitations</span><span class="es">Evidencia de validación y limitaciones</span></p>
  <p class="mt-2"><span class="en">Selection rows: ${METRICS.calibration.selection_rows}; untouched holdout: ${METRICS.calibration.holdout_rows}; Brier: ${Number(METRICS.calibration.holdout_brier).toFixed(4)}; log loss: ${Number(METRICS.calibration.holdout_log_loss).toFixed(4)}. Uniform baselines are 0.6667 Brier and 1.0986 log loss.</span><span class="es">Filas de selección: ${METRICS.calibration.selection_rows}; holdout intacto: ${METRICS.calibration.holdout_rows}; Brier: ${Number(METRICS.calibration.holdout_brier).toFixed(4)}; log loss: ${Number(METRICS.calibration.holdout_log_loss).toFixed(4)}. Las bases uniformes son 0,6667 Brier y 1,0986 log loss.</span></p>
  <p class="mt-2"><span class="en">Score holdout: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Over 2.5 Brier ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, BTTS Brier ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles remains a shadow model because its paired-bootstrap confidence interval crosses zero.</span><span class="es">Holdout de goles: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Brier Más de 2,5 ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, Brier ambos marcan ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles sigue como modelo sombra porque su intervalo bootstrap pareado cruza cero.</span></p>
- <p class="mt-2 text-amber-200"><span class="en">The report ranks one best-available pick per match. Historical closing odds are absent for expanded families, so profitability, CLV, ROI and staking tiers remain unvalidated.</span><span class="es">El informe ordena una mejor opción disponible por partido. No hay cuotas históricas de cierre para mercados ampliados, por lo que rentabilidad, CLV, ROI y niveles de apuesta siguen sin validarse.</span></p>`;
+ <p class="mt-2"><span class="en">Model championship: ${METRICS.model_championship.registered_variants.length} registered variants. Strict nested outer folds selected ${escapeHtml(METRICS.model_championship.champion)}. No structural model or stack beat that market proxy across outer mean log loss, so added complexity is rejected on the available evidence.</span><span class="es">Campeonato de modelos: ${METRICS.model_championship.registered_variants.length} variantes registradas. Los pliegues externos anidados estrictos eligieron ${escapeHtml(METRICS.model_championship.champion)}. Ningún modelo estructural ni combinación superó a ese proxy de mercado en pérdida logarítmica externa promedio, por lo que se rechaza complejidad adicional con la evidencia disponible.</span></p>
+ <p class="mt-2"><span class="en">Historical odds inventory: ${METRICS.historical_closing_odds.events} events and ${METRICS.historical_closing_odds.rows} selection rows retained as timestamp-unknown proxies; primary timestamp-verified validation rows: ${METRICS.historical_closing_odds.primary_validation_rows}.</span><span class="es">Inventario histórico de cuotas: ${METRICS.historical_closing_odds.events} eventos y ${METRICS.historical_closing_odds.rows} filas de selecciones conservadas como proxies sin hora verificable; filas primarias verificadas por tiempo: ${METRICS.historical_closing_odds.primary_validation_rows}.</span></p>
+ <p class="mt-2 text-amber-200"><span class="en">The report ranks up to four distinct sourced picks per match. Genuine timestamped historical closes are not yet available, so profitability, CLV, ROI and staking tiers remain unvalidated.</span><span class="es">El informe ordena hasta cuatro opciones distintas con fuente por partido. Aún no hay cierres históricos genuinos con marca de tiempo, por lo que rentabilidad, CLV, ROI y niveles de apuesta siguen sin validarse.</span></p>`;
 }
 function renderBankrollPlan(){
  const plan=DATA.bankroll_simulation;
@@ -259,6 +261,7 @@ function parseCsv(text){
 }
 function card(row,index){
  const r=row.recommendation;
+ const topRecommendations=row.top_recommendations||[];
  const ptr=`/predictions/${index}`;
  const help=row.metric_explanations;
  const strength=r?.strength||'PASS';
@@ -272,6 +275,26 @@ function card(row,index){
    <td class="py-2 pr-2 text-right">${odds(m.odds)}</td><td class="py-2 pr-2 text-right">${pct(m.p_win)}</td>
    <td class="py-2 pr-2 text-right">${odds(m.fair_odds)}</td><td class="py-2 text-right ${m.ev_pct>=0?'text-emerald-300':'text-rose-300'}">${Number(m.ev_pct).toFixed(1)}%</td>
   </tr>`).join('');
+ const rankedRecommendations=topRecommendations.map((item,i)=>`<div class="rounded-xl border ${i===0?'border-cyan-700 bg-cyan-950/20':'border-slate-800 bg-slate-950/70'} p-3" data-recommendation-rank="${item.rank}">
+   <div class="flex items-start justify-between gap-3"><div><div class="text-xs text-slate-500"><span class="en">Rank</span><span class="es">Rango</span> ${item.rank} • ${escapeHtml(item.app)} • <span class="en">risk</span><span class="es">riesgo</span> ${escapeHtml(item.risk_grade)}</div>
+   <div class="mt-1 font-semibold text-white">${escapeHtml(item.selection_original)} ${item.line?`(${escapeHtml(item.line)})`:''} @ ${Number(item.odds).toFixed(2)}</div></div>
+   <span class="rounded-full border px-2 py-1 text-[10px] ${strengthColor(item.strength)}">${escapeHtml(item.strength)}</span></div>
+   <div class="mt-2 grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+    <div><span class="en">Decision EV</span><span class="es">EV decisión</span> <b>${Number(item.ev_pct).toFixed(1)}%</b></div>
+    <div><span class="en">Stress</span><span class="es">Estrés</span> <b>${Number(item.stressed_ev_pct).toFixed(1)}%</b></div>
+    <div><span class="en">Probability</span><span class="es">Probabilidad</span> <b>${pct(item.p_win)}</b></div>
+    <div><span class="en">Fair threshold</span><span class="es">Umbral justo</span> <b>${odds(item.fair_odds)}</b></div>
+   </div>
+   <div class="mt-2 text-xs ${item.price_gate_status==='at_or_above_model_fair_price'?'text-emerald-300':'text-amber-200'}"><span class="en">${item.price_gate_status==='at_or_above_model_fair_price'?'Saved price meets the model fair threshold.':'Saved price is below the model fair threshold.'}</span><span class="es">${item.price_gate_status==='at_or_above_model_fair_price'?'La cuota guardada alcanza el umbral justo.':'La cuota guardada está debajo del umbral justo.'}</span></div>
+   <div class="mt-2 text-xs text-slate-400">${escapeHtml(item.market_original)} • ${escapeHtml(item.source_image)} • <span class="en">utility</span><span class="es">utilidad</span> ${Number(item.recommendation_utility).toFixed(1)}</div>
+   <details class="mt-2 text-xs"><summary class="cursor-pointer text-cyan-300"><span class="en">Why ranked, uncertainty and app steps</span><span class="es">Motivo del rango, incertidumbre y pasos en la app</span></summary>
+    <p class="en mt-2">${escapeHtml(item.why_ranked.en)}</p><p class="es mt-2">${escapeHtml(item.why_ranked.es)}</p>
+    <ul class="en mt-2 list-disc pl-5">${item.uncertainty.en.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>
+    <ul class="es mt-2 list-disc pl-5">${item.uncertainty.es.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>
+    <ol class="en mt-2 list-decimal pl-5 space-y-1">${item.steps.en.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol>
+    <ol class="es mt-2 list-decimal pl-5 space-y-1">${item.steps.es.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol>
+   </details>
+  </div>`).join('');
  const sources=(row.research?.source_urls||[]).map(u=>`<a class="text-cyan-400 hover:underline break-all" href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(new URL(u).hostname)}</a>`).join(' · ');
  return `<article class="card-anchor bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden" data-fixture-id="${escapeHtml(row.fixture_id)}" data-date="${row.kickoff_lima.slice(0,10)}" data-strength="${strength}">
    <header class="p-5 border-b border-slate-800 flex justify-between gap-4">
@@ -313,6 +336,12 @@ function card(row,index){
       <div class="mt-2 text-xs text-slate-400">${escapeHtml(r.app)} • ${escapeHtml(r.market_original)} • ${escapeHtml(r.source_image)} • <span class="en">fair</span><span class="es">justa</span> ${odds(r.fair_odds)}</div>
       <div class="mt-2 text-xs text-amber-200"><span class="en">${r.selection_reason==='all_model_edges_halted_select_highest_market_probability'?'All model edges were HALT; selected the highest market-probability fallback.':'Selected by uncertainty-adjusted expected-profit utility.'} Profitability is not historically validated.</span><span class="es">${r.selection_reason==='all_model_edges_halted_select_highest_market_probability'?'Todas las ventajas fueron HALT; se eligió la alternativa con mayor probabilidad de mercado.':'Elegida por utilidad de beneficio esperado ajustada por incertidumbre.'} La rentabilidad no está validada históricamente.</span></div>`:''}
     </div>
+    <details class="mt-4 rounded-2xl border border-cyan-900 p-4" open>
+      <summary class="cursor-pointer font-semibold text-cyan-200"><span class="en">Top ranked sourced recommendations</span><span class="es">Recomendaciones con fuente mejor clasificadas</span> (${topRecommendations.length}/4)</summary>
+      <div class="mt-3 grid gap-3">${rankedRecommendations}</div>
+      ${topRecommendations.length<4?`<p class="mt-3 text-xs text-amber-200"><span class="en">Only ${topRecommendations.length} economically distinct complete sourced events were available. A fourth bet was not invented from duplicate app prices or unsupported markets.</span><span class="es">Solo hubo ${topRecommendations.length} eventos completos, distintos y con fuente. No se inventó una cuarta apuesta usando cuotas duplicadas o mercados no compatibles.</span></p>`:''}
+      <p class="mt-3 text-xs text-amber-200"><span class="en">Ranking means best relative utility among available sourced prices, not proven profit. Utility can be negative even when displayed EV is non-negative because it subtracts model-market disagreement, market-family uncertainty, and HALT penalties. Negative EV and HALT alternatives remain visibly labeled.</span><span class="es">El ranking significa mejor utilidad relativa entre cuotas disponibles, no beneficio probado. La utilidad puede ser negativa aunque el EV mostrado no lo sea porque resta desacuerdo modelo-mercado, incertidumbre de la familia y penalizaciones HALT. Alternativas con EV negativo y HALT permanecen claramente marcadas.</span></p>
+    </details>
     ${budget?`<details class="mt-4 rounded-2xl border border-cyan-900 bg-cyan-950/20 p-4">
       <summary class="cursor-pointer font-semibold text-cyan-200"><span class="en">S/100 app-budget simulation: stake S/${Number(budget.stake).toFixed(2)} in ${escapeHtml(r.app)}</span><span class="es">Simulación de S/100 en la app: monto S/${Number(budget.stake).toFixed(2)} en ${escapeHtml(r.app)}</span></summary>
       <div class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">

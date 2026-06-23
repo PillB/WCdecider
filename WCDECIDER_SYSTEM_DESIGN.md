@@ -19,7 +19,8 @@ analysis system. It:
 2. selects models using chronological validation;
 3. generates match-result and score-derived market probabilities;
 4. compares model probabilities with complete sourced markets;
-5. produces exactly one `BEST_AVAILABLE` recommendation per fixture;
+5. produces one rank-one `BEST_AVAILABLE` recommendation and up to three
+   economically distinct sourced alternatives per fixture;
 6. publishes a bilingual JSON-driven report;
 7. records every JSON leaf in a four-role audit manifest;
 8. tests, deploys, and validates the exact GitHub Pages revision.
@@ -146,6 +147,38 @@ Rules:
 
 ## 6. Modeling framework
 
+### Historical closing-odds evidence classes
+
+- `timestamp_verified_bounded_close`: last complete named-bookmaker snapshot
+  strictly before kickoff, with both provider snapshot and bookmaker update
+  timestamps. Eligible for primary policy validation.
+- `published_close_without_quote_timestamp`: provider-labeled close without a
+  row-level quote time. Secondary robustness evidence only.
+- `legacy_proxy_unknown_timestamp`: existing project value whose bookmaker and
+  quote time cannot be reconstructed. Reconciliation only.
+
+The Odds API historical snapshots are the preferred fixed-odds primary source;
+Betfair historical exchange streams are the preferred independent benchmark
+after access and redistribution rights are confirmed. Raw restricted-provider
+payloads remain private; the public repository contains acquisition code,
+schemas, hashes, coverage, and derived summaries.
+
+`historical_odds_pipeline.py` enforces this separation. The current public
+inventory has 222 events and 666 1X2 selection rows, all explicitly ineligible
+legacy proxies. Consequently, profitability remains unvalidated.
+
+### Nested model championship
+
+`model_championship.py` compares uniform, market proxy, fixed Elo, nested-tuned
+Elo, and nested Elo/market stacks on rolling-origin selection windows and one
+untouched final holdout. Score-model Poisson and Dixon-Coles comparisons remain
+in the canonical pipeline.
+
+High-capacity TGNN and transformer candidates are registered but rejected from
+fitting when the effective historical sample cannot support a credible
+chronological comparison. Model complexity is never adopted to satisfy a rival
+return claim.
+
 ### 1X2 structural model
 
 - Ratings are updated sequentially using verified elapsed results.
@@ -214,7 +247,9 @@ the same probability engine.
 
 ## 8. Recommendation policy
 
-Every fixture receives exactly one sourced `BEST_AVAILABLE` recommendation.
+Every fixture receives up to four economically distinct sourced
+recommendations. Rank one remains the backward-compatible `BEST_AVAILABLE`
+recommendation.
 
 ### Decision probability
 
@@ -231,9 +266,15 @@ The ranking uses:
 - market-family validation penalty;
 - strong HALT penalty.
 
-If any non-HALT choice exists, HALT choices cannot win the ranking. If all
-choices are HALT, the fallback is the highest de-vigged market-probability
-outcome.
+If any non-HALT choice exists, HALT choices cannot win rank one. If all choices
+are HALT, the least-penalized uncertainty-adjusted candidate is visibly labeled
+as an investigative fallback.
+
+Equivalent events from different screenshots/apps are deduplicated for the
+top-four idea list after retaining the strongest sourced instance. If fewer
+than four distinct complete events exist, the output reports the source
+shortfall instead of inventing a fourth choice. Lower ranks may retain visible
+`HALT` diagnostics after all non-HALT choices.
 
 ### Required recommendation fields
 
@@ -436,7 +477,9 @@ A future update is done only when:
 
 1. canonical source coverage and hashes pass;
 2. chronological model and market-specific metrics pass;
-3. exactly one recommendation per fixture exists;
+3. exactly one rank-one `BEST_AVAILABLE` recommendation per fixture exists and
+   every additional rank is settlement-distinct or an explicit source
+   shortfall is published;
 4. app prices and bankroll simulations use only sourced app data;
 5. all JSON fields have fresh four-role audit PASS evidence;
 6. all visible fields are bilingual and JSON-driven;
