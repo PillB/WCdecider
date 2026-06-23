@@ -233,6 +233,26 @@ dynamic graph attention, GraphMixer/DyGFormer-style efficient temporal graph
 models, and sequence transformers. They are documented for student learning and
 future data expansion, not claimed as current production winners.
 
+### Research-mode toggle
+
+The report may expose a user-controlled research-mode toggle. This mode is a
+shadow/sensitivity view, not a production override.
+
+Current implementation:
+
+- selected gated candidate: Dixon-Coles low-score correction;
+- reason: it is the best currently feasible football-specific research model
+  from the registry because it adds low-parameter score dependence without
+  violating the small-sample gate;
+- blocked candidates: temporal GNN, TGAT-style, GraphMixer/DyGFormer, and
+  sequence transformers remain registry-only until the data gate is met;
+- production recommendations, stake simulation, and top-four ranking remain
+  unchanged when the toggle is enabled;
+- every research-mode field must be present in prediction JSON and audit
+  manifest coverage;
+- UI text must state `research_gated_not_production` and explain why promotion
+  failed.
+
 ### Required metrics
 
 - multiclass Brier;
@@ -403,6 +423,15 @@ exact score. Explanation fields are output-only and cannot change the model.
   marker after verified JSON loads, so users can verify freshness on mobile.
 - Card rendering should degrade gracefully for future optional field drift while
   the audit gate still blocks missing or tampered prediction/metrics leaves.
+- Mobile browsers must not fetch or parse the full field-level audit CSV. The
+  full CSV remains the reproducibility artifact and build-time gate; the report
+  loads only `wc_june22_27_datapoint_audit_summary.json`, verifies the
+  prediction/metrics hashes and canonical leaf-path hash, and exposes a visible
+  diagnostic panel with artifact URL, HTTP status, byte counts, build SHA, audit
+  hash, network state, and user agent on any startup failure.
+- Research mode, when available, must be off by default and enabled only by an
+  explicit toggle. It may reveal shadow probabilities and deltas, but it cannot
+  alter production recommendation fields or claim validated profitability.
 
 ## 13. Datapoint governance
 
@@ -425,8 +454,11 @@ Each row records:
 All roles must provide release-specific PASS evidence. A stale review from a
 previous leaf count is invalid. Any PENDING or FAIL status blocks site build.
 
-The browser independently compares the exact prediction/metrics JSON leaf-path
-set with the audit artifact before displaying audit PASS.
+The browser independently computes the exact prediction/metrics JSON leaf-path
+set and compares its SHA-256 against the lightweight audit summary before
+displaying audit PASS. It must not download the full audit CSV in the UI path,
+because that file can be tens of megabytes and can crash mobile Safari/WebKit
+before an error handler can render.
 
 ## 14. Test design
 
@@ -458,6 +490,9 @@ set with the audit artifact before displaying audit PASS.
 - tooltip viewport bounds and fixed positioning;
 - delayed mobile JSON load with no page errors;
 - missing/tampered JSON fail-closed with visible error and no cards;
+- mobile startup requests the audit summary JSON and never the full audit CSV;
+- diagnostics panel appears on missing/tampered artifacts and includes the
+  failing artifact path;
 - footer last-updated, version, and build marker;
 - S/100 app totals;
 - per-match stake, return, and six-step flow parity.

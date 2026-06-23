@@ -146,7 +146,7 @@ The delivered pipeline must:
    using stressed EV, market shrinkage, disagreement, and family-risk
    penalties; preserve rank one as `BEST_AVAILABLE` and retain `PASS`/`HALT`
    diagnostics.
-9. Export model dataset, normalized odds, metrics, predictions, provenance, research, screenshot manifest, and datapoint audit manifest.
+9. Export model dataset, normalized odds, metrics, predictions, provenance, research, screenshot manifest, datapoint audit manifest, and lightweight audit summary.
 10. Produce deterministic outputs from the same inputs.
 
 Python code requires docstrings, examples, explicit formulas, comments explaining design choices, and fail-closed errors.
@@ -208,7 +208,7 @@ The live validation test is the only test allowed to skip before deployment, and
 - canonical fixtures/results/odds/research CSVs
 - Dataset A/B and model dataset CSVs
 - prediction and metrics JSON
-- screenshot and datapoint audit manifests
+- screenshot and datapoint audit manifests, plus the browser-safe audit summary
 - provenance text
 - complete Python pipeline
 - JSON-driven bilingual report

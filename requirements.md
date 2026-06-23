@@ -30,6 +30,7 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R2.11: Model championships use nested rolling-origin selection and an untouched final holdout; ROI cannot select the champion.
 - R2.12: High-capacity graph/neural candidates require adequate effective sample size and must beat simple baselines securely before production use.
 - R2.13: Temporal GNN, graph-mixer, dynamic graph attention, and sequence-transformer candidates require a published promotion gate before production use: at least 2,000 timestamped fixtures, enough repeated temporal edges per team, strictly pre-event features, nested walk-forward selection, untouched holdout superiority, calibration evidence, and closing-line validation before profitability claims.
+- R2.14: Research mode may expose the best currently feasible gated shadow model, but it must be off by default, clearly labeled non-production, and unable to mutate production recommendations or staking outputs.
 
 ## R3 — Safety and classification
 
@@ -64,8 +65,10 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R5.7: Workflow visualization represents only implemented/validated model components.
 - R5.8: Tooltips and ELI5 text explain PASS, HALT, EV, stress, calibration, and uncertainty.
 - R5.9: Cards display ranked alternatives with app, market, line, source price, fair threshold, decision/stress EV, utility, risk, source, and profitability status.
-- R5.10: The mobile report shell must be safe before JSON loads: show a loading state, disable filters, prevent card rendering until the prediction/metrics/audit bundle verifies, and show a bilingual visible error rather than crash or blank page on fetch/audit failure.
+- R5.10: The mobile report shell must be safe before JSON loads: show a loading state, disable filters, prevent card rendering until the prediction/metrics/lightweight-audit-summary bundle verifies, and show a bilingual visible error plus diagnostics rather than crash or blank page on fetch/audit failure.
+- R5.10a: The browser must not fetch or parse `wc_june22_27_datapoint_audit.csv`; it verifies `wc_june22_27_datapoint_audit_summary.json` hashes and leaf-path counts while the full CSV remains a build/reproducibility artifact.
 - R5.11: The report footer displays last updated, model/report version, and exact build SHA marker.
+- R5.12: The report includes a bilingual research-mode toggle when research-mode JSON is available; toggling reveals shadow-model probabilities/deltas and promotion-gate reasons without changing production recommendation fields.
 
 ## R6 — Pipeline and reproducibility
 
@@ -84,6 +87,7 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R7.4: Required dependency versions are bounded/pinned and Python is fixed by workflow.
 - R7.5: GitHub Pages embeds the exact release SHA.
 - R7.6: Live validation verifies SHA, artifact parity, 32 cards, bilingual toggle, footer freshness/version, mobile-safe JSON loading behavior, and no stale fixtures.
+- R7.7: Live/mobile validation confirms no network request is made for the full audit CSV and that missing-artifact failures expose the diagnostics panel.
 
 ## Release gates
 

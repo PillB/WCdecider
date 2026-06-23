@@ -445,7 +445,22 @@
   "mu_dataset_a": 2.628787878787879,
   "mu_dataset_b": 2.4441964285714297,
   "mu_production": 2.5,
-  "pipeline_sha256": "1d47462657c4e3756ced03e9532d957faf3151dd96a810a3730de2add64f1b66",
+  "pipeline_sha256": "3b8e1543dd5ee93654210903193421cb9ba00c6aea6b7ea7250841ff9f282446",
+  "research_mode_policy": {
+    "default_state": "off_production_mode",
+    "production_recommendations_unchanged": true,
+    "promotion_requirements": {
+      "minimum_temporal_edges_per_team": 30,
+      "minimum_timestamped_fixtures": 2000,
+      "validation": "nested walk-forward selection, untouched holdout superiority, calibration checks, multiple-testing control, and closing-line ROI/CLV validation"
+    },
+    "selected_candidate": "dixon_coles_low_score_correction_shadow",
+    "selected_family": "hierarchical_dynamic_poisson_score_research",
+    "status": "research_gated_not_production",
+    "toggle_available": true,
+    "why_not_promoted": "Shadow paired-bootstrap intervals cross zero and no timestamp-verified historical closing odds exist for profitability validation.",
+    "why_selected": "Dixon-Coles is the best currently feasible research-gated architecture from the expanded registry because it is football-specific, low-parameter, and reproducible with the available score data. High-capacity temporal graph and sequence models remain blocked by the sample-size/edge-count promotion gate."
+  },
   "score_market_calibration": {
     "allocation": 0.35,
     "gap_intensity": 0.15,

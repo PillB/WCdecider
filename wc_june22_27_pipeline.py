@@ -853,6 +853,104 @@ def common_market_probabilities(
     }
 
 
+def result_probabilities_from_matrix(
+    matrix: Sequence[Tuple[int, int, float]],
+) -> Tuple[float, float, float]:
+    """Return home/draw/away probabilities implied by a score grid."""
+    return (
+        event_probability(matrix, lambda ga, gb: ga > gb),
+        event_probability(matrix, lambda ga, gb: ga == gb),
+        event_probability(matrix, lambda ga, gb: ga < gb),
+    )
+
+
+def research_mode_payload(
+    production_matrix: Sequence[Tuple[int, int, float]],
+    research_matrix: Sequence[Tuple[int, int, float]],
+    score_config: Mapping[str, object],
+) -> Dict[str, object]:
+    """Serialize the gated research-mode shadow model for one fixture.
+
+    The current best feasible research candidate is Dixon-Coles because it is
+    already fitted as a low-parameter score-grid correction. High-capacity
+    temporal graph and sequence models remain registry-only until the published
+    sample-size and temporal-edge gates are met.
+    """
+    prod_home, prod_draw, prod_away = result_probabilities_from_matrix(
+        production_matrix
+    )
+    res_home, res_draw, res_away = result_probabilities_from_matrix(
+        research_matrix
+    )
+    prod_common = common_market_probabilities(production_matrix)
+    res_common = common_market_probabilities(research_matrix)
+    prod_over = next(
+        row for row in prod_common["totals"] if float(row["line"]) == 2.5
+    )
+    res_over = next(
+        row for row in res_common["totals"] if float(row["line"]) == 2.5
+    )
+    return {
+        "toggle_available": True,
+        "default_state": "off_production_mode",
+        "selected_candidate": "dixon_coles_low_score_correction_shadow",
+        "selected_family": "hierarchical_dynamic_poisson_score_research",
+        "selected_from_registry_reason": (
+            "Best currently feasible research-gated architecture: it adds a "
+            "low-parameter football-specific low-score dependence correction "
+            "without violating the current sample-size gate. Temporal GNN, "
+            "GraphMixer/DyGFormer, and transformer candidates remain "
+            "registered but not fit for production."
+        ),
+        "promotion_status": "research_gated_not_production",
+        "production_recommendations_unchanged": True,
+        "why_not_production": (
+            "The paired-bootstrap confidence interval for score NLL crosses "
+            "zero and timestamp-verified historical closing odds are absent, "
+            "so this mode is educational/shadow analysis only."
+        ),
+        "rho": float(score_config["shadow_rho"]),
+        "probabilities": {
+            "team_a_win": round(res_home, 6),
+            "draw": round(res_draw, 6),
+            "team_b_win": round(res_away, 6),
+        },
+        "deltas_vs_production": {
+            "team_a_win_pp": round((res_home - prod_home) * 100.0, 3),
+            "draw_pp": round((res_draw - prod_draw) * 100.0, 3),
+            "team_b_win_pp": round((res_away - prod_away) * 100.0, 3),
+            "over_2_5_pp": round(
+                (
+                    float(res_over["over_probability"])
+                    - float(prod_over["over_probability"])
+                ) * 100.0,
+                3,
+            ),
+            "btts_yes_pp": round(
+                (
+                    float(res_common["btts"]["yes_probability"])
+                    - float(prod_common["btts"]["yes_probability"])
+                ) * 100.0,
+                3,
+            ),
+        },
+        "common_markets": res_common,
+        "student_note": {
+            "en": (
+                "Research mode shows the best currently reproducible gated "
+                "shadow model. It is useful for learning and sensitivity "
+                "analysis, not for replacing the production recommendation."
+            ),
+            "es": (
+                "El modo investigación muestra el mejor modelo sombra "
+                "reproducible y limitado por evidencia. Sirve para aprender "
+                "y analizar sensibilidad, no para reemplazar la recomendación "
+                "de producción."
+            ),
+        },
+    }
+
+
 def metric_explanations(
     team_a_names: Tuple[str, str], team_b_names: Tuple[str, str],
     p_1x2: Tuple[float, float, float], lambda_a: float, lambda_b: float,
@@ -2088,6 +2186,7 @@ def build() -> Dict[str, object]:
         published_lambda_a = round(la, 3)
         published_lambda_b = round(lb, 3)
         common_markets = common_market_probabilities(matrix)
+        research_mode = research_mode_payload(matrix, shadow_matrix, score_config)
         explanations = metric_explanations(
             names_a, names_b, p_base, published_lambda_a,
             published_lambda_b, common_markets
@@ -2217,6 +2316,7 @@ def build() -> Dict[str, object]:
                 ),
                 "policy_status": "experimental_non_actionable",
             },
+            "research_mode": research_mode,
             "common_markets": common_markets,
             "metric_explanations": explanations,
             "market_comparisons": market_comparisons,
@@ -2307,6 +2407,36 @@ def build() -> Dict[str, object]:
             "all_fixture_probability_coverage": 32,
             "recommendations_required": 32,
             "selection_rule": "maximize minimum(base EV, stressed EV) minus 0.35*model-market divergence and market-family uncertainty penalties",
+        },
+        "research_mode_policy": {
+            "toggle_available": True,
+            "default_state": "off_production_mode",
+            "selected_candidate": "dixon_coles_low_score_correction_shadow",
+            "selected_family": "hierarchical_dynamic_poisson_score_research",
+            "status": "research_gated_not_production",
+            "production_recommendations_unchanged": True,
+            "why_selected": (
+                "Dixon-Coles is the best currently feasible research-gated "
+                "architecture from the expanded registry because it is "
+                "football-specific, low-parameter, and reproducible with the "
+                "available score data. High-capacity temporal graph and "
+                "sequence models remain blocked by the sample-size/edge-count "
+                "promotion gate."
+            ),
+            "why_not_promoted": (
+                "Shadow paired-bootstrap intervals cross zero and no "
+                "timestamp-verified historical closing odds exist for "
+                "profitability validation."
+            ),
+            "promotion_requirements": {
+                "minimum_timestamped_fixtures": 2000,
+                "minimum_temporal_edges_per_team": 30,
+                "validation": (
+                    "nested walk-forward selection, untouched holdout "
+                    "superiority, calibration checks, multiple-testing "
+                    "control, and closing-line ROI/CLV validation"
+                ),
+            },
         },
         "input_hashes": input_hashes,
         "pipeline_sha256": sha256(Path(__file__)),
