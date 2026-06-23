@@ -29,6 +29,7 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R2.10: Historical prices must carry an evidence class. Only complete named-bookmaker quotes with source and update timestamps strictly before kickoff are primary-validation eligible.
 - R2.11: Model championships use nested rolling-origin selection and an untouched final holdout; ROI cannot select the champion.
 - R2.12: High-capacity graph/neural candidates require adequate effective sample size and must beat simple baselines securely before production use.
+- R2.13: Temporal GNN, graph-mixer, dynamic graph attention, and sequence-transformer candidates require a published promotion gate before production use: at least 2,000 timestamped fixtures, enough repeated temporal edges per team, strictly pre-event features, nested walk-forward selection, untouched holdout superiority, calibration evidence, and closing-line validation before profitability claims.
 
 ## R3 — Safety and classification
 
@@ -63,6 +64,8 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R5.7: Workflow visualization represents only implemented/validated model components.
 - R5.8: Tooltips and ELI5 text explain PASS, HALT, EV, stress, calibration, and uncertainty.
 - R5.9: Cards display ranked alternatives with app, market, line, source price, fair threshold, decision/stress EV, utility, risk, source, and profitability status.
+- R5.10: The mobile report shell must be safe before JSON loads: show a loading state, disable filters, prevent card rendering until the prediction/metrics/audit bundle verifies, and show a bilingual visible error rather than crash or blank page on fetch/audit failure.
+- R5.11: The report footer displays last updated, model/report version, and exact build SHA marker.
 
 ## R6 — Pipeline and reproducibility
 
@@ -80,7 +83,7 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R7.3: Browser tests run against the exact site artifact later uploaded.
 - R7.4: Required dependency versions are bounded/pinned and Python is fixed by workflow.
 - R7.5: GitHub Pages embeds the exact release SHA.
-- R7.6: Live validation verifies SHA, artifact parity, 32 cards, bilingual toggle, and no stale fixtures.
+- R7.6: Live validation verifies SHA, artifact parity, 32 cards, bilingual toggle, footer freshness/version, mobile-safe JSON loading behavior, and no stale fixtures.
 
 ## Release gates
 

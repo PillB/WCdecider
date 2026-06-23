@@ -38,7 +38,7 @@ def serve(directory: Path):
         thread.join(timeout=5)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def page():
     from playwright.sync_api import sync_playwright
 
@@ -196,3 +196,106 @@ def test_per_match_bankroll_steps_and_app_totals_match_json(page):
         assert f"S/{budget['gross_return_if_full_win']:.2f}" in details.inner_text()
         assert details.locator("ol.en li").count() == 6
         assert budget["steps"]["en"][-1] in details.inner_text()
+
+
+def test_mobile_shell_survives_delayed_json_without_crashing():
+    from playwright.sync_api import sync_playwright
+
+    with serve(SITE) as url, sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(
+            viewport={"width": 390, "height": 844},
+            is_mobile=True,
+            has_touch=True,
+        )
+        page_errors = []
+        page.on("pageerror", lambda error: page_errors.append(str(error)))
+
+        def slow_predictions(route):
+            page.wait_for_timeout(500)
+            route.continue_()
+
+        page.route("**/wc_june22_27_predictions.json", slow_predictions)
+        page.goto(url, wait_until="domcontentloaded")
+        assert page.locator("#loading-shell").is_visible()
+        assert page.locator("#date-filter").is_disabled()
+        assert page.locator("#strength-filter").is_disabled()
+        assert page_errors == []
+        page.wait_for_selector("#cards article", timeout=15000)
+        assert page.locator("#loading-shell").is_hidden()
+        assert page.locator("#date-filter").is_enabled()
+        assert page.locator("#strength-filter").is_enabled()
+        assert page.locator("#cards article").count() == 32
+        assert page_errors == []
+        browser.close()
+
+
+def test_footer_last_updated_version_and_build_marker(page):
+    browser_page, _ = page
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    footer = browser_page.locator("footer").inner_text()
+    assert payload["generated_at"] in footer
+    assert payload["model"]["version"] in footer
+    build = browser_page.locator('meta[name="wcdecider-build"]').get_attribute("content")
+    assert build
+    assert build[:12] in footer
+
+
+def test_mobile_missing_predictions_json_fails_visible_not_blank():
+    from playwright.sync_api import sync_playwright
+
+    with serve(SITE) as url, sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(
+            viewport={"width": 390, "height": 844},
+            is_mobile=True,
+            has_touch=True,
+        )
+        page_errors = []
+        page.on("pageerror", lambda error: page_errors.append(str(error)))
+        page.route(
+            "**/wc_june22_27_predictions.json",
+            lambda route: route.fulfill(status=404, body="missing"),
+        )
+        page.goto(url, wait_until="domcontentloaded")
+        page.wait_for_selector("#error:not(.hidden)", timeout=10000)
+        assert "Report data failed to load" in page.locator("#error").inner_text()
+        assert page.locator("#cards article").count() == 0
+        assert page.locator("#date-filter").is_disabled()
+        assert page.locator("#strength-filter").is_disabled()
+        assert page_errors == []
+        browser.close()
+
+
+def test_tampered_json_value_fails_closed_without_mobile_crash():
+    from playwright.sync_api import sync_playwright
+
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    payload["predictions"][0].setdefault("research", {}).setdefault(
+        "source_urls", []
+    )
+    payload["predictions"][0]["research"]["source_urls"] = ["not a valid url"]
+
+    with serve(SITE) as url, sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        page_errors = []
+        page.on("pageerror", lambda error: page_errors.append(str(error)))
+        page.route(
+            "**/wc_june22_27_predictions.json",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(payload),
+            ),
+        )
+        page.goto(url, wait_until="domcontentloaded")
+        page.wait_for_selector("#error:not(.hidden)", timeout=15000)
+        assert "Report data failed to load" in page.locator("#error").inner_text()
+        assert page.locator("#cards article").count() == 0
+        assert page_errors == []
+        browser.close()

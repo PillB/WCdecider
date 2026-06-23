@@ -179,6 +179,20 @@ fitting when the effective historical sample cannot support a credible
 chronological comparison. Model complexity is never adopted to satisfy a rival
 return claim.
 
+Deep/graph research candidates remain in the championship registry rather than
+in production. The current data can be viewed as a temporal graph of teams
+connected by timestamped match edges, but that representation is not sufficient
+evidence for a high-capacity temporal GNN. Promotion requires, at minimum:
+
+- 2,000+ timestamped fixtures;
+- roughly 30+ pre-event temporal edges per recurring team;
+- strictly pre-kickoff node/edge features;
+- nested walk-forward architecture and hyperparameter selection;
+- final untouched holdout not used for model choice;
+- calibration and proper-score superiority over simple baselines;
+- timestamp-verified closing odds before any ROI/CLV claim;
+- multiple-testing correction across searched architectures and policies.
+
 ### 1X2 structural model
 
 - Ratings are updated sequentially using verified elapsed results.
@@ -212,6 +226,12 @@ TGNN, GraphMixer-like, and tabular MLP research implementations remain excluded
 from production because their chronological Brier scores were materially worse
 than calibrated Elo/market baselines. Complexity is adopted only when it beats a
 simpler baseline on untouched data and calibration.
+
+Registered research-track families include CatBoost/LightGBM tabular models,
+hierarchical dynamic Poisson, Dixon-Coles, Temporal Graph Networks, TGAT-style
+dynamic graph attention, GraphMixer/DyGFormer-style efficient temporal graph
+models, and sequence transformers. They are documented for student learning and
+future data expansion, not claimed as current production winners.
 
 ### Required metrics
 
@@ -375,6 +395,14 @@ exact score. Explanation fields are output-only and cannot change the model.
   price check, stake, and slip verification.
 - Dynamic load or audit failures are visible and block cards.
 - The workflow diagram represents only implemented components.
+- The report shell must render safely before JSON arrives: filters remain
+  disabled, a bilingual loading skeleton is visible, no card rendering occurs,
+  and late/failed/mobile fetches produce a visible error instead of a blank
+  page or JavaScript exception.
+- The footer must show last updated, model/report version, and exact build SHA
+  marker after verified JSON loads, so users can verify freshness on mobile.
+- Card rendering should degrade gracefully for future optional field drift while
+  the audit gate still blocks missing or tampered prediction/metrics leaves.
 
 ## 13. Datapoint governance
 
@@ -428,6 +456,9 @@ set with the audit artifact before displaying audit PASS.
 - mobile overflow;
 - metric tooltip hover and keyboard focus;
 - tooltip viewport bounds and fixed positioning;
+- delayed mobile JSON load with no page errors;
+- missing/tampered JSON fail-closed with visible error and no cards;
+- footer last-updated, version, and build marker;
 - S/100 app totals;
 - per-match stake, return, and six-step flow parity.
 
