@@ -112,6 +112,11 @@
 - 289 | Pass final owner and replication re-audits | Owner approved final provenance hash, strict nested chronology, 666/222/0 coverage, 108 ranks, probability/fair/EV arithmetic, all-HALT/bankroll semantics, source hashes, warnings, and 24 tests. Replicator approved two full seven-stage builds with 19/19 byte-identical artifacts and exact 31,319-leaf parity | Success
 - 290 | Install fresh release-specific governance evidence | Review registry now records four distinct current owner, replication-1, replication-2/statistics, and editor IDs/evidence for the historical/championship/top-four release | Success
 - 291 | Run approved complete local release suite | Regenerated zero-blocked 31,319-field manifest, report, and site; complete unit/integration/determinism/corruption/black-box/Chromium/bilingual suite passed 79 with one expected pre-deployment live skip in 263.90s | Success
+- 292 | Publish reviewed branch and open PR | Created commit `ac82bf2`, pushed `codex/historical-odds-top4-championship`, and opened PR #1 with exact scope, validation, and credential-bound limitation; unrelated user artifacts remained excluded | Success
+- 293 | Merge approved PR to main | Marked PR #1 ready and merged it; local and remote main now point to `86d83cff61820123b7a1267f3b9936078ce6d644`, triggering Pages CI/CD | Success
+- 294 | First exact-run lookup after merge | Local SHA confirmation succeeded, but GitHub API lookup encountered a transient connection failure; no CI conclusion was inferred | Diverged
+- 295 | Complete exact merged-release CI/CD | Delayed retry confirmed GitHub Actions run `28035517751` completed successfully for exact SHA `86d83cff61820123b7a1267f3b9936078ce6d644`, including build, tests, Pages deployment, and live validation | Success
+- 296 | Independently verify public release | Live HTML contains exact SHA; public artifacts contain 32 fixtures, 108 ranks (20×3 and 12×4), 31,319 PASS audit rows, 222 proxy events/666 selections/zero eligible closes, market-proxy championship winner, and top-rank/championship/tooltip UI markers | Success
 - 001 | READ existing state and inspect workspace baseline | Previous state described June 17–21 as complete; current HEAD is `8d6a9e2f838321bf18b1a17c4440b4a1acbf7508`; Python 3.9.6; worktree contains user-owned removal of older screenshots, 216 new screenshots, and unrelated untracked documentation/artifacts | Success
 - 002 | Read GitHub publish and CI skills | Publish workflow requires explicit staging in mixed worktree; CI inspection uses `gh`; final deployment will stage only reviewed in-scope artifacts and will not suppress failures | Success
 - 003 | Replace stale state with June 22–27 execution objective | State now records 32-match scope, integrity constraints, dirty-tree ownership, and required gates | Success
@@ -361,6 +366,6 @@
 - `AGENT.md` and `requirements.md` were updated to the implemented BEST_AVAILABLE policy, current expanded-market scope, four-role datapoint governance, and no-certainty/no-unvalidated-profitability constraints.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Publish the reviewed release through an isolated GitHub branch/PR, merge or deploy through the repository workflow, and validate the exact live SHA.
+- [ ] Active Step: Commit the final deployment-validation ledger and verify that ledger-only exact revision deploys successfully.
 - [ ] Next Step: Report deployed top-four/championship/historical artifacts and the credential-bound timestamped-close limitation.
 - [ ] Future Milestone: Populate timestamp-verified historical closes after authenticated provider access and rerun the frozen profitability gate; until then the warning remains.
