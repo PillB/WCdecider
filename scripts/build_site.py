@@ -50,8 +50,9 @@ def build() -> Path:
         ROOT / "wc_research_june22_27.csv",
         ROOT / "wc_june22_27_datapoint_audit.csv",
         ROOT / "wc_june22_27_datapoint_audit_summary.json",
-        ROOT / "historical_odds_coverage.json",
-        ROOT / "historical_odds_provenance.txt",
+        ROOT / "historical_closing_odds_canonical_coverage.json",
+        ROOT / "historical_closing_odds_canonical_provenance.txt",
+        ROOT / "historical_closing_odds_sources.json",
         ROOT / "model_championship_results.json",
         ROOT / "HISTORICAL_ODDS_MODEL_CHAMPIONSHIP_PLAN.md",
     ]

@@ -1,25 +1,25 @@
 {
-  "git_commit": "PENDING_RESEARCH_RISK_RELEASE",
+  "git_commit": "PENDING_HISTORICAL_ODDS_VISUALIZATION_RELEASE",
   "global": {
     "owner": {
-      "id": "019ef61d-55cd-7fe1-b1e7-188d69621ee9",
+      "id": "019ef7e7-f585-7a10-a681-e61814312147",
       "status": "PASS",
-      "evidence": "Release-current ML/statistics audit verified all five risk thresholds, zero threshold/monotonicity/anomaly-promotion violations, 42 exploratory-vs-balanced differences, Dixon-Coles shadow stress matrices, paired identical-candidate HALT review, disabled automatic promotion, exact pipeline hash, and 58,940 audited leaves. This PASS does not establish robustness or profitability."
+      "evidence": "Exact owner/model review passed after 101 tests plus one expected live skip. It verified accurate production Poisson and zero-weight shadow Dixon-Coles representation, nested chronological folds, paired-bootstrap uncertainty, public/restricted odds separation, and truthful zero-eligible-close profitability blocking."
     },
     "replication_1": {
-      "id": "019ef61d-572d-7a43-baea-9ab642f3bd9a",
+      "id": "019ef7ca-b226-7671-afed-000813f56e72",
       "status": "PASS",
-      "evidence": "Release-current data/code replication produced two exact prediction rebuilds, verified 58,940 unique JSON leaves, 10,763 research-recommendation audit rows linked to research probabilities plus Dixon-Coles rho with zero production-probability leakage, all 547 paired candidates, 18 sensitivity-review leads, 756 odds/screenshot hashes, report/site parity, focused tests, and clean diff."
+      "evidence": "Independent replication rebuilt corrected public and restricted datasets deterministically. Both 142,349-row public CSVs match SHA-256 3faae9c180ee1eeb0702aaca924877f9983bb0d09431410f349a15d1bf935033; 1,311 restricted rows remain private; all 38 restricted fixtures reconcile to public IDs; 13 historical tests passed."
     },
     "replication_2": {
-      "id": "019ef64d-2782-7603-bd74-d80d7c21064e",
+      "id": "019ef7ca-8adf-7513-a5c7-918245349abd",
       "status": "PASS",
-      "evidence": "Independent replication-2/statistics review verified byte-identical reconstruction, monotonic distinct risk thresholds, no HALT override, isolated Dixon-Coles shadow stress, valid paired identical-candidate review, correct research lineage, bilingual structural parity, and the exact-tree suite result of 92 passed with one expected live skip. Profitability, ROI, and CLV remain unvalidated."
+      "evidence": "Independent source/statistics audit verified UK-local DST conversion, full 38-fixture cross-provider ID reconciliation, zero quarter-handicap settlement mismatches, 25 public plus 2 restricted source descriptors, zero malformed prices, no restricted rows in public CSV, Pinnacle staleness warnings, and zero primary-eligible closes."
     },
     "editor": {
-      "id": "019ef61d-5652-74b1-97d5-48768e5bde2c",
+      "id": "019ef7cf-8760-7c71-87bf-bbd475b7f10f",
       "status": "PASS",
-      "evidence": "Release-current editor/UIUX audit verified 58,940/58,940 structural rows, prediction/metrics/site hashes, no stale audit count, localized risk selectors, BTTS yes/no, diagnostics and diagram terms, numeric novice risk explanations, research recommendations, mobile loading/error behavior, tooltip safety, and focused browser tests."
+      "evidence": "Exact visualization/editor audit verified distinct solid production and dashed research diagrams, JSON-matched production/shadow/fold/bootstrap metrics, 8,908-event and 142,349-row public coverage, explicit unvalidated ROI/CLV, full Spanish localization, mobile bounds, reduced motion, accessibility, and 18 browser tests."
     }
   },
   "fixtures": {}

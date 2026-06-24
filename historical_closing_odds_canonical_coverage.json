@@ -1,0 +1,39 @@
+{
+  "by_bookmaker": {
+    "bet365": 62350,
+    "betfair_exchange": 23749,
+    "pinnacle": 56250
+  },
+  "by_competition": {
+    "English Premier League": 30550,
+    "French Ligue 1": 26560,
+    "German Bundesliga": 24385,
+    "Italian Serie A": 30499,
+    "Spanish La Liga": 30355
+  },
+  "by_evidence_class": {
+    "published_close_without_quote_timestamp": 142349
+  },
+  "by_market_family": {
+    "1x2": 61065,
+    "asian_handicap": 40706,
+    "total_goals": 40578
+  },
+  "by_provider": {
+    "Football-Data": 142349
+  },
+  "close_window_minutes": 120.0,
+  "events": 8908,
+  "primary_validation_events": 0,
+  "primary_validation_rows": 0,
+  "profitability_validation_status": "blocked_no_timestamp_verified_closing_rows",
+  "restricted_validation_sources": {
+    "events": 38,
+    "included_in_public_csv": false,
+    "provider": "The Odds API",
+    "reason": "Provider terms prohibit downloadable redistribution.",
+    "rows": 1311
+  },
+  "rows": 142349,
+  "schema_version": "historical_closing_odds_v1"
+}

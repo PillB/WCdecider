@@ -1,21 +1,21 @@
 {
   "artifact": "wc_june22_27_datapoint_audit.csv",
-  "artifact_bytes": 66358072,
+  "artifact_bytes": 67313960,
   "artifact_counts": {
-    "wc_june22_27_model_metrics.json": 330,
+    "wc_june22_27_model_metrics.json": 342,
     "wc_june22_27_predictions.json": 58610
   },
-  "artifact_sha256": "be780b23e1363477056625f4cb38e0fd07b1bf97fe01e9662b40e829d773d723",
-  "audit_paths_sha256": "5291fec4e67830cedfe92417fd8770e8dfef6b4b0cb50baa4146e90b99c7b499",
-  "audit_rows": 58940,
+  "artifact_sha256": "bcd1f1997dba9ea25cdadb7bc7ef20e11f664de4301e0c703b745db202608f46",
+  "audit_paths_sha256": "f4f2b163ccfbff6f59bb20505e95858dca63da784dfb7663471a2918b6baefcf",
+  "audit_rows": 58952,
   "blocked_rows": 0,
-  "expected_json_leaf_count": 58940,
-  "expected_paths_sha256": "5291fec4e67830cedfe92417fd8770e8dfef6b4b0cb50baa4146e90b99c7b499",
+  "expected_json_leaf_count": 58952,
+  "expected_paths_sha256": "f4f2b163ccfbff6f59bb20505e95858dca63da784dfb7663471a2918b6baefcf",
   "final_status": "PASS",
-  "metrics_sha256": "9b7cd673b0cb8a4f79792551606497f178fde440db7bded99fc686991fb4be9a",
+  "metrics_sha256": "7b5dd8ce1838f0231359793c22f44ea7ef92dac6df2de967e7ddb6d3e44f1bfd",
   "predictions_sha256": "0509a3acd04052dbd06eb0733ef220665bd031cac024d8736141b33d21484dfa",
   "schema_version": "1.0",
   "status_counts": {
-    "PASS": 58940
+    "PASS": 58952
   }
 }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="be780b23e1363477056625f4cb38e0fd07b1bf97fe01e9662b40e829d773d723">
+  <meta name="wcdecider-audit-sha256" content="bcd1f1997dba9ea25cdadb7bc7ef20e11f664de4301e0c703b745db202608f46">
   <title>WCdecider • June 22–27, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -18,6 +18,10 @@
       white-space:normal;box-shadow:0 12px 30px #0008;pointer-events:none}
     .tip:hover>span,.tip:focus>span{display:block}
     .card-anchor{scroll-margin-top:6rem}
+    .research-path{stroke:#a78bfa;stroke-dasharray:10 7;animation:research-flow 1.8s linear infinite}
+    .research-node{stroke:#8b5cf6!important;fill:#2e1065!important}
+    @keyframes research-flow{to{stroke-dashoffset:-34}}
+    @media (prefers-reduced-motion:reduce){.research-path{animation:none}}
   </style>
 </head>
 <body class="lang-en bg-slate-950 text-slate-200 min-h-screen">
@@ -58,7 +62,8 @@
           <div id="summary" class="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3"></div>
           <div id="model-evidence" class="mt-4 rounded-2xl border border-slate-700 bg-slate-950/70 p-4 text-sm text-slate-300"></div>
         </div>
-        <svg viewBox="0 0 640 430" role="img" aria-labelledby="flow-title flow-desc" class="w-full">
+        <div>
+        <svg id="production-workflow" viewBox="0 0 640 430" role="img" aria-labelledby="flow-title flow-desc" class="w-full">
           <title id="flow-title"><tspan class="en">WCdecider model workflow</tspan><tspan class="es">Flujo del modelo WCdecider</tspan></title>
           <desc id="flow-desc"><tspan class="en">Sources flow through immutable provenance, chronological model championship, production Poisson scoring, research-gated Dixon-Coles shadow scoring, market shrinkage, five risk lenses, four-role audit, JSON, and a defensive mobile report shell.</tspan><tspan class="es">Las fuentes pasan por procedencia inmutable, campeonato cronológico de modelos, marcador Poisson de producción, Dixon-Coles sombra limitado por investigación, ajuste a mercado, cinco lentes de riesgo, auditoría de cuatro roles, JSON y una página móvil defensiva.</tspan></desc>
           <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#34d399"/></marker></defs>
@@ -89,7 +94,47 @@
             <path d="M475 109 V132"/><path d="M475 206 V229"/><path d="M475 303 C475 330 475 338 550 364"/><path d="M280 303 C280 330 280 338 205 364"/>
           </g>
         </svg>
+        <svg id="research-workflow" viewBox="0 0 640 430" role="img" aria-labelledby="research-flow-title research-flow-desc" class="hidden w-full">
+          <title id="research-flow-title"><tspan class="en">Research-mode model workflow</tspan><tspan class="es">Flujo del modelo en modo investigación</tspan></title>
+          <desc id="research-flow-desc"><tspan class="en">Dashed violet paths mark research-only components that are evaluated but not promoted to production.</tspan><tspan class="es">Las rutas violetas discontinuas marcan componentes solo de investigación, evaluados pero no promovidos a producción.</tspan></desc>
+          <defs><marker id="research-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#a78bfa"/></marker></defs>
+          <g fill="#0f172a" stroke="#334155" stroke-width="2">
+            <rect x="20" y="30" width="145" height="62" rx="15"/>
+            <rect x="20" y="125" width="145" height="62" rx="15"/>
+            <rect x="20" y="220" width="145" height="62" rx="15"/>
+            <rect class="research-node" x="220" y="30" width="175" height="62" rx="15"/>
+            <rect class="research-node" x="220" y="125" width="175" height="62" rx="15"/>
+            <rect class="research-node" x="220" y="220" width="175" height="62" rx="15"/>
+            <rect class="research-node" x="450" y="78" width="165" height="72" rx="15"/>
+            <rect class="research-node" x="450" y="205" width="165" height="72" rx="15"/>
+            <rect x="220" y="335" width="395" height="58" rx="15"/>
+          </g>
+          <g fill="#e2e8f0" font-family="system-ui" font-size="13" text-anchor="middle">
+            <text x="92" y="56"><tspan class="en">Chronological data</tspan><tspan class="es">Datos cronológicos</tspan></text><text x="92" y="76">253 + 40</text>
+            <text x="92" y="151"><tspan class="en">Score histories</tspan><tspan class="es">Historial de goles</tspan></text><text x="92" y="171"><tspan class="en">strictly pre-match</tspan><tspan class="es">solo prepartido</tspan></text>
+            <text x="92" y="246"><tspan class="en">Market evidence</tspan><tspan class="es">Evidencia de mercado</tspan></text><text x="92" y="266"><tspan class="en">same sourced odds</tspan><tspan class="es">mismas cuotas fuente</tspan></text>
+            <text x="307" y="56">Dixon–Coles ρ = −0.15</text><text x="307" y="76"><tspan class="en">low-score correction</tspan><tspan class="es">corrección de pocos goles</tspan></text>
+            <text x="307" y="151"><tspan class="en">Stress ensemble</tspan><tspan class="es">Ensamble de estrés</tspan></text><text x="307" y="171"><tspan class="en">4 DC scenario grids</tspan><tspan class="es">4 matrices DC</tspan></text>
+            <text x="307" y="246"><tspan class="en">Shadow recommendations</tspan><tspan class="es">Recomendaciones sombra</tspan></text><text x="307" y="266"><tspan class="en">paired candidate review</tspan><tspan class="es">revisión por pares</tspan></text>
+            <text x="532" y="106"><tspan class="en">Paired bootstrap</tspan><tspan class="es">Bootstrap pareado</tspan></text><text x="532" y="126"><tspan class="en">CI crosses zero</tspan><tspan class="es">IC cruza cero</tspan></text>
+            <text x="532" y="233"><tspan class="en">Promotion gate</tspan><tspan class="es">Puerta de promoción</tspan></text><text x="532" y="253"><tspan class="en">research only</tspan><tspan class="es">solo investigación</tspan></text>
+            <text x="417" y="360"><tspan class="en">Dashed path = evaluated challenger, zero production weight</tspan><tspan class="es">Ruta discontinua = retador evaluado, peso cero en producción</tspan></text>
+            <text x="417" y="379"><tspan class="en">Requires secure proper-score gain + timestamped closing-line validation</tspan><tspan class="es">Requiere mejora segura + validación con cierres temporales</tspan></text>
+          </g>
+          <g class="research-path" stroke-width="3" fill="none" marker-end="url(#research-arrow)">
+            <path d="M165 61 H220"/><path d="M165 156 H220"/><path d="M165 251 H220"/>
+            <path d="M395 61 C430 61 420 110 450 110"/><path d="M395 156 H450"/>
+            <path d="M395 251 H450"/><path d="M532 150 V205"/><path d="M532 277 V335"/>
+          </g>
+        </svg>
+        <p class="mt-2 text-center text-xs text-slate-400"><span class="en">Solid green paths are production. Dashed violet paths are research-only challengers with zero production weight.</span><span class="es">Las rutas verdes continuas son producción. Las violetas discontinuas son retadores de investigación con peso cero.</span></p>
+        </div>
       </div>
+    </section>
+
+    <section class="mb-8 grid xl:grid-cols-2 gap-5">
+      <div id="performance-viz" class="rounded-3xl border border-slate-800 bg-slate-900 p-5"></div>
+      <div id="profitability-viz" class="rounded-3xl border border-slate-800 bg-slate-900 p-5"></div>
     </section>
 
     <section class="mb-8 grid lg:grid-cols-[1fr_1fr] gap-5">
@@ -252,6 +297,43 @@ function renderSummary(rows){
  <p class="mt-2 text-violet-200"><span class="en">Research-mode toggle: ${escapeHtml(METRICS.research_mode_policy?.selected_candidate||'not available')} is available as a gated shadow view. Production recommendations remain unchanged unless a candidate passes the published promotion gate.</span><span class="es">Toggle de modo investigación: ${escapeHtml(METRICS.research_mode_policy?.selected_candidate||'no disponible')} está disponible como vista sombra limitada. Las recomendaciones de producción no cambian salvo que un candidato supere la puerta de promoción publicada.</span></p>
  <p class="mt-2"><span class="en">Historical odds inventory: ${METRICS.historical_closing_odds.events} events and ${METRICS.historical_closing_odds.rows} selection rows retained as timestamp-unknown proxies; primary timestamp-verified validation rows: ${METRICS.historical_closing_odds.primary_validation_rows}.</span><span class="es">Inventario histórico de cuotas: ${METRICS.historical_closing_odds.events} eventos y ${METRICS.historical_closing_odds.rows} filas de selecciones conservadas como proxies sin hora verificable; filas primarias verificadas por tiempo: ${METRICS.historical_closing_odds.primary_validation_rows}.</span></p>
  <p class="mt-2 text-amber-200"><span class="en">The report ranks up to four distinct sourced picks per match. Genuine timestamped historical closes are not yet available, so profitability, CLV, ROI and staking tiers remain unvalidated.</span><span class="es">El informe ordena hasta cuatro opciones distintas con fuente por partido. Aún no hay cierres históricos genuinos con marca de tiempo, por lo que rentabilidad, CLV, ROI y niveles de apuesta siguen sin validarse.</span></p>`;
+}
+function comparisonBar(label,value,maxValue,color,detail=''){
+ const width=Math.max(2,Math.min(100,(Number(value)/Number(maxValue))*100));
+ return `<div class="mb-3"><div class="flex justify-between gap-3 text-xs"><span>${label}</span><span class="font-mono">${Number(value).toFixed(4)}</span></div><div class="mt-1 h-3 rounded-full bg-slate-800 overflow-hidden"><div class="h-full rounded-full ${color}" style="width:${width}%"></div></div>${detail?`<p class="mt-1 text-[11px] text-slate-500">${detail}</p>`:''}</div>`;
+}
+function renderValidationVisuals(){
+ const score=METRICS.score_market_calibration;
+ const champ=METRICS.model_championship;
+ const folds=champ.nested_outer_championship.folds||[];
+ const foldRows=folds.map(f=>`<div class="grid grid-cols-[4.5rem_1fr_4rem] items-center gap-2 text-xs"><span><span class="en">Fold ${f.fold}</span><span class="es">Pliegue ${f.fold}</span></span><div class="h-2 rounded bg-slate-800 overflow-hidden"><div class="h-full bg-cyan-500" style="width:${Math.min(100,Number(f.metrics.market_devigged_proxy.log_loss)/1.2*100)}%"></div></div><span class="font-mono">${Number(f.metrics.market_devigged_proxy.log_loss).toFixed(3)}</span></div>`).join('');
+ $('#performance-viz').innerHTML=`<h2 class="text-xl font-black text-white"><span class="en">Prediction performance and model comparison</span><span class="es">Rendimiento predictivo y comparación de modelos</span></h2>
+  <p class="mt-2 text-xs text-slate-400"><span class="en">Lower is better. Comparisons use chronological folds and proper scoring rules, not accuracy alone.</span><span class="es">Menor es mejor. Las comparaciones usan pliegues cronológicos y reglas de puntuación propias, no solo exactitud.</span></p>
+  <div class="production-performance mt-4">
+   <div class="mb-2 text-sm font-semibold text-emerald-300"><span class="en">Production score model</span><span class="es">Modelo de goles de producción</span></div>
+   ${comparisonBar('<span class="en">Poisson score NLL</span><span class="es">NLL de marcador Poisson</span>',score.production_holdout.score_nll,3.4,'bg-emerald-500')}
+   ${comparisonBar('<span class="en">Over 2.5 Brier</span><span class="es">Brier Más de 2,5</span>',score.production_holdout.over_2_5_brier,0.32,'bg-cyan-500')}
+   ${comparisonBar('<span class="en">BTTS Brier</span><span class="es">Brier ambos marcan</span>',score.production_holdout.btts_brier,0.32,'bg-cyan-500')}
+  </div>
+  <div class="research-performance hidden mt-4">
+   <div class="mb-2 text-sm font-semibold text-violet-300"><span class="en">Research challenger: Dixon–Coles</span><span class="es">Retador de investigación: Dixon–Coles</span></div>
+   ${comparisonBar('<span class="en">Dixon–Coles score NLL</span><span class="es">NLL de marcador Dixon–Coles</span>',score.shadow_holdout.score_nll,3.4,'bg-violet-500',`Δ ${Number(score.shadow_paired_bootstrap.score_nll.challenger_minus_production_mean).toFixed(4)} · 95% CI [${Number(score.shadow_paired_bootstrap.score_nll.ci_95_lower).toFixed(4)}, ${Number(score.shadow_paired_bootstrap.score_nll.ci_95_upper).toFixed(4)}]`)}
+   ${comparisonBar('<span class="en">Over 2.5 Brier</span><span class="es">Brier Más de 2,5</span>',score.shadow_holdout.over_2_5_brier,0.32,'bg-violet-500')}
+   ${comparisonBar('<span class="en">BTTS Brier</span><span class="es">Brier ambos marcan</span>',score.shadow_holdout.btts_brier,0.32,'bg-violet-500',`Δ ${Number(score.shadow_paired_bootstrap.btts_brier.challenger_minus_production_mean).toFixed(4)} · 95% CI [${Number(score.shadow_paired_bootstrap.btts_brier.ci_95_lower).toFixed(4)}, ${Number(score.shadow_paired_bootstrap.btts_brier.ci_95_upper).toFixed(4)}]`)}
+   <p class="mt-3 rounded-xl border border-violet-800 bg-violet-950/30 p-3 text-xs text-violet-100"><span class="en">The challenger is slightly better on point estimates, but both confidence intervals cross zero. It therefore receives zero production weight.</span><span class="es">El retador mejora ligeramente las estimaciones puntuales, pero ambos intervalos cruzan cero. Por eso recibe peso cero en producción.</span></p>
+  </div>
+  <details class="mt-4" open><summary class="cursor-pointer text-sm font-semibold"><span class="en">Nested chronological cross-validation</span><span class="es">Validación cruzada cronológica anidada</span></summary><div class="mt-3 space-y-2">${foldRows}</div><p class="mt-2 text-[11px] text-slate-500"><span class="en">Bars show market-proxy log loss by untouched outer fold. Fold boundaries are time ordered; no future match enters training.</span><span class="es">Las barras muestran log loss del proxy de mercado por pliegue externo intacto. Los límites son temporales; ningún partido futuro entra al entrenamiento.</span></p></details>`;
+ const odds=METRICS.historical_closing_odds;
+ $('#profitability-viz').innerHTML=`<h2 class="text-xl font-black text-white"><span class="en">Profitability evidence</span><span class="es">Evidencia de rentabilidad</span></h2>
+  <div class="mt-4 grid grid-cols-2 gap-3">${metric('<span class="en">Historical events</span><span class="es">Eventos históricos</span>',odds.events)}${metric('<span class="en">Timestamped closes</span><span class="es">Cierres con hora</span>',odds.primary_validation_events)}</div>
+  <div class="mt-4 rounded-2xl border border-amber-800 bg-amber-950/25 p-4">
+   <div class="text-lg font-black text-amber-200"><span class="en">ROI / CLV: not estimable yet</span><span class="es">ROI / CLV: aún no estimable</span></div>
+   <p class="mt-2 text-sm text-slate-300"><span class="en">The release has no timestamp-verified closing prices in its audited model inputs. Showing a profit curve, Sharpe ratio, drawdown, or expected return would manufacture evidence.</span><span class="es">La versión no tiene precios de cierre con hora verificada en sus entradas auditadas. Mostrar curva de beneficio, Sharpe, drawdown o retorno esperado fabricaría evidencia.</span></p>
+  </div>
+  <div class="mt-4 space-y-2 text-xs text-slate-400">
+   <p><span class="en">Promotion requires executable pre-kickoff prices, vig/commission, exact settlement, untouched chronological policy evaluation, uncertainty intervals, and multiplicity control.</span><span class="es">La promoción exige precios ejecutables prepartido, margen/comisión, liquidación exacta, evaluación cronológica intacta, intervalos de incertidumbre y control de multiplicidad.</span></p>
+   <p class="research-performance hidden text-violet-300"><span class="en">Research mode changes model probabilities and rankings, not the profitability evidence. Its ROI remains equally unvalidated.</span><span class="es">El modo investigación cambia probabilidades y rankings, no la evidencia de rentabilidad. Su ROI sigue igualmente sin validar.</span></p>
+  </div>`;
 }
 function renderBankrollPlan(){
  const plan=DATA.bankroll_simulation;
@@ -544,6 +626,11 @@ function applyRiskProfile(){
 function setResearchMode(enabled){
  document.body.classList.toggle('research-on',enabled);
  document.querySelectorAll('.research-panel').forEach(panel=>panel.classList.toggle('hidden',!enabled));
+ document.querySelectorAll('.production-performance').forEach(panel=>panel.classList.toggle('hidden',enabled));
+ document.querySelectorAll('.research-performance').forEach(panel=>panel.classList.toggle('hidden',!enabled));
+ const productionWorkflow=$('#production-workflow'),researchWorkflow=$('#research-workflow');
+ if(productionWorkflow)productionWorkflow.classList.toggle('hidden',enabled);
+ if(researchWorkflow)researchWorkflow.classList.toggle('hidden',!enabled);
  const button=$('#research-toggle');
  if(button){
   button.setAttribute('aria-pressed',enabled?'true':'false');
@@ -582,6 +669,7 @@ async function load(){
   setText('#site-version',DATA.model?.version||METRICS.version||DATA.schema_version||'unknown');
   const build=$('#build-sha'); if(build&&build.textContent.length>12)build.textContent=build.textContent.slice(0,12);
   renderSummary(DATA.predictions);
+  renderValidationVisuals();
   renderBankrollPlan();
   setHtml('#cards',DATA.predictions.map(card).join(''));
   bindTips();
