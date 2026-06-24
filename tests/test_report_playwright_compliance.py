@@ -273,12 +273,20 @@ def test_research_mode_toggle_reveals_gated_shadow_model(page):
     assert toggle.is_enabled()
     assert toggle.get_attribute("aria-pressed") == "false"
     assert browser_page.locator(".research-panel").first.is_hidden()
+    assert browser_page.locator("#production-workflow").is_visible()
+    assert browser_page.locator("#research-workflow").is_hidden()
+    assert browser_page.locator(".production-performance").first.is_visible()
+    assert browser_page.locator(".research-performance").first.is_hidden()
     toggle.click()
     assert toggle.get_attribute("aria-pressed") == "true"
     panel = browser_page.locator(
         f'[data-fixture-id="{first["fixture_id"]}"] .research-panel'
     )
     assert panel.is_visible()
+    assert browser_page.locator("#production-workflow").is_hidden()
+    assert browser_page.locator("#research-workflow").is_visible()
+    assert browser_page.locator(".production-performance").first.is_hidden()
+    assert browser_page.locator(".research-performance").first.is_visible()
     text = panel.inner_text()
     assert first["research_mode"]["selected_candidate"] in text
     assert "not production" in text
@@ -286,8 +294,36 @@ def test_research_mode_toggle_reveals_gated_shadow_model(page):
     research_ranked = panel.locator("[data-research-recommendation-rank]")
     assert research_ranked.count() == first["research_mode"]["top_recommendations_available"]
     assert first["research_mode"]["top_recommendations"][0]["selection_original"] in text
+    research_workflow = browser_page.locator("#research-workflow")
+    assert research_workflow.locator(".research-path").count() == 1
+    assert "CI crosses zero" in research_workflow.text_content()
     toggle.click()
     assert browser_page.locator(".research-panel").first.is_hidden()
+
+
+def test_performance_and_profitability_visuals_match_metrics(page):
+    browser_page, _ = page
+    metrics = json.loads(
+        (SITE / "wc_june22_27_model_metrics.json").read_text(encoding="utf-8")
+    )
+    performance = browser_page.locator("#performance-viz").inner_text()
+    profitability = browser_page.locator("#profitability-viz").inner_text()
+    production = metrics["score_market_calibration"]["production_holdout"]
+    assert f"{production['score_nll']:.4f}" in performance
+    assert f"{production['over_2_5_brier']:.4f}" in performance
+    assert f"{production['btts_brier']:.4f}" in performance
+    for fold in metrics["model_championship"]["nested_outer_championship"]["folds"]:
+        assert f"{fold['metrics']['market_devigged_proxy']['log_loss']:.3f}" in performance
+    assert str(metrics["historical_closing_odds"]["events"]) in profitability
+    assert str(metrics["historical_closing_odds"]["primary_validation_events"]) in profitability
+    assert "ROI / CLV: not estimable yet" in profitability
+    browser_page.locator("#lang").click()
+    spanish = browser_page.locator("#performance-viz").inner_text()
+    assert "Brier Más de 2,5" in spanish
+    assert "Brier ambos marcan" in spanish
+    assert "Pliegue 1" in spanish
+    assert "Over 2.5 Brier" not in spanish
+    assert "Fold 1" not in spanish
 
 
 def test_risk_aversion_lens_switches_profile_panels(page):

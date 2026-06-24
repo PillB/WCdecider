@@ -34,8 +34,8 @@ jobs:
           pip install -r requirements-ci.txt
           playwright install --with-deps chromium
 
-      - name: Build public historical-odds proxy inventory
-        run: python3 historical_odds_pipeline.py build
+      - name: Build evidence-graded historical odds corpus
+        run: python3 historical_odds_pipeline.py build-canonical
 
       - name: Run nested chronological model championship
         run: python3 model_championship.py

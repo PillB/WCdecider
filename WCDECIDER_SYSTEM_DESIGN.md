@@ -163,9 +163,22 @@ after access and redistribution rights are confirmed. Raw restricted-provider
 payloads remain private; the public repository contains acquisition code,
 schemas, hashes, coverage, and derived summaries.
 
-`historical_odds_pipeline.py` enforces this separation. The current public
-inventory has 222 events and 666 1X2 selection rows, all explicitly ineligible
-legacy proxies. Consequently, profitability remains unvalidated.
+`historical_odds_pipeline.py` enforces this separation. The current
+redistribution-safe public corpus has 142,349 Football-Data closing-column rows
+over 8,908 events with DST-aware kickoff conversion, cross-provider fixture
+IDs, and split quarter-handicap settlement. Restricted Odds API samples remain
+under ignored `private_data/` and are excluded from the downloadable corpus.
+No row meets the frozen timestamp-verified 120-minute close gate, so
+profitability remains unvalidated.
+
+### Model-comparison visualization
+
+The default report diagram uses solid green paths for production components.
+Research mode replaces it with a distinct diagram using dashed violet paths
+for challengers with zero production weight. Performance panels are generated
+from metrics JSON and show proper scores, nested chronological folds,
+paired-bootstrap differences, and confidence intervals. Profitability panels
+show missing evidence instead of synthetic ROI, CLV, Sharpe, or profit curves.
 
 ### Nested model championship
 

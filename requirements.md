@@ -30,6 +30,13 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R2.11: Model championships use nested rolling-origin selection and an untouched final holdout; ROI cannot select the champion.
 - R2.12: High-capacity graph/neural candidates require adequate effective sample size and must beat simple baselines securely before production use.
 - R2.13: Temporal GNN, graph-mixer, dynamic graph attention, and sequence-transformer candidates require a published promotion gate before production use: at least 2,000 timestamped fixtures, enough repeated temporal edges per team, strictly pre-event features, nested walk-forward selection, untouched holdout superiority, calibration evidence, and closing-line validation before profitability claims.
+- R2.14: Historical odds ingestion preserves immutable raw files and hashes,
+  named bookmaker, source URL, retrieval time, market/line/selection contract,
+  and evidence class. Published closing columns without quote times remain
+  secondary evidence.
+- R2.15: A timestamped fixed-odds snapshot is primary closing evidence only
+  when complete, strictly before kickoff, and no more than 120 minutes before
+  kickoff. Older snapshots remain pre-event observations.
 - R2.14: Research mode may expose the best currently feasible gated shadow model, but it must be off by default, clearly labeled non-production, and unable to mutate production recommendations or staking outputs.
 
 ## R3 — Safety and classification

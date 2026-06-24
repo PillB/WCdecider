@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 METRICS = ROOT / "wc_june22_27_model_metrics.json"
 CHAMPIONSHIP = ROOT / "model_championship_results.json"
-COVERAGE = ROOT / "historical_odds_coverage.json"
+COVERAGE = ROOT / "historical_closing_odds_canonical_coverage.json"
 PROVENANCE = ROOT / "wc_june22_27_provenance.txt"
 
 

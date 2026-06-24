@@ -30,7 +30,8 @@ Done conditions:
 
 - [ ] Implement authenticated The Odds API historical snapshot acquisition.
 - [ ] Implement optional Betfair historical stream ingestion.
-- [ ] Implement Football-Data proxy ingestion in a physically separate table.
+- [x] Implement Football-Data closing-column ingestion in a physically separate table.
+- [x] Acquire official The Odds API public historical samples as a second provider.
 - [ ] Save immutable raw payloads outside public deployment artifacts when
   redistribution is restricted.
 
@@ -40,6 +41,13 @@ Done conditions:
 2. Re-running normalization from the same raw files is deterministic.
 3. Missing credentials fail with a clear blocked status and never generate
    synthetic odds.
+
+Current public result: 25 Football-Data files produce 142,349 rows across 8,908
+events. Football-Data rows are provider-published closing columns without row
+quote timestamps. Two official The Odds API samples are retained only in
+ignored private validation storage: 1,311 rows over 38 overlapping events,
+timestamped at least 695 minutes before kickoff. Zero rows are primary
+closing-line eligible under the frozen 120-minute gate.
 
 ## Phase 2 — Canonical closing-odds dataset
 

@@ -17,6 +17,14 @@ PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/build_site.py
 python3 -m http.server 8765 --directory site
 ```
 
+Acquire and rebuild the evidence-graded historical odds corpus:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -B historical_odds_pipeline.py acquire-football-data
+PYTHONDONTWRITEBYTECODE=1 python3 -B historical_odds_pipeline.py acquire-the-odds-api-samples
+PYTHONDONTWRITEBYTECODE=1 python3 -B historical_odds_pipeline.py build-canonical
+```
+
 Open http://127.0.0.1:8765/.
 
 The pipeline requires:
@@ -50,7 +58,11 @@ Current limitations:
 
 - The production model is calibrated Elo 1X2; Poisson outputs are descriptive.
 - The 38-match untouched holdout shows forecast signal, not validated profitability.
-- Historical closing odds are incomplete, so ROI, CLV, staking tiers, and “safe” low-odds bets are not supported.
+- The redistribution-safe public corpus has 142,349 evidence-graded closing
+  rows across 8,908 events. A separate ignored private validation fixture has
+  1,311 timestamped pre-event rows from 38 events, all outside the frozen
+  120-minute closing window. ROI, CLV, staking tiers, and “safe” low-odds bets
+  remain unsupported.
 - Ranked recommendations are relative sourced comparisons, not evidence of
   profitability. `HALT` identifies material model-market disagreement.
 - June 24–27 forecasts are conditional and must be rerun after intervening results and material lineup/odds changes.

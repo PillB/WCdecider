@@ -53,6 +53,14 @@ The project is being consolidated around these canonical artifacts:
 - The browser loads `wc_june22_27_datapoint_audit_summary.json` for hash and
   leaf-path verification. The full audit CSV remains a reproducibility artifact
   and build gate, not a mobile startup dependency.
+- Research mode swaps the production workflow diagram for a separate
+  dashed-violet challenger diagram and swaps production proper-score panels for
+  Dixon-Coles point estimates, paired-bootstrap intervals, chronological fold
+  evidence, and the unchanged profitability limitation.
+- The historical-odds subsystem builds a redistribution-safe public corpus of
+  142,349 Football-Data closing-column rows over 8,908 events. Restricted Odds
+  API samples stay under ignored `private_data/`; they are validation fixtures,
+  not public dataset rows.
 
 ## Known Integrity Problems Being Removed
 
