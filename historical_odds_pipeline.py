@@ -453,9 +453,22 @@ def build_football_data_dataset() -> Dict[str, object]:
 def build_canonical_dataset() -> Dict[str, object]:
     """Build the redistribution-safe public corpus and restricted-source index."""
     football_rows = normalize_football_data()
+    existing_manifest = (
+        json.loads(CANONICAL_MANIFEST.read_text(encoding="utf-8"))
+        if CANONICAL_MANIFEST.exists() else {}
+    )
     sample_rows = normalize_the_odds_api_payloads(THE_ODDS_API_SAMPLE_RAW)
-    THE_ODDS_API_SAMPLE_OUT.parent.mkdir(parents=True, exist_ok=True)
-    write_csv(THE_ODDS_API_SAMPLE_OUT, sample_rows)
+    if sample_rows:
+        THE_ODDS_API_SAMPLE_OUT.parent.mkdir(parents=True, exist_ok=True)
+        write_csv(THE_ODDS_API_SAMPLE_OUT, sample_rows)
+        restricted_summary = {
+            "rows": len(sample_rows),
+            "events": len({row["event_id"] for row in sample_rows}),
+        }
+    else:
+        restricted_summary = existing_manifest.get(
+            "restricted_validation_summary", {"rows": 0, "events": 0}
+        )
     rows = football_rows
     write_csv(COMBINED_OUT, rows)
     summary = coverage(rows)
@@ -468,8 +481,8 @@ def build_canonical_dataset() -> Dict[str, object]:
     summary["close_window_minutes"] = MAX_PRIMARY_CLOSE_MINUTES
     summary["restricted_validation_sources"] = {
         "provider": "The Odds API",
-        "rows": len(sample_rows),
-        "events": len({row["event_id"] for row in sample_rows}),
+        "rows": restricted_summary["rows"],
+        "events": restricted_summary["events"],
         "included_in_public_csv": False,
         "reason": "Provider terms prohibit downloadable redistribution.",
     }
@@ -494,11 +507,16 @@ def build_canonical_dataset() -> Dict[str, object]:
             "redistribution_note": metadata["redistribution_note"],
             "terms_url": metadata["terms_url"],
         })
+    if not restricted_sources:
+        restricted_sources = existing_manifest.get(
+            "restricted_validation_sources", []
+        )
     CANONICAL_MANIFEST.write_text(
         json.dumps({
             "schema_version": "historical_odds_source_manifest_v2",
             "public_sources": football_manifest["sources"],
             "restricted_validation_sources": restricted_sources,
+            "restricted_validation_summary": restricted_summary,
         }, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )

@@ -448,5 +448,9 @@
       "terms_url": "https://the-odds-api.com/terms-and-conditions.html"
     }
   ],
+  "restricted_validation_summary": {
+    "events": 38,
+    "rows": 1311
+  },
   "schema_version": "historical_odds_source_manifest_v2"
 }

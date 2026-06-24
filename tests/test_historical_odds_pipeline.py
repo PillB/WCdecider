@@ -199,6 +199,8 @@ def test_quarter_handicap_and_timezone_conversion():
 
 
 def test_restricted_api_samples_reconcile_to_public_fixture_ids():
+    if not any(pipeline.THE_ODDS_API_SAMPLE_RAW.glob("*.json")):
+        pytest.skip("Restricted provider samples are intentionally absent")
     football_ids = {
         row["event_id"] for row in pipeline.normalize_football_data()
     }
@@ -217,6 +219,12 @@ def test_canonical_multi_provider_coverage_and_claim_boundary(tmp_path, monkeypa
     provenance = tmp_path / "provenance.txt"
     manifest = tmp_path / "sources.json"
     sample_out = tmp_path / "samples.csv"
+    manifest.write_text(
+        (pipeline.ROOT / "historical_closing_odds_sources.json").read_text(
+            encoding="utf-8"
+        ),
+        encoding="utf-8",
+    )
     monkeypatch.setattr(pipeline, "COMBINED_OUT", out)
     monkeypatch.setattr(pipeline, "COMBINED_COVERAGE", coverage_path)
     monkeypatch.setattr(pipeline, "COMBINED_PROVENANCE", provenance)
@@ -242,6 +250,31 @@ def test_canonical_multi_provider_coverage_and_claim_boundary(tmp_path, monkeypa
     assert "excluded from the public CSV" in text
     assert "systematically outdated since 2025-07-23" in text
     assert "does not yet authorize ROI/CLV/profitability claims" in text
+
+
+def test_public_build_preserves_restricted_summary_without_private_payloads(
+    tmp_path, monkeypatch
+):
+    manifest = tmp_path / "sources.json"
+    manifest.write_text(
+        (pipeline.ROOT / "historical_closing_odds_sources.json").read_text(
+            encoding="utf-8"
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(pipeline, "THE_ODDS_API_SAMPLE_RAW", tmp_path / "absent")
+    monkeypatch.setattr(pipeline, "CANONICAL_MANIFEST", manifest)
+    monkeypatch.setattr(pipeline, "COMBINED_OUT", tmp_path / "canonical.csv")
+    monkeypatch.setattr(pipeline, "COMBINED_COVERAGE", tmp_path / "coverage.json")
+    monkeypatch.setattr(pipeline, "COMBINED_PROVENANCE", tmp_path / "provenance.txt")
+    summary = pipeline.build_canonical_dataset()
+    assert summary["restricted_validation_sources"]["rows"] == 1311
+    assert summary["restricted_validation_sources"]["events"] == 38
+    rebuilt = json.loads(manifest.read_text())
+    assert len(rebuilt["restricted_validation_sources"]) == 2
+    assert rebuilt["restricted_validation_summary"] == {
+        "rows": 1311, "events": 38,
+    }
 
 
 def test_model_championship_is_nested_and_does_not_claim_profitability():
