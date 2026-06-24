@@ -68,7 +68,10 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R5.10: The mobile report shell must be safe before JSON loads: show a loading state, disable filters, prevent card rendering until the prediction/metrics/lightweight-audit-summary bundle verifies, and show a bilingual visible error plus diagnostics rather than crash or blank page on fetch/audit failure.
 - R5.10a: The browser must not fetch or parse `wc_june22_27_datapoint_audit.csv`; it verifies `wc_june22_27_datapoint_audit_summary.json` hashes and leaf-path counts while the full CSV remains a build/reproducibility artifact.
 - R5.11: The report footer displays last updated, model/report version, and exact build SHA marker.
-- R5.12: The report includes a bilingual research-mode toggle when research-mode JSON is available; toggling reveals shadow-model probabilities/deltas and promotion-gate reasons without changing production recommendation fields.
+- R5.12: The report includes a bilingual research-mode toggle when research-mode JSON is available; toggling reveals shadow-model probabilities/deltas, promotion-gate reasons, and shadow ranked recommendations without changing production recommendation fields.
+- R5.13: The report includes 3–5 bilingual risk-aversion levels; changing the level updates visible PASS/HALT lens diagnostics but must not mutate saved probabilities, source odds, production rank one, or bankroll simulation.
+- R5.14: Every risk lens enforces its published divergence, stressed-EV, risk-grade, and applicable fair-price thresholds; no lens may override an underlying anomaly `HALT`, and `PASS` must be described as a diagnostic rather than robustness or profitability.
+- R5.15: HALT review compares identical sourced candidates across production and research models; aggregate or unpaired top-four counts cannot be described as model improvement.
 
 ## R6 — Pipeline and reproducibility
 

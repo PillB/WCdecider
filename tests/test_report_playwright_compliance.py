@@ -283,8 +283,51 @@ def test_research_mode_toggle_reveals_gated_shadow_model(page):
     assert first["research_mode"]["selected_candidate"] in text
     assert "not production" in text
     assert f'{first["research_mode"]["probabilities"]["team_a_win"] * 100:.1f}%' in text
+    research_ranked = panel.locator("[data-research-recommendation-rank]")
+    assert research_ranked.count() == first["research_mode"]["top_recommendations_available"]
+    assert first["research_mode"]["top_recommendations"][0]["selection_original"] in text
     toggle.click()
     assert browser_page.locator(".research-panel").first.is_hidden()
+
+
+def test_risk_aversion_lens_switches_profile_panels(page):
+    browser_page, _ = page
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    first = payload["predictions"][0]
+    card = browser_page.locator(f'[data-fixture-id="{first["fixture_id"]}"]')
+    selector = browser_page.locator("#risk-profile")
+    rank_one = card.locator('[data-recommendation-rank="1"]')
+    assert selector.is_enabled()
+    assert card.locator('[data-risk-profile-panel="balanced"]').first.is_visible()
+    assert rank_one.locator('[data-risk-lens-profile="balanced"]').is_visible()
+    selector.select_option("audit_only")
+    assert card.locator('[data-risk-profile-panel="balanced"]').first.is_hidden()
+    assert card.locator('[data-risk-profile-panel="audit_only"]').first.is_visible()
+    assert rank_one.locator('[data-risk-lens-profile="audit_only"]').is_visible()
+    text = card.locator('[data-risk-profile-panel="audit_only"]').first.inner_text()
+    expected = first["risk_profile_summary"]["audit_only"]
+    assert f"{expected['pass_count']} PASS" in text
+    assert f"{expected['halt_count']} HALT" in text
+    assert selector.locator('option[value="audit_only"]').inner_text() == "Audit only"
+    browser_page.locator("#lang").click()
+    assert selector.locator('option[value="audit_only"]').inner_text() == "Solo auditoría"
+    spanish_card_text = card.inner_text()
+    assert "Ambos marcan: sí" in spanish_card_text
+    assert "BTTS Yes / Sí" not in spanish_card_text
+
+
+def test_report_has_no_stale_hardcoded_audit_count(page):
+    browser_page, _ = page
+    content = browser_page.content()
+    assert "31,319 PASS fields" not in content
+    assert "31.319 campos PASS" not in content
+    assert "Ambos marcan: no" in content
+    assert "Agente de usuario:" in content
+    assert "Combinación de marcadores" in content
+    assert "Poisson producción + DC investigación" in content
+    assert "JSON + auditoría" in content
 
 
 def test_mobile_missing_predictions_json_fails_visible_not_blank():

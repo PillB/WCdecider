@@ -1492,7 +1492,8 @@ def form_adjustment(stats: Mapping[str, float]) -> float:
     return max(-45.0, min(45.0, (ppg - 1.35) * 12.0 + gdpg * 8.0))
 
 
-def classify(ev_pct: float, robust: bool, divergence_pp: float) -> Tuple[str, int]:
+def classify(ev_pct: float, divergence_pp: float) -> Tuple[str, int]:
+    """Flag only anomaly-level disagreement/EV; PASS is not robustness."""
     if divergence_pp > 15.0 or ev_pct > 25.0:
         return "HALT", 35
     # Policy profitability has not yet been validated out of sample.
@@ -1704,6 +1705,367 @@ def public_recommendation(
         "source_image": row["source_image"],
         "source_sha256": row["source_sha256"],
     }
+
+
+RISK_AVERSION_PROFILES: Tuple[Dict[str, object], ...] = (
+    {
+        "id": "exploratory",
+        "label_en": "Exploratory",
+        "label_es": "Exploratorio",
+        "description_en": "Shows more candidate edges for research review; never treats them as validated profit.",
+        "description_es": "Muestra más ventajas candidatas para revisión; nunca las trata como beneficio validado.",
+        "max_divergence_pp": 22.5,
+        "min_stressed_ev_pct": -20.0,
+        "allowed_risk_grades": {"A", "B", "C", "D"},
+    },
+    {
+        "id": "balanced",
+        "label_en": "Balanced",
+        "label_es": "Balanceado",
+        "description_en": "Current production lens: accepts normal PASS rows and leaves suspicious rows as HALT.",
+        "description_es": "Lente actual de producción: acepta filas PASS normales y deja filas sospechosas como HALT.",
+        "max_divergence_pp": 15.0,
+        "min_stressed_ev_pct": -8.0,
+        "allowed_risk_grades": {"A", "B", "C", "D"},
+    },
+    {
+        "id": "cautious",
+        "label_en": "Cautious",
+        "label_es": "Cauteloso",
+        "description_en": "Requires non-negative stressed EV and lower model-market disagreement.",
+        "description_es": "Exige EV estresado no negativo y menor desacuerdo modelo-mercado.",
+        "max_divergence_pp": 10.0,
+        "min_stressed_ev_pct": 0.0,
+        "allowed_risk_grades": {"A", "B", "C"},
+    },
+    {
+        "id": "strict",
+        "label_en": "Strict",
+        "label_es": "Estricto",
+        "description_en": "Keeps only cleaner A/B-grade candidates with a positive stressed cushion.",
+        "description_es": "Mantiene solo candidatas A/B más limpias con colchón estresado positivo.",
+        "max_divergence_pp": 7.5,
+        "min_stressed_ev_pct": 2.0,
+        "allowed_risk_grades": {"A", "B"},
+    },
+    {
+        "id": "audit_only",
+        "label_en": "Audit only",
+        "label_es": "Solo auditoría",
+        "description_en": "Demands very low disagreement and strong stress evidence; most rows become HALT.",
+        "description_es": "Exige desacuerdo muy bajo y fuerte evidencia estresada; la mayoría pasa a HALT.",
+        "max_divergence_pp": 5.0,
+        "min_stressed_ev_pct": 3.0,
+        "allowed_risk_grades": {"A"},
+    },
+)
+
+
+def risk_lens_for_recommendation(
+    recommendation: Mapping[str, object],
+) -> Dict[str, Dict[str, object]]:
+    """Return profile-specific PASS/HALT treatment for one public candidate.
+
+    These profiles are transparent decision lenses over the same sourced
+    candidate. They do not mutate the published production recommendation or
+    create new odds.
+    """
+    risk_grade = str(recommendation["risk_grade"])
+    divergence = float(recommendation["divergence_pp"])
+    stressed = float(recommendation["stressed_ev_pct"])
+    price_gate_ok = (
+        recommendation.get("price_gate_status")
+        == "at_or_above_model_fair_price"
+    )
+    results: Dict[str, Dict[str, object]] = {}
+    for profile in RISK_AVERSION_PROFILES:
+        profile_id = str(profile["id"])
+        threshold_passes = (
+            divergence <= float(profile["max_divergence_pp"])
+            and stressed >= float(profile["min_stressed_ev_pct"])
+            and risk_grade in profile["allowed_risk_grades"]
+        )
+        passes = (
+            recommendation["strength"] != "HALT"
+            and threshold_passes
+            and (
+                profile_id in {"exploratory", "balanced"}
+                or price_gate_ok
+            )
+        )
+        reasons = []
+        if divergence > float(profile["max_divergence_pp"]):
+            reasons.append("model_market_disagreement_too_high")
+        if stressed < float(profile["min_stressed_ev_pct"]):
+            reasons.append("stress_ev_below_profile_threshold")
+        if risk_grade not in profile["allowed_risk_grades"]:
+            reasons.append("risk_grade_too_weak_for_profile")
+        if profile_id not in {"exploratory", "balanced"} and not price_gate_ok:
+            reasons.append("source_price_below_model_fair_threshold")
+        if not reasons:
+            reasons.append("passes_profile_thresholds")
+        results[str(profile["id"])] = {
+            "status": "PASS" if passes else "HALT",
+            "requires_manual_review": not passes or recommendation["strength"] == "HALT",
+            "reasons": reasons,
+            "explanation": {
+                "en": (
+                    f"{'PASS' if passes else 'HALT'} under this lens: candidate "
+                    f"divergence {divergence:.1f}pp vs maximum "
+                    f"{float(profile['max_divergence_pp']):.1f}pp; stressed EV "
+                    f"{stressed:.1f}% vs minimum "
+                    f"{float(profile['min_stressed_ev_pct']):.1f}%; risk grade "
+                    f"{risk_grade} vs allowed "
+                    f"{'/'.join(sorted(profile['allowed_risk_grades']))}; fair-price "
+                    f"gate {'met' if price_gate_ok else 'not met'}."
+                ),
+                "es": (
+                    f"{'PASS' if passes else 'HALT'} con este lente: desacuerdo "
+                    f"{divergence:.1f}pp frente al máximo "
+                    f"{float(profile['max_divergence_pp']):.1f}pp; EV estresado "
+                    f"{stressed:.1f}% frente al mínimo "
+                    f"{float(profile['min_stressed_ev_pct']):.1f}%; grado de riesgo "
+                    f"{risk_grade} frente a los permitidos "
+                    f"{'/'.join(sorted(profile['allowed_risk_grades']))}; umbral de "
+                    f"cuota justa {'cumplido' if price_gate_ok else 'no cumplido'}."
+                ),
+            },
+            "profile_label": {
+                "en": profile["label_en"],
+                "es": profile["label_es"],
+            },
+            "profile_description": {
+                "en": profile["description_en"],
+                "es": profile["description_es"],
+            },
+        }
+    return results
+
+
+def attach_recommendation_context(
+    recommendations: List[Dict[str, object]], fixture_names: Mapping[str, object],
+    mode: str,
+) -> None:
+    """Attach user-facing context shared by production and research rankings."""
+    for item in recommendations:
+        item["price_gate_status"] = (
+            "at_or_above_model_fair_price"
+            if float(item["odds"]) >= float(item["fair_odds"])
+            else "below_model_fair_price"
+        )
+        item["uncertainty"] = {
+            "level": (
+                "high" if item["strength"] == "HALT"
+                or float(item["divergence_pp"]) > 10.0 else "material"
+            ),
+            "en": [
+                "Small, shifted historical holdout.",
+                "Screenshot price and team information can move before kickoff.",
+                "Historical profitability is not validated.",
+            ],
+            "es": [
+                "Holdout histórico pequeño y con cambio de régimen.",
+                "La cuota y la información de equipos pueden cambiar antes del inicio.",
+                "La rentabilidad histórica no está validada.",
+            ],
+        }
+        item["why_ranked"] = {
+            "en": (
+                "Ranked by conservative expected-value utility after "
+                "market disagreement and family-risk penalties."
+                if mode == "production" else
+                "Ranked by the research-gated shadow model against the same "
+                "screenshot odds. This is sensitivity analysis, not a "
+                "production replacement."
+            ),
+            "es": (
+                "Clasificada por utilidad conservadora de valor esperado "
+                "tras penalizar desacuerdo de mercado y riesgo del mercado."
+                if mode == "production" else
+                "Clasificada por el modelo sombra de investigación contra "
+                "las mismas cuotas de capturas. Es análisis de sensibilidad, "
+                "no reemplazo de producción."
+            ),
+        }
+        item["steps"] = app_navigation_steps(
+            str(item["app"]), fixture_names, item, None
+        )
+        if int(item["rank"]) == 1:
+            item["steps"]["en"][-1] = (
+                "Treat rank one as the primary comparison, not a mandatory "
+                "bet. Recheck the selection, line, 90-minute settlement, "
+                "current price, and team news before deciding."
+                if mode == "production" else
+                "Treat this research-mode rank one as a sensitivity check "
+                "only. Do not replace the production recommendation unless "
+                "the model promotion gates are passed in a future release."
+            )
+            item["steps"]["es"][-1] = (
+                "Trata el rango uno como la comparación principal, no como "
+                "apuesta obligatoria. Revisa selección, línea, liquidación "
+                "a 90 minutos, cuota actual y noticias antes de decidir."
+                if mode == "production" else
+                "Trata este rango uno de investigación solo como prueba de "
+                "sensibilidad. No reemplaza la recomendación de producción "
+                "salvo que futuras puertas de promoción se superen."
+            )
+        item["risk_lens"] = risk_lens_for_recommendation(item)
+
+
+def risk_profile_summary(
+    recommendations: Sequence[Mapping[str, object]],
+) -> Dict[str, Dict[str, object]]:
+    """Summarize PASS/HALT counts for each risk-aversion profile."""
+    summary: Dict[str, Dict[str, object]] = {}
+    for profile in RISK_AVERSION_PROFILES:
+        profile_id = str(profile["id"])
+        statuses = [
+            rec.get("risk_lens", {}).get(profile_id, {}).get("status", "HALT")
+            for rec in recommendations
+        ]
+        pass_count = sum(1 for status in statuses if status == "PASS")
+        summary[profile_id] = {
+            "label": {"en": profile["label_en"], "es": profile["label_es"]},
+            "description": {
+                "en": profile["description_en"],
+                "es": profile["description_es"],
+            },
+            "pass_count": pass_count,
+            "halt_count": len(statuses) - pass_count,
+            "total_ranked": len(statuses),
+            "recommended_rank": next(
+                (
+                    int(rec["rank"])
+                    for rec in recommendations
+                    if rec.get("risk_lens", {}).get(profile_id, {}).get("status")
+                    == "PASS"
+                ),
+                None,
+            ),
+        }
+    return summary
+
+
+def sourced_candidate_key(row: Mapping[str, object]) -> Tuple[object, ...]:
+    """Identify the same executable screenshot candidate across model views."""
+    return (
+        row.get("app"),
+        row.get("source_image"),
+        row.get("market_group_id"),
+        row.get("market_family"),
+        row.get("selection_canonical"),
+        row.get("line"),
+        row.get("handicap_selected_line"),
+        row.get("total_line"),
+        float(row.get("odds") or 0.0),
+    )
+
+
+def evaluate_sourced_markets(
+    odds_rows: Sequence[Mapping[str, str]], team_a: str, team_b: str,
+    p_1x2: Tuple[float, float, float],
+    matrix: Sequence[Tuple[int, int, float]],
+    stress_matrices: Sequence[Sequence[Tuple[int, int, float]]],
+    market_consensus: Mapping[Tuple[str, str], float],
+    market_overround: Mapping[str, float],
+) -> List[Dict[str, object]]:
+    """Evaluate all complete supported sourced markets for one model view."""
+    expanded_rows: List[Dict[str, object]] = []
+    for odd in odds_rows:
+        if odd["is_complete_market"] != "true":
+            continue
+        if odd["market_family"] not in {
+            "1x2", "total_goals", "btts", "double_chance",
+            "asian_handicap", "handicap_total_combo",
+        }:
+            continue
+        evaluated = probability_and_ev(odd, team_a, team_b, p_1x2, matrix)
+        if evaluated is None:
+            continue
+        ev_pct = evaluated["ev"] * 100.0
+        if odd["market_family"] == "1x2":
+            stressed_ev = (
+                max(0.0, evaluated["p_win"] - 0.03)
+                * (float(odd["odds"]) - 1.0)
+                - min(1.0, evaluated["p_loss"] + 0.03)
+            ) * 100.0
+            bucket = selection_bucket(odd, team_a, team_b)
+            implied = market_consensus.get(
+                (odd["app"], bucket), 1.0 / float(odd["odds"])
+            )
+        else:
+            stress_values = [
+                probability_and_ev(odd, team_a, team_b, p_1x2, stress_matrix)
+                for stress_matrix in stress_matrices
+            ]
+            stressed_ev = min(
+                value["ev"] * 100.0
+                for value in stress_values if value is not None
+            )
+            implied = market_consensus.get(
+                (odd["market_group_id"], odd["selection_canonical"]),
+                1.0 / float(odd["odds"]),
+            )
+        divergence = abs(evaluated["p_win"] - implied) * 100.0
+        strength, confidence = classify(ev_pct, divergence)
+        base_model_weight = 0.50 if odd["market_family"] == "1x2" else 0.35
+        model_weight = base_model_weight * max(
+            0.10, 1.0 - divergence / 25.0
+        )
+        market_push = float(evaluated["p_push"])
+        market_win = (1.0 - market_push) * implied
+        market_loss = (1.0 - market_push) * (1.0 - implied)
+        decision_win = (
+            model_weight * float(evaluated["p_win"])
+            + (1.0 - model_weight) * market_win
+        )
+        decision_push = (
+            model_weight * float(evaluated["p_push"])
+            + (1.0 - model_weight) * market_push
+        )
+        decision_loss = (
+            model_weight * float(evaluated["p_loss"])
+            + (1.0 - model_weight) * market_loss
+        )
+        probability_total = decision_win + decision_push + decision_loss
+        decision_win /= probability_total
+        decision_push /= probability_total
+        decision_loss /= probability_total
+        market_ev_pct = (
+            market_win * (float(odd["odds"]) - 1.0) - market_loss
+        ) * 100.0
+        decision_ev_pct = (
+            decision_win * (float(odd["odds"]) - 1.0) - decision_loss
+        ) * 100.0
+        decision_stressed_ev_pct = (
+            model_weight * stressed_ev
+            + (1.0 - model_weight) * market_ev_pct
+        )
+        evaluated_row: Dict[str, object] = {
+            **odd,
+            **evaluated,
+            "ev_pct": ev_pct,
+            "stressed_ev_pct": stressed_ev,
+            "divergence_pp": divergence,
+            "market_overround_pct": market_overround.get(
+                odd["market_group_id"], 0.0
+            ) * 100.0,
+            "decision_probability": decision_win,
+            "decision_push_probability": decision_push,
+            "decision_loss_probability": decision_loss,
+            "market_probability": implied,
+            "decision_ev_pct": decision_ev_pct,
+            "decision_stressed_ev_pct": decision_stressed_ev_pct,
+            "decision_model_weight": model_weight,
+            "strength": strength,
+            "confidence": confidence,
+            "policy_status": "experimental_non_actionable",
+        }
+        evaluated_row["recommendation_utility"] = recommendation_utility(
+            evaluated_row
+        )
+        expanded_rows.append(evaluated_row)
+    return expanded_rows
 
 
 def allocate_app_budget(
@@ -1980,8 +2342,6 @@ def build() -> Dict[str, object]:
         shadow_matrix = dixon_coles_score_matrix(
             la, lb, float(score_config["shadow_rho"])
         )
-        candidate_rows = []
-        expanded_rows = []
         # Compute de-vigged comparison probabilities for complete source markets.
         market_consensus: Dict[Tuple[str, str], float] = {}
         market_overround: Dict[str, float] = {}
@@ -2012,6 +2372,7 @@ def build() -> Dict[str, object]:
                 )
 
         stress_matrices = []
+        shadow_stress_matrices = []
         for mu_multiplier, allocation_shift in (
             (0.90, 0.0), (1.10, 0.0), (1.0, -0.05), (1.0, 0.05)
         ):
@@ -2022,110 +2383,22 @@ def build() -> Dict[str, object]:
                 float(score_config["gap_intensity"]),
             )
             stress_matrices.append(score_matrix(stress_la, stress_lb))
+            shadow_stress_matrices.append(
+                dixon_coles_score_matrix(
+                    stress_la, stress_lb, float(score_config["shadow_rho"])
+                )
+            )
 
-        for odd in odds_by_fixture[fixture["fixture_id"]]:
-            if odd["is_complete_market"] != "true":
-                continue
-            if odd["market_family"] not in {
-                "1x2", "total_goals", "btts", "double_chance",
-                "asian_handicap", "handicap_total_combo",
-            }:
-                continue
-            evaluated = probability_and_ev(odd, ta, tb, p_base, matrix)
-            if evaluated is None:
-                continue
-            ev_pct = evaluated["ev"] * 100.0
-            if odd["market_family"] == "1x2":
-                stressed_ev = (
-                    max(0.0, evaluated["p_win"] - 0.03)
-                    * (float(odd["odds"]) - 1.0)
-                    - min(1.0, evaluated["p_loss"] + 0.03)
-                ) * 100.0
-                bucket = selection_bucket(odd, ta, tb)
-                implied = market_consensus.get(
-                    (odd["app"], bucket), 1.0 / float(odd["odds"])
-                )
-            else:
-                stress_values = [
-                    probability_and_ev(odd, ta, tb, p_base, stress_matrix)
-                    for stress_matrix in stress_matrices
-                ]
-                stressed_ev = min(
-                    value["ev"] * 100.0
-                    for value in stress_values if value is not None
-                )
-                implied = market_consensus.get(
-                    (odd["market_group_id"], odd["selection_canonical"]),
-                    1.0 / float(odd["odds"]),
-                )
-            divergence = abs(evaluated["p_win"] - implied) * 100.0
-            strength, confidence = classify(ev_pct, stressed_ev > 0.0, divergence)
-            base_model_weight = 0.50 if odd["market_family"] == "1x2" else 0.35
-            # Large model-market disagreements are precisely where model risk
-            # is highest. Shrink harder toward the de-vigged source market.
-            model_weight = base_model_weight * max(
-                0.10, 1.0 - divergence / 25.0
-            )
-            # Preserve the model's push mass and interpret the de-vigged source
-            # probability conditionally over decisive outcomes. This yields one
-            # coherent decision win/push/loss distribution whose fair price and
-            # EV reproduce exactly, including Asian quarter/full lines.
-            market_push = float(evaluated["p_push"])
-            market_win = (1.0 - market_push) * implied
-            market_loss = (1.0 - market_push) * (1.0 - implied)
-            decision_win = (
-                model_weight * float(evaluated["p_win"])
-                + (1.0 - model_weight) * market_win
-            )
-            decision_push = (
-                model_weight * float(evaluated["p_push"])
-                + (1.0 - model_weight) * market_push
-            )
-            decision_loss = (
-                model_weight * float(evaluated["p_loss"])
-                + (1.0 - model_weight) * market_loss
-            )
-            probability_total = decision_win + decision_push + decision_loss
-            decision_win /= probability_total
-            decision_push /= probability_total
-            decision_loss /= probability_total
-            market_ev_pct = (
-                market_win * (float(odd["odds"]) - 1.0) - market_loss
-            ) * 100.0
-            decision_ev_pct = (
-                decision_win * (float(odd["odds"]) - 1.0) - decision_loss
-            ) * 100.0
-            decision_stressed_ev_pct = (
-                model_weight * stressed_ev
-                + (1.0 - model_weight) * market_ev_pct
-            )
-            evaluated_row = {
-                **odd,
-                **evaluated,
-                "ev_pct": ev_pct,
-                "stressed_ev_pct": stressed_ev,
-                "divergence_pp": divergence,
-                "market_overround_pct": market_overround.get(
-                    odd["market_group_id"], 0.0
-                ) * 100.0,
-                "decision_probability": decision_win,
-                "decision_push_probability": decision_push,
-                "decision_loss_probability": decision_loss,
-                "market_probability": implied,
-                "decision_ev_pct": decision_ev_pct,
-                "decision_stressed_ev_pct": decision_stressed_ev_pct,
-                "decision_model_weight": model_weight,
-                "strength": strength,
-                "confidence": confidence,
-                "policy_status": "experimental_non_actionable",
-            }
-            evaluated_row["recommendation_utility"] = recommendation_utility(
-                evaluated_row
-            )
-            expanded_rows.append(evaluated_row)
-            if odd["market_family"] == "1x2":
-                candidate_rows.append(evaluated_row)
-        ranked = sorted(candidate_rows, key=lambda row: row["ev_pct"], reverse=True)
+        expanded_rows = evaluate_sourced_markets(
+            odds_by_fixture[fixture["fixture_id"]], ta, tb, p_base, matrix,
+            stress_matrices, market_consensus, market_overround,
+        )
+        shadow_p_base = result_probabilities_from_matrix(shadow_matrix)
+        shadow_expanded_rows = evaluate_sourced_markets(
+            odds_by_fixture[fixture["fixture_id"]], ta, tb, shadow_p_base,
+            shadow_matrix, shadow_stress_matrices, market_consensus,
+            market_overround,
+        )
         expanded_ranked = sorted(
             expanded_rows,
             key=lambda row: (
@@ -2143,6 +2416,9 @@ def build() -> Dict[str, object]:
             )
         ranked_recommendations = rank_distinct_recommendations(
             expanded_rows, ta, tb
+        )
+        shadow_ranked_recommendations = rank_distinct_recommendations(
+            shadow_expanded_rows, ta, tb
         )
         recommendation = (
             ranked_recommendations[0][0] if ranked_recommendations else None
@@ -2197,58 +2473,126 @@ def build() -> Dict[str, object]:
                 ranked_recommendations, start=1
             )
         ]
+        public_research_ranked_recommendations = [
+            public_recommendation(row, rank, reason)
+            for rank, (row, reason) in enumerate(
+                shadow_ranked_recommendations, start=1
+            )
+        ]
         fixture_names = {
             "fixture": {
                 "en": f"{names_a[0]} vs {names_b[0]}",
                 "es": f"{names_a[1]} vs {names_b[1]}",
             }
         }
-        for item in public_ranked_recommendations:
-            item["price_gate_status"] = (
-                "at_or_above_model_fair_price"
-                if float(item["odds"]) >= float(item["fair_odds"])
-                else "below_model_fair_price"
+        attach_recommendation_context(
+            public_ranked_recommendations, fixture_names, "production"
+        )
+        attach_recommendation_context(
+            public_research_ranked_recommendations, fixture_names, "research"
+        )
+        production_risk_summary = risk_profile_summary(
+            public_ranked_recommendations
+        )
+        research_risk_summary = risk_profile_summary(
+            public_research_ranked_recommendations
+        )
+        research_mode["top_recommendations"] = public_research_ranked_recommendations
+        research_mode["top_recommendations_requested"] = 4
+        research_mode["top_recommendations_available"] = len(
+            public_research_ranked_recommendations
+        )
+        research_mode["top_recommendations_shortfall_reason"] = (
+            ""
+            if len(public_research_ranked_recommendations) == 4
+            else "fewer_than_four_distinct_complete_sourced_events"
+        )
+        research_mode["recommendation_scope"] = (
+            "research-mode recommendations are ranked with the gated shadow "
+            "score model against the same sourced screenshot odds; they do not "
+            "replace production recommendations or validate profitability"
+        )
+        research_mode["risk_profile_summary"] = research_risk_summary
+        production_rank_one_key = (
+            public_ranked_recommendations[0]["market_family"],
+            public_ranked_recommendations[0]["selection_canonical"],
+            public_ranked_recommendations[0]["line"],
+        )
+        research_rank_one_key = (
+            public_research_ranked_recommendations[0]["market_family"],
+            public_research_ranked_recommendations[0]["selection_canonical"],
+            public_research_ranked_recommendations[0]["line"],
+        )
+        shadow_by_candidate = {
+            sourced_candidate_key(row): row for row in shadow_expanded_rows
+        }
+        paired_halt_reviews = []
+        for production_row in expanded_rows:
+            research_row = shadow_by_candidate.get(
+                sourced_candidate_key(production_row)
             )
-            item["uncertainty"] = {
-                "level": (
-                    "high" if item["strength"] == "HALT"
-                    or float(item["divergence_pp"]) > 10.0 else "material"
-                ),
+            if (
+                research_row is not None
+                and production_row["strength"] == "HALT"
+                and research_row["strength"] == "PASS"
+            ):
+                paired_halt_reviews.append({
+                    "app": production_row["app"],
+                    "market_family": production_row["market_family"],
+                    "market_original": production_row["market_original"],
+                    "selection_original": production_row["selection_original"],
+                    "line": production_row["line"],
+                    "odds": float(production_row["odds"]),
+                    "source_image": production_row["source_image"],
+                    "production_divergence_pp": round(
+                        float(production_row["divergence_pp"]), 2
+                    ),
+                    "research_divergence_pp": round(
+                        float(research_row["divergence_pp"]), 2
+                    ),
+                    "production_raw_ev_pct": round(
+                        float(production_row["ev_pct"]), 2
+                    ),
+                    "research_raw_ev_pct": round(
+                        float(research_row["ev_pct"]), 2
+                    ),
+                })
+        halt_improvement_loop = {
+            "paired_candidates_compared": len(expanded_rows),
+            "production_anomaly_halt_count": sum(
+                row["strength"] == "HALT" for row in expanded_rows
+            ),
+            "research_anomaly_halt_count": sum(
+                row["strength"] == "HALT" for row in shadow_expanded_rows
+            ),
+            "paired_production_halt_to_research_pass_count": len(
+                paired_halt_reviews
+            ),
+            "paired_review_candidates": paired_halt_reviews,
+            "research_rank_one_changed": (
+                production_rank_one_key != research_rank_one_key
+            ),
+            "automatic_resolution_allowed": False,
+            "status": (
+                "paired_shadow_review_candidates_present"
+                if paired_halt_reviews else
+                "no_paired_shadow_reclassification"
+            ),
+            "required_checks": {
                 "en": [
-                    "Small, shifted historical holdout.",
-                    "Screenshot price and team information can move before kickoff.",
-                    "Historical profitability is not validated.",
+                    "Verify current app price and settlement line.",
+                    "Verify lineup, injury, motivation, and weather freshness.",
+                    "Compare production and research score distributions.",
+                    "Require chronological out-of-sample evidence before changing production thresholds.",
                 ],
                 "es": [
-                    "Holdout histórico pequeño y con cambio de régimen.",
-                    "La cuota y la información de equipos pueden cambiar antes del inicio.",
-                    "La rentabilidad histórica no está validada.",
+                    "Verifica cuota actual y línea de liquidación.",
+                    "Verifica vigencia de alineación, lesiones, motivación y clima.",
+                    "Compara distribuciones de marcador de producción e investigación.",
+                    "Exige evidencia cronológica fuera de muestra antes de cambiar umbrales de producción.",
                 ],
-            }
-            item["why_ranked"] = {
-                "en": (
-                    "Ranked by conservative expected-value utility after "
-                    "market disagreement and family-risk penalties."
-                ),
-                "es": (
-                    "Clasificada por utilidad conservadora de valor esperado "
-                    "tras penalizar desacuerdo de mercado y riesgo del mercado."
-                ),
-            }
-            item["steps"] = app_navigation_steps(
-                str(item["app"]), fixture_names, item, None
-            )
-            if int(item["rank"]) == 1:
-                item["steps"]["en"][-1] = (
-                    "Treat rank one as the primary comparison, not a mandatory "
-                    "bet. Recheck the selection, line, 90-minute settlement, "
-                    "current price, and team news before deciding."
-                )
-                item["steps"]["es"][-1] = (
-                    "Trata el rango uno como la comparación principal, no como "
-                    "apuesta obligatoria. Revisa selección, línea, liquidación "
-                    "a 90 minutos, cuota actual y noticias antes de decidir."
-                )
+            },
+        }
         rec = (
             public_ranked_recommendations[0]
             if public_ranked_recommendations else None
@@ -2339,6 +2683,29 @@ def build() -> Dict[str, object]:
             },
             "recommendation": rec,
             "top_recommendations": public_ranked_recommendations,
+            "risk_profile_summary": production_risk_summary,
+            "halt_improvement_loop": halt_improvement_loop,
+            "risk_aversion_profiles": [
+                {
+                    "id": str(profile["id"]),
+                    "label": {
+                        "en": str(profile["label_en"]),
+                        "es": str(profile["label_es"]),
+                    },
+                    "description": {
+                        "en": str(profile["description_en"]),
+                        "es": str(profile["description_es"]),
+                    },
+                    "max_divergence_pp": float(profile["max_divergence_pp"]),
+                    "min_stressed_ev_pct": float(
+                        profile["min_stressed_ev_pct"]
+                    ),
+                    "allowed_risk_grades": sorted(
+                        profile["allowed_risk_grades"]
+                    ),
+                }
+                for profile in RISK_AVERSION_PROFILES
+            ],
             "top_recommendations_requested": 4,
             "top_recommendations_available": len(
                 public_ranked_recommendations

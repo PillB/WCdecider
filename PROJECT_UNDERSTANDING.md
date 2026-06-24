@@ -1,6 +1,6 @@
 # WCdecider Project Understanding
 
-**Last grounded:** 2026-06-21
+**Last grounded:** 2026-06-23
 
 **Active prediction batch:** FIFA World Cup matches from 2026-06-22 through 2026-06-27
 **Repository:** flat, file-based Python + static HTML deployed to GitHub Pages
@@ -36,6 +36,23 @@ The project is being consolidated around these canonical artifacts:
 - Root `wc_*.py/csv/json/txt`: current and historical modeling artifacts.
 - `index.html`: current report source.
 - `site/`: generated GitHub Pages bundle.
+
+## Current UI/Model Architecture Additions
+
+- Research mode is a gated shadow view. It now publishes its own ranked
+  sourced recommendations using the Dixon-Coles score grid against the same
+  Betano/Betsson screenshot odds, but it remains non-production and cannot
+  overwrite the production `recommendation` field or bankroll simulation.
+- The report includes five risk-aversion lenses: exploratory, balanced,
+  cautious, strict, and audit-only. These are transparent PASS/HALT review
+  thresholds over the same sourced recommendations; they do not change saved
+  model probabilities, source odds, or historical-profitability status. An
+  underlying anomaly `HALT` cannot be overridden by any lens; `PASS` means only
+  that the candidate cleared the declared diagnostic thresholds, not that the
+  bet is robust or profitable.
+- The browser loads `wc_june22_27_datapoint_audit_summary.json` for hash and
+  leaf-path verification. The full audit CSV remains a reproducibility artifact
+  and build gate, not a mobile startup dependency.
 
 ## Known Integrity Problems Being Removed
 

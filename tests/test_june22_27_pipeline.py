@@ -157,7 +157,106 @@ def test_research_mode_policy_is_gated_and_non_production():
         assert sum(research["probabilities"].values()) == pytest.approx(1.0, abs=2e-6)
         assert "common_markets" in research
         assert research["common_markets"]["policy_status"] == "experimental_non_actionable"
+        assert research["top_recommendations_requested"] == 4
+        assert research["top_recommendations_available"] == len(
+            research["top_recommendations"]
+        )
+        assert research["top_recommendations"]
+        assert research["top_recommendations"][0]["decision_status"] == "BEST_AVAILABLE"
+        assert "sensitivity analysis" in research["top_recommendations"][0]["why_ranked"]["en"]
+        assert set(research["risk_profile_summary"]) == {
+            "exploratory", "balanced", "cautious", "strict", "audit_only",
+        }
+        for recommendation in research["top_recommendations"]:
+            assert set(recommendation["risk_lens"]) == {
+                "exploratory", "balanced", "cautious", "strict", "audit_only",
+            }
+            assert all(
+                lens["status"] in {"PASS", "HALT"}
+                for lens in recommendation["risk_lens"].values()
+            )
+            assert recommendation["profitability_validation"] == (
+                "not_validated_historical_market_odds"
+            )
+            for profile in pipeline.RISK_AVERSION_PROFILES:
+                lens = recommendation["risk_lens"][profile["id"]]
+                if recommendation["strength"] == "HALT":
+                    assert lens["status"] == "HALT"
+                if lens["status"] == "PASS":
+                    assert recommendation["divergence_pp"] <= profile["max_divergence_pp"]
+                    assert recommendation["stressed_ev_pct"] >= profile["min_stressed_ev_pct"]
+                    assert recommendation["risk_grade"] in profile["allowed_risk_grades"]
+                    if profile["id"] in {"cautious", "strict", "audit_only"}:
+                        assert recommendation["price_gate_status"] == (
+                            "at_or_above_model_fair_price"
+                        )
         assert row["recommendation"]["decision_status"] == "BEST_AVAILABLE"
+        assert set(row["risk_profile_summary"]) == {
+            "exploratory", "balanced", "cautious", "strict", "audit_only",
+        }
+        assert len(row["risk_aversion_profiles"]) == 5
+        profile_order = [
+            "exploratory", "balanced", "cautious", "strict", "audit_only",
+        ]
+        pass_counts = [
+            row["risk_profile_summary"][profile]["pass_count"]
+            for profile in profile_order
+        ]
+        assert pass_counts == sorted(pass_counts, reverse=True)
+        halt_loop = row["halt_improvement_loop"]
+        assert halt_loop["automatic_resolution_allowed"] is False
+        assert halt_loop["paired_candidates_compared"] == (
+            row["supported_markets_evaluated"]
+        )
+        assert halt_loop["paired_production_halt_to_research_pass_count"] == len(
+            halt_loop["paired_review_candidates"]
+        )
+        for candidate in halt_loop["paired_review_candidates"]:
+            assert candidate["production_divergence_pp"] > 15.0 or (
+                candidate["production_raw_ev_pct"] > 25.0
+            )
+            assert candidate["research_divergence_pp"] <= 15.0
+            assert candidate["research_raw_ev_pct"] <= 25.0
+        assert len(halt_loop["required_checks"]["en"]) == 4
+        assert len(halt_loop["required_checks"]["es"]) == 4
+        for recommendation in row["top_recommendations"]:
+            assert set(recommendation["risk_lens"]) == {
+                "exploratory", "balanced", "cautious", "strict", "audit_only",
+            }
+            for profile in pipeline.RISK_AVERSION_PROFILES:
+                lens = recommendation["risk_lens"][profile["id"]]
+                if recommendation["strength"] == "HALT":
+                    assert lens["status"] == "HALT"
+                if lens["status"] == "PASS":
+                    assert recommendation["divergence_pp"] <= profile["max_divergence_pp"]
+                    assert recommendation["stressed_ev_pct"] >= profile["min_stressed_ev_pct"]
+                    assert recommendation["risk_grade"] in profile["allowed_risk_grades"]
+                    if profile["id"] in {"cautious", "strict", "audit_only"}:
+                        assert recommendation["price_gate_status"] == (
+                            "at_or_above_model_fair_price"
+                        )
+
+
+def test_research_shadow_stress_uses_dixon_coles_not_production_poisson():
+    source = inspect.getsource(pipeline.build)
+    assert "shadow_stress_matrices.append(" in source
+    assert "dixon_coles_score_matrix(" in source
+    assert "shadow_matrix, shadow_stress_matrices" in source
+
+
+def test_risk_profiles_are_ordered_and_exploratory_is_distinct():
+    payload = json.loads((ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8"))
+    counts = {
+        profile["id"]: 0 for profile in pipeline.RISK_AVERSION_PROFILES
+    }
+    for row in payload["predictions"]:
+        for container in (row, row["research_mode"]):
+            for recommendation in container["top_recommendations"]:
+                for profile_id, lens in recommendation["risk_lens"].items():
+                    counts[profile_id] += lens["status"] == "PASS"
+    ordered = [counts[profile["id"]] for profile in pipeline.RISK_AVERSION_PROFILES]
+    assert ordered == sorted(ordered, reverse=True)
+    assert counts["exploratory"] > counts["balanced"]
 
 
 def test_dataset_a_and_b_are_disjoint_by_competition():
@@ -257,6 +356,48 @@ def test_datapoint_audit_covers_all_json_leaves_with_distinct_passed_reviewers()
         assert len(row["value_sha256"]) == 64
         assert len(row["source_sha256"]) == 64
         assert len(row["mission_sha256"]) == 64
+        for field in (
+            "owner_evidence", "replication_1_evidence",
+            "replication_2_evidence", "editor_evidence",
+        ):
+            assert row[field].startswith("reviews:")
+            assert len(row[field].split(":")[1]) == 12
+
+
+def test_datapoint_audit_stays_below_github_single_file_limit():
+    manifest_path = ROOT / "wc_june22_27_datapoint_audit.csv"
+    assert manifest_path.stat().st_size < 100_000_000
+
+
+def test_research_recommendation_audit_uses_research_model_dependencies():
+    rows = read_rows("wc_june22_27_datapoint_audit.csv")
+    research_rows = [
+        row for row in rows
+        if "/research_mode/top_recommendations/" in row["json_pointer"]
+    ]
+    assert research_rows
+
+    sample = research_rows[0]
+    parts = sample["json_pointer"].strip("/").split("/")
+    base = f"/predictions/{parts[1]}/research_mode"
+
+    def datapoint_id(pointer: str) -> str:
+        return hashlib.sha256(
+            f"wc_june22_27_predictions.json:{pointer}".encode("utf-8")
+        ).hexdigest()[:20]
+
+    upstream = set(sample["upstream_datapoint_ids"].split(";"))
+    expected = {
+        datapoint_id(f"{base}/probabilities/team_a_win"),
+        datapoint_id(f"{base}/probabilities/draw"),
+        datapoint_id(f"{base}/probabilities/team_b_win"),
+        datapoint_id(f"{base}/rho"),
+    }
+    production_team_a = datapoint_id(
+        f"/predictions/{parts[1]}/probabilities/team_a_win"
+    )
+    assert expected <= upstream
+    assert production_team_a not in upstream
 
 
 def test_datapoint_audit_summary_matches_full_manifest_and_current_json():

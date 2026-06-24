@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="95043f1d234c0e90ad4e7c5c782e1bb2a3cc7af6fb39c93ed24ef0e51078c6e3">
+  <meta name="wcdecider-audit-sha256" content="be780b23e1363477056625f4cb38e0fd07b1bf97fe01e9662b40e829d773d723">
   <title>WCdecider • June 22–27, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -60,7 +60,7 @@
         </div>
         <svg viewBox="0 0 640 430" role="img" aria-labelledby="flow-title flow-desc" class="w-full">
           <title id="flow-title"><tspan class="en">WCdecider model workflow</tspan><tspan class="es">Flujo del modelo WCdecider</tspan></title>
-          <desc id="flow-desc"><tspan class="en">Sources flow through immutable provenance, chronological model championship, score-distribution markets, market shrinkage, risk ranking, four-role audit, JSON, and a defensive mobile report shell.</tspan><tspan class="es">Las fuentes pasan por procedencia inmutable, campeonato cronológico de modelos, mercados por distribución de marcadores, ajuste hacia mercado, ranking de riesgo, auditoría de cuatro roles, JSON y una página móvil defensiva.</tspan></desc>
+          <desc id="flow-desc"><tspan class="en">Sources flow through immutable provenance, chronological model championship, production Poisson scoring, research-gated Dixon-Coles shadow scoring, market shrinkage, five risk lenses, four-role audit, JSON, and a defensive mobile report shell.</tspan><tspan class="es">Las fuentes pasan por procedencia inmutable, campeonato cronológico de modelos, marcador Poisson de producción, Dixon-Coles sombra limitado por investigación, ajuste a mercado, cinco lentes de riesgo, auditoría de cuatro roles, JSON y una página móvil defensiva.</tspan></desc>
           <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#34d399"/></marker></defs>
           <g fill="#0f172a" stroke="#334155" stroke-width="2">
             <rect x="18" y="22" width="142" height="58" rx="14"/><rect x="18" y="100" width="142" height="58" rx="14"/>
@@ -77,10 +77,10 @@
             <text x="89" y="281"><tspan class="en">Historical odds</tspan><tspan class="es">Cuotas históricas</tspan></text><text x="89" y="299"><tspan class="en">proxy gated</tspan><tspan class="es">proxy limitado</tspan></text>
             <text x="280" y="60"><tspan class="en">Provenance</tspan><tspan class="es">Procedencia</tspan></text><text x="280" y="80"><tspan class="en">hashes + source IDs</tspan><tspan class="es">hashes + fuentes</tspan></text>
             <text x="280" y="157"><tspan class="en">Model championship</tspan><tspan class="es">Campeonato modelos</tspan></text><text x="280" y="177"><tspan class="en">nested chronology</tspan><tspan class="es">cronología anidada</tspan></text>
-            <text x="280" y="254"><tspan class="en">Score distribution</tspan><tspan class="es">Distribución goles</tspan></text><text x="280" y="274"><tspan class="en">Poisson + DC shadow</tspan><tspan class="es">Poisson + DC sombra</tspan></text>
-            <text x="475" y="60"><tspan class="en">Market shrinkage</tspan><tspan class="es">Ajuste a mercado</tspan></text><text x="475" y="80"><tspan class="en">vig removed</tspan><tspan class="es">sin margen</tspan></text>
-            <text x="475" y="157">BEST AVAILABLE</text><text x="475" y="177"><tspan class="en">utility ranking</tspan><tspan class="es">ranking utilidad</tspan></text>
-            <text x="475" y="254">JSON + audit</text><text x="475" y="274"><tspan class="en">31,319 PASS fields</tspan><tspan class="es">31.319 campos PASS</tspan></text>
+            <text x="280" y="254"><tspan class="en">Score stacks</tspan><tspan class="es">Combinación de marcadores</tspan></text><text x="280" y="274"><tspan class="en">Poisson prod + DC research</tspan><tspan class="es">Poisson producción + DC investigación</tspan></text>
+            <text x="475" y="60"><tspan class="en">Market shrinkage</tspan><tspan class="es">Ajuste a mercado</tspan></text><text x="475" y="80"><tspan class="en">same odds, two model views</tspan><tspan class="es">mismas cuotas, dos vistas</tspan></text>
+            <text x="475" y="157"><tspan class="en">Risk lenses</tspan><tspan class="es">Lentes de riesgo</tspan></text><text x="475" y="177"><tspan class="en">5 PASS/HALT profiles</tspan><tspan class="es">5 perfiles PASS/HALT</tspan></text>
+            <text x="475" y="254"><tspan class="en">JSON + audit</tspan><tspan class="es">JSON + auditoría</tspan></text><text x="475" y="274"><tspan class="en">field-level PASS gate</tspan><tspan class="es">control PASS por campo</tspan></text>
             <text x="378" y="360"><tspan class="en">Defensive report shell</tspan><tspan class="es">Página defensiva</tspan></text><text x="378" y="379"><tspan class="en">loading state · mobile safe · footer version</tspan><tspan class="es">carga · móvil seguro · versión en pie</tspan></text>
           </g>
           <g stroke="#34d399" stroke-width="3" fill="none" marker-end="url(#arrow)">
@@ -122,11 +122,20 @@
 
     <section class="mb-6 flex flex-wrap items-center gap-3">
       <label class="text-sm"><span class="en">Date</span><span class="es">Fecha</span>
-        <select id="date-filter" disabled class="ml-2 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 disabled:opacity-50"><option value="">All / Todos</option></select>
+        <select id="date-filter" disabled class="ml-2 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 disabled:opacity-50"><option value="" data-en="All" data-es="Todos">All</option></select>
       </label>
       <label class="text-sm"><span class="en">Strength</span><span class="es">Fuerza</span>
         <select id="strength-filter" disabled class="ml-2 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 disabled:opacity-50">
-          <option value="">All / Todos</option><option>PASS</option><option>HALT</option>
+          <option value="" data-en="All" data-es="Todos">All</option><option>PASS</option><option>HALT</option>
+        </select>
+      </label>
+      <label class="text-sm"><span class="en">Risk lens</span><span class="es">Lente de riesgo</span>
+        <select id="risk-profile" disabled class="ml-2 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 disabled:opacity-50">
+          <option value="exploratory" data-en="Exploratory" data-es="Exploratorio">Exploratory</option>
+          <option value="balanced" data-en="Balanced" data-es="Balanceado" selected>Balanced</option>
+          <option value="cautious" data-en="Cautious" data-es="Cauteloso">Cautious</option>
+          <option value="strict" data-en="Strict" data-es="Estricto">Strict</option>
+          <option value="audit_only" data-en="Audit only" data-es="Solo auditoría">Audit only</option>
         </select>
       </label>
     </section>
@@ -212,8 +221,8 @@ function renderDiagnostics(error){
   <p class="mt-2"><span class="en">If this happens on iPhone, screenshot this box and send it with the URL.</span><span class="es">Si ocurre en iPhone, toma captura de este cuadro y envíala con la URL.</span></p>
   <ul class="mt-3 list-disc pl-5 space-y-1">${rows}</ul>
   <p class="mt-3">URL: ${escapeHtml(location.href)}</p>
-  <p>Online: ${navigator.onLine?'yes':'no'} · Build: ${escapeHtml(build.slice(0,12))} · Audit: ${escapeHtml(audit.slice(0,12))}</p>
-  <p>User agent: ${escapeHtml(navigator.userAgent)}</p>`;
+  <p><span class="en">Online: ${navigator.onLine?'yes':'no'} · Build: ${escapeHtml(build.slice(0,12))} · Audit: ${escapeHtml(audit.slice(0,12))}</span><span class="es">En línea: ${navigator.onLine?'sí':'no'} · Versión: ${escapeHtml(build.slice(0,12))} · Auditoría: ${escapeHtml(audit.slice(0,12))}</span></p>
+  <p><span class="en">User agent: ${escapeHtml(navigator.userAgent)}</span><span class="es">Agente de usuario: ${escapeHtml(navigator.userAgent)}</span></p>`;
 }
 const showError=message=>{
  const err=$('#error'); if(err){err.classList.remove('hidden'); err.innerHTML=`<span class="en">Report data failed to load: ${escapeHtml(message)}</span><span class="es">No se pudieron cargar los datos del informe: ${escapeHtml(message)}</span>`;}
@@ -327,12 +336,52 @@ async function fetchTextArtifact(path){
  recordDiagnostic('fetch_text',{path,bytes:text.length});
  return text;
 }
+function riskLensBlocks(item){
+ const lens=item.risk_lens||{};
+ return Object.keys(lens).map(profile=>`<div class="risk-lens-value ${profile==='balanced'?'':'hidden'} rounded-lg border ${lens[profile].status==='PASS'?'border-emerald-800 bg-emerald-950/20 text-emerald-200':'border-amber-800 bg-amber-950/20 text-amber-100'} px-2 py-1" data-risk-lens-profile="${escapeHtml(profile)}">
+   <span class="en">${escapeHtml(lens[profile].profile_label?.en||profile)} lens</span><span class="es">Lente ${escapeHtml(lens[profile].profile_label?.es||profile)}</span>: <b>${escapeHtml(lens[profile].status)}</b>
+   <span class="en block text-[10px] text-slate-400">${escapeHtml(lens[profile].explanation?.en||'')}</span>
+   <span class="es block text-[10px] text-slate-400">${escapeHtml(lens[profile].explanation?.es||'')}</span>
+  </div>`).join('');
+}
+function riskProfilePanels(summary){
+ return Object.keys(summary||{}).map(profile=>`<div class="risk-profile-panel ${profile==='balanced'?'':'hidden'} rounded-xl border border-slate-800 bg-slate-950/70 p-3 text-xs" data-risk-profile-panel="${escapeHtml(profile)}">
+  <div class="font-semibold text-white"><span class="en">${escapeHtml(summary[profile].label?.en||profile)}</span><span class="es">${escapeHtml(summary[profile].label?.es||profile)}</span></div>
+  <p class="mt-1 text-slate-400"><span class="en">${escapeHtml(summary[profile].description?.en||'')}</span><span class="es">${escapeHtml(summary[profile].description?.es||'')}</span></p>
+  <p class="mt-2"><span class="text-emerald-300">${Number(summary[profile].pass_count||0)} PASS</span> · <span class="text-amber-200">${Number(summary[profile].halt_count||0)} HALT</span> · <span class="en">recommended rank</span><span class="es">rango recomendado</span>: ${summary[profile].recommended_rank??'—'}</p>
+ </div>`).join('');
+}
+function recommendationTile(item,i,mode){
+ const rankAttr=mode==='production'?'data-recommendation-rank':'data-research-recommendation-rank';
+ return `<div class="rounded-xl border ${i===0?'border-cyan-700 bg-cyan-950/20':'border-slate-800 bg-slate-950/70'} p-3" ${rankAttr}="${item.rank}">
+   <div class="flex items-start justify-between gap-3"><div><div class="text-xs text-slate-500"><span class="en">Rank</span><span class="es">Rango</span> ${item.rank} • ${escapeHtml(item.app)} • <span class="en">risk</span><span class="es">riesgo</span> ${escapeHtml(item.risk_grade)}</div>
+   <div class="mt-1 font-semibold text-white">${escapeHtml(item.selection_original)} ${item.line?`(${escapeHtml(item.line)})`:''} @ ${Number(item.odds).toFixed(2)}</div></div>
+   <span class="rounded-full border px-2 py-1 text-[10px] ${strengthColor(item.strength)}">${escapeHtml(item.strength)}</span></div>
+   <div class="mt-2 grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+    <div><span class="en">Decision EV</span><span class="es">EV decisión</span> <b>${Number(item.ev_pct).toFixed(1)}%</b></div>
+    <div><span class="en">Stress</span><span class="es">Estrés</span> <b>${Number(item.stressed_ev_pct).toFixed(1)}%</b></div>
+    <div><span class="en">Probability</span><span class="es">Probabilidad</span> <b>${pct(item.p_win)}</b></div>
+    <div><span class="en">Fair threshold</span><span class="es">Umbral justo</span> <b>${odds(item.fair_odds)}</b></div>
+   </div>
+   <div class="mt-2 grid gap-1">${riskLensBlocks(item)}</div>
+   <div class="mt-2 text-xs ${item.price_gate_status==='at_or_above_model_fair_price'?'text-emerald-300':'text-amber-200'}"><span class="en">${item.price_gate_status==='at_or_above_model_fair_price'?'Saved price meets the model fair threshold.':'Saved price is below the model fair threshold.'}</span><span class="es">${item.price_gate_status==='at_or_above_model_fair_price'?'La cuota guardada alcanza el umbral justo.':'La cuota guardada está debajo del umbral justo.'}</span></div>
+   <div class="mt-2 text-xs text-slate-400">${escapeHtml(item.market_original)} • ${escapeHtml(item.source_image)} • <span class="en">utility</span><span class="es">utilidad</span> ${Number(item.recommendation_utility).toFixed(1)}</div>
+   <details class="mt-2 text-xs"><summary class="cursor-pointer text-cyan-300"><span class="en">Why ranked, uncertainty and app steps</span><span class="es">Motivo del rango, incertidumbre y pasos en la app</span></summary>
+    <p class="en mt-2">${escapeHtml(item.why_ranked.en)}</p><p class="es mt-2">${escapeHtml(item.why_ranked.es)}</p>
+    <ul class="en mt-2 list-disc pl-5">${item.uncertainty.en.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>
+    <ul class="es mt-2 list-disc pl-5">${item.uncertainty.es.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>
+    <ol class="en mt-2 list-decimal pl-5 space-y-1">${item.steps.en.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol>
+    <ol class="es mt-2 list-decimal pl-5 space-y-1">${item.steps.es.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol>
+   </details>
+  </div>`;
+}
 function card(row,index){
  const r=row.recommendation;
  const topRecommendations=row.top_recommendations||[];
  const ptr=`/predictions/${index}`;
  const help=row.metric_explanations||{};
  const research=row.research_mode||{};
+ const haltLoop=row.halt_improvement_loop||{};
  const researchTotals=safeList(research.common_markets?.totals);
  const researchOver25=researchTotals.find(x=>x.line===2.5)||{};
  const researchBtts=research.common_markets?.btts||{};
@@ -348,26 +397,9 @@ function card(row,index){
    <td class="py-2 pr-2 text-right">${odds(m.odds)}</td><td class="py-2 pr-2 text-right">${pct(m.p_win)}</td>
    <td class="py-2 pr-2 text-right">${odds(m.fair_odds)}</td><td class="py-2 text-right ${m.ev_pct>=0?'text-emerald-300':'text-rose-300'}">${Number(m.ev_pct).toFixed(1)}%</td>
   </tr>`).join('');
- const rankedRecommendations=topRecommendations.map((item,i)=>`<div class="rounded-xl border ${i===0?'border-cyan-700 bg-cyan-950/20':'border-slate-800 bg-slate-950/70'} p-3" data-recommendation-rank="${item.rank}">
-   <div class="flex items-start justify-between gap-3"><div><div class="text-xs text-slate-500"><span class="en">Rank</span><span class="es">Rango</span> ${item.rank} • ${escapeHtml(item.app)} • <span class="en">risk</span><span class="es">riesgo</span> ${escapeHtml(item.risk_grade)}</div>
-   <div class="mt-1 font-semibold text-white">${escapeHtml(item.selection_original)} ${item.line?`(${escapeHtml(item.line)})`:''} @ ${Number(item.odds).toFixed(2)}</div></div>
-   <span class="rounded-full border px-2 py-1 text-[10px] ${strengthColor(item.strength)}">${escapeHtml(item.strength)}</span></div>
-   <div class="mt-2 grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
-    <div><span class="en">Decision EV</span><span class="es">EV decisión</span> <b>${Number(item.ev_pct).toFixed(1)}%</b></div>
-    <div><span class="en">Stress</span><span class="es">Estrés</span> <b>${Number(item.stressed_ev_pct).toFixed(1)}%</b></div>
-    <div><span class="en">Probability</span><span class="es">Probabilidad</span> <b>${pct(item.p_win)}</b></div>
-    <div><span class="en">Fair threshold</span><span class="es">Umbral justo</span> <b>${odds(item.fair_odds)}</b></div>
-   </div>
-   <div class="mt-2 text-xs ${item.price_gate_status==='at_or_above_model_fair_price'?'text-emerald-300':'text-amber-200'}"><span class="en">${item.price_gate_status==='at_or_above_model_fair_price'?'Saved price meets the model fair threshold.':'Saved price is below the model fair threshold.'}</span><span class="es">${item.price_gate_status==='at_or_above_model_fair_price'?'La cuota guardada alcanza el umbral justo.':'La cuota guardada está debajo del umbral justo.'}</span></div>
-   <div class="mt-2 text-xs text-slate-400">${escapeHtml(item.market_original)} • ${escapeHtml(item.source_image)} • <span class="en">utility</span><span class="es">utilidad</span> ${Number(item.recommendation_utility).toFixed(1)}</div>
-   <details class="mt-2 text-xs"><summary class="cursor-pointer text-cyan-300"><span class="en">Why ranked, uncertainty and app steps</span><span class="es">Motivo del rango, incertidumbre y pasos en la app</span></summary>
-    <p class="en mt-2">${escapeHtml(item.why_ranked.en)}</p><p class="es mt-2">${escapeHtml(item.why_ranked.es)}</p>
-    <ul class="en mt-2 list-disc pl-5">${item.uncertainty.en.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>
-    <ul class="es mt-2 list-disc pl-5">${item.uncertainty.es.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>
-    <ol class="en mt-2 list-decimal pl-5 space-y-1">${item.steps.en.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol>
-    <ol class="es mt-2 list-decimal pl-5 space-y-1">${item.steps.es.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol>
-   </details>
-  </div>`).join('');
+ const rankedRecommendations=topRecommendations.map((item,i)=>recommendationTile(item,i,'production')).join('');
+ const researchRecommendations=safeList(research.top_recommendations);
+ const researchRankedRecommendations=researchRecommendations.map((item,i)=>recommendationTile(item,i,'research')).join('');
  const sources=(row.research?.source_urls||[]).map(u=>{
   const host=safeUrlHost(u);
   return host?`<a class="text-cyan-400 hover:underline break-all" href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(host)}</a>`:`<span class="text-amber-200">${escapeHtml(u)}</span>`;
@@ -392,11 +424,24 @@ function card(row,index){
         :'<span class="en">Conditional forecast: rerun after intervening matches and before using updated lineups or odds.</span><span class="es">Pronóstico condicional: recalcular después de partidos intermedios y antes de usar alineaciones o cuotas actualizadas.</span>'}
     </div>
     <div class="mt-3 text-xs text-emerald-300"><span class="en">Field-level subagent audit: PASS</span><span class="es">Auditoría de subagentes por campo: PASS</span> • ${AUDIT_COUNT} <span class="en">manifest datapoints</span><span class="es">datos auditados</span></div>
+    <section class="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+      <div class="font-semibold text-white"><span class="en">Risk-aversion lens for this match</span><span class="es">Lente de aversión al riesgo para este partido</span></div>
+      <div class="mt-2 grid md:grid-cols-2 gap-2">${riskProfilePanels(row.risk_profile_summary||{})}</div>
+      <details class="mt-3 rounded-xl border border-amber-900 bg-amber-950/20 p-3 text-xs">
+        <summary class="cursor-pointer font-semibold text-amber-100"><span class="en">HALT improvement review</span><span class="es">Revisión para mejorar HALT</span></summary>
+        <p class="mt-2"><span class="en">Paired sourced candidates compared</span><span class="es">Candidatas con fuente comparadas por pares</span>: ${Number(haltLoop.paired_candidates_compared||0)} · <span class="en">production anomaly HALTs</span><span class="es">HALT anómalos de producción</span>: ${Number(haltLoop.production_anomaly_halt_count||0)} · <span class="en">research anomaly HALTs</span><span class="es">HALT anómalos de investigación</span>: ${Number(haltLoop.research_anomaly_halt_count||0)}</p>
+        <p class="mt-1"><span class="en">Production HALT → research PASS review candidates: ${Number(haltLoop.paired_production_halt_to_research_pass_count||0)} · rank one changed: ${haltLoop.research_rank_one_changed?'yes':'no'}</span><span class="es">Candidatas de revisión producción HALT → investigación PASS: ${Number(haltLoop.paired_production_halt_to_research_pass_count||0)} · cambió rango uno: ${haltLoop.research_rank_one_changed?'sí':'no'}</span></p>
+        <ul class="en mt-2 list-disc pl-5">${safeList(haltLoop.required_checks?.en).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>
+        <ul class="es mt-2 list-disc pl-5">${safeList(haltLoop.required_checks?.es).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>
+        <p class="mt-2 text-amber-200"><span class="en">Automatic promotion is disabled; a paired reclassification is a review lead, not proof of improved accuracy or profit.</span><span class="es">La promoción automática está desactivada; una reclasificación por pares es una pista, no prueba de mayor precisión o beneficio.</span></p>
+      </details>
+      <p class="mt-2 text-xs text-slate-400"><span class="en">Changing the lens changes the review threshold shown on the page; it does not change the saved model probabilities, source odds, or production recommendation.</span><span class="es">Cambiar el lente cambia el umbral de revisión mostrado; no cambia probabilidades guardadas, cuotas fuente ni recomendación de producción.</span></p>
+    </section>
     <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
       <div data-json-pointer="${ptr}/expected_goals/team_a">${metric('<span class="en">Expected goals 1</span><span class="es">Goles esperados 1</span>',Number(row.expected_goals.team_a).toFixed(2),help.expected_goals_team_a)}</div>
       <div data-json-pointer="${ptr}/expected_goals/team_b">${metric('<span class="en">Expected goals 2</span><span class="es">Goles esperados 2</span>',Number(row.expected_goals.team_b).toFixed(2),help.expected_goals_team_b)}</div>
       <div data-json-pointer="${ptr}/common_markets/totals/2/over_probability">${metric('<span class="en">Over 2.5</span><span class="es">Más de 2,5</span>',`${safePct(over25.over_probability)} · ${safeOdds(over25.over_fair_odds)}`,help.over_2_5)}</div>
-      <div data-json-pointer="${ptr}/common_markets/btts/yes_probability">${metric('BTTS Yes / Sí',`${safePct(common.btts?.yes_probability)} · ${safeOdds(common.btts?.yes_fair_odds)}`,help.btts_yes)}</div>
+      <div data-json-pointer="${ptr}/common_markets/btts/yes_probability">${metric('<span class="en">BTTS Yes</span><span class="es">Ambos marcan: sí</span>',`${safePct(common.btts?.yes_probability)} · ${safeOdds(common.btts?.yes_fair_odds)}`,help.btts_yes)}</div>
     </div>
     <section class="research-panel hidden mt-4 rounded-2xl border border-violet-800 bg-violet-950/30 p-4 text-sm" data-research-candidate="${escapeHtml(research.selected_candidate||'')}">
       <div class="flex items-start justify-between gap-3">
@@ -413,15 +458,20 @@ function card(row,index){
         ${metric('X',`${safePct(research.probabilities?.draw)} (${Number(research.deltas_vs_production?.draw_pp||0).toFixed(2)}pp)`)}
         ${metric('2',`${safePct(research.probabilities?.team_b_win)} (${Number(research.deltas_vs_production?.team_b_win_pp||0).toFixed(2)}pp)`)}
         ${metric('<span class="en">Over 2.5</span><span class="es">Más 2,5</span>',`${safePct(researchOver25.over_probability)} (${Number(research.deltas_vs_production?.over_2_5_pp||0).toFixed(2)}pp)`)}
-        ${metric('BTTS Yes',`${safePct(researchBtts.yes_probability)} (${Number(research.deltas_vs_production?.btts_yes_pp||0).toFixed(2)}pp)`)}
+        ${metric('<span class="en">BTTS Yes</span><span class="es">Ambos marcan: sí</span>',`${safePct(researchBtts.yes_probability)} (${Number(research.deltas_vs_production?.btts_yes_pp||0).toFixed(2)}pp)`)}
       </div>
+      <details class="mt-4 rounded-2xl border border-violet-800/80 bg-violet-950/20 p-3" open>
+        <summary class="cursor-pointer font-semibold text-violet-100"><span class="en">Research-mode ranked recommendations</span><span class="es">Recomendaciones clasificadas en modo investigación</span> (${researchRecommendations.length}/4)</summary>
+        <div class="mt-3 grid gap-3">${researchRankedRecommendations||'<p class="text-sm text-slate-300"><span class="en">No research-mode sourced recommendation could be produced.</span><span class="es">No se pudo producir una recomendación con fuente en modo investigación.</span></p>'}</div>
+        <div class="mt-3 grid md:grid-cols-2 gap-2">${riskProfilePanels(research.risk_profile_summary||{})}</div>
+      </details>
       <p class="mt-3 text-xs text-amber-200"><span class="en">${escapeHtml(research.why_not_production||'This model has not passed production promotion gates.')}</span><span class="es">Este modelo no ha superado las puertas de promoción a producción; no cambia la recomendación ni valida rentabilidad.</span></p>
     </section>
     <div class="mt-3 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-sm">
       <div class="font-semibold text-white"><span class="en">Common model markets — probabilities and fair odds</span><span class="es">Mercados comunes del modelo — probabilidades y cuotas justas</span></div>
       <div class="mt-2 grid sm:grid-cols-3 gap-2 text-center">
         ${metric('<span class="en">Under 2.5</span><span class="es">Menos de 2,5</span>',`${safePct(over25.under_probability)} · ${safeOdds(over25.under_fair_odds)}`,help.under_2_5)}
-        ${metric('BTTS No',`${safePct(common.btts?.no_probability)} · ${safeOdds(common.btts?.no_fair_odds)}`,help.btts_no)}
+        ${metric('<span class="en">BTTS No</span><span class="es">Ambos marcan: no</span>',`${safePct(common.btts?.no_probability)} · ${safeOdds(common.btts?.no_fair_odds)}`,help.btts_no)}
         ${metric('<span class="en">Home -0.5 AH</span><span class="es">Local -0,5 HA</span>',`${safePct(ah.home_probability)} · ${safeOdds(ah.home_fair_odds)}`,help.home_minus_0_5)}
       </div>
       <p class="mt-2 text-xs text-amber-200"><span class="en">Model-derived and experimental. A fair odd is not an app quote or betting instruction.</span><span class="es">Derivado del modelo y experimental. Una cuota justa no es una cuota de app ni una instrucción de apuesta.</span></p>
@@ -486,6 +536,11 @@ function applyFilters(){
  const d=$('#date-filter').value,s=$('#strength-filter').value;
  document.querySelectorAll('#cards article').forEach(c=>c.classList.toggle('hidden',(d&&c.dataset.date!==d)||(s&&c.dataset.strength!==s)));
 }
+function applyRiskProfile(){
+ const profile=$('#risk-profile')?.value||'balanced';
+ document.querySelectorAll('[data-risk-profile-panel]').forEach(el=>el.classList.toggle('hidden',el.dataset.riskProfilePanel!==profile));
+ document.querySelectorAll('[data-risk-lens-profile]').forEach(el=>el.classList.toggle('hidden',el.dataset.riskLensProfile!==profile));
+}
 function setResearchMode(enabled){
  document.body.classList.toggle('research-on',enabled);
  document.querySelectorAll('.research-panel').forEach(panel=>panel.classList.toggle('hidden',!enabled));
@@ -531,7 +586,8 @@ async function load(){
   setHtml('#cards',DATA.predictions.map(card).join(''));
   bindTips();
   [...new Set(DATA.predictions.map(x=>x.kickoff_lima.slice(0,10)))].forEach(d=>$('#date-filter').insertAdjacentHTML('beforeend',`<option value="${d}">${d}</option>`));
-  ['#date-filter','#strength-filter','#research-toggle'].forEach(selector=>{const el=$(selector);if(el)el.disabled=false;});
+  ['#date-filter','#strength-filter','#risk-profile','#research-toggle'].forEach(selector=>{const el=$(selector);if(el)el.disabled=false;});
+  applyRiskProfile();
   const loading=$('#loading-shell'); if(loading)loading.classList.add('hidden');
   APP_READY=true;
   setHtml('#status','<span class="en">Verified JSON loaded</span><span class="es">JSON verificado cargado</span>');
@@ -542,11 +598,13 @@ async function load(){
  }
 }
 function boot(){
- const lang=$('#lang'); if(lang)lang.addEventListener('click',()=>{const es=document.body.classList.contains('lang-es');document.body.classList.toggle('lang-es',!es);document.body.classList.toggle('lang-en',es);lang.textContent=es?'ES':'EN';document.documentElement.lang=es?'en':'es';});
+ const updateLocalizedOptionLabels=()=>{const spanish=document.body.classList.contains('lang-es');document.querySelectorAll('option[data-en][data-es]').forEach(option=>{option.textContent=spanish?option.dataset.es:option.dataset.en;});};
+ const lang=$('#lang'); if(lang)lang.addEventListener('click',()=>{const es=document.body.classList.contains('lang-es');document.body.classList.toggle('lang-es',!es);document.body.classList.toggle('lang-en',es);lang.textContent=es?'ES':'EN';document.documentElement.lang=es?'en':'es';updateLocalizedOptionLabels();});
  const researchToggle=$('#research-toggle'); if(researchToggle)researchToggle.addEventListener('click',()=>setResearchMode(researchToggle.getAttribute('aria-pressed')!=='true'));
- const date=$('#date-filter'),strength=$('#strength-filter');
- if(date)date.addEventListener('change',applyFilters); if(strength)strength.addEventListener('change',applyFilters);
+ const date=$('#date-filter'),strength=$('#strength-filter'),riskProfile=$('#risk-profile');
+ if(date)date.addEventListener('change',applyFilters); if(strength)strength.addEventListener('change',applyFilters); if(riskProfile)riskProfile.addEventListener('change',applyRiskProfile);
  bindTips();
+ updateLocalizedOptionLabels();
  load();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();

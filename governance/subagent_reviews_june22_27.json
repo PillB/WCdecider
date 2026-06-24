@@ -1,25 +1,25 @@
 {
-  "git_commit": "PENDING_BEST_AVAILABLE_RELEASE",
+  "git_commit": "PENDING_RESEARCH_RISK_RELEASE",
   "global": {
     "owner": {
-      "id": "019ef301-d049-7332-a5f6-7fddc8b678b5",
+      "id": "019ef61d-55cd-7fe1-b1e7-188d69621ee9",
       "status": "PASS",
-      "evidence": "Final owner audit verified exact metrics/provenance SHA 9da76d7d...b40f1b3, four strict outer folds with untouched 181/32 selection/holdout, 666 proxy rows/222 events/zero eligible closes, 32 fixtures and 108 distinct ranks, exact probability/EV/fair arithmetic, six correct all-HALT fallbacks, restored Betano S/100 semantics, zero source-hash mismatches, truthful profitability/+500 wording, and 24 focused tests."
+      "evidence": "Release-current ML/statistics audit verified all five risk thresholds, zero threshold/monotonicity/anomaly-promotion violations, 42 exploratory-vs-balanced differences, Dixon-Coles shadow stress matrices, paired identical-candidate HALT review, disabled automatic promotion, exact pipeline hash, and 58,940 audited leaves. This PASS does not establish robustness or profitability."
     },
     "replication_1": {
-      "id": "019ef301-e49e-70c1-bac7-6ac3da585dfd",
+      "id": "019ef61d-572d-7a43-baea-9ab642f3bd9a",
       "status": "PASS",
-      "evidence": "Final data/code replication completed the full seven-stage build twice; 19/19 generated/deployed artifacts were byte-identical. It verified 31,039 prediction leaves plus 280 metrics leaves, exact 31,319-row unique PASS manifest coverage, and final metrics/provenance SHA 9da76d7d...b40f1b3."
+      "evidence": "Release-current data/code replication produced two exact prediction rebuilds, verified 58,940 unique JSON leaves, 10,763 research-recommendation audit rows linked to research probabilities plus Dixon-Coles rho with zero production-probability leakage, all 547 paired candidates, 18 sensitivity-review leads, 756 odds/screenshot hashes, report/site parity, focused tests, and clean diff."
     },
     "replication_2": {
-      "id": "019ef308-e6eb-7341-ae5c-caa99ef21186",
+      "id": "019ef64d-2782-7603-bd74-d80d7c21064e",
       "status": "PASS",
-      "evidence": "Final statistics audit verified all four train_end<test_start outer folds, untouched 181/32 split, market-proxy champion and rejection of unsupported complexity, 108/108 probability/fair/EV reconstructions, 19/19 Asian push cases, zero HALT-order violations, six correct all-HALT fallbacks, 222/666/0 historical coverage, truthful utility/profitability/rival wording, and 17 targeted tests."
+      "evidence": "Independent replication-2/statistics review verified byte-identical reconstruction, monotonic distinct risk thresholds, no HALT override, isolated Dixon-Coles shadow stress, valid paired identical-candidate review, correct research lineage, bilingual structural parity, and the exact-tree suite result of 92 passed with one expected live skip. Profitability, ROI, and CLV remain unvalidated."
     },
     "editor": {
-      "id": "019ef302-33c1-7011-9434-ac2cdb25f558",
+      "id": "019ef61d-5652-74b1-97d5-48768e5bde2c",
       "status": "PASS",
-      "evidence": "Final editor/newbie audit verified 32 cards, exact 20x3/12x4 ranking distribution and 108 DOM rankings, rank-one and replace-not-stack wording, complete EN/ES reasons/uncertainty/six steps, negative utility and price/HALT visibility, no accumulator implication, exact manifest/JSON/site parity, 9 browser plus 17 static plus 2 translation tests, and all 320 mobile tooltips without clipping."
+      "evidence": "Release-current editor/UIUX audit verified 58,940/58,940 structural rows, prediction/metrics/site hashes, no stale audit count, localized risk selectors, BTTS yes/no, diagnostics and diagram terms, numeric novice risk explanations, research recommendations, mobile loading/error behavior, tooltip safety, and focused browser tests."
     }
   },
   "fixtures": {}
