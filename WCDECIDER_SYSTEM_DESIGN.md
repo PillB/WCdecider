@@ -248,6 +248,9 @@ Current implementation:
   sequence transformers remain registry-only until the data gate is met;
 - production recommendations, stake simulation, and top-four ranking remain
   unchanged when the toggle is enabled;
+- research mode publishes its own top-four sourced recommendation ranking, but
+  each item is labeled shadow/sensitivity analysis and must never replace the
+  production `recommendation` field until promotion gates pass;
 - every research-mode field must be present in prediction JSON and audit
   manifest coverage;
 - UI text must state `research_gated_not_production` and explain why promotion
@@ -330,6 +333,29 @@ shortfall instead of inventing a fourth choice. Lower ranks may retain visible
 
 No recommendation may claim certainty or validated profitability without a
 timestamped untouched historical price backtest.
+
+### Risk-aversion lenses
+
+The report exposes five profile levels: exploratory, balanced, cautious,
+strict, and audit-only. These profiles reclassify the displayed sourced
+recommendations by transparent thresholds on model-market disagreement,
+stressed EV, risk grade, and fair-price gate.
+
+Rules:
+
+- profiles are UI/decision lenses, not model retraining;
+- they do not mutate probabilities, source odds, rank-one production
+  recommendation, or bankroll allocation;
+- stricter profiles may mark more rows as `HALT` and must explain the specific
+  failed threshold;
+- exploratory profiles may surface more candidates for review but must retain
+  the unvalidated-profitability warning;
+- no profile may convert an underlying anomaly `HALT` into `PASS`;
+- a lens `PASS` is a threshold diagnostic only, not evidence of model
+  robustness, accuracy improvement, or betting profitability;
+- the HALT loop compares identical sourced candidates under production and
+  shadow models. A shadow reclassification is a sensitivity-review lead, not a
+  resolved HALT or evidence that the shadow model is better.
 
 ## 9. S/100-per-app bankroll simulation
 
@@ -453,6 +479,11 @@ Each row records:
 
 All roles must provide release-specific PASS evidence. A stale review from a
 previous leaf count is invalid. Any PENDING or FAIL status blocks site build.
+The manifest stores compact, hash-bound references to the canonical reviewer
+registry instead of repeating the same long evidence prose in every row. Full
+evidence remains in `governance/subagent_reviews_june22_27.json`; this
+normalization preserves traceability and keeps the artifact within GitHub's
+single-file limit.
 
 The browser independently computes the exact prediction/metrics JSON leaf-path
 set and compares its SHA-256 against the lightweight audit summary before

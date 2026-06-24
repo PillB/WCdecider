@@ -87,6 +87,15 @@ def source_for(artifact: str, pointer: str, fixture_id: str) -> Tuple[str, str, 
         return "wc_backtest_historical_dataset.csv", pointer, "historical rows + documented formula"
     if "/research/" in pointer:
         return "wc_research_june22_27.csv", fixture_id, ""
+    if "/research_mode/top_recommendations/" in pointer:
+        parts = pointer.strip("/").split("/")
+        base = f"/predictions/{parts[1]}/research_mode"
+        return "wc_odds_june_22-27.csv", fixture_id, (
+            f"{PREDICTIONS.name}:{base}/probabilities/team_a_win;"
+            f"{PREDICTIONS.name}:{base}/probabilities/draw;"
+            f"{PREDICTIONS.name}:{base}/probabilities/team_b_win;"
+            f"{PREDICTIONS.name}:{base}/rho"
+        )
     if "/recommendation/" in pointer or "/top_recommendations/" in pointer:
         parts = pointer.strip("/").split("/")
         base = f"/predictions/{parts[1]}"
@@ -127,6 +136,7 @@ def main() -> None:
     predictions = json.loads(PREDICTIONS.read_text(encoding="utf-8"))
     metrics = json.loads(METRICS.read_text(encoding="utf-8"))
     registry = json.loads(REVIEWS.read_text(encoding="utf-8"))
+    registry_hash = sha256(REVIEWS)
     pipeline_hash = metrics["pipeline_sha256"]
     mission_hash = sha256(MISSION)
     git_commit = os.environ.get("GITHUB_SHA", registry.get("git_commit", "LOCAL_UNCOMMITTED"))
@@ -211,16 +221,16 @@ def main() -> None:
                 "mission_sha256": mission_hash,
                 "owner_subagent_id": review["owner"]["id"],
                 "owner_result": review["owner"]["status"],
-                "owner_evidence": review["owner"]["evidence"],
+                "owner_evidence": f"reviews:{registry_hash[:12]}:owner",
                 "replication_1_subagent_id": review["replication_1"]["id"],
                 "replication_1_status": review["replication_1"]["status"],
-                "replication_1_evidence": review["replication_1"]["evidence"],
+                "replication_1_evidence": f"reviews:{registry_hash[:12]}:replication_1",
                 "replication_2_subagent_id": review["replication_2"]["id"],
                 "replication_2_status": review["replication_2"]["status"],
-                "replication_2_evidence": review["replication_2"]["evidence"],
+                "replication_2_evidence": f"reviews:{registry_hash[:12]}:replication_2",
                 "editor_subagent_id": review["editor"]["id"],
                 "editor_status": review["editor"]["status"],
-                "editor_evidence": review["editor"]["evidence"],
+                "editor_evidence": f"reviews:{registry_hash[:12]}:editor",
                 "final_status": final_status,
             })
 
