@@ -395,6 +395,9 @@
 - 344 | Install release-current governance evidence | Replaced stale 31,319-leaf reviewer registry with four distinct current reviewer IDs/evidence, regenerated the 58,940-row audit with zero blocked rows, rebuilt report/site, and passed the governed full suite: 92 tests passed with one expected pre-deployment live skip in 392.79s | Success
 - 345 | First publish attempt | Created commit `f335fd6`, but GitHub correctly rejected the branch because the 58,940-row audit CSV was 140.57 MB, exceeding the 100 MB single-file limit. No remote branch or PR was created | Blocked
 - 346 | Normalize repeated audit evidence | Replaced four copies of long reviewer prose on every manifest row with compact SHA-bound references to the canonical governance registry; full evidence remains in the registry. Added a regression gate requiring the audit CSV to stay below GitHub's 100 MB limit | Success (regeneration/validation pending)
+- 347 | Validate compact audit release | Regenerated 58,940 PASS rows at 63 MB, rebuilt report/site, and passed compact-evidence coverage, audit-summary parity, and GitHub-size regression tests 3/3 | Success
+- 348 | Publish and merge governed release | Amended commit `d91174c`, pushed `codex/research-risk-recommendations`, opened PR #4, marked it ready, and merged to `main` at `7ae7357e4a27cedbd7f802942e61328be61680a1`; unrelated untracked files remained excluded | Success
+- 349 | Validate GitHub Pages deployment | Exact run `28073011018` passed authoritative build/test, Pages deployment, and deployed-site Playwright validation for SHA `7ae7357e4a27cedbd7f802942e61328be61680a1`. A non-blocking Node.js 20 deprecation annotation remains on upstream actions | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Prior production paths and documentation overstated reproducibility through hard-coded odds, optional silent TGNN fallback, and target extraction from prose; the June 22–27 path removes those dependencies.
@@ -418,6 +421,6 @@
 - Startup failures now need user-visible diagnostics because iOS may kill a tab before remote developer tools are available; the diagnostics panel records fetch stages, HTTP status, byte counts, URL, build SHA, audit hash, online status, and user agent.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Regenerate and validate the compact governed audit, amend the release commit, then publish through the isolated branch/PR.
-- [ ] Next Step: Monitor exact GitHub Actions SHA and validate the deployed live revision.
+- [x] Active Step: Research-mode recommendations, risk lenses, paired HALT review, bilingual UI, governance, tests, and deployment are complete.
+- [ ] Next Step: Upgrade deprecated Node-targeting GitHub Actions when compatible major releases are available.
 - [ ] Future Milestone: Populate timestamp-verified historical closes after authenticated provider access and rerun the frozen profitability gate; until then the warning remains.
