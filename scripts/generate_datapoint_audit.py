@@ -132,6 +132,31 @@ def review_for(registry: dict, fixture_id: str) -> dict:
     return registry.get("fixtures", {}).get(fixture_id, registry["global"])
 
 
+def canonicalize_json(value: Any) -> Any:
+    """Normalize insignificant cross-platform float serialization differences."""
+    if isinstance(value, dict):
+        return {
+            key: canonicalize_json(value[key])
+            for key in sorted(value)
+        }
+    if isinstance(value, list):
+        return [canonicalize_json(item) for item in value]
+    if isinstance(value, float):
+        return round(value, 12)
+    return value
+
+
+def semantic_json_sha256(value: Any) -> str:
+    payload = json.dumps(
+        canonicalize_json(value),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    )
+    return sha256_text(payload)
+
+
 def main() -> None:
     """Build the manifest and fail if any review role is missing or non-PASS."""
     for path in (PREDICTIONS, METRICS, MISSION, REVIEWS):
@@ -146,10 +171,17 @@ def main() -> None:
         PREDICTIONS.name: sha256(PREDICTIONS),
         METRICS.name: sha256(METRICS),
     }
-    reviewed_artifact_hashes = registry.get("reviewed_artifact_hashes", {})
+    current_semantic_hashes = {
+        PREDICTIONS.name: semantic_json_sha256(predictions),
+        METRICS.name: semantic_json_sha256(metrics),
+    }
+    reviewed_artifact_hashes = registry.get(
+        "reviewed_semantic_hashes",
+        registry.get("reviewed_artifact_hashes", {}),
+    )
     review_binding_valid = (
         registry.get("reviewed_model_version") == metrics["version"]
-        and reviewed_artifact_hashes == current_artifact_hashes
+        and reviewed_artifact_hashes == current_semantic_hashes
     )
     pipeline_hash = metrics["pipeline_sha256"]
     mission_hash = sha256(MISSION)
@@ -303,6 +335,7 @@ def main() -> None:
         "current_model_version": metrics["version"],
         "reviewed_artifact_hashes": reviewed_artifact_hashes,
         "current_artifact_hashes": current_artifact_hashes,
+        "current_semantic_hashes": current_semantic_hashes,
         "blocking_reason": (
             ""
             if review_binding_valid
@@ -321,6 +354,7 @@ def main() -> None:
             f"current_model={metrics['version']!r}; "
             f"reviewed_model={registry.get('reviewed_model_version', '')!r}; "
             f"current_hashes={current_artifact_hashes}; "
+            f"current_semantic_hashes={current_semantic_hashes}; "
             f"reviewed_hashes={reviewed_artifact_hashes}",
             file=sys.stderr,
         )

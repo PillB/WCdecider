@@ -5,7 +5,7 @@
     "wc_june22_27_model_metrics.json": 538,
     "wc_june22_27_predictions.json": 56693
   },
-  "artifact_sha256": "76a402a8928b5beb588fea9cb3d3e4bb79cc67a29d6ad6c0ff6ed0ebd2213ad3",
+  "artifact_sha256": "1fb7fbdc3bee5423cc4436be7706f5ab22867152cebdcddb6eb3183647f0d5a9",
   "audit_paths_sha256": "5289d8a48d6f618165fed1dbdb6398e3a2360558d35b6bab17795fd271795ac2",
   "audit_rows": 57231,
   "blocked_rows": 0,
@@ -15,6 +15,10 @@
     "wc_june22_27_predictions.json": "f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57"
   },
   "current_model_version": "june22_27_v5_fail_closed_development_only",
+  "current_semantic_hashes": {
+    "wc_june22_27_model_metrics.json": "c4de3c322f3788a9bee68de7eda05906a858cb982163da96b455f75c3342f5fb",
+    "wc_june22_27_predictions.json": "c52f7cd60edabc750b1ed09f1f6c0b573997ba966aa13252e1e7fb558418e139"
+  },
   "expected_json_leaf_count": 57231,
   "expected_paths_sha256": "5289d8a48d6f618165fed1dbdb6398e3a2360558d35b6bab17795fd271795ac2",
   "final_status": "PASS",
@@ -22,8 +26,8 @@
   "predictions_sha256": "f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57",
   "review_binding_valid": true,
   "reviewed_artifact_hashes": {
-    "wc_june22_27_model_metrics.json": "09332cac4a76e723de2cca602c386380bb8120aea9f80aedf27fc6d63d453a83",
-    "wc_june22_27_predictions.json": "f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57"
+    "wc_june22_27_model_metrics.json": "c4de3c322f3788a9bee68de7eda05906a858cb982163da96b455f75c3342f5fb",
+    "wc_june22_27_predictions.json": "c52f7cd60edabc750b1ed09f1f6c0b573997ba966aa13252e1e7fb558418e139"
   },
   "reviewed_model_version": "june22_27_v5_fail_closed_development_only",
   "schema_version": "1.0",

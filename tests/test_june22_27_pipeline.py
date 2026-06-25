@@ -14,6 +14,7 @@ from pathlib import Path
 import pytest
 
 import wc_june22_27_pipeline as pipeline
+from scripts.generate_datapoint_audit import semantic_json_sha256
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -593,6 +594,23 @@ def test_audit_generator_is_deterministic():
     assert (ROOT / "wc_june22_27_datapoint_audit.csv").read_bytes() == first
     assert (ROOT / "wc_june22_27_datapoint_audit_summary.json").read_bytes() == first_summary
     assert first_run.returncode == second_run.returncode == 0
+
+
+def test_semantic_review_hash_ignores_only_sub_precision_float_noise():
+    base = {"b": [0.12345678901234], "a": {"x": 1.0}}
+    reordered_tiny_noise = {
+        "a": {"x": 1.0},
+        "b": [0.123456789012341],
+    }
+    material_change = {"a": {"x": 1.0}, "b": [0.12345679001234]}
+    structural_change = {"a": {"x": 1.0}, "b": [0.12345678901234, 0.0]}
+    assert semantic_json_sha256(base) == semantic_json_sha256(
+        reordered_tiny_noise
+    )
+    assert semantic_json_sha256(base) != semantic_json_sha256(material_change)
+    assert semantic_json_sha256(base) != semantic_json_sha256(
+        structural_change
+    )
 
 
 def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():

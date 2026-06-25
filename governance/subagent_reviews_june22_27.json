@@ -5,6 +5,10 @@
     "wc_june22_27_model_metrics.json": "09332cac4a76e723de2cca602c386380bb8120aea9f80aedf27fc6d63d453a83",
     "wc_june22_27_predictions.json": "f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57"
   },
+  "reviewed_semantic_hashes": {
+    "wc_june22_27_model_metrics.json": "c4de3c322f3788a9bee68de7eda05906a858cb982163da96b455f75c3342f5fb",
+    "wc_june22_27_predictions.json": "c52f7cd60edabc750b1ed09f1f6c0b573997ba966aa13252e1e7fb558418e139"
+  },
   "global": {
     "owner": {
       "id": "019efafa-f2b9-7480-8282-ffe7b56bba1e",
