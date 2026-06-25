@@ -40,6 +40,9 @@ jobs:
       - name: Run nested chronological model championship
         run: python3 model_championship.py
 
+      - name: Build fail-closed recommendation promotion evidence
+        run: python3 promotion_pipeline.py
+
       - name: Run June 22-27 reproducible pipeline
         run: python3 wc_june22_27_pipeline.py
 

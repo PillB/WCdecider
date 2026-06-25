@@ -2,33 +2,33 @@
   "git_commit": "PENDING_SAFETY_RELEASE_COMMIT",
   "reviewed_model_version": "june22_27_v5_fail_closed_development_only",
   "reviewed_artifact_hashes": {
-    "wc_june22_27_model_metrics.json": "09332cac4a76e723de2cca602c386380bb8120aea9f80aedf27fc6d63d453a83",
-    "wc_june22_27_predictions.json": "f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57"
+    "wc_june22_27_model_metrics.json": "220f8ec805d877a6a4f2a525d28ce483dfb4a3d74b61dfd9fac4dd12db804e47",
+    "wc_june22_27_predictions.json": "bf696077a9ae44ba3e96fb83afcaf2030636eaf43a5550f30da7833fa5e5d5fc"
   },
   "reviewed_semantic_hashes": {
-    "wc_june22_27_model_metrics.json": "c4de3c322f3788a9bee68de7eda05906a858cb982163da96b455f75c3342f5fb",
-    "wc_june22_27_predictions.json": "c52f7cd60edabc750b1ed09f1f6c0b573997ba966aa13252e1e7fb558418e139"
+    "wc_june22_27_model_metrics.json": "6b1d762aa0109757490276c6c8f91a22c67f84276f185bf15cb257e72b8ce8b1",
+    "wc_june22_27_predictions.json": "d7826627ca8a94af326f1d4026df33baa7418b5d58c7e6b7f27d14223c1d75a6"
   },
   "global": {
     "owner": {
-      "id": "019efafa-f2b9-7480-8282-ffe7b56bba1e",
+      "id": "019efd1e-5b50-7f90-8ec4-d5e5e414b429",
       "status": "PASS",
-      "evidence": "Exact-hash owner/model integrity review of the fail-closed safety artifact verified corrected June 22-23 results, pre-match Elo/form/rest snapshots, retraining, chronological championship, production Elo-Poisson, research-only Dixon-Coles, null recommendations, ABSTAIN comparisons, and zero stakes. Production promotion remains explicitly blocked by unsealed calibration and profitability gates."
+      "evidence": "Exact-hash owner/model review verified model values unchanged, 18 future zero-stake or conditional watchlists, 14 archived rows, 129 chronological OOF rows, tuned Elo superiority over the rejected stack, BLOCKED promotion, null recommendations, ABSTAIN comparisons, and zero stakes."
     },
     "replication_1": {
-      "id": "019efaba-b9b5-7ab2-9ed8-edc4dbc8e93f",
+      "id": "019efd1e-5bf9-77b0-8701-adeb0a9bfae6",
       "status": "PASS",
-      "evidence": "Clean-room replication reproduced the exact predictions, metrics, results, and championship values; verified 48 pre-match contexts, eight elapsed and 24 future fixtures, no Elo/form/rest leakage, and zero recommendations/stakes. Focused replication suite passed."
+      "evidence": "Two isolated clean-room builds were byte-identical and matched prediction, metrics, result, promotion, and OOF hashes; one rank-one row exists per fixture, localized current/conditional/archive flows reproduce, and all stakes remain zero."
     },
     "replication_2": {
-      "id": "019efafa-f366-7c63-8c3d-f9f83a4bd89a",
+      "id": "019efd1e-5cce-7cd1-a4d7-8fbe5df740b3",
       "status": "PASS",
-      "evidence": "Exact-hash lineage/statistics review verified all eight corrected scores and sources, 48 unique results, pre-match Elo/form/goal-difference/rest contexts, no post-cutoff match leakage, exact calibration/championship reproduction, and truthful zero-eligible-close profitability blocking. Recommendation and profit promotion remain prohibited."
+      "evidence": "Data/safety review verified all 216 production/research comparison labels, no duplicated total lines, Spanish localization, current-price disclaimers, conditional hard stops, elapsed no-bet language, ABSTAIN status, zero stakes, and zero of 142349 canonical odds rows eligible for closing validation."
     },
     "editor": {
-      "id": "019efaba-b92c-7792-b361-78316a52d8b3",
+      "id": "019efd1e-5d8f-7521-a557-4bd88228ab26",
       "status": "PASS",
-      "evidence": "Exact-hash editor review verified eight elapsed result cards with archived pre-match wording, 24 future cards, JSON-driven diagram counts, null recommendations, ABSTAIN labels, zero stakes, bilingual/mobile presentation, and removal of empty app-step/betting language."
+      "evidence": "Novice editor/UI review verified current fixtures alone show bilingual watchlist and ELI5 controls; conditional fixtures show permanent S/0.00 and one rerun stop only; elapsed fixtures show verified archive review only; primary markets are bilingual; mobile tooltips support tap, scroll, outside-click, and Escape."
     }
   },
   "fixtures": {}

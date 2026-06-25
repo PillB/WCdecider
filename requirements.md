@@ -42,6 +42,22 @@ This document defines testable production requirements. `AGENT.md` defines behav
   must be off by default, clearly labeled non-production, unable to mutate
   production recommendations or staking outputs, and must not imply that
   untested registered candidates were beaten.
+- R2.17: Recommendation/model promotion requires cross-fitted outer OOF
+  predictions, calibration fitted only on inner OOF predictions, a
+  price-independent constrained stack, complete candidate/search ledgers,
+  date-block uncertainty, family-wise multiplicity control, and confirmation
+  on a newly sealed prospective cohort.
+- R2.18: Empirical calibration is research-only below 300 OOF predictions, 75
+  observations per outcome class, 40 date blocks, and four outer folds with at
+  least 40 rows each. Identity calibration remains the production default
+  unless calibrated probabilities are non-inferior on proper scores and
+  reliability in sealed evidence.
+- R2.19: A sealed prospective registry is immutable. Build and evaluation code
+  verifies its prediction, protocol, model, data, policy, fixture-manifest, and
+  source-commit hashes but never rewrites the sealed file.
+- R2.20: Profitability promotion consumes a dedicated hash-bound eligible-bet
+  ledger derived from the canonical closing-odds corpus. Aggregate public proxy
+  coverage cannot authorize ROI, CLV, recommendations, or staking.
 
 ## R3 — Safety and classification
 

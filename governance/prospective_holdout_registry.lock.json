@@ -1,0 +1,6 @@
+{
+  "lock_version": "prospective_holdout_registry_lock_v1",
+  "registry_path": "governance/prospective_holdout_registry.json",
+  "registry_sha256": "3edfaf11f8898b4c1fe730985105e7e11f7ffbf33c5b5103398e44cc492fe516",
+  "review_contract": "Any registry byte change requires a new lock, a new cohort/version, and independent exact-hash review before evaluation."
+}

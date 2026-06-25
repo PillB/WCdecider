@@ -2,7 +2,7 @@ WCdecider June 22–27, 2026 provenance
 =======================================
 
 Canonical fixtures: wc_2026_matches_june_22-27.csv
-Elapsed outcomes: wc_2026_results_through_june23.csv
+Elapsed outcomes: wc_2026_results_through_june24.csv
 Pre-tournament Elo: wc_team_elo_baseline_june11.csv
 Historical Dataset A/B source: wc_backtest_historical_dataset.csv
 Screenshot-derived odds: odds_june22_23.csv, odds_june24.csv, odds_june25_26.csv, odds_june27.csv
@@ -53,17 +53,17 @@ Input hashes:
 - research_june24_25.csv: d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517
 - research_june26_27.csv: 5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60
 - wc_2026_matches_june_22-27.csv: 5c8f68a44f90ce000568d0618046d45cedd07557d1ee175162f3a86459af0a2d
-- wc_2026_results_through_june23.csv: ed25fd5f0fdc408ce18f4c24a04c0cd513894a5d1510c5906a3d9a9daf8daa44
+- wc_2026_results_through_june24.csv: 24276c96e32542f2145c91e60b878e1d98536032850006a460642bc99b256a50
 - wc_backtest_historical_dataset.csv: beee227402f102b146f785dc77d92a00863b9c5090f7de4ff6d7baaa9f75683a
 - wc_team_elo_baseline_june11.csv: f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b
-- pipeline: 2951dba26b421e5e60c218bac0cae613552ede38f37605c84e664dee69073b10
+- pipeline: 2b8b88a6b77e2bb3546a3e90a881a6be8d36ef897945911e70ec8f259de7a2c6
 
 Generated artifact hashes:
-- wc_dataset_a_world_cups.csv: 5b7cb0f7afd6c2242757121a749c526b2d5f270b66dcfd921061122581114a46
+- wc_dataset_a_world_cups.csv: 6293c0b6989bc7f4b8bc778ce6b85d327dfd43dd47b820612f6cc5a3045a6831
 - wc_dataset_b_supplementary.csv: 8f76eb0bb1fff775cf6de0c989173724b65daef41fac14ce03b7c0ea83c8945a
-- wc_june22_27_model_dataset.csv: d7389395d8ff129210c23076de31bff225bf80930dd45a2de3299b0ac6ebb3dc
-- wc_june22_27_model_metrics.json: 09332cac4a76e723de2cca602c386380bb8120aea9f80aedf27fc6d63d453a83
-- wc_june22_27_predictions.json: f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57
+- wc_june22_27_model_dataset.csv: 750360eda1e668216a11860c1a94c1019eaf8afc14332aeb097043fb36801f52
+- wc_june22_27_model_metrics.json: 220f8ec805d877a6a4f2a525d28ce483dfb4a3d74b61dfd9fac4dd12db804e47
+- wc_june22_27_predictions.json: bf696077a9ae44ba3e96fb83afcaf2030636eaf43a5550f30da7833fa5e5d5fc
 - wc_odds_june_22-27.csv: b25ad781248693b577aa1505dcb0dfccd0a77b6f94c40a6f7659d3dc91f5b89e
 - wc_research_june22_27.csv: 1e7310c443256c70a9c31afebda811a04c557f7f88c59f5514da49128b88d22d
 - wc_screenshot_manifest_june22_27.csv: f19cbe911a219616ad492f879c3a04296ea05ba73928d3326e694ec15c0deab0

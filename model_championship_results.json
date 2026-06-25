@@ -3,7 +3,7 @@
   "benchmark_champion_is_deployment_decision": false,
   "capacity_rejections": {
     "graphmixer_or_dygformer": "Efficient temporal graph architectures are appropriate once the graph has enough repeated pre-event interactions; current outer folds still favor the de-vigged market proxy.",
-    "temporal_graph_neural_network": "265 matches and sparse team histories are insufficient for a credible high-capacity chronological comparison. Production gate requires at least 2000 timestamped fixtures and roughly 30 temporal edges per team.",
+    "temporal_graph_neural_network": "271 matches and sparse team histories are insufficient for a credible high-capacity chronological comparison. Production gate requires at least 2000 timestamped fixtures and roughly 30 temporal edges per team.",
     "transformer_sequence_model": "Effective sample size is orders of magnitude below a defensible sequence-model benchmark; fitting would invite leakage and variance-driven selection."
   },
   "challenger_vs_market_paired_bootstrap": {
@@ -54,7 +54,7 @@
       "naive stacking weights selected outside chronological folds"
     ],
     "promotion_gate": {
-      "actual_fixture_count": 265,
+      "actual_fixture_count": 271,
       "actual_team_count": 65,
       "actual_temporal_edges_per_team": {
         "ALG": 2,
@@ -62,9 +62,9 @@
         "AUS": 12,
         "AUT": 4,
         "BEL": 10,
-        "BIH": 6,
-        "BRA": 22,
-        "CAN": 5,
+        "BIH": 7,
+        "BRA": 23,
+        "CAN": 6,
         "CHI": 14,
         "CIV": 2,
         "CMR": 5,
@@ -74,7 +74,7 @@
         "CRC": 6,
         "CRO": 10,
         "CUR": 2,
-        "CZE": 6,
+        "CZE": 7,
         "DEN": 11,
         "ECU": 19,
         "EGY": 5,
@@ -85,7 +85,7 @@
         "GER": 8,
         "GHA": 5,
         "GRE": 4,
-        "HAI": 2,
+        "HAI": 3,
         "HUN": 4,
         "IRL": 5,
         "IRN": 10,
@@ -94,10 +94,10 @@
         "ITA": 3,
         "JOR": 8,
         "JPN": 12,
-        "KOR": 12,
+        "KOR": 13,
         "KSA": 15,
-        "MAR": 8,
-        "MEX": 8,
+        "MAR": 9,
+        "MEX": 9,
         "NED": 9,
         "NGA": 5,
         "NOR": 4,
@@ -107,13 +107,13 @@
         "PER": 17,
         "POL": 11,
         "POR": 12,
-        "QAT": 7,
-        "RSA": 4,
+        "QAT": 8,
+        "RSA": 5,
         "RUS": 3,
-        "SCO": 6,
+        "SCO": 7,
         "SEN": 8,
         "SRB": 8,
-        "SUI": 10,
+        "SUI": 11,
         "SWE": 9,
         "TUN": 8,
         "TUR": 4,
@@ -148,9 +148,9 @@
         "url": "https://arxiv.org/abs/1810.03993"
       }
     ],
-    "summary": "Deep and graph models remain research-track only. The available complete 1X2 proxy-market corpus has 217 complete matches after filtering and 265 total historical match rows, far below the prespecified evidence gate for a production temporal GNN or sequence transformer."
+    "summary": "Deep and graph models remain research-track only. The available complete 1X2 proxy-market corpus has 217 complete matches after filtering and 271 total historical match rows, far below the prespecified evidence gate for a production temporal GNN or sequence transformer."
   },
-  "excluded_missing_complete_1x2": 48,
+  "excluded_missing_complete_1x2": 54,
   "holdout_challenger": "elo_tuned_nested",
   "holdout_metrics": {
     "elo_fixed_400": {
@@ -571,7 +571,7 @@
   "rows": 217,
   "selection_rows": 188,
   "selection_rule": "inner rolling-origin tuning inside four expanding outer folds; minimum outer mean log loss then Brier; final holdout is evaluation-only",
-  "source_rows": 265,
+  "source_rows": 271,
   "tuned_elo": {
     "divisor": 325.0,
     "draw_base": 0.24,

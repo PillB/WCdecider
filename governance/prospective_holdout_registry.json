@@ -1,0 +1,39 @@
+{
+  "cohorts": [
+    {
+      "cohort_id": "june24_27_shadow_mechanics_v1",
+      "confirmatory_eligible": false,
+      "fixture_scope": "fixtures with kickoff after the June 23 data cutoff",
+      "forecast_cutoff_utc": "2026-06-24T04:59:59Z",
+      "model_version": "june22_27_v5_fail_closed_development_only",
+      "outcome_status": "PARTIALLY_ELAPSED_NOT_EVALUATED",
+      "prediction_artifact": "wc_june22_27_predictions.json",
+      "prediction_artifact_sha256": "f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57",
+      "profitability_status": "BLOCKED_NO_TIMESTAMP_QUALIFIED_PRICES",
+      "purpose": "shadow mechanics and later descriptive evaluation only",
+      "reason_not_confirmatory": "The forecasts were committed before the fixtures, but this promotion protocol was authored after the forecast freeze.",
+      "source_commit": "31deb67b4a57308c6761a01509d1fdc969b21752",
+      "status": "INVALIDATED_NON_CONFIRMATORY_ARTIFACT_SUPERSEDED",
+      "invalidation_reason": "The live prediction artifact advanced to the June 24 result cutoff. The prior prediction hash is retained for lineage but is no longer the current path contents."
+    }
+  ],
+  "next_confirmatory_cohort": {
+    "required_before_seal": [
+      "frozen promotion protocol hash",
+      "exact prediction artifact hash",
+      "exact model and calibration versions",
+      "fixture IDs and timezone-aware kickoffs",
+      "frozen recommendation and staking policy",
+      "independent registry review"
+    ],
+    "status": "NOT_YET_SEALED"
+  },
+  "policy": {
+    "confirmation_requires_all_kickoffs_after_seal": true,
+    "confirmation_requires_no_model_or_policy_selection_on_cohort": true,
+    "confirmation_requires_protocol_frozen_before_predictions": true,
+    "profitability_requires_timestamp_qualified_prices": true
+  },
+  "protocol_sha256": "15bd2ae69b3da8c268238722afa1a6448d508c611debb4c4c731c64ce2432595",
+  "registry_version": "prospective_holdout_registry_v1"
+}

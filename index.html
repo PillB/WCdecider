@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="1fb7fbdc3bee5423cc4436be7706f5ab22867152cebdcddb6eb3183647f0d5a9">
+  <meta name="wcdecider-audit-sha256" content="8c2574737d69d8ecfb67ee8b616a59197bb2cee7e6664245655884e4ae106999">
   <title>WCdecider • June 22–27, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -15,8 +15,9 @@
       width:min(24rem,calc(100vw - 1rem));max-height:min(22rem,calc(100vh - 1rem));
       overflow:auto;padding:.65rem;border:1px solid #475569;
       border-radius:.75rem;background:#020617;color:#e2e8f0;font-size:.75rem;line-height:1.25rem;
-      white-space:normal;box-shadow:0 12px 30px #0008;pointer-events:none}
-    .tip:hover>span,.tip:focus>span{display:block}
+      white-space:normal;box-shadow:0 12px 30px #0008;pointer-events:auto;overscroll-behavior:contain}
+    .tip:hover>span,.tip:focus>span,.tip.tip-open>span{display:block}
+    .tip.tip-dismissed>span{display:none!important}
     .card-anchor{scroll-margin-top:6rem}
     .research-path{stroke:#a78bfa;stroke-dasharray:10 7;animation:research-flow 1.8s linear infinite}
     .research-node{stroke:#8b5cf6!important;fill:#2e1065!important}
@@ -398,15 +399,31 @@ function hideTip(tip){
  popup.style.removeProperty('display');popup.style.removeProperty('visibility');
  popup.style.removeProperty('left');popup.style.removeProperty('top');
  tip.setAttribute('aria-expanded','false');
+ tip.classList.remove('tip-open');
+}
+function dismissTip(tip){
+ hideTip(tip);
+ tip.classList.add('tip-dismissed');
+ if(document.activeElement===tip)tip.blur();
 }
 function bindTips(){
  document.querySelectorAll('.tip:not([data-tip-bound])').forEach(tip=>{
   tip.dataset.tipBound='true';tip.setAttribute('aria-expanded','false');
-  tip.addEventListener('mouseenter',()=>placeTip(tip));
+  tip.addEventListener('mouseenter',()=>{tip.classList.remove('tip-dismissed');placeTip(tip)});
   tip.addEventListener('mouseleave',()=>hideTip(tip));
-  tip.addEventListener('focus',()=>placeTip(tip));
+  tip.addEventListener('focus',()=>{tip.classList.remove('tip-dismissed');placeTip(tip)});
   tip.addEventListener('blur',()=>hideTip(tip));
+  tip.addEventListener('click',event=>{
+   event.preventDefault();event.stopPropagation();
+   if(tip.classList.contains('tip-open'))dismissTip(tip);
+   else{tip.classList.remove('tip-dismissed');document.querySelectorAll('.tip.tip-open').forEach(dismissTip);tip.classList.add('tip-open');placeTip(tip)}
+  });
  });
+ if(!document.body.dataset.tipGlobalBound){
+  document.body.dataset.tipGlobalBound='true';
+  document.addEventListener('click',event=>{if(!event.target.closest('.tip'))document.querySelectorAll('.tip.tip-open').forEach(dismissTip)});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')document.querySelectorAll('.tip').forEach(dismissTip)});
+ }
 }
 async function sha256Hex(text){
  if(typeof crypto==='undefined'||!crypto.subtle||typeof TextEncoder==='undefined'){recordDiagnostic('sha256_unavailable');return ''}
@@ -441,7 +458,7 @@ function recommendationTile(item,i,mode){
  const rankAttr=mode==='production'?'data-recommendation-rank':'data-research-recommendation-rank';
  return `<div class="rounded-xl border ${i===0?'border-cyan-700 bg-cyan-950/20':'border-slate-800 bg-slate-950/70'} p-3" ${rankAttr}="${item.rank}">
    <div class="flex items-start justify-between gap-3"><div><div class="text-xs text-slate-500"><span class="en">Rank</span><span class="es">Rango</span> ${item.rank} • ${escapeHtml(item.app)} • <span class="en">risk</span><span class="es">riesgo</span> ${escapeHtml(item.risk_grade)}</div>
-   <div class="mt-1 font-semibold text-white">${escapeHtml(item.selection_original)} ${item.line?`(${escapeHtml(item.line)})`:''} @ ${Number(item.odds).toFixed(2)}</div></div>
+   <div class="mt-1 font-semibold text-white"><span class="en">${escapeHtml(item.display?.selection?.en||item.selection_original)}</span><span class="es">${escapeHtml(item.display?.selection?.es||item.selection_original)}</span> @ ${Number(item.odds).toFixed(2)}</div></div>
    <span class="rounded-full border border-red-700 px-2 py-1 text-[10px] text-red-200">${escapeHtml(item.decision_status||'ABSTAIN')}</span></div>
    <div class="mt-2 grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
     <div><span class="en">Decision EV</span><span class="es">EV decisión</span> <b>${Number(item.ev_pct).toFixed(1)}%</b></div>
@@ -451,7 +468,7 @@ function recommendationTile(item,i,mode){
    </div>
    <div class="mt-2 grid gap-1">${riskLensBlocks(item)}</div>
    <div class="mt-2 text-xs ${item.price_gate_status==='at_or_above_model_fair_price'?'text-emerald-300':'text-amber-200'}"><span class="en">${item.price_gate_status==='at_or_above_model_fair_price'?'Saved price meets the model fair threshold.':'Saved price is below the model fair threshold.'}</span><span class="es">${item.price_gate_status==='at_or_above_model_fair_price'?'La cuota guardada alcanza el umbral justo.':'La cuota guardada está debajo del umbral justo.'}</span></div>
-   <div class="mt-2 text-xs text-slate-400">${escapeHtml(item.market_original)} • ${escapeHtml(item.source_image)} • <span class="en">utility</span><span class="es">utilidad</span> ${Number(item.recommendation_utility).toFixed(1)}</div>
+   <div class="mt-2 text-xs text-slate-400"><span class="en">${escapeHtml(item.display?.market?.en||item.market_original)}</span><span class="es">${escapeHtml(item.display?.market?.es||item.market_original)}</span> • ${escapeHtml(item.source_image)} • <span class="en">utility</span><span class="es">utilidad</span> ${Number(item.recommendation_utility).toFixed(1)}</div>
    <details class="mt-2 text-xs"><summary class="cursor-pointer text-cyan-300"><span class="en">Why ranked and uncertainty</span><span class="es">Motivo del rango e incertidumbre</span></summary>
     <p class="en mt-2">${escapeHtml(item.why_ranked.en)}</p><p class="es mt-2">${escapeHtml(item.why_ranked.es)}</p>
     <ul class="en mt-2 list-disc pl-5">${item.uncertainty.en.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>
@@ -493,16 +510,18 @@ function card(row,index){
  const riskEn=safeList(row.risk_notes?.en);
  const riskEs=safeList(row.risk_notes?.es);
  const elapsed=row.fixture_lifecycle_status==='elapsed_result_verified';
+ const currentWatchlist=!elapsed&&row.freshness_status==='current_snapshot';
+ const conditional=!elapsed&&!currentWatchlist;
  const lifecycleBlock=elapsed
   ?`<div class="mt-3 rounded-xl border border-sky-800 bg-sky-950/30 p-3 text-xs">
       <div class="font-bold text-sky-100"><span class="en">Final result: ${escapeHtml(row.verified_result?.score||'verified')}</span><span class="es">Resultado final: ${escapeHtml(row.verified_result?.score||'verificado')}</span></div>
       <div class="mt-1 text-sky-200"><span class="en">Archived pre-match forecast reconstructed from the rating snapshot before this result. It is not a current betting card.</span><span class="es">Pronóstico prepartido archivado reconstruido con el rating anterior a este resultado. No es una tarjeta de apuesta vigente.</span></div>
      </div>`
-  :`<div class="mt-3 rounded-xl border ${row.freshness_status==='current_snapshot'?'border-emerald-800 bg-emerald-950/30':'border-amber-800 bg-amber-950/30'} p-3 text-xs">
-      ${row.freshness_status==='current_snapshot'
-        ?'<span class="en">Current model snapshot at the documented cutoff; sportsbook screenshots may still be stale.</span><span class="es">Instantánea actual del modelo al corte documentado; las capturas de cuotas aún pueden estar desactualizadas.</span>'
-        :'<span class="en">Conditional forecast: rerun after intervening matches and before using updated lineups or odds.</span><span class="es">Pronóstico condicional: recalcular después de partidos intermedios y antes de usar alineaciones o cuotas actualizadas.</span>'}
-    </div>`;
+  :currentWatchlist
+  ?`<div class="mt-3 rounded-xl border border-emerald-800 bg-emerald-950/30 p-3 text-xs">
+      <span class="en">Current model snapshot at the documented cutoff; sportsbook screenshots may still be stale.</span><span class="es">Instantánea actual del modelo al corte documentado; las capturas de cuotas aún pueden estar desactualizadas.</span>
+    </div>`
+  :'';
  return `<article class="card-anchor bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden" data-fixture-id="${escapeHtml(row.fixture_id)}" data-date="${row.kickoff_lima.slice(0,10)}" data-strength="${strength}">
    <header class="p-5 border-b border-slate-800 flex justify-between gap-4">
     <div><div class="text-xs text-slate-500" data-json-pointer="${ptr}/kickoff_lima">${escapeHtml(row.kickoff_lima.replace('T',' ').slice(0,16))} • <span class="en">Group</span><span class="es">Grupo</span> <span data-json-pointer="${ptr}/group">${escapeHtml(row.group)}</span></div>
@@ -510,14 +529,19 @@ function card(row,index){
     <span class="h-fit rounded-full border px-3 py-1 text-xs font-bold ${strengthColor(strength)}">${strength}</span>
    </header>
    <div class="p-5">
-    <div class="grid grid-cols-3 gap-2 text-center">
+    ${conditional?'':`<div class="grid grid-cols-3 gap-2 text-center">
      <div data-json-pointer="${ptr}/probabilities/team_a_win">${metric('1',`${(row.probabilities.team_a_win*100).toFixed(1)}%`,help.team_a_win)}</div>
      <div data-json-pointer="${ptr}/probabilities/draw">${metric('X',`${(row.probabilities.draw*100).toFixed(1)}%`,help.draw)}</div>
      <div data-json-pointer="${ptr}/probabilities/team_b_win">${metric('2',`${(row.probabilities.team_b_win*100).toFixed(1)}%`,help.team_b_win)}</div>
-    </div>
+    </div>`}
     ${lifecycleBlock}
     <div class="mt-3 text-xs text-emerald-300"><span class="en">Field-level subagent audit: PASS</span><span class="es">Auditoría de subagentes por campo: PASS</span> • ${AUDIT_COUNT} <span class="en">manifest datapoints</span><span class="es">datos auditados</span></div>
-    <section class="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+    <div class="mt-3 rounded-xl border border-red-800 bg-red-950/30 p-3 text-xs text-red-100">
+      <b><span class="en">System stake: S/0.00.</span><span class="es">Monto del sistema: S/0,00.</span></b>
+      <span class="en"> No stake is authorized in this release.</span>
+      <span class="es"> No se autoriza ningún monto en esta versión.</span>
+    </div>
+    ${currentWatchlist?`<section class="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
       <div class="font-semibold text-white"><span class="en">Risk-aversion lens for this match</span><span class="es">Lente de aversión al riesgo para este partido</span></div>
       <div class="mt-2 grid md:grid-cols-2 gap-2">${riskProfilePanels(row.risk_profile_summary||{})}</div>
       <details class="mt-3 rounded-xl border border-amber-900 bg-amber-950/20 p-3 text-xs">
@@ -529,14 +553,14 @@ function card(row,index){
         <p class="mt-2 text-amber-200"><span class="en">Automatic promotion is disabled; a paired reclassification is a review lead, not proof of improved accuracy or profit.</span><span class="es">La promoción automática está desactivada; una reclasificación por pares es una pista, no prueba de mayor precisión o beneficio.</span></p>
       </details>
       <p class="mt-2 text-xs text-slate-400"><span class="en">Changing the lens changes the review threshold shown on the page; it does not change the saved model probabilities, source odds, or blocked production authorization.</span><span class="es">Cambiar el lente cambia el umbral de revisión mostrado; no cambia probabilidades guardadas, cuotas fuente ni la autorización de producción bloqueada.</span></p>
-    </section>
-    <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
+    </section>`:''}
+    ${conditional?'':`<div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
       <div data-json-pointer="${ptr}/expected_goals/team_a">${metric('<span class="en">Expected goals 1</span><span class="es">Goles esperados 1</span>',Number(row.expected_goals.team_a).toFixed(2),help.expected_goals_team_a)}</div>
       <div data-json-pointer="${ptr}/expected_goals/team_b">${metric('<span class="en">Expected goals 2</span><span class="es">Goles esperados 2</span>',Number(row.expected_goals.team_b).toFixed(2),help.expected_goals_team_b)}</div>
       <div data-json-pointer="${ptr}/common_markets/totals/2/over_probability">${metric('<span class="en">Over 2.5</span><span class="es">Más de 2,5</span>',`${safePct(over25.over_probability)} · ${safeOdds(over25.over_fair_odds)}`,help.over_2_5)}</div>
       <div data-json-pointer="${ptr}/common_markets/btts/yes_probability">${metric('<span class="en">BTTS Yes</span><span class="es">Ambos marcan: sí</span>',`${safePct(common.btts?.yes_probability)} · ${safeOdds(common.btts?.yes_fair_odds)}`,help.btts_yes)}</div>
-    </div>
-    <section class="research-panel hidden mt-4 rounded-2xl border border-violet-800 bg-violet-950/30 p-4 text-sm" data-research-candidate="${escapeHtml(research.selected_candidate||'')}">
+    </div>`}
+    ${currentWatchlist?`<section class="research-panel hidden mt-4 rounded-2xl border border-violet-800 bg-violet-950/30 p-4 text-sm" data-research-candidate="${escapeHtml(research.selected_candidate||'')}">
       <div class="flex items-start justify-between gap-3">
         <div>
           <div class="font-bold text-violet-100"><span class="en">Research mode shadow model</span><span class="es">Modelo sombra de investigación</span></div>
@@ -570,19 +594,28 @@ function card(row,index){
       <p class="mt-2 text-xs text-amber-200"><span class="en">Model-derived and experimental. A fair odd is not an app quote or betting instruction.</span><span class="es">Derivado del modelo y experimental. Una cuota justa no es una cuota de app ni una instrucción de apuesta.</span></p>
     </div>
     <div class="mt-4 rounded-2xl border border-slate-700 bg-slate-950 p-4">
-      <div class="text-xs text-red-300"><span class="en">ABSTAIN — highest-ranked comparison only</span><span class="es">ABSTAIN — solo comparación mejor clasificada</span></div>
-      <div class="mt-1 font-bold text-white" data-json-pointer="${ptr}/rank_one_comparison/selection_original">${rec}</div>
+      <div class="text-xs text-red-300"><span class="en">${escapeHtml(r?.watchlist_label?.en||'ABSTAIN — highest-ranked comparison only')}</span><span class="es">${escapeHtml(r?.watchlist_label?.es||'ABSTAIN — solo comparación mejor clasificada')}</span></div>
+      <div class="mt-1 font-bold text-white" data-json-pointer="${ptr}/rank_one_comparison/selection_original"><span class="en">${escapeHtml(r?.display?.selection?.en||rec)}</span><span class="es">${escapeHtml(r?.display?.selection?.es||rec)}</span></div>
       ${r?`<div class="mt-2 grid grid-cols-3 gap-2 text-sm"><div data-json-pointer="${ptr}/rank_one_comparison/ev_pct"><span class="en">Decision EV</span><span class="es">EV decisión</span> <b>${r.ev_pct.toFixed(1)}%</b></div><div data-json-pointer="${ptr}/rank_one_comparison/stressed_ev_pct"><span class="en">Stress</span><span class="es">Estrés</span> <b>${r.stressed_ev_pct.toFixed(1)}%</b></div><div data-json-pointer="${ptr}/rank_one_comparison/p_win"><span class="en">Decision probability</span><span class="es">Probabilidad decisión</span> <b>${pct(r.p_win)}</b></div></div>
-      <div class="mt-2 text-xs text-slate-400">${escapeHtml(r.app)} • ${escapeHtml(r.market_original)} • ${escapeHtml(r.source_image)} • <span class="en">fair</span><span class="es">justa</span> ${odds(r.fair_odds)}</div>
+      <div class="mt-2 text-xs text-slate-400">${escapeHtml(r.app)} • <span class="en">${escapeHtml(r.display?.market?.en||r.market_original)}</span><span class="es">${escapeHtml(r.display?.market?.es||r.market_original)}</span> • ${escapeHtml(r.source_image)} • <span class="en">fair</span><span class="es">justa</span> ${odds(r.fair_odds)}</div>
       <div class="mt-2 text-xs text-amber-200"><span class="en">${r.selection_reason==='all_model_edges_halted_select_highest_market_probability'?'All model edges were HALT; selected the highest market-probability fallback.':'Selected by uncertainty-adjusted expected-profit utility.'} Profitability is not historically validated.</span><span class="es">${r.selection_reason==='all_model_edges_halted_select_highest_market_probability'?'Todas las ventajas fueron HALT; se eligió la alternativa con mayor probabilidad de mercado.':'Elegida por utilidad de beneficio esperado ajustada por incertidumbre.'} La rentabilidad no está validada históricamente.</span></div>`:''}
+      ${r?.steps?.en?.length?`<details class="mt-3 rounded-xl border border-cyan-900 bg-cyan-950/20 p-3" open>
+        <summary class="cursor-pointer font-semibold text-cyan-200"><span class="en">${r.watchlist_status==='archived_result_no_bet'?'ELI5: review this archived forecast':'ELI5: check this exact watchlist in '+escapeHtml(r.app)}</span><span class="es">${r.watchlist_status==='archived_result_no_bet'?'ELI5: revisa este pronóstico archivado':'ELI5: revisa esta opción exacta en '+escapeHtml(r.app)}</span></summary>
+        <ol class="en mt-2 list-decimal pl-5 space-y-2 text-sm text-slate-300">${r.steps.en.map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol>
+        <ol class="es mt-2 list-decimal pl-5 space-y-2 text-sm text-slate-300">${r.steps.es.map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol>
+      </details>`:''}
     </div>
     <details class="mt-4 rounded-2xl border border-cyan-900 p-4" open>
       <summary class="cursor-pointer font-semibold text-cyan-200"><span class="en">Top ranked sourced comparisons</span><span class="es">Comparaciones con fuente mejor clasificadas</span> (${topRecommendations.length}/4)</summary>
       <div class="mt-3 grid gap-3">${rankedRecommendations}</div>
       ${topRecommendations.length<4?`<p class="mt-3 text-xs text-amber-200"><span class="en">Only ${topRecommendations.length} economically distinct complete sourced comparisons were available. A fourth comparison was not manufactured from duplicate app prices or unsupported markets.</span><span class="es">Solo hubo ${topRecommendations.length} comparaciones completas, distintas y con fuente. No se fabricó una cuarta comparación usando cuotas duplicadas o mercados no compatibles.</span></p>`:''}
       <p class="mt-3 text-xs text-amber-200"><span class="en">Ranking means best relative utility among available sourced prices, not proven profit. Utility can be negative even when displayed EV is non-negative because it subtracts model-market disagreement, market-family uncertainty, and HALT penalties. Negative EV and HALT alternatives remain visibly labeled.</span><span class="es">El ranking significa mejor utilidad relativa entre cuotas disponibles, no beneficio probado. La utilidad puede ser negativa aunque el EV mostrado no lo sea porque resta desacuerdo modelo-mercado, incertidumbre de la familia y penalizaciones HALT. Alternativas con EV negativo y HALT permanecen claramente marcadas.</span></p>
-    </details>
-    ${budget?`<details class="mt-4 rounded-2xl border border-cyan-900 bg-cyan-950/20 p-4">
+    </details>`:`<div class="mt-4 rounded-2xl border ${elapsed?'border-sky-800 bg-sky-950/20':'border-amber-800 bg-amber-950/20'} p-4 text-sm">
+      <div class="font-bold ${elapsed?'text-sky-100':'text-amber-100'}"><span class="en">${elapsed?'Archived forecast review':'Rerun required before any watchlist'}</span><span class="es">${elapsed?'Revisión del pronóstico archivado':'Se requiere recalcular antes de mostrar una opción'}</span></div>
+      <ol class="en mt-2 list-decimal pl-5 space-y-2">${r?.steps?.en?.map(step=>`<li>${escapeHtml(step)}</li>`).join('')||''}</ol>
+      <ol class="es mt-2 list-decimal pl-5 space-y-2">${r?.steps?.es?.map(step=>`<li>${escapeHtml(step)}</li>`).join('')||''}</ol>
+    </div>`}
+    ${budget&&Number(budget.stake)>0?`<details class="mt-4 rounded-2xl border border-cyan-900 bg-cyan-950/20 p-4">
       <summary class="cursor-pointer font-semibold text-cyan-200"><span class="en">Fail-closed allocation: stake S/${Number(budget.stake).toFixed(2)}</span><span class="es">Asignación cerrada por seguridad: monto S/${Number(budget.stake).toFixed(2)}</span></summary>
       <div class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
        ${metric('<span class="en">Stake</span><span class="es">Monto</span>',`S/${Number(budget.stake).toFixed(2)}`)}
@@ -600,13 +633,13 @@ function card(row,index){
       <ol class="es mt-2 list-decimal pl-5 space-y-2 text-sm text-slate-300">${budget.steps.es.map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol>`:''}
       <p class="mt-3 text-xs text-amber-200"><span class="en">${escapeHtml(budget.warning.en)}</span><span class="es">${escapeHtml(budget.warning.es)}</span></p>
     </details>`:''}
-    <details class="mt-4 rounded-2xl border border-slate-800 p-4">
+    ${currentWatchlist?`<details class="mt-4 rounded-2xl border border-slate-800 p-4">
       <summary class="cursor-pointer font-semibold"><span class="en">Ranked screenshot market comparisons</span><span class="es">Comparaciones de cuotas de capturas ordenadas</span> (${row.market_comparisons.length})</summary>
       ${comparisons?`<div class="overflow-x-auto mt-3"><table class="w-full min-w-[680px] text-xs text-slate-300"><thead><tr class="text-slate-500 text-left"><th class="pb-2"><span class="en">Market</span><span class="es">Mercado</span></th><th class="pb-2"><span class="en">Selection</span><span class="es">Selección</span></th><th class="pb-2 text-right"><span class="en">App odd</span><span class="es">Cuota app</span></th><th class="pb-2 text-right"><span class="en">Win eq.</span><span class="es">Victoria eq.</span></th><th class="pb-2 text-right"><span class="en">Fair</span><span class="es">Justa</span></th><th class="pb-2 text-right">EV</th></tr></thead><tbody>${comparisons}</tbody></table></div>
       <p class="mt-2 text-xs text-amber-200"><span class="en">Ranked for audit inspection only; all rows are experimental and non-actionable.</span><span class="es">Ordenado solo para inspección de auditoría; todas las filas son experimentales y no accionables.</span></p>`
       :`<p class="mt-3 text-sm text-slate-400"><span class="en">No complete expanded screenshot market was available. Model probabilities above remain available without fabricated prices or EV.</span><span class="es">No hubo un mercado ampliado completo en capturas. Las probabilidades del modelo siguen disponibles sin inventar cuotas ni EV.</span></p>`}
-    </details>
-    <details class="mt-4 rounded-2xl border border-slate-800 p-4">
+    </details>`:''}
+    ${currentWatchlist?`<details class="mt-4 rounded-2xl border border-slate-800 p-4">
       <summary class="cursor-pointer font-semibold"><span class="en">Research, risks and ELI5</span><span class="es">Investigación, riesgos y ELI5</span></summary>
       <div class="mt-3 space-y-3 text-sm text-slate-300">
         <div class="en">
@@ -620,7 +653,7 @@ function card(row,index){
         <p><b>ELI5:</b> <span class="en">This is the model's highest-ranked sourced comparison after stress-testing assumptions. Its probability is calculated independently of the quoted price. It can still lose; re-check the exact price and current team news.</span><span class="es">Esta es la comparación con fuente mejor clasificada por el modelo tras probar escenarios de estrés. Su probabilidad se calcula independientemente de la cuota mostrada. Puede perder; revisa la cuota exacta y las noticias actuales.</span></p>
         <p class="text-xs">${sources}</p>
       </div>
-    </details>
+    </details>`:''}
    </div>
  </article>`;
 }

@@ -32,17 +32,17 @@ def test_canonical_fixture_file_has_32_unique_timezone_aware_rows():
     assert all(row["kickoff_utc"].endswith("Z") for row in rows)
 
 
-def test_elapsed_result_file_has_48_unique_matches_through_june23():
-    rows = read_rows("wc_2026_results_through_june23.csv")
-    assert len(rows) == 48
+def test_elapsed_result_file_has_54_unique_matches_through_june24():
+    rows = read_rows("wc_2026_results_through_june24.csv")
+    assert len(rows) == 54
     keys = {(row["date"], row["team_a"], row["team_b"]) for row in rows}
-    assert len(keys) == 48
-    assert max(row["date"] for row in rows) == "2026-06-23"
+    assert len(keys) == 54
+    assert max(row["date"] for row in rows) == "2026-06-24"
     assert all(row["source_result"].startswith("https://") for row in rows)
 
 
 def test_elapsed_fixture_probabilities_use_pre_result_elo_snapshots():
-    results = read_rows("wc_2026_results_through_june23.csv")
+    results = read_rows("wc_2026_results_through_june24.csv")
     baseline = {
         row["team"]: float(row["elo"])
         for row in read_rows("wc_team_elo_baseline_june11.csv")
@@ -88,8 +88,31 @@ def test_updated_payload_separates_verified_elapsed_and_future_fixtures():
         (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
     )
     statuses = [row["fixture_lifecycle_status"] for row in payload["predictions"]]
-    assert statuses.count("elapsed_result_verified") == 8
-    assert statuses.count("future") == 24
+    assert statuses.count("elapsed_result_verified") == 14
+    assert statuses.count("future") == 18
+    for row in payload["predictions"]:
+        rank_one = row["rank_one_comparison"]
+        assert rank_one is not None
+        assert rank_one["watchlist_label"]["en"]
+        assert rank_one["watchlist_label"]["es"]
+        assert rank_one["display"]["market"]["en"]
+        assert rank_one["display"]["market"]["es"]
+        assert rank_one["display"]["selection"]["en"]
+        assert rank_one["display"]["selection"]["es"]
+        if row["fixture_lifecycle_status"] == "future":
+            expected_steps = (
+                1 if row["freshness_status"].startswith("conditional_") else 6
+            )
+            assert len(rank_one["steps"]["en"]) == expected_steps
+            assert len(rank_one["steps"]["es"]) == expected_steps
+            assert rank_one["budget_simulation"]["stake"] == 0.0
+            if expected_steps == 1:
+                assert rank_one["steps"]["en"][0].startswith("STOP:")
+            for step in rank_one["steps"]["en"]:
+                assert "5.5 5.5" not in step
+        else:
+            assert rank_one["watchlist_status"] == "archived_result_no_bet"
+            assert any("finished" in step for step in rank_one["steps"]["en"])
 
 
 def test_pipeline_source_does_not_embed_current_odds_or_extract_prose_targets():
@@ -397,7 +420,7 @@ def test_dataset_a_and_b_are_disjoint_by_competition():
     finals = {"WC_2018_GROUP", "WC_2022_GROUP", "WC_2026_GROUP"}
     dataset_a = [row for row in rows if row.competition in finals]
     dataset_b = [row for row in rows if row.competition not in finals]
-    assert len(dataset_a) == 144
+    assert len(dataset_a) == 150
     assert len(dataset_b) == 121
     assert not ({id(row) for row in dataset_a} & {id(row) for row in dataset_b})
 
@@ -704,8 +727,16 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
             assert len(item["uncertainty"]["es"]) == 3
             assert item["why_ranked"]["en"]
             assert item["why_ranked"]["es"]
-            assert item["steps"]["en"] == []
-            assert item["steps"]["es"] == []
+            if row["fixture_lifecycle_status"] != "future":
+                assert len(item["steps"]["en"]) == 2
+                assert len(item["steps"]["es"]) == 2
+            elif row["freshness_status"].startswith("conditional_"):
+                assert len(item["steps"]["en"]) == 1
+                assert item["steps"]["en"][0].startswith("STOP:")
+                assert len(item["steps"]["es"]) == 1
+            else:
+                assert len(item["steps"]["en"]) == 6
+                assert len(item["steps"]["es"]) == 6
             assert item["fair_odds"] > 1.0
             assert (
                 item["p_win"] + item["p_push"] + item["p_loss"]

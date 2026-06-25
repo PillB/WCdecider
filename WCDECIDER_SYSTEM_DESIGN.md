@@ -74,7 +74,7 @@ metrics hashes, or the release remains blocked.
 ### Inputs
 
 - `wc_2026_matches_june_22-27.csv`: canonical fixture IDs and kickoffs.
-- `wc_2026_results_through_june23.csv`: verified elapsed tournament results.
+- `wc_2026_results_through_june24.csv`: verified elapsed tournament results.
 - `wc_team_elo_baseline_june11.csv`: frozen pre-tournament ratings.
 - `wc_backtest_historical_dataset.csv`: historical modeling data.
 - `odds_june*.csv`: verbatim screenshot transcription.
@@ -211,6 +211,13 @@ fitting when the effective historical sample cannot support a credible
 chronological comparison. Model complexity is never adopted to satisfy a rival
 return claim.
 
+`promotion_pipeline.py` is the separate production-promotion track. It exports
+cross-fitted outer OOF predictions from price-independent Elo and Poisson
+models, fits scalar temperature and convex stack weights only on genuine inner
+OOF predictions, records classwise reliability and proper scores, and applies
+paired date-block uncertainty plus Holm correction. A point-estimate winner is
+not promoted.
+
 Deep/graph research candidates remain in the championship registry rather than
 in production. The current data can be viewed as a temporal graph of teams
 connected by timestamped match edges, but that representation is not sufficient
@@ -337,6 +344,11 @@ actionability gates pass.
   disagreement and risk diagnostics.
 - Any future probability stack requires out-of-sample weight selection and
   untouched superiority before deployment.
+- Production promotion additionally requires at least 300 pooled OOF
+  predictions, 75 observations per outcome class, 40 date blocks, four outer
+  folds with at least 40 rows, non-inferior empirical calibration, a nontrivial
+  stack that securely beats every included base after multiplicity control,
+  and confirmation on a newly sealed prospective cohort.
 
 ### Ranking utility
 

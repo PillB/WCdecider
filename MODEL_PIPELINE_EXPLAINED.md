@@ -409,6 +409,31 @@ The current project prescreen requires at least 2,000 timestamped fixtures and
 roughly 30 temporal edges per team. These are conservative project gates, not
 universal constants.
 
+### R7. Build cross-fitted calibration and stacking promotion evidence
+
+Code: `promotion_pipeline.py`,
+`RECOMMENDATION_STACKING_PROMOTION_PLAN.md`, and
+`governance/prospective_holdout_registry.json`.
+
+For each expanding outer fold, the promotion pipeline generates genuine inner
+OOF Elo and independent-Poisson predictions. Scalar temperature parameters and
+a non-negative convex stack weight are selected only from those inner OOF
+predictions. The selected base configurations are then refit on the complete
+outer-training prefix and evaluated once on the outer block.
+
+The pooled OOF artifact reports log loss, multiclass and classwise Brier,
+top-label and classwise ECE, calibration-in-the-large, class counts, fold
+lineage, date-block bootstrap intervals, and Holm-adjusted comparisons.
+Market-price inputs are excluded from this production-candidate track.
+
+Current result: 124 OOF rows are sufficient only for exploratory scalar
+temperature research. Raw tuned Elo has the best pooled OOF log loss. Both
+temperature-scaled bases have worse point estimates with confidence intervals
+that cross zero; the selected stack collapses to calibrated Poisson and is
+worse than raw tuned Elo. Some temperature choices hit the search boundary and
+production sample gates fail. The stack therefore receives zero production
+weight and cannot authorize recommendations.
+
 ## Validation design
 
 | Risk | Control | Current status |
@@ -420,8 +445,8 @@ universal constants.
 | Probability quality | log loss and Brier | implemented |
 | Comparison noise | paired row differences and confidence interval | implemented |
 | Dependent matches | block/cluster sensitivity intervals | future improvement |
-| Many model variants | registry, gates, multiplicity before promotion | partly implemented |
-| Calibration drift | reliability/ECE by time segment | future improvement |
+| Many model variants | registry, nested search, Holm gate before promotion | implemented for the current price-independent promotion track; broader families remain gated |
+| Calibration drift | pooled cross-fitted reliability/ECE plus future sealed monitoring | development diagnostics implemented; prospective confirmation blocked |
 | Policy overfit | frozen policy on executable historical closes | blocked: zero eligible closes |
 | Distribution shift | competition/time subgroup and recency stress | partly implemented |
 | Reproducibility | files, hashes, seeds, clean-room reruns | implemented |

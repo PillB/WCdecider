@@ -1,36 +1,36 @@
 {
   "calibration": {
-    "divisor": 400.0,
+    "divisor": 500.0,
     "draw_base": 0.22,
     "draw_slope": 0.12,
     "folds": [
       {
-        "brier": 0.66344502522431,
-        "log_loss": 1.093992557944185
+        "brier": 0.6632903888409647,
+        "log_loss": 1.0937654060421649
       },
       {
-        "brier": 0.6557702918928724,
-        "log_loss": 1.0824911084010544
+        "brier": 0.6605759129782888,
+        "log_loss": 1.0895804216360545
       },
       {
-        "brier": 0.662915227292028,
-        "log_loss": 1.0927255868187038
+        "brier": 0.6615090723189975,
+        "log_loss": 1.0906512306359626
       },
       {
-        "brier": 0.6544860194592402,
-        "log_loss": 1.0732791456186934
+        "brier": 0.6968855476804446,
+        "log_loss": 1.1126623977488044
       }
     ],
-    "holdout_brier": 0.5078519949256574,
-    "holdout_log_loss": 0.8372652039365326,
-    "holdout_rows": 36,
-    "mean_brier": 0.6591541409671127,
-    "mean_log_loss": 1.0856220996956591,
-    "selection_rows": 229
+    "holdout_brier": 0.48092232874975605,
+    "holdout_log_loss": 0.8234591195460336,
+    "holdout_rows": 38,
+    "mean_brier": 0.6705652304546739,
+    "mean_log_loss": 1.0966648640157466,
+    "selection_rows": 233
   },
-  "dataset_a_rows": 144,
+  "dataset_a_rows": 150,
   "dataset_b_rows": 121,
-  "elapsed_wc2026_rows": 48,
+  "elapsed_wc2026_rows": 54,
   "evaluation_governance": {
     "bankroll_release_status": "prohibited_zero_allocation",
     "current_holdout_status": "development_validation_only_not_confirmatory",
@@ -95,7 +95,7 @@
     "research_june24_25.csv": "d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517",
     "research_june26_27.csv": "5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60",
     "wc_2026_matches_june_22-27.csv": "5c8f68a44f90ce000568d0618046d45cedd07557d1ee175162f3a86459af0a2d",
-    "wc_2026_results_through_june23.csv": "ed25fd5f0fdc408ce18f4c24a04c0cd513894a5d1510c5906a3d9a9daf8daa44",
+    "wc_2026_results_through_june24.csv": "24276c96e32542f2145c91e60b878e1d98536032850006a460642bc99b256a50",
     "wc_backtest_historical_dataset.csv": "beee227402f102b146f785dc77d92a00863b9c5090f7de4ff6d7baaa9f75683a",
     "wc_team_elo_baseline_june11.csv": "f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b"
   },
@@ -104,7 +104,7 @@
     "benchmark_champion_is_deployment_decision": false,
     "capacity_rejections": {
       "graphmixer_or_dygformer": "Efficient temporal graph architectures are appropriate once the graph has enough repeated pre-event interactions; current outer folds still favor the de-vigged market proxy.",
-      "temporal_graph_neural_network": "265 matches and sparse team histories are insufficient for a credible high-capacity chronological comparison. Production gate requires at least 2000 timestamped fixtures and roughly 30 temporal edges per team.",
+      "temporal_graph_neural_network": "271 matches and sparse team histories are insufficient for a credible high-capacity chronological comparison. Production gate requires at least 2000 timestamped fixtures and roughly 30 temporal edges per team.",
       "transformer_sequence_model": "Effective sample size is orders of magnitude below a defensible sequence-model benchmark; fitting would invite leakage and variance-driven selection."
     },
     "challenger_vs_market_paired_bootstrap": {
@@ -155,7 +155,7 @@
         "naive stacking weights selected outside chronological folds"
       ],
       "promotion_gate": {
-        "actual_fixture_count": 265,
+        "actual_fixture_count": 271,
         "actual_team_count": 65,
         "actual_temporal_edges_per_team": {
           "ALG": 2,
@@ -163,9 +163,9 @@
           "AUS": 12,
           "AUT": 4,
           "BEL": 10,
-          "BIH": 6,
-          "BRA": 22,
-          "CAN": 5,
+          "BIH": 7,
+          "BRA": 23,
+          "CAN": 6,
           "CHI": 14,
           "CIV": 2,
           "CMR": 5,
@@ -175,7 +175,7 @@
           "CRC": 6,
           "CRO": 10,
           "CUR": 2,
-          "CZE": 6,
+          "CZE": 7,
           "DEN": 11,
           "ECU": 19,
           "EGY": 5,
@@ -186,7 +186,7 @@
           "GER": 8,
           "GHA": 5,
           "GRE": 4,
-          "HAI": 2,
+          "HAI": 3,
           "HUN": 4,
           "IRL": 5,
           "IRN": 10,
@@ -195,10 +195,10 @@
           "ITA": 3,
           "JOR": 8,
           "JPN": 12,
-          "KOR": 12,
+          "KOR": 13,
           "KSA": 15,
-          "MAR": 8,
-          "MEX": 8,
+          "MAR": 9,
+          "MEX": 9,
           "NED": 9,
           "NGA": 5,
           "NOR": 4,
@@ -208,13 +208,13 @@
           "PER": 17,
           "POL": 11,
           "POR": 12,
-          "QAT": 7,
-          "RSA": 4,
+          "QAT": 8,
+          "RSA": 5,
           "RUS": 3,
-          "SCO": 6,
+          "SCO": 7,
           "SEN": 8,
           "SRB": 8,
-          "SUI": 10,
+          "SUI": 11,
           "SWE": 9,
           "TUN": 8,
           "TUR": 4,
@@ -249,9 +249,9 @@
           "url": "https://arxiv.org/abs/1810.03993"
         }
       ],
-      "summary": "Deep and graph models remain research-track only. The available complete 1X2 proxy-market corpus has 217 complete matches after filtering and 265 total historical match rows, far below the prespecified evidence gate for a production temporal GNN or sequence transformer."
+      "summary": "Deep and graph models remain research-track only. The available complete 1X2 proxy-market corpus has 217 complete matches after filtering and 271 total historical match rows, far below the prespecified evidence gate for a production temporal GNN or sequence transformer."
     },
-    "excluded_missing_complete_1x2": 48,
+    "excluded_missing_complete_1x2": 54,
     "holdout_challenger": "elo_tuned_nested",
     "holdout_metrics": {
       "elo_fixed_400": {
@@ -672,7 +672,7 @@
     "rows": 217,
     "selection_rows": 188,
     "selection_rule": "inner rolling-origin tuning inside four expanding outer folds; minimum outer mean log loss then Brier; final holdout is evaluation-only",
-    "source_rows": 265,
+    "source_rows": 271,
     "tuned_elo": {
       "divisor": 325.0,
       "draw_base": 0.24,
@@ -733,10 +733,10 @@
     "untouched_holdout_rows": 29,
     "version": "nested_chronological_benchmark_v2"
   },
-  "mu_dataset_a": 2.6597222222222223,
+  "mu_dataset_a": 2.6866666666666665,
   "mu_dataset_b": 2.4441964285714297,
   "mu_production": 2.75,
-  "pipeline_sha256": "2951dba26b421e5e60c218bac0cae613552ede38f37605c84e664dee69073b10",
+  "pipeline_sha256": "2b8b88a6b77e2bb3546a3e90a881a6be8d36ef897945911e70ec8f259de7a2c6",
   "research_mode_policy": {
     "default_state": "off_production_mode",
     "production_recommendations_unchanged": true,
@@ -754,57 +754,57 @@
   },
   "score_market_calibration": {
     "allocation": 0.4,
-    "gap_intensity": 0.45,
-    "gap_scale": 350.0,
-    "holdout_rows": 36,
+    "gap_intensity": 0.0,
+    "gap_scale": 420.0,
+    "holdout_rows": 38,
     "holdout_selection_rate_baselines": {
-      "btts_brier": 0.24977294447449472,
-      "over_2_5_brier": 0.2610906977408613,
-      "selection_btts_rate": 0.44888663967611453,
-      "selection_over_2_5_rate": 0.4364878542510132
+      "btts_brier": 0.2472860573018194,
+      "over_2_5_brier": 0.272204941270794,
+      "selection_btts_rate": 0.45486111111111227,
+      "selection_over_2_5_rate": 0.4327876984126995
     },
-    "mean_btts_brier": 0.25666886760874846,
-    "mean_over_2_5_brier": 0.2549606327813877,
-    "mean_score_nll": 3.1325191467716547,
+    "mean_btts_brier": 0.2523270702753435,
+    "mean_over_2_5_brier": 0.25180089919279125,
+    "mean_score_nll": 3.116828778581872,
     "mu_total": 2.75,
     "policy_status": "experimental_non_actionable_no_historical_market_odds",
     "production_holdout": {
-      "btts_brier": 0.23383059435969303,
-      "over_2_5_brier": 0.24423166117575368,
-      "score_nll": 2.8148241552825244
+      "btts_brier": 0.2394602751883851,
+      "over_2_5_brier": 0.24546558329291637,
+      "score_nll": 2.900805682007825
     },
     "production_model": "tuned_elo_independent_poisson",
-    "selection_rows": 229,
+    "selection_rows": 233,
     "shadow_holdout": {
-      "btts_brier": 0.2340933245355584,
-      "over_2_5_brier": 0.24423166117575368,
-      "score_nll": 2.8069573676587267
+      "btts_brier": 0.24074990086179196,
+      "over_2_5_brier": 0.24546558329291637,
+      "score_nll": 2.914176132699081
     },
     "shadow_model": "dixon_coles_low_score_correction",
     "shadow_paired_bootstrap": {
       "btts_brier": {
         "block_count": 9,
-        "challenger_minus_production_mean": 0.00026273017586540674,
-        "ci_95_lower": -0.004670344599031446,
-        "ci_95_upper": 0.005438853769138739,
+        "challenger_minus_production_mean": 0.001289625673406819,
+        "ci_95_lower": -0.003536596782957467,
+        "ci_95_upper": 0.006635606624505033,
         "iterations": 2000,
         "resampling_method": "weighted_date_block_percentile_bootstrap",
         "statistically_secure_improvement": false
       },
       "over_2_5_brier": {
         "block_count": 9,
-        "challenger_minus_production_mean": 0.0,
-        "ci_95_lower": 0.0,
-        "ci_95_upper": 0.0,
+        "challenger_minus_production_mean": -1.3877787807814457e-17,
+        "ci_95_lower": -2.6213599192538418e-17,
+        "ci_95_upper": -2.921639538487254e-18,
         "iterations": 2000,
         "resampling_method": "weighted_date_block_percentile_bootstrap",
-        "statistically_secure_improvement": false
+        "statistically_secure_improvement": true
       },
       "score_nll": {
         "block_count": 9,
-        "challenger_minus_production_mean": -0.007866787623797642,
-        "ci_95_lower": -0.046528898005514276,
-        "ci_95_upper": 0.03256445464645956,
+        "challenger_minus_production_mean": 0.013370450691255998,
+        "ci_95_lower": -0.01724675406135481,
+        "ci_95_upper": 0.04413139231150733,
         "iterations": 2000,
         "resampling_method": "weighted_date_block_percentile_bootstrap",
         "statistically_secure_improvement": false
@@ -812,9 +812,9 @@
     },
     "shadow_rho": -0.15,
     "shadow_selection": {
-      "mean_btts_brier": 0.25947067724704936,
-      "mean_over_2_5_brier": 0.2549606327813877,
-      "mean_score_nll": 3.111532742838875,
+      "mean_btts_brier": 0.2534412857805966,
+      "mean_over_2_5_brier": 0.2518008991927912,
+      "mean_score_nll": 3.093904510624413,
       "rho": -0.15
     },
     "tuning_status": "proper_score_tuned_not_empirically_calibrated"

@@ -4,7 +4,7 @@
 This module is intentionally stdlib-only. It reads:
 
 * ``wc_backtest_historical_dataset.csv`` — historical Dataset A/B source.
-* ``wc_2026_results_through_june23.csv`` — elapsed 2026 World Cup results.
+* ``wc_2026_results_through_june24.csv`` — elapsed 2026 World Cup results.
 * ``wc_team_elo_baseline_june11.csv`` — frozen pre-tournament Elo baseline.
 * ``wc_2026_matches_june_22-27.csv`` — canonical current fixtures.
 * ``odds_june*.csv`` — verbatim screenshot-derived odds.
@@ -42,7 +42,7 @@ from typing import Callable, Dict, Iterable, List, Mapping, Optional, Sequence, 
 
 ROOT = Path(__file__).resolve().parent
 HISTORICAL = ROOT / "wc_backtest_historical_dataset.csv"
-RESULTS_2026 = ROOT / "wc_2026_results_through_june23.csv"
+RESULTS_2026 = ROOT / "wc_2026_results_through_june24.csv"
 ELO_BASELINE = ROOT / "wc_team_elo_baseline_june11.csv"
 FIXTURES = ROOT / "wc_2026_matches_june_22-27.csv"
 ODDS_PARTS = (
@@ -72,8 +72,8 @@ RESEARCH_OUT = ROOT / "wc_research_june22_27.csv"
 
 SEED = 42
 EPS = 1e-12
-DATA_CUTOFF = datetime.fromisoformat("2026-06-23T23:59:00-05:00")
-RELEASE_AS_OF = datetime.fromisoformat("2026-06-24T13:41:19-05:00")
+DATA_CUTOFF = datetime.fromisoformat("2026-06-24T22:30:00-05:00")
+RELEASE_AS_OF = datetime.fromisoformat("2026-06-24T22:30:00-05:00")
 FRESHNESS_HORIZON_HOURS = 48
 HOSTS = {"USA", "CAN", "MEX"}
 
@@ -2001,6 +2001,9 @@ def attach_recommendation_context(
                 "no reemplazo de producción."
             ),
         }
+        item["display"] = recommendation_display_labels(
+            fixture_names, item
+        )
         item["steps"] = app_navigation_steps(
             str(item["app"]), fixture_names, item, None
         )
@@ -2070,7 +2073,45 @@ def authorize_recommendations(
             "actionable": False,
             "reasons": reasons,
         }
-        item["steps"] = {"en": [], "es": []}
+        if lifecycle_status != "future":
+            item["steps"] = {
+                "en": [
+                    "This match is finished. Use this row only to compare the archived pre-match model with the verified result.",
+                    "Do not search for or place this selection as a current bet.",
+                ],
+                "es": [
+                    "Este partido terminó. Usa esta fila solo para comparar el modelo previo con el resultado verificado.",
+                    "No busques ni realices esta selección como apuesta actual.",
+                ],
+            }
+        elif freshness != "current_snapshot":
+            item["steps"] = {
+                "en": [
+                    "STOP: do not use the saved sportsbook steps or price. This forecast requires a rerun after intervening matches and current team-news checks.",
+                ],
+                "es": [
+                    "ALTO: no uses los pasos ni la cuota guardada. Este pronóstico requiere una nueva ejecución tras partidos intermedios y revisión de noticias actuales.",
+                ],
+            }
+        item["watchlist_status"] = (
+            "archived_result_no_bet"
+            if lifecycle_status != "future"
+            else "conditional_watchlist_requires_rerun"
+            if freshness != "current_snapshot"
+            else "best_available_watchlist_zero_stake"
+        )
+        item["watchlist_label"] = {
+            "en": (
+                "Archived pre-match comparison"
+                if lifecycle_status != "future"
+                else "Best available watchlist — not an authorized bet"
+            ),
+            "es": (
+                "Comparación previa archivada"
+                if lifecycle_status != "future"
+                else "Mejor opción para vigilar — no es una apuesta autorizada"
+            ),
+        }
 
 
 def risk_profile_summary(
@@ -2307,11 +2348,11 @@ def allocate_app_budget(
     return rounded
 
 
-def app_navigation_steps(
-    app: str, fixture: Mapping[str, object], recommendation: Mapping[str, object],
-    stake: Optional[float],
-) -> Dict[str, List[str]]:
-    """Return bilingual novice steps for locating one exact sourced market."""
+def recommendation_display_labels(
+    fixture: Mapping[str, object],
+    recommendation: Mapping[str, object],
+) -> Dict[str, Dict[str, str]]:
+    """Return localized market and selection labels without duplicating lines."""
     family = str(recommendation["market_family"])
     market_names = {
         "1x2": ("Match Result", "Resultado del partido"),
@@ -2328,8 +2369,55 @@ def app_navigation_steps(
                  str(recommendation["market_original"]))
     )
     selection = str(recommendation["selection_original"])
+    canonical = str(recommendation.get("selection_canonical") or "")
     line = str(recommendation.get("line") or "").strip()
-    selection_with_line = f"{selection} {line}".strip()
+    selection_with_line = (
+        selection
+        if not line or line.lower() in selection.lower()
+        else f"{selection} {line}".strip()
+    )
+    fixture_en = fixture["fixture"]["en"]
+    fixture_es = fixture["fixture"]["es"]
+    team_a_en, team_b_en = fixture_en.split(" vs ", 1)
+    team_a_es, team_b_es = fixture_es.split(" vs ", 1)
+    selection_en = {
+        "A": team_a_en,
+        "D": "Draw",
+        "B": team_b_en,
+        "yes": "Yes",
+        "no": "No",
+        "over": f"Over {line}".strip(),
+        "under": f"Under {line}".strip(),
+        "home": team_a_en,
+        "away": team_b_en,
+    }.get(canonical, selection_with_line)
+    selection_es = {
+        "A": team_a_es,
+        "D": "Empate",
+        "B": team_b_es,
+        "yes": "Sí",
+        "no": "No",
+        "over": f"Más de {line}".strip(),
+        "under": f"Menos de {line}".strip(),
+        "home": team_a_es,
+        "away": team_b_es,
+    }.get(canonical, selection_with_line)
+    return {
+        "market": {"en": market_en, "es": market_es},
+        "selection": {"en": selection_en, "es": selection_es},
+    }
+
+
+def app_navigation_steps(
+    app: str, fixture: Mapping[str, object], recommendation: Mapping[str, object],
+    stake: Optional[float],
+) -> Dict[str, List[str]]:
+    """Return bilingual novice steps for locating one exact sourced market."""
+    display = recommendation_display_labels(fixture, recommendation)
+    market_en = display["market"]["en"]
+    market_es = display["market"]["es"]
+    selection_en = display["selection"]["en"]
+    selection_es = display["selection"]["es"]
     fixture_en = fixture["fixture"]["en"]
     fixture_es = fixture["fixture"]["es"]
     fair = float(recommendation["fair_odds"])
@@ -2357,7 +2445,7 @@ def app_navigation_steps(
             f"Open {app}, then Sports → Football → World Cup.",
             f"Search for {fixture_en} and confirm the kickoff date shown on this card.",
             f"Open the market named “{market_en}”.",
-            f"Choose exactly “{selection_with_line}”. Do not substitute a nearby handicap or total line.",
+            f"Choose exactly “{selection_en}”. Do not substitute a nearby handicap or total line.",
             f"Check the current decimal price. The saved screenshot price is {source_price:.2f}; the model fair-price threshold is {fair:.2f}.",
             final_en,
         ],
@@ -2365,7 +2453,7 @@ def app_navigation_steps(
             f"Abre {app} y entra a Deportes → Fútbol → Mundial.",
             f"Busca {fixture_es} y confirma la fecha de inicio mostrada en esta tarjeta.",
             f"Abre el mercado llamado “{market_es}”.",
-            f"Elige exactamente “{selection_with_line}”. No sustituyas por una línea de hándicap o total parecida.",
+            f"Elige exactamente “{selection_es}”. No sustituyas por una línea de hándicap o total parecida.",
             f"Revisa la cuota decimal actual. La cuota guardada en la captura es {source_price:.2f}; el umbral de cuota justa del modelo es {fair:.2f}.",
             final_es,
         ],
@@ -2643,8 +2731,8 @@ def build() -> Dict[str, object]:
             "mu_total": round(mu_total, 5), "lambda_a": round(la, 5), "lambda_b": round(lb, 5),
             "p_win_a": round(p_base[0], 8), "p_draw": round(p_base[1], 8),
             "p_win_b": round(p_base[2], 8),
-            "source_elo": "wc_team_elo_baseline_june11.csv + deterministic Elo updates from wc_2026_results_through_june23.csv",
-            "source_form": "wc_2026_results_through_june23.csv",
+            "source_elo": "wc_team_elo_baseline_june11.csv + deterministic Elo updates from wc_2026_results_through_june24.csv",
+            "source_form": "wc_2026_results_through_june24.csv",
             "source_schedule": fixture["schedule_source"],
             "research_confidence": research[fixture["fixture_id"]]["confidence"],
             "research_sources": research[fixture["fixture_id"]]["source_urls"],
@@ -3115,7 +3203,7 @@ def build() -> Dict[str, object]:
             "=======================================",
             "",
             "Canonical fixtures: wc_2026_matches_june_22-27.csv",
-            "Elapsed outcomes: wc_2026_results_through_june23.csv",
+            "Elapsed outcomes: wc_2026_results_through_june24.csv",
             "Pre-tournament Elo: wc_team_elo_baseline_june11.csv",
             "Historical Dataset A/B source: wc_backtest_historical_dataset.csv",
             "Screenshot-derived odds: odds_june22_23.csv, odds_june24.csv, odds_june25_26.csv, odds_june27.csv",

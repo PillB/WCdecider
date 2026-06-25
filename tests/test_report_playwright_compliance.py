@@ -77,8 +77,19 @@ def test_elapsed_cards_show_verified_results_and_future_cards_do_not(page):
         row for row in payload["predictions"]
         if row["fixture_lifecycle_status"] == "future"
     ]
-    assert len(elapsed) == 8
-    assert len(future) == 24
+    assert len(elapsed) == 14
+    assert len(future) == 18
+    expected_june24_scores = {
+        "2026-06-24-sui-can": "2-1",
+        "2026-06-24-bih-qat": "3-1",
+        "2026-06-24-sco-bra": "0-3",
+        "2026-06-24-mar-hai": "4-2",
+        "2026-06-24-rsa-kor": "1-0",
+        "2026-06-24-cze-mex": "0-3",
+    }
+    by_fixture = {row["fixture_id"]: row for row in elapsed}
+    for fixture_id, score in expected_june24_scores.items():
+        assert by_fixture[fixture_id]["verified_result"]["score"] == score
     for row in elapsed:
         text = browser_page.locator(
             f'[data-fixture-id="{row["fixture_id"]}"]'
@@ -90,6 +101,59 @@ def test_elapsed_cards_show_verified_results_and_future_cards_do_not(page):
             f'[data-fixture-id="{row["fixture_id"]}"]'
         ).inner_text()
         assert "Final result:" not in text
+
+
+def test_every_future_card_has_best_watchlist_and_eli5_zero_stake_flow(page):
+    browser_page, _ = page
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    future = [
+        row for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "future"
+    ]
+    assert len(future) == 18
+    for row in future:
+        rank_one = row["rank_one_comparison"]
+        assert rank_one is not None
+        assert len(rank_one["steps"]["en"]) in {1, 6}
+        assert rank_one["budget_simulation"]["stake"] == 0.0
+        card = browser_page.locator(
+            f'[data-fixture-id="{row["fixture_id"]}"]'
+        )
+        text = card.inner_text()
+        if row["freshness_status"].startswith("conditional_"):
+            assert "Best available watchlist" not in text
+            assert "STOP: do not use the saved sportsbook steps or price" in text
+            assert "Top ranked sourced comparisons" not in text
+            assert card.locator("[data-recommendation-rank]").count() == 0
+        else:
+            assert "Best available watchlist" in text
+            assert "ELI5: check this exact watchlist" in text
+        assert "System stake: S/0.00" in text
+
+
+def test_elapsed_cards_hide_betting_controls(page):
+    browser_page, _ = page
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    elapsed = [
+        row for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "elapsed_result_verified"
+    ]
+    assert len(elapsed) == 14
+    for row in elapsed:
+        card = browser_page.locator(
+            f'[data-fixture-id="{row["fixture_id"]}"]'
+        )
+        text = card.inner_text()
+        assert "Archived forecast review" in text
+        assert "System stake: S/0.00" in text
+        assert "Top ranked sourced comparisons" not in text
+        assert "Ranked screenshot market comparisons" not in text
+        assert "Research, risks and ELI5" not in text
+        assert card.locator("[data-recommendation-rank]").count() == 0
 
 
 def test_workflow_counts_are_json_driven(page):
@@ -142,13 +206,20 @@ def test_rendered_recommendations_match_json(page):
         assert rec["decision_status"] == "ABSTAIN"
         assert rec["budget_simulation"]["stake"] == 0.0
         text = card.inner_text()
-        assert rec["selection_original"] in text
+        current = (
+            item["fixture_lifecycle_status"] == "future"
+            and item["freshness_status"] == "current_snapshot"
+        )
+        if not current:
+            assert "Decision EV" not in text
+            continue
+        assert rec["display"]["selection"]["en"] in text
         displayed = re.search(r"Decision EV (-?\d+\.\d)%", text)
         assert displayed
         assert float(displayed.group(1)) == pytest.approx(rec["ev_pct"], abs=0.11)
         assert rec["strength"] in text
         assert f"risk grade {rec['risk_grade']}" in text
-        assert "ABSTAIN — highest-ranked comparison only" in text
+        assert "Best available watchlist" in text
 
 
 def test_top_ranked_recommendations_match_json_and_disclose_shortfalls(page):
@@ -161,6 +232,13 @@ def test_top_ranked_recommendations_match_json_and_disclose_shortfalls(page):
             f'[data-fixture-id="{item["fixture_id"]}"]'
         )
         ranked = card.locator("[data-recommendation-rank]")
+        current = (
+            item["fixture_lifecycle_status"] == "future"
+            and item["freshness_status"] == "current_snapshot"
+        )
+        if not current:
+            assert ranked.count() == 0
+            continue
         assert ranked.count() == item["ranked_comparisons_available"]
         assert 1 <= ranked.count() <= 4
         for index, recommendation in enumerate(
@@ -169,7 +247,7 @@ def test_top_ranked_recommendations_match_json_and_disclose_shortfalls(page):
             rendered = card.locator(
                 f'[data-recommendation-rank="{index}"]'
             ).inner_text()
-            assert recommendation["selection_original"] in rendered
+            assert recommendation["display"]["selection"]["en"] in rendered
             assert f'{recommendation["odds"]:.2f}' in rendered
         if item["ranked_comparisons_available"] < 4:
             assert "was not manufactured" in card.inner_text()
@@ -190,12 +268,17 @@ def test_mobile_layout_has_no_horizontal_overflow(page):
 def test_metric_boxes_have_json_driven_newbie_hover_help(page):
     browser_page, _ = page
     payload = json.loads((SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8"))
-    first = payload["predictions"][0]
+    prediction_index, first = next(
+        (index, row)
+        for index, row in enumerate(payload["predictions"])
+        if row["fixture_lifecycle_status"] == "future"
+        and row["freshness_status"] == "current_snapshot"
+    )
     card = browser_page.locator(f'[data-fixture-id="{first["fixture_id"]}"]')
     assert card.locator(".tip").count() >= 10
 
     expected_goals_box = card.locator(
-        '[data-json-pointer="/predictions/0/expected_goals/team_b"]'
+        f'[data-json-pointer="/predictions/{prediction_index}/expected_goals/team_b"]'
     )
     help_button = expected_goals_box.locator(".tip")
     help_button.hover()
@@ -218,7 +301,7 @@ def test_metric_boxes_have_json_driven_newbie_hover_help(page):
 def test_metric_tooltips_are_viewport_positioned_and_not_clipped(page):
     browser_page, _ = page
     browser_page.set_viewport_size({"width": 390, "height": 844})
-    first_card = browser_page.locator("#cards article").first
+    first_card = browser_page.locator('[data-fixture-id="2026-06-25-ecu-ger"]')
     tips = first_card.locator(".tip")
     assert tips.count() >= 10
     for index in range(min(10, tips.count())):
@@ -236,6 +319,34 @@ def test_metric_tooltips_are_viewport_positioned_and_not_clipped(page):
         assert popup.evaluate("el => getComputedStyle(el).position") == "fixed"
         assert int(popup.evaluate("el => getComputedStyle(el).zIndex")) >= 100
     browser_page.set_viewport_size({"width": 1440, "height": 1000})
+
+
+def test_mobile_tooltips_open_by_tap_scroll_and_close_with_escape(page):
+    browser_page, _ = page
+    browser_page.set_viewport_size({"width": 390, "height": 844})
+    cards = browser_page.locator("#cards article")
+    assert cards.count() == 32
+    checked = 0
+    for index in range(cards.count()):
+        tips = cards.nth(index).locator(".tip")
+        if tips.count() == 0:
+            continue
+        tip = tips.first
+        tip.scroll_into_view_if_needed()
+        tip.click()
+        popup = tip.locator(":scope > span")
+        assert popup.is_visible()
+        assert popup.evaluate("el => getComputedStyle(el).overflowY") == "auto"
+        box = popup.bounding_box()
+        assert box is not None
+        assert box["x"] >= 7
+        assert box["y"] >= 7
+        assert box["x"] + box["width"] <= 383
+        assert box["y"] + box["height"] <= 837
+        browser_page.keyboard.press("Escape")
+        assert not popup.is_visible()
+        checked += 1
+    assert checked > 0
 
 
 def test_per_match_bankroll_steps_and_app_totals_match_json(page):
@@ -256,15 +367,11 @@ def test_per_match_bankroll_steps_and_app_totals_match_json(page):
         budget = rec["budget_simulation"]
         assert budget["stake"] == 0.0
         text = card.inner_text()
-        assert f"stake S/{budget['stake']:.2f}" in text
+        assert f"System stake: S/{budget['stake']:.2f}" in text
         details = card.locator("details").filter(
             has_text="Fail-closed allocation"
         )
-        assert details.count() == 1
-        details.locator("summary").click()
-        assert f"S/{budget['gross_return_if_full_win']:.2f}" in details.inner_text()
-        assert details.locator("ol.en li").count() == 0
-        assert "No stake is allocated" in details.inner_text()
+        assert details.count() == 0
 
 
 def test_mobile_shell_survives_delayed_json_without_crashing():
@@ -317,7 +424,11 @@ def test_research_mode_toggle_reveals_gated_shadow_model(page):
     payload = json.loads(
         (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
     )
-    first = payload["predictions"][0]
+    first = next(
+        row for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "future"
+        and row["freshness_status"] == "current_snapshot"
+    )
     toggle = browser_page.locator("#research-toggle")
     assert toggle.is_enabled()
     assert toggle.get_attribute("aria-pressed") == "false"
@@ -342,7 +453,7 @@ def test_research_mode_toggle_reveals_gated_shadow_model(page):
     assert f'{first["research_mode"]["probabilities"]["team_a_win"] * 100:.1f}%' in text
     research_ranked = panel.locator("[data-research-recommendation-rank]")
     assert research_ranked.count() == first["research_mode"]["ranked_comparisons_available"]
-    assert first["research_mode"]["ranked_comparisons"][0]["selection_original"] in text
+    assert first["research_mode"]["ranked_comparisons"][0]["display"]["selection"]["en"] in text
     research_workflow = browser_page.locator("#research-workflow")
     assert research_workflow.locator(".research-path").count() == 1
     assert "CI crosses zero" in research_workflow.text_content()
@@ -380,7 +491,11 @@ def test_risk_aversion_lens_switches_profile_panels(page):
     payload = json.loads(
         (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
     )
-    first = payload["predictions"][0]
+    first = next(
+        row for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "future"
+        and row["freshness_status"] == "current_snapshot"
+    )
     card = browser_page.locator(f'[data-fixture-id="{first["fixture_id"]}"]')
     selector = browser_page.locator("#risk-profile")
     rank_one = card.locator('[data-recommendation-rank="1"]')

@@ -44,7 +44,7 @@ Open http://127.0.0.1:8765/.
 The pipeline requires:
 
 - `wc_2026_matches_june_22-27.csv`
-- `wc_2026_results_through_june23.csv`
+- `wc_2026_results_through_june24.csv`
 - `wc_team_elo_baseline_june11.csv`
 - `wc_backtest_historical_dataset.csv`
 - `odds_june22_23.csv`, `odds_june24.csv`, `odds_june25_26.csv`, `odds_june27.csv`
