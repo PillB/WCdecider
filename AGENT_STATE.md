@@ -534,6 +534,10 @@
 - 481 | Complete fresh exact-hash four-role review | Owner/model, three-run clean-room replication, data/statistics, and editor/UI reviewers passed prediction hash `1cdac390…245e00` and metrics hash `dafa775f…95001b` after correcting stale challenger wording | Success
 - 482 | Regenerate governed stable release | Rebound semantic hashes, generated 60,582 PASS audit leaves with zero blocked, regenerated the bilingual report and site, and preserved 14 elapsed/12 current/six conditional zero-stake journeys | Success
 - 483 | Validate stable release locally | Pipeline/promotion/build-safety suite passed 42/42; mobile/browser/bilingual suite passed 25/25; staged-scope whitespace validation remains clean outside the protected legacy CSV | Success
+- 484 | Publish cross-platform-stable release | Created and pushed commit `d7c4fc7` with the reviewed tolerance logic, corrected performance wording, fresh four-role bindings, 60,582-row PASS audit, regenerated JSON/report, tests, and provenance | Success
+- 485 | Diagnose second governance retry | Run `28197338901` reported zero semantic field differences but still blocked because JSON hashing distinguished signed `-0.0` from `0.0`; model values and reviewer conclusions were unchanged | Failed
+- 486 | Normalize signed zero in semantic governance | Semantic canonicalization now maps both signed-zero representations to `0.0`, with a regression assertion proving equal hashes while retaining material/structural change detection | Success
+- 487 | Validate signed-zero governance fix | Linux-equivalent zero normalization produces identical semantic hashes; regenerated audit has 60,582 PASS rows and zero blocked; five focused governance tests and site-safety passed | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Prior production paths and documentation overstated reproducibility through hard-coded odds, optional silent TGNN fallback, and target extraction from prose; the June 22–27 path removes those dependencies.
@@ -557,6 +561,6 @@
 - Startup failures now need user-visible diagnostics because iOS may kill a tab before remote developer tools are available; the diagnostics panel records fetch stages, HTTP status, byte counts, URL, build SHA, audit hash, online status, and user agent.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Commit and push the cross-platform-stable governed release.
+- [ ] Active Step: Commit and push the signed-zero governance portability fix.
 - [ ] Next Step: Monitor CI/CD and validate the exact live SHA and mobile journeys.
 - [ ] Future Milestone: Seal the first confirmatory cohort before predictions and promote recommendations/staking only after all calibration, profitability/CLV, and governance gates pass.

@@ -142,7 +142,11 @@ def canonicalize_json(value: Any) -> Any:
     if isinstance(value, list):
         return [canonicalize_json(item) for item in value]
     if isinstance(value, float):
-        return round(value, 12)
+        rounded = round(value, 12)
+        # JSON distinguishes -0.0 from 0.0 even though Python and the model
+        # semantics do not. BLAS/platform arithmetic can change only that
+        # sign at an effectively-zero boundary, so normalize it explicitly.
+        return 0.0 if rounded == 0.0 else rounded
     return value
 
 

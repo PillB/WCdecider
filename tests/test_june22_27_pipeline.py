@@ -641,6 +641,9 @@ def test_semantic_review_hash_ignores_only_sub_precision_float_noise():
     assert semantic_json_sha256(base) != semantic_json_sha256(
         structural_change
     )
+    assert semantic_json_sha256({"x": -0.0}) == semantic_json_sha256(
+        {"x": 0.0}
+    )
 
 
 def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
