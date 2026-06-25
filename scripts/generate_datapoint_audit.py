@@ -15,6 +15,7 @@ import csv
 import hashlib
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Any, Iterator, Tuple
 
@@ -315,6 +316,14 @@ def main() -> None:
     print(f"Wrote {OUT} with {len(rows)} datapoints; blocked={blocked}")
     print(f"Wrote {SUMMARY_OUT} ({SUMMARY_OUT.stat().st_size} bytes)")
     if blocked:
+        print(
+            "Review binding diagnostics: "
+            f"current_model={metrics['version']!r}; "
+            f"reviewed_model={registry.get('reviewed_model_version', '')!r}; "
+            f"current_hashes={current_artifact_hashes}; "
+            f"reviewed_hashes={reviewed_artifact_hashes}",
+            file=sys.stderr,
+        )
         raise SystemExit("Datapoint audit contains non-PASS rows")
 
 
