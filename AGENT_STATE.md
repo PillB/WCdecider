@@ -538,6 +538,9 @@
 - 485 | Diagnose second governance retry | Run `28197338901` reported zero semantic field differences but still blocked because JSON hashing distinguished signed `-0.0` from `0.0`; model values and reviewer conclusions were unchanged | Failed
 - 486 | Normalize signed zero in semantic governance | Semantic canonicalization now maps both signed-zero representations to `0.0`, with a regression assertion proving equal hashes while retaining material/structural change detection | Success
 - 487 | Validate signed-zero governance fix | Linux-equivalent zero normalization produces identical semantic hashes; regenerated audit has 60,582 PASS rows and zero blocked; five focused governance tests and site-safety passed | Success
+- 488 | Publish signed-zero governance fix | Created and pushed commit `cb0f775` to main with normalized semantic hashing, updated review bindings, regenerated PASS audit, and regression coverage | Success
+- 489 | Complete exact CI/CD deployment | Workflow run `28197789226` passed: fail-closed evidence build, championship, promotion evidence, prediction pipeline, zero-drift diagnostic, 60,582-field audit, report/site build, full pytest matrix, Pages deployment, and exact live Playwright validation | Success
+- 490 | Independently verify public release | Public HTML contains exact deployed SHA `cb0f77587b75f9ee85e5d0340af35284de6763dd`; live JSON has 32 fixtures, 14 elapsed, 12 current, six conditional, 32 zero stakes, and 12 six-step current journeys; live audit reports 60,582 PASS rows, zero blocked, and valid review binding | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Prior production paths and documentation overstated reproducibility through hard-coded odds, optional silent TGNN fallback, and target extraction from prose; the June 22–27 path removes those dependencies.
@@ -561,6 +564,6 @@
 - Startup failures now need user-visible diagnostics because iOS may kill a tab before remote developer tools are available; the diagnostics panel records fetch stages, HTTP status, byte counts, URL, build SHA, audit hash, online status, and user agent.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Commit and push the signed-zero governance portability fix.
-- [ ] Next Step: Monitor CI/CD and validate the exact live SHA and mobile journeys.
+- [ ] Active Step: Persist the completed deployment ledger without rebuilding the validated Pages artifact.
+- [ ] Next Step: Ingest the next verified match-result cutoff and repeat the governed retraining/promotion cycle.
 - [ ] Future Milestone: Seal the first confirmatory cohort before predictions and promote recommendations/staking only after all calibration, profitability/CLV, and governance gates pass.
