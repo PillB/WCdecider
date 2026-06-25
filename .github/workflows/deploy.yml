@@ -49,6 +49,49 @@ jobs:
       - name: Merge historical and championship metrics
         run: python3 scripts/merge_research_metrics.py
 
+      - name: Diagnose regenerated release drift
+        run: |
+          python3 - <<'PY'
+          import json
+          import subprocess
+
+          def committed_json(path):
+              raw = subprocess.check_output(["git", "show", f"HEAD:{path}"])
+              return json.loads(raw)
+
+          def differences(expected, actual, pointer=""):
+              if type(expected) is not type(actual):
+                  yield pointer or "/", type(expected).__name__, type(actual).__name__
+                  return
+              if isinstance(expected, dict):
+                  for key in sorted(set(expected) | set(actual)):
+                      child = f"{pointer}/{key}"
+                      if key not in expected:
+                          yield child, "<missing>", actual[key]
+                      elif key not in actual:
+                          yield child, expected[key], "<missing>"
+                      else:
+                          yield from differences(expected[key], actual[key], child)
+              elif isinstance(expected, list):
+                  if len(expected) != len(actual):
+                      yield pointer or "/", f"len={len(expected)}", f"len={len(actual)}"
+                  for index, (left, right) in enumerate(zip(expected, actual)):
+                      yield from differences(left, right, f"{pointer}/{index}")
+              elif expected != actual:
+                  yield pointer or "/", expected, actual
+
+          for path in (
+              "wc_june22_27_predictions.json",
+              "wc_june22_27_model_metrics.json",
+          ):
+              expected = committed_json(path)
+              actual = json.load(open(path, encoding="utf-8"))
+              drift = list(differences(expected, actual))
+              print(f"{path}: semantic_difference_count={len(drift)}")
+              for pointer, left, right in drift[:40]:
+                  print(f"  {pointer}: committed={left!r}; regenerated={right!r}")
+          PY
+
       - name: Generate field-level subagent audit manifest
         run: python3 scripts/generate_datapoint_audit.py
 

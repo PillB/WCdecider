@@ -525,6 +525,10 @@
 - 472 | Restore GitHub publication authority | Completed the official GitHub CLI device flow and authenticated successfully as PillB over HTTPS | Success
 - 473 | Freeze reviewed release scope | Staged 28 governed model, promotion, result, JSON, report, test, documentation, and CI files; staged whitespace validation passed. Excluded the legacy-test-mutated production CSV and three protected unrelated files | Success
 - 474 | Create local June 25 release commit | Created commit `e35477d` containing the reviewed watchlist, promotion evidence, June 24 results, mobile UX, tests, and deployment workflow | Success
+- 475 | Publish reviewed June 25 release | Amended final release SHA `fe122a5f525d43c1de9afed14b5b08cb61b76c3a` and pushed it directly to `origin/main`; GitHub accepted the 64.73 MB audit CSV with a large-file advisory | Success
+- 476 | Monitor first June 25 deployment run | Exact run `28195824515` regenerated model artifacts but governance blocked all 60,576 fields because Linux semantic hashes differed from reviewed hashes; report, site, deploy, and live validation correctly did not run | Failed
+- 477 | Reproduce CI generation under Python 3.11 locally | The exact workflow generation order under Python 3.11 on macOS reproduced the reviewed prediction and metrics files byte-for-byte, isolating the remaining drift to the Linux execution environment rather than Python version or step order | Success
+- 478 | Add bounded cross-platform drift diagnostics | CI now compares regenerated prediction/metrics JSON to the committed reviewed artifacts and prints the first 40 differing pointers before retaining the unchanged fail-closed audit gate | Success (diagnostic run pending)
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Prior production paths and documentation overstated reproducibility through hard-coded odds, optional silent TGNN fallback, and target extraction from prose; the June 22–27 path removes those dependencies.
@@ -548,6 +552,6 @@
 - Startup failures now need user-visible diagnostics because iOS may kill a tab before remote developer tools are available; the diagnostics panel records fetch stages, HTTP status, byte counts, URL, build SHA, audit hash, online status, and user agent.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Amend the release ledger into the commit and push the exact release to main.
-- [ ] Next Step: Monitor CI/CD and validate the exact live SHA.
+- [ ] Active Step: Publish and inspect the Linux drift diagnostic run.
+- [ ] Next Step: Remove the nondeterminism, rerun CI/CD, and validate the exact live SHA and mobile journeys.
 - [ ] Future Milestone: Seal the first confirmatory cohort before predictions and promote recommendations/staking only after all calibration, profitability/CLV, and governance gates pass.
