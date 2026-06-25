@@ -838,6 +838,76 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
     assert plan["apps"]["Betsson"]["unallocated_budget"] == 100.0
 
 
+def test_educational_stake_simulation_is_per_app_and_covers_current_matches():
+    payload = json.loads(
+        (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    simulation = payload["educational_stake_simulation"]
+    assert simulation["policy"] == "educational_hypothetical_not_authorized"
+    assert simulation["budget_per_app"] == 100.0
+    current_ids = {
+        row["fixture_id"] for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "future"
+        and row["freshness_status"] == "current_snapshot"
+    }
+    assert len(current_ids) == 12
+    betsson = simulation["apps"]["Betsson"]
+    assert betsson["status"] == "available_from_transcribed_screenshot_odds"
+    assert betsson["current_fixture_count"] == 12
+    betano = simulation["apps"]["Betano"]
+    assert betano["status"] == "blocked_missing_current_transcribed_odds"
+    assert betano["cash_reserved"] == 100.0
+    expected = {
+        "exploratory": (90.0, 10.0, 20.0),
+        "balanced": (95.0, 5.0, 15.0),
+        "cautious": (70.0, 3.0, 12.0),
+        "strict": (50.0, 2.0, 10.0),
+        "audit_only": (25.0, 0.0, 8.0),
+    }
+    for profile, (singles, accumulator, max_single_pct) in expected.items():
+        summary = betsson["profiles"][profile]
+        assert summary["singles_deployed"] == singles
+        assert summary["accumulator_stake"] == accumulator
+        assert summary["cash_reserved"] == 100.0 - singles - accumulator
+        assert summary["single_fixture_count"] == 12
+        assert summary["max_single_pct"] == max_single_pct
+        assert summary["accumulator"]["leg_count"] == 3
+        stakes = {
+            row["fixture_id"]:
+                row["rank_one_comparison"]["stake_simulation"]["Betsson"][
+                    profile
+                ]["stake"]
+            for row in payload["predictions"]
+        }
+        assert sum(stakes.values()) == pytest.approx(singles)
+        assert all(stakes[fixture_id] > 0 for fixture_id in current_ids)
+        assert all(stake <= max_single_pct for stake in stakes.values())
+        assert all(
+            stake == 0 for fixture_id, stake in stakes.items()
+            if fixture_id not in current_ids
+        )
+        assert all(
+            row["rank_one_comparison"]["stake_simulation"]["Betsson"][profile][
+                "coverage_policy"
+            ]
+            for row in payload["predictions"]
+            if row["fixture_id"] in current_ids
+        )
+    assert all(row["recommendation"] is None for row in payload["predictions"])
+    assert all(
+        row["rank_one_comparison"]["budget_simulation"]["stake"] == 0.0
+        for row in payload["predictions"]
+    )
+
+
+def test_screenshot_app_boundary_matches_verified_interfaces():
+    for path in pipeline.ODDS_PARTS:
+        for row in pipeline.read_csv(path):
+            number = int(row["source_image"].removeprefix("IMG_").removesuffix(".PNG"))
+            expected = "Betsson" if number <= 7614 else "Betano"
+            assert row["app"] == expected
+
+
 def test_full_build_emits_exactly_32_predictions_when_inputs_are_complete(tmp_path, monkeypatch):
     if not all(path.exists() for path in pipeline.ODDS_PARTS):
         pytest.skip("Exact odds extraction workers are still running")

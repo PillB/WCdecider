@@ -170,6 +170,19 @@ def test_workflow_counts_are_json_driven(page):
     )
 
 
+def test_blocked_app_empty_profiles_do_not_break_stake_simulator(page):
+    browser_page, failed = page
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    assert payload["educational_stake_simulation"]["apps"]["Betano"]["profiles"] == {}
+    assert browser_page.locator("#status").inner_text() == "Verified JSON loaded"
+    plan_text = browser_page.locator("#bankroll-plan").inner_text()
+    assert "Allocation blocked" in plan_text
+    assert "S/95.00" in plan_text
+    assert failed == []
+
+
 def test_no_dynamic_resource_failures(page):
     _, failed = page
     assert failed == []
@@ -349,16 +362,20 @@ def test_mobile_tooltips_open_by_tap_scroll_and_close_with_escape(page):
     assert checked > 0
 
 
-def test_per_match_bankroll_steps_and_app_totals_match_json(page):
+def test_interactive_stake_simulation_scales_and_preserves_authorization(page):
     browser_page, _ = page
     payload = json.loads((SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8"))
     plan_text = browser_page.locator("#bankroll-plan").inner_text()
-    assert "Betano · S/100.00" in plan_text
-    assert "Betsson · S/100.00" in plan_text
-    for app, summary in payload["bankroll_simulation"]["apps"].items():
-        assert f"{summary['fixture_count']} sourced match picks" in plan_text
-        assert summary["total_stake"] == 0.0
-        assert summary["unallocated_budget"] == 100.0
+    assert "interactive S/100.00 simulation" in plan_text
+    assert "Authorized stake" in plan_text
+    assert "S/0.00" in plan_text
+    balanced = payload["educational_stake_simulation"]["apps"]["Betsson"][
+        "profiles"
+    ]["balanced"]
+    assert f"S/{balanced['singles_deployed']:.2f}" in plan_text
+    assert f"S/{balanced['cash_reserved']:.2f}" in plan_text
+    assert "Allocation blocked" in plan_text
+    assert "All three legs must win" in plan_text
 
     for item in payload["predictions"]:
         card = browser_page.locator(f'[data-fixture-id="{item["fixture_id"]}"]')
@@ -372,6 +389,42 @@ def test_per_match_bankroll_steps_and_app_totals_match_json(page):
             has_text="Fail-closed allocation"
         )
         assert details.count() == 0
+        if (
+            item["fixture_lifecycle_status"] == "future"
+            and item["freshness_status"] == "current_snapshot"
+        ):
+            simulated = rec["stake_simulation"]["Betsson"]["balanced"]["stake"]
+            assert f"S/{simulated:.2f}" in text
+            assert simulated > 0
+            assert "Comparison only" in text
+        else:
+            assert card.locator(
+                f'[data-simulation-stake="{item["fixture_id"]}"]'
+            ).count() == 0
+
+    browser_page.locator("#simulation-budget").fill("200")
+    first = next(
+        row for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "future"
+        and row["freshness_status"] == "current_snapshot"
+    )
+    expected = (
+        first["rank_one_comparison"]["stake_simulation"]["Betsson"]["balanced"][
+            "stake"
+        ] * 2
+    )
+    assert browser_page.locator(
+        f'[data-simulation-stake="{first["fixture_id"]}"]'
+    ).inner_text() == f"S/{expected:.2f}"
+    browser_page.locator("#risk-profile").select_option("strict")
+    strict_expected = (
+        first["rank_one_comparison"]["stake_simulation"]["Betsson"]["strict"][
+            "stake"
+        ] * 2
+    )
+    assert browser_page.locator(
+        f'[data-simulation-stake="{first["fixture_id"]}"]'
+    ).inner_text() == f"S/{strict_expected:.2f}"
 
 
 def test_mobile_shell_survives_delayed_json_without_crashing():

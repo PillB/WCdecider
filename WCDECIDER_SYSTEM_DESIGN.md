@@ -352,6 +352,20 @@ actionability gates pass.
 
 ### Ranking utility
 
+### Educational stake simulation versus authorization
+
+The website exposes a separate `educational_stake_simulation` object. It uses a
+user-entered PEN budget and one of five risk profiles to scale hypothetical
+amounts across eligible current-snapshot future fixtures. HALT, negative-EV,
+negative-stress, below-fair-price, elapsed, and conditional rows receive zero.
+More conservative profiles reserve more cash and apply tighter risk lenses.
+
+This simulator is not the production bankroll gate. The authoritative
+`recommendation` field remains `null`, every `budget_simulation.stake` remains
+`0.0`, and profitability/CLV promotion remains blocked. The separation lets a
+student rehearse portfolio sizing without representing an unvalidated amount
+as a model-authorized bet.
+
 The ranking uses:
 
 - minimum of base and stressed decision EV;
@@ -439,6 +453,27 @@ The bankroll planner is educational and allocates only to `ACTIONABLE` rows.
 - full-win gross return and profit illustration;
 - six bilingual navigation/check steps only for `ACTIONABLE` rows;
 - abstention and unvalidated-profitability warning.
+
+## 9A. Forward-looking user allocation simulator
+
+This is separate from the fail-closed production bankroll above.
+
+- Budget is S/100 independently in Betano and Betsson.
+- Balanced is the default profile.
+- If an app has transcribed current prices, every current match receives one
+  hypothetical single, including visibly flagged forced-coverage rows.
+- Balanced assigns S/95 across singles, caps each single at 15%, and caps one
+  three-leg accumulator at S/5.
+- Exploratory never exceeds 20% on one single; stricter profiles deploy less.
+- Three ranked sourced comparisons remain visible per match as alternatives,
+  not simultaneous required bets.
+- If an app lacks current transcribed prices, its S/100 is fully reserved and
+  the UI requests current screenshots or manually entered decimal prices.
+- Verified screenshot identity boundary: `IMG_7523`–`IMG_7614` are Betsson;
+  `IMG_7615`–`IMG_7745` are Betano. Raw odds app labels and the generated
+  screenshot manifest must satisfy this invariant.
+- The simulator never changes `recommendation=null`, `ABSTAIN`, the production
+  stake of S/0.00, or profitability/CLV promotion status.
 
 If the current price is below the fair threshold, the website must state that a
 disciplined process pauses and preserves the unallocated budget.

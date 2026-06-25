@@ -1562,7 +1562,7 @@ def screenshot_manifest(odds: Sequence[Mapping[str, str]]) -> List[Dict[str, obj
             "source_image": path.name,
             "source_sha256": sha256(path),
             "fixture_id": fixture_id,
-            "app": "Betano" if number <= 7614 else "Betsson",
+            "app": "Betsson" if number <= 7614 else "Betano",
             "transcribed_selection_rows": odds_counts[path.name],
             "inventory_status": "odds_transcribed" if odds_counts[path.name] else "reviewed_no_supported_row",
         })
@@ -2353,6 +2353,342 @@ def allocate_app_budget(
     return rounded
 
 
+SIMULATION_PROFILE_POLICY = {
+    "exploratory": {
+        "singles_fraction": 0.90,
+        "accumulator_fraction": 0.10,
+        "max_single_fraction": 0.20,
+    },
+    "balanced": {
+        "singles_fraction": 0.95,
+        "accumulator_fraction": 0.05,
+        "max_single_fraction": 0.15,
+    },
+    "cautious": {
+        "singles_fraction": 0.70,
+        "accumulator_fraction": 0.03,
+        "max_single_fraction": 0.12,
+    },
+    "strict": {
+        "singles_fraction": 0.50,
+        "accumulator_fraction": 0.02,
+        "max_single_fraction": 0.10,
+    },
+    "audit_only": {
+        "singles_fraction": 0.25,
+        "accumulator_fraction": 0.0,
+        "max_single_fraction": 0.08,
+    },
+}
+
+
+def allocate_educational_simulation(
+    rows: Sequence[Dict[str, object]],
+    profile_id: str,
+    budget: float = 100.0,
+) -> Dict[str, float]:
+    """Allocate one hypothetical single to every current fixture."""
+    if profile_id not in SIMULATION_PROFILE_POLICY:
+        raise ValueError(f"Unknown simulation profile: {profile_id}")
+    if budget <= 0:
+        raise ValueError("Simulation budget must be positive")
+    current = [
+        row for row in rows
+        if row["fixture_lifecycle_status"] == "future"
+        and row["freshness_status"] == "current_snapshot"
+        and row.get("rank_one_comparison")
+    ]
+    stakes = {row["fixture_id"]: 0.0 for row in rows}
+    if not current:
+        return stakes
+    policy = SIMULATION_PROFILE_POLICY[profile_id]
+    deployable = round(budget * policy["singles_fraction"], 2)
+    max_stake = budget * policy["max_single_fraction"]
+    if max_stake * len(current) + 1e-9 < deployable:
+        raise ValueError("Simulation single cap cannot cover current fixtures")
+    base_stake = min(1.0, deployable / len(current))
+    scores: Dict[str, float] = {}
+    for row in current:
+        rec = row["rank_one_comparison"]
+        grade_bonus = {"A": 1.4, "B": 1.0, "C": 0.6, "D": 0.3}.get(
+            str(rec["risk_grade"]), 0.2
+        )
+        scores[row["fixture_id"]] = max(
+            0.1,
+            0.5
+            + grade_bonus
+            + max(-10.0, min(10.0, float(rec["stressed_ev_pct"]))) / 20.0
+            + max(-20.0, min(20.0, float(rec["ev_pct"]))) / 40.0,
+        )
+        stakes[row["fixture_id"]] = base_stake
+    remaining = deployable - base_stake * len(current)
+    active = {row["fixture_id"] for row in current}
+    while remaining > 1e-9 and active:
+        total_score = sum(scores[key] for key in active)
+        used = 0.0
+        capped = set()
+        for key in sorted(active):
+            extra = remaining * scores[key] / total_score
+            room = max_stake - stakes[key]
+            addition = min(room, extra)
+            stakes[key] += addition
+            used += addition
+            if room <= extra + 1e-9:
+                capped.add(key)
+        remaining -= used
+        active -= capped
+        if used <= 1e-9:
+            break
+    rounded = {
+        key: math.floor(value * 10.0 + 1e-9) / 10.0
+        for key, value in stakes.items()
+    }
+    tenths_left = int(round((deployable - sum(rounded.values())) * 10))
+    order = sorted(
+        (row["fixture_id"] for row in current),
+        key=lambda key: (stakes[key] - rounded[key], scores[key], key),
+        reverse=True,
+    )
+    index = 0
+    while tenths_left > 0:
+        key = order[index % len(order)]
+        if rounded[key] + 0.1 <= max_stake + 1e-9:
+            rounded[key] = round(rounded[key] + 0.1, 1)
+            tenths_left -= 1
+        index += 1
+    if abs(sum(rounded.values()) - deployable) > 1e-6:
+        raise ValueError("Rounded simulation allocation does not match profile")
+    return rounded
+
+
+def attach_educational_stake_simulation(
+    predictions: Sequence[Dict[str, object]],
+) -> Dict[str, object]:
+    """Attach S/100-per-app singles plus capped accumulator simulations."""
+    apps: Dict[str, object] = {}
+    for app in ("Betano", "Betsson"):
+        app_rows = [
+            row for row in predictions
+            if row["rank_one_comparison"]["app"] == app
+        ]
+        current_rows = [
+            row for row in app_rows
+            if row["fixture_lifecycle_status"] == "future"
+            and row["freshness_status"] == "current_snapshot"
+        ]
+        if not current_rows:
+            apps[app] = {
+                "status": "blocked_missing_current_transcribed_odds",
+                "budget": 100.0,
+                "cash_reserved": 100.0,
+                "current_fixture_count": 0,
+                "profiles": {},
+                "required_user_input": {
+                    "en": (
+                        f"Current {app} screenshots or manually entered decimal "
+                        "prices for every upcoming fixture."
+                    ),
+                    "es": (
+                        f"Capturas actuales de {app} o cuotas decimales "
+                        "ingresadas manualmente para cada partido próximo."
+                    ),
+                },
+            }
+            continue
+        profiles: Dict[str, object] = {}
+        for profile in RISK_AVERSION_PROFILES:
+            profile_id = str(profile["id"])
+            stakes = allocate_educational_simulation(app_rows, profile_id)
+            singles_deployed = round(sum(stakes.values()), 2)
+            accumulator_stake = round(
+                100.0 * SIMULATION_PROFILE_POLICY[profile_id][
+                    "accumulator_fraction"
+                ],
+                2,
+            )
+            accumulator_candidates = sorted(
+                current_rows,
+                key=lambda row: (
+                    float(row["rank_one_comparison"]["recommendation_utility"]),
+                    float(row["rank_one_comparison"]["stressed_ev_pct"]),
+                    row["fixture_id"],
+                ),
+                reverse=True,
+            )[:3]
+            accumulator_legs = [
+                {
+                    "fixture_id": row["fixture_id"],
+                    "fixture": row["fixture"],
+                    "selection": row["rank_one_comparison"]["display"],
+                    "odds": float(row["rank_one_comparison"]["odds"]),
+                    "source_image": row["rank_one_comparison"]["source_image"],
+                }
+                for row in accumulator_candidates
+            ]
+            accumulator_odds = (
+                math.prod(leg["odds"] for leg in accumulator_legs)
+                if accumulator_legs else 0.0
+            )
+            for row in predictions:
+                rec = row["rank_one_comparison"]
+                stake = stakes.get(row["fixture_id"], 0.0)
+                forced_reasons = []
+                if stake > 0.0:
+                    if rec["strength"] == "HALT":
+                        forced_reasons.append("halt_candidate")
+                    if float(rec["ev_pct"]) <= 0.0:
+                        forced_reasons.append("non_positive_ev")
+                    if float(rec["stressed_ev_pct"]) < 0.0:
+                        forced_reasons.append("negative_stressed_ev")
+                    if rec["price_gate_status"] != "at_or_above_model_fair_price":
+                        forced_reasons.append("below_model_fair_price")
+                    if rec["risk_lens"][profile_id]["status"] != "PASS":
+                        forced_reasons.append("fails_selected_risk_lens")
+                rec.setdefault("stake_simulation", {}).setdefault(
+                    app, {}
+                )[profile_id] = {
+                    "stake": stake,
+                    "share_of_app_budget_pct": round(stake, 1),
+                    "gross_return_if_full_win": round(
+                        stake * float(rec["odds"]), 2
+                    ),
+                    "coverage_policy": (
+                        "forced_one_single_per_current_match"
+                        if forced_reasons else "passes_simulation_filters"
+                    ),
+                    "forced_coverage_reasons": forced_reasons,
+                }
+            profiles[profile_id] = {
+                "label": {
+                    "en": profile["label_en"],
+                    "es": profile["label_es"],
+                },
+                "budget": 100.0,
+                "singles_deployed": singles_deployed,
+                "accumulator_stake": accumulator_stake,
+                "cash_reserved": round(
+                    100.0 - singles_deployed - accumulator_stake, 2
+                ),
+                "single_fixture_count": len(current_rows),
+                "max_single_pct": (
+                    SIMULATION_PROFILE_POLICY[profile_id][
+                        "max_single_fraction"
+                    ] * 100.0
+                ),
+                "accumulator": {
+                    "leg_count": len(accumulator_legs),
+                    "legs": accumulator_legs,
+                    "combined_decimal_odds": round(accumulator_odds, 3),
+                    "gross_return_if_full_win": round(
+                        accumulator_stake * accumulator_odds, 2
+                    ),
+                    "warning": (
+                        "All legs must win; correlated uncertainty and stale "
+                        "prices make this materially riskier than singles."
+                    ),
+                },
+            }
+        apps[app] = {
+            "status": "available_from_transcribed_screenshot_odds",
+            "budget": 100.0,
+            "current_fixture_count": len(current_rows),
+            "profiles": profiles,
+        }
+    return {
+        "currency": "PEN",
+        "budget_per_app": 100.0,
+        "default_profile": "balanced",
+        "policy": "educational_hypothetical_not_authorized",
+        "apps": apps,
+        "warning": {
+            "en": (
+                "Hypothetical budgeting aid only. It is not an authorized "
+                "stake, profit forecast, or instruction to bet. Change the "
+                "budget to scale amounts; re-check live odds and team news."
+            ),
+            "es": (
+                "Solo ayuda hipotética de presupuesto. No es monto autorizado, "
+                "pronóstico de beneficio ni instrucción para apostar. Cambia "
+                "el presupuesto para escalar montos y revisa cuotas y noticias."
+            ),
+        },
+    }
+
+def _legacy_attach_educational_stake_simulation_disabled(
+    predictions: Sequence[Dict[str, object]],
+) -> Dict[str, object]:
+    """Attach five safety-filtered hypothetical S/100 portfolios."""
+    profiles: Dict[str, object] = {}
+    for profile in RISK_AVERSION_PROFILES:
+        profile_id = str(profile["id"])
+        stakes = allocate_educational_simulation(predictions, profile_id)
+        deployed = round(sum(stakes.values()), 2)
+        for row in predictions:
+            rec = row["rank_one_comparison"]
+            stake = stakes[row["fixture_id"]]
+            exclusion_reasons = []
+            if (
+                row["fixture_lifecycle_status"] != "future"
+                or row["freshness_status"] != "current_snapshot"
+            ):
+                exclusion_reasons.append("not_current_future_fixture")
+            elif profile_id == "audit_only":
+                exclusion_reasons.append("audit_only_profile_reserves_all_cash")
+            else:
+                if rec["strength"] == "HALT":
+                    exclusion_reasons.append("halt_candidate")
+                if float(rec["ev_pct"]) <= 0.0:
+                    exclusion_reasons.append("non_positive_ev")
+                if float(rec["stressed_ev_pct"]) < 0.0:
+                    exclusion_reasons.append("negative_stressed_ev")
+                if rec["price_gate_status"] != "at_or_above_model_fair_price":
+                    exclusion_reasons.append("below_model_fair_price")
+                if rec["risk_lens"][profile_id]["status"] != "PASS":
+                    exclusion_reasons.append("fails_selected_risk_lens")
+            rec.setdefault("stake_simulation", {})[profile_id] = {
+                "stake": stake,
+                "share_of_budget_pct": round(stake, 1),
+                "gross_return_if_full_win": round(
+                    stake * float(rec["odds"]), 2
+                ),
+                "profit_if_full_win": round(
+                    stake * (float(rec["odds"]) - 1.0), 2
+                ),
+                "eligible_current_fixture": stake > 0.0,
+                "exclusion_reasons": exclusion_reasons,
+            }
+        profiles[profile_id] = {
+            "label": {
+                "en": profile["label_en"],
+                "es": profile["label_es"],
+            },
+            "budget": 100.0,
+            "deployed": deployed,
+            "cash_reserved": round(100.0 - deployed, 2),
+            "fixture_count": sum(value > 0.0 for value in stakes.values()),
+            "deployment_is_maximum_not_target": True,
+        }
+    return {
+        "currency": "PEN",
+        "base_budget": 100.0,
+        "default_profile": "balanced",
+        "policy": "educational_hypothetical_not_authorized",
+        "profiles": profiles,
+        "warning": {
+            "en": (
+                "Hypothetical budgeting aid only. It is not an authorized "
+                "stake, profit forecast, or instruction to bet. Change the "
+                "budget to scale amounts; re-check live odds and team news."
+            ),
+            "es": (
+                "Solo ayuda hipotética de presupuesto. No es monto autorizado, "
+                "pronóstico de beneficio ni instrucción para apostar. Cambia "
+                "el presupuesto para escalar montos y revisa cuotas y noticias."
+            ),
+        },
+    }
+
+
 def recommendation_display_labels(
     fixture: Mapping[str, object],
     recommendation: Mapping[str, object],
@@ -3088,6 +3424,9 @@ def build() -> Dict[str, object]:
     model_fields = list(model_rows[0].keys())
     write_csv(MODEL_DATA_OUT, model_rows, model_fields)
     bankroll_simulation = attach_bankroll_simulation(predictions)
+    educational_stake_simulation = attach_educational_stake_simulation(
+        predictions
+    )
     input_hashes = {
         path.name: sha256(path) for path in
         (HISTORICAL, RESULTS_2026, ELO_BASELINE, FIXTURES, *ODDS_PARTS, *RESEARCH_PARTS)
@@ -3183,6 +3522,7 @@ def build() -> Dict[str, object]:
         "batch": {"start": "2026-06-22", "end": "2026-06-27", "fixture_count": 32},
         "model": metrics,
         "bankroll_simulation": bankroll_simulation,
+        "educational_stake_simulation": educational_stake_simulation,
         "predictions": predictions,
         "glossary": {
             "ev": {
@@ -3213,6 +3553,7 @@ def build() -> Dict[str, object]:
             "Historical Dataset A/B source: wc_backtest_historical_dataset.csv",
             "Screenshot-derived odds: odds_june22_23.csv, odds_june24.csv, odds_june25_26.csv, odds_june27.csv",
             "Complete screenshot inventory: wc_screenshot_manifest_june22_27.csv",
+            "Verified sportsbook UI boundary: IMG_7523–IMG_7614 = Betsson; IMG_7615–IMG_7745 = Betano.",
             "OSINT notes: research_june22_23.csv, research_june24_25.csv, research_june26_27.csv",
             "Sanitized canonical OSINT output: wc_research_june22_27.csv (post-cutoff sources are excluded).",
             "",

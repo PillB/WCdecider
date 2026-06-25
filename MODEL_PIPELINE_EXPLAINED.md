@@ -319,6 +319,21 @@ Done conditions:
 
 ### P16. Export auditable artifacts
 
+### P15A. Produce the forward-looking per-app simulation
+
+Code: `allocate_educational_simulation` and
+`attach_educational_stake_simulation`.
+
+The default balanced view treats Betano and Betsson as separate S/100
+bankrolls. For an app with current transcribed prices, S/95 is distributed
+across one single per current match with a 15% per-match cap; S/5 is reserved
+for one optional three-leg accumulator selected from the highest-ranked
+comparisons. Forced-coverage rows retain explicit model-risk warnings.
+
+If an app has no current transcribed prices, the simulator allocates nothing,
+reserves S/100, and requests new screenshots or manual prices. No cross-app
+price is copied or invented.
+
 Code: `build`, `main`, and the report-generation scripts.
 
 The pipeline exports model datasets, normalized odds, predictions JSON, metrics

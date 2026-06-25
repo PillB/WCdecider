@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="4ac11d0d3a5ed237d9f24d472f00dc530e023950fad4284f4cede95bb1411292">
+  <meta name="wcdecider-audit-sha256" content="3259fb8be73ff811b429b3af4249e274e39e35c0c45843dd54b7612e971b17dc">
   <title>WCdecider • June 22–27, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -142,7 +142,7 @@
       <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
         <h2 class="text-xl font-bold text-white"><span class="en">How to read this analysis</span><span class="es">Cómo leer este análisis</span></h2>
         <ol class="mt-3 space-y-2 text-sm text-slate-300 list-decimal pl-5">
-          <li><span class="en">Every match may show ranked sourced comparisons, but the current release abstains from every bet and allocates zero stake.</span><span class="es">Cada partido puede mostrar comparaciones con fuente, pero la versión actual se abstiene de todas las apuestas y asigna monto cero.</span></li>
+          <li><span class="en">Every current match has a hypothetical stake simulation. Authorized production stake remains zero because profitability is not validated.</span><span class="es">Cada partido vigente tiene una simulación hipotética de monto. El monto autorizado de producción sigue en cero porque la rentabilidad no está validada.</span></li>
           <li><span class="en">PASS means the comparison is within investigation limits; HALT means all model edges were suspicious, so the safest market-consensus fallback is shown.</span><span class="es">PASS significa que la comparación está dentro de límites de investigación; HALT significa que todas las ventajas del modelo fueron sospechosas y se muestra la alternativa más segura según el consenso del mercado.</span></li>
           <li><span class="en">Conditional forecasts must be rerun after intervening matches and new lineups/odds.</span><span class="es">Los pronósticos condicionales deben recalcularse después de partidos intermedios y nuevas alineaciones/cuotas.</span></li>
           <li><span class="en">Displayed prices are source evidence, not instructions to place a bet.</span><span class="es">Las cuotas mostradas son evidencia de fuente, no instrucciones para apostar.</span></li>
@@ -184,6 +184,10 @@
           <option value="audit_only" data-en="Audit only" data-es="Solo auditoría">Audit only</option>
         </select>
       </label>
+      <label class="text-sm"><span class="en">Simulation budget (PEN)</span><span class="es">Presupuesto simulado (PEN)</span>
+        <input id="simulation-budget" type="number" min="10" max="10000" step="10" value="100" disabled class="ml-2 w-28 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 disabled:opacity-50" aria-label="Simulation budget in Peruvian soles">
+      </label>
+      <p id="simulation-profile-summary" class="w-full text-xs text-slate-400"><span class="en">Simulation profile totals load from the verified JSON.</span><span class="es">Los totales de perfiles se cargan desde el JSON verificado.</span></p>
     </section>
 
     <section id="loading-shell" class="mb-8 rounded-3xl border border-slate-800 bg-slate-900 p-5 text-slate-300" aria-live="polite">
@@ -209,7 +213,7 @@
           <li><span class="en">Open the match, then choose Result, Total Goals, Both Teams Score, or Asian Handicap shown on the card.</span><span class="es">Abre el partido y elige Resultado, Total de goles, Ambos marcan o Hándicap asiático indicado en la tarjeta.</span></li>
           <li><span class="en">Match the selection and line exactly; +1, +1.25, Over 0.5, and Draw are different bets.</span><span class="es">Haz coincidir exactamente selección y línea; +1, +1,25, Más de 0,5 y Empate son apuestas diferentes.</span></li>
           <li><span class="en">Compare the current price with the screenshot price and fair odds. If it moved materially, the displayed EV is stale.</span><span class="es">Compara la cuota actual con la captura y la cuota justa. Si cambió mucho, el EV mostrado está desactualizado.</span></li>
-          <li><span class="en">Confirm full-time settlement. The current release authorizes no bet and assigns zero stake.</span><span class="es">Confirma que liquida al tiempo reglamentario. La versión actual no autoriza apuestas y asigna monto cero.</span></li>
+          <li><span class="en">Confirm full-time settlement. The displayed amount is a user-controlled simulation; the system-authorized stake remains zero.</span><span class="es">Confirma que liquida al tiempo reglamentario. El monto mostrado es una simulación controlada por el usuario; el monto autorizado sigue en cero.</span></li>
         </ol>
       </div>
       <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
@@ -301,7 +305,7 @@ function renderSummary(rows){
  <p class="mt-2"><span class="en">Deep-learning research track: ${escapeHtml(METRICS.model_championship.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registered but gated')}. These variants need the published promotion gate before production use: more timestamped fixtures, enough repeated temporal edges per team, nested walk-forward selection, calibration checks, and closing-line profitability validation.</span><span class="es">Línea de investigación deep learning: ${escapeHtml(METRICS.model_championship.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registrada pero limitada')}. Estas variantes requieren la puerta de promoción publicada antes de usarse en producción: más partidos con marca de tiempo, suficientes aristas temporales repetidas por equipo, selección walk-forward anidada, calibración y validación de rentabilidad con líneas de cierre.</span></p>
  <p class="mt-2 text-violet-200"><span class="en">Research-mode toggle: ${escapeHtml(METRICS.research_mode_policy?.selected_candidate||'not available')} is available as a gated shadow view. Production authorization remains blocked unless a candidate passes the published promotion gate.</span><span class="es">Toggle de modo investigación: ${escapeHtml(METRICS.research_mode_policy?.selected_candidate||'no disponible')} está disponible como vista sombra limitada. La autorización de producción sigue bloqueada salvo que una candidata supere la puerta de promoción publicada.</span></p>
  <p class="mt-2"><span class="en">Historical odds inventory: ${METRICS.historical_closing_odds.events} events and ${METRICS.historical_closing_odds.rows} selection rows retained as timestamp-unknown proxies; primary timestamp-verified validation rows: ${METRICS.historical_closing_odds.primary_validation_rows}.</span><span class="es">Inventario histórico de cuotas: ${METRICS.historical_closing_odds.events} eventos y ${METRICS.historical_closing_odds.rows} filas de selecciones conservadas como proxies sin hora verificable; filas primarias verificadas por tiempo: ${METRICS.historical_closing_odds.primary_validation_rows}.</span></p>
- <p class="mt-2 text-red-200"><span class="en">Release blocked: ranked rows are audit comparisons only. All decisions are ABSTAIN and all stakes are zero until clean data, fresh prices, a sealed holdout, and profitability validation exist.</span><span class="es">Versión bloqueada: las filas ordenadas son solo comparaciones de auditoría. Todas las decisiones son ABSTAIN y todos los montos son cero hasta contar con datos limpios, cuotas vigentes, holdout sellado y validación de rentabilidad.</span></p>`;
+ <p class="mt-2 text-red-200"><span class="en">Production authorization remains blocked: all decisions are ABSTAIN and authorized stakes are zero. The separate stake simulator is hypothetical and does not claim validated profit.</span><span class="es">La autorización de producción sigue bloqueada: todas las decisiones son ABSTAIN y los montos autorizados son cero. El simulador separado es hipotético y no afirma beneficio validado.</span></p>`;
 }
 function comparisonBar(label,value,maxValue,color,detail=''){
  const width=Math.max(2,Math.min(100,(Number(value)/Number(maxValue))*100));
@@ -341,24 +345,76 @@ function renderValidationVisuals(){
   </div>`;
 }
 function renderBankrollPlan(){
- const plan=DATA.bankroll_simulation;
+ const auth=DATA.bankroll_simulation;
+ const simulation=DATA.educational_stake_simulation;
  $('#bankroll-plan').innerHTML=['Betano','Betsson'].map(app=>{
-  const item=plan.apps[app];
-  return `<article class="rounded-3xl border border-cyan-900/70 bg-slate-900 p-5">
+  const appPlan=simulation.apps?.[app];
+  if(!appPlan||appPlan.status!=='available_from_transcribed_screenshot_odds'){
+   return `<article class="rounded-3xl border border-amber-800/70 bg-slate-900 p-5">
+    <h2 class="text-xl font-black text-white">${app} · <span data-simulation-budget-label="${app}">S/100.00</span></h2>
+    <p class="mt-3 text-amber-200"><span class="en">Allocation blocked: current transcribed odds do not cover the upcoming fixtures in this app.</span><span class="es">Asignación bloqueada: las cuotas transcritas actuales no cubren los próximos partidos en esta app.</span></p>
+    <p class="en mt-2 text-xs text-slate-400">${escapeHtml(appPlan?.required_user_input?.en||'Current screenshots required.')}</p>
+    <p class="es mt-2 text-xs text-slate-400">${escapeHtml(appPlan?.required_user_input?.es||'Se requieren capturas actuales.')}</p>
+    <div class="mt-4">${metric('<span class="en">Cash reserved</span><span class="es">Efectivo reservado</span>',`<span data-simulation-blocked-reserve="${app}">S/100.00</span>`)}</div>
+   </article>`;
+  }
+  return `<article class="rounded-3xl border border-emerald-800/70 bg-slate-900 p-5">
    <div class="flex items-start justify-between gap-4">
-    <div><h2 class="text-xl font-black text-white">${app} · S/${Number(plan.budget_per_app).toFixed(2)}</h2>
-    <p class="mt-1 text-sm text-slate-400"><span class="en">${item.fixture_count} sourced match picks in this app</span><span class="es">${item.fixture_count} selecciones con fuente en esta app</span></p></div>
-    <span class="rounded-full border border-amber-700 px-3 py-1 text-xs text-amber-200"><span class="en">Simulation</span><span class="es">Simulación</span></span>
+    <div><h2 class="text-xl font-black text-white">${app} · <span class="en">interactive <span data-simulation-budget-label="${app}">S/100.00</span> simulation</span><span class="es">simulación interactiva de <span data-simulation-budget-label="${app}">S/100,00</span></span></h2>
+    <p class="mt-1 text-sm text-slate-400"><span class="en">One hypothetical single per current match plus one capped three-leg accumulator.</span><span class="es">Una simulación simple por partido vigente más una combinada limitada de tres selecciones.</span></p></div>
+    <span class="rounded-full border border-emerald-700 px-3 py-1 text-xs text-emerald-200"><span class="en">Educational</span><span class="es">Educativa</span></span>
+   </div>
+   <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
+    ${metric('<span class="en">Singles</span><span class="es">Simples</span>',`<span data-simulation-singles="${app}">—</span>`)}
+    ${metric('<span class="en">Accumulator</span><span class="es">Combinada</span>',`<span data-simulation-accumulator="${app}">—</span>`)}
+    ${metric('<span class="en">Cash reserved</span><span class="es">Efectivo reservado</span>',`<span data-simulation-reserved="${app}">—</span>`)}
+    ${metric('<span class="en">Matches covered</span><span class="es">Partidos cubiertos</span>',`<span data-simulation-covered="${app}">—</span>`)}
+   </div>
+   <div class="mt-4 rounded-xl border border-emerald-900 bg-emerald-950/20 p-3 text-xs">
+    <b><span class="en">Optional capped accumulator:</span><span class="es">Combinada opcional limitada:</span></b>
+    <div class="mt-2" data-simulation-accumulator-legs="${app}">—</div>
+    <div class="mt-2 text-amber-200" data-simulation-accumulator-warning="${app}"></div>
+   </div>
+   <p class="mt-3 text-xs text-amber-200"><span class="en">${escapeHtml(simulation.warning.en)}</span><span class="es">${escapeHtml(simulation.warning.es)}</span></p>
+  </article>`;
+ }).join('')+`
+  <article class="rounded-3xl border border-red-900/70 bg-slate-900 p-5">
+   <h2 class="text-xl font-black text-white"><span class="en">Authorization gate</span><span class="es">Puerta de autorización</span></h2>
+   <div class="mt-4 grid grid-cols-2 gap-2 text-center">
+    ${metric('<span class="en">Authorized stake</span><span class="es">Monto autorizado</span>','S/0.00')}
+    ${metric('<span class="en">Profitability validation</span><span class="es">Validación de rentabilidad</span>','<span class="en">Blocked</span><span class="es">Bloqueada</span>')}
+   </div>
+   <p class="mt-3 text-xs text-red-200"><span class="en">${escapeHtml(auth.warning.en)}</span><span class="es">${escapeHtml(auth.warning.es)}</span></p>
+   <p class="mt-2 text-xs text-slate-400"><span class="en">The simulator is available even though the production authorization remains zero.</span><span class="es">El simulador está disponible aunque la autorización de producción siga en cero.</span></p>
+  </article>`;
+ refreshStakeSimulation();
+}
+function renderBankrollPlanLegacyDisabled(){
+ const auth=DATA.bankroll_simulation;
+ const simulation=DATA.educational_stake_simulation;
+ $('#bankroll-plan').innerHTML=`
+  <article class="rounded-3xl border border-emerald-800/70 bg-slate-900 p-5">
+   <div class="flex items-start justify-between gap-4">
+    <div><h2 class="text-xl font-black text-white"><span class="en">Interactive stake simulation</span><span class="es">Simulación interactiva de montos</span></h2>
+    <p class="mt-1 text-sm text-slate-400"><span class="en">Safety-filtered hypothetical amounts for current matches.</span><span class="es">Montos hipotéticos con filtros de seguridad para partidos vigentes.</span></p></div>
+    <span class="rounded-full border border-emerald-700 px-3 py-1 text-xs text-emerald-200"><span class="en">Educational</span><span class="es">Educativa</span></span>
    </div>
    <div class="mt-4 grid grid-cols-3 gap-2 text-center">
-    ${metric('<span class="en">Allocated</span><span class="es">Asignado</span>',`S/${Number(item.total_stake).toFixed(2)}`)}
-    ${metric('<span class="en">Unvalidated model net</span><span class="es">Neto del modelo no validado</span>',`S/${Number(item.model_estimated_net).toFixed(2)}`)}
-    ${metric('<span class="en">All-win gross</span><span class="es">Bruto si todas ganan</span>',`S/${Number(item.gross_return_if_every_pick_fully_wins).toFixed(2)}`)}
+    ${metric('<span class="en">Simulated deployment</span><span class="es">Despliegue simulado</span>','<span id="simulation-deployed">—</span>')}
+    ${metric('<span class="en">Cash reserved</span><span class="es">Efectivo reservado</span>','<span id="simulation-reserved">—</span>')}
+    ${metric('<span class="en">Matches receiving amount</span><span class="es">Partidos con monto</span>','<span id="simulation-covered">—</span>')}
    </div>
-   <p class="mt-3 text-xs text-amber-200"><span class="en">${escapeHtml(plan.warning.en)}</span><span class="es">${escapeHtml(plan.warning.es)}</span></p>
-   <p class="mt-2 text-xs text-slate-400"><span class="en">${escapeHtml(item.risk_note.en)}</span><span class="es">${escapeHtml(item.risk_note.es)}</span></p>
+   <p class="mt-3 text-xs text-amber-200"><span class="en">${escapeHtml(simulation.warning.en)}</span><span class="es">${escapeHtml(simulation.warning.es)}</span></p>
+  </article>
+  <article class="rounded-3xl border border-red-900/70 bg-slate-900 p-5">
+   <h2 class="text-xl font-black text-white"><span class="en">Authorization gate</span><span class="es">Puerta de autorización</span></h2>
+   <div class="mt-4 grid grid-cols-2 gap-2 text-center">
+    ${metric('<span class="en">Authorized stake</span><span class="es">Monto autorizado</span>','S/0.00')}
+    ${metric('<span class="en">Profitability validation</span><span class="es">Validación de rentabilidad</span>','<span class="en">Blocked</span><span class="es">Bloqueada</span>')}
+   </div>
+   <p class="mt-3 text-xs text-red-200"><span class="en">${escapeHtml(auth.warning.en)}</span><span class="es">${escapeHtml(auth.warning.es)}</span></p>
   </article>`;
- }).join('');
+ refreshStakeSimulation();
 }
 const pct=p=>`${(Number(p)*100).toFixed(1)}%`;
 const odds=o=>Number(o).toFixed(2);
@@ -541,6 +597,16 @@ function card(row,index){
       <span class="en"> No stake is authorized in this release.</span>
       <span class="es"> No se autoriza ningún monto en esta versión.</span>
     </div>
+    ${currentWatchlist?`<div class="mt-3 rounded-xl border border-emerald-800 bg-emerald-950/25 p-3 text-sm">
+      <div class="flex items-center justify-between gap-3">
+       <b class="text-emerald-100"><span class="en">Hypothetical amount</span><span class="es">Monto hipotético</span></b>
+       <span class="font-mono text-lg text-emerald-200" data-simulation-stake="${escapeHtml(row.fixture_id)}">—</span>
+      </div>
+      <div class="mt-1 text-xs text-slate-300"><span class="en">Arithmetic gross if it fully wins (includes the simulated stake; not profit):</span><span class="es">Bruto aritmético si gana por completo (incluye el monto simulado; no es beneficio):</span> <span data-simulation-gross="${escapeHtml(row.fixture_id)}">—</span></div>
+      <p class="mt-2 text-xs text-amber-200" data-simulation-included="${escapeHtml(row.fixture_id)}"><span class="en">Comparison only. Do not interpret this hypothetical amount as an instruction to wager.</span><span class="es">Solo comparación. No interpretes este monto hipotético como instrucción para apostar.</span></p>
+      <p class="mt-2 hidden text-xs text-rose-200" data-simulation-forced="${escapeHtml(row.fixture_id)}"></p>
+      <p class="mt-2 hidden text-xs text-rose-200" data-simulation-excluded="${escapeHtml(row.fixture_id)}"><span class="en">S/0.00 under this profile because the comparison fails one or more simulation safety filters.</span><span class="es">S/0,00 con este perfil porque la comparación no supera uno o más filtros de seguridad del simulador.</span></p>
+    </div>`:''}
     ${currentWatchlist?`<section class="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
       <div class="font-semibold text-white"><span class="en">Risk-aversion lens for this match</span><span class="es">Lente de aversión al riesgo para este partido</span></div>
       <div class="mt-2 grid md:grid-cols-2 gap-2">${riskProfilePanels(row.risk_profile_summary||{})}</div>
@@ -666,6 +732,80 @@ function applyRiskProfile(){
  const profile=$('#risk-profile')?.value||'balanced';
  document.querySelectorAll('[data-risk-profile-panel]').forEach(el=>el.classList.toggle('hidden',el.dataset.riskProfilePanel!==profile));
  document.querySelectorAll('[data-risk-lens-profile]').forEach(el=>el.classList.toggle('hidden',el.dataset.riskLensProfile!==profile));
+ refreshStakeSimulation();
+}
+function refreshStakeSimulation(){
+ if(!DATA?.educational_stake_simulation)return;
+ const profile=$('#risk-profile')?.value||DATA.educational_stake_simulation.default_profile||'balanced';
+ const budgetInput=$('#simulation-budget');
+ const rawBudget=Number(budgetInput?.value||100);
+ const budget=Math.max(10,Math.min(10000,Number.isFinite(rawBudget)?rawBudget:100));
+ if(budgetInput&&Number(budgetInput.value)!==budget)budgetInput.value=String(budget);
+ const scale=budget/Number(DATA.educational_stake_simulation.budget_per_app||100);
+ document.querySelectorAll('[data-simulation-budget-label]').forEach(el=>el.textContent=`S/${budget.toFixed(2)}`);
+ document.querySelectorAll('[data-simulation-blocked-reserve]').forEach(el=>el.textContent=`S/${budget.toFixed(2)}`);
+ const requiredProfiles=['exploratory','balanced','cautious','strict','audit_only'];
+ const availableApp=['Betano','Betsson'].find(app=>{
+  const profiles=DATA.educational_stake_simulation.apps?.[app]?.profiles;
+  return profiles&&requiredProfiles.every(profile=>profiles[profile]);
+ });
+ if(availableApp){
+  const profiles=DATA.educational_stake_simulation.apps[availableApp].profiles;
+  const total=id=>Number(profiles[id].singles_deployed)+Number(profiles[id].accumulator_stake);
+  const summary=$('#simulation-profile-summary');
+  if(summary)summary.innerHTML=`<span class="en">JSON-driven total deployment: exploratory ${total('exploratory').toFixed(0)}%, balanced ${total('balanced').toFixed(0)}%, cautious ${total('cautious').toFixed(0)}%, strict ${total('strict').toFixed(0)}%, audit-only ${total('audit_only').toFixed(0)}%.</span><span class="es">Despliegue total según JSON: exploratorio ${total('exploratory').toFixed(0)}%, balanceado ${total('balanced').toFixed(0)}%, cauteloso ${total('cautious').toFixed(0)}%, estricto ${total('strict').toFixed(0)}% y solo auditoría ${total('audit_only').toFixed(0)}%.</span>`;
+ }
+ ['Betano','Betsson'].forEach(app=>{
+  const summary=DATA.educational_stake_simulation.apps?.[app]?.profiles?.[profile];
+  if(!summary)return;
+  document.querySelectorAll(`[data-simulation-singles="${app}"]`).forEach(el=>el.textContent=`S/${(Number(summary.singles_deployed)*scale).toFixed(2)}`);
+  document.querySelectorAll(`[data-simulation-accumulator="${app}"]`).forEach(el=>el.textContent=`S/${(Number(summary.accumulator_stake)*scale).toFixed(2)}`);
+  document.querySelectorAll(`[data-simulation-reserved="${app}"]`).forEach(el=>el.textContent=`S/${(Number(summary.cash_reserved)*scale).toFixed(2)}`);
+  document.querySelectorAll(`[data-simulation-covered="${app}"]`).forEach(el=>el.textContent=String(summary.single_fixture_count));
+  const english=safeList(summary.accumulator?.legs).map(leg=>`${leg.fixture?.en||leg.fixture_id}: ${leg.selection?.selection?.en||''} @ ${Number(leg.odds).toFixed(2)}`).join(' + ');
+  const spanish=safeList(summary.accumulator?.legs).map(leg=>`${leg.fixture?.es||leg.fixture_id}: ${leg.selection?.selection?.es||''} @ ${Number(leg.odds).toFixed(2)}`).join(' + ');
+  document.querySelectorAll(`[data-simulation-accumulator-legs="${app}"]`).forEach(el=>el.innerHTML=`<span class="en">${escapeHtml(english)}</span><span class="es">${escapeHtml(spanish)}</span> · <b>${Number(summary.accumulator.combined_decimal_odds).toFixed(2)}</b>`);
+  document.querySelectorAll(`[data-simulation-accumulator-warning="${app}"]`).forEach(el=>el.innerHTML=`<span class="en">All three legs must win. Arithmetic full-win gross: S/${(Number(summary.accumulator.gross_return_if_full_win)*scale).toFixed(2)}; this is not expected profit.</span><span class="es">Deben ganar las tres selecciones. Bruto aritmético si todas ganan: S/${(Number(summary.accumulator.gross_return_if_full_win)*scale).toFixed(2)}; no es beneficio esperado.</span>`);
+ });
+ DATA.predictions.forEach(row=>{
+  const rec=row.rank_one_comparison;
+  const item=rec?.stake_simulation?.[rec?.app]?.[profile];
+  const stake=Number(item?.stake||0)*scale;
+  const gross=stake*Number(rec?.odds||0);
+  document.querySelectorAll(`[data-simulation-stake="${row.fixture_id}"]`).forEach(el=>el.textContent=`S/${stake.toFixed(2)}`);
+  document.querySelectorAll(`[data-simulation-gross="${row.fixture_id}"]`).forEach(el=>el.textContent=`S/${gross.toFixed(2)}`);
+  const forced=safeList(item?.forced_coverage_reasons);
+  document.querySelectorAll(`[data-simulation-forced="${row.fixture_id}"]`).forEach(el=>{
+   el.classList.toggle('hidden',forced.length===0);
+   el.innerHTML=`<span class="en">Forced coverage warning: this row is included only because one single per match was requested. Failed checks: ${escapeHtml(forced.join(', ')||'none')}.</span><span class="es">Advertencia de cobertura forzada: esta fila se incluye solo porque se pidió una simple por partido. Controles fallidos: ${escapeHtml(forced.join(', ')||'ninguno')}.</span>`;
+  });
+  document.querySelectorAll(`[data-simulation-included="${row.fixture_id}"]`).forEach(el=>el.classList.toggle('hidden',stake<=0));
+  document.querySelectorAll(`[data-simulation-excluded="${row.fixture_id}"]`).forEach(el=>el.classList.toggle('hidden',stake>0));
+ });
+}
+function refreshStakeSimulationLegacyDisabled(){
+ if(!DATA?.educational_stake_simulation)return;
+ const profile=$('#risk-profile')?.value||DATA.educational_stake_simulation.default_profile||'balanced';
+ const budgetInput=$('#simulation-budget');
+ const rawBudget=Number(budgetInput?.value||100);
+ const budget=Math.max(10,Math.min(10000,Number.isFinite(rawBudget)?rawBudget:100));
+ if(budgetInput&&Number(budgetInput.value)!==budget)budgetInput.value=String(budget);
+ const scale=budget/Number(DATA.educational_stake_simulation.base_budget||100);
+ const summary=DATA.educational_stake_simulation.profiles?.[profile];
+ if(!summary)return;
+ setText('#simulation-deployed',`S/${(Number(summary.deployed)*scale).toFixed(2)}`);
+ setText('#simulation-reserved',`S/${(Number(summary.cash_reserved)*scale).toFixed(2)}`);
+ setText('#simulation-covered',String(summary.fixture_count));
+ DATA.predictions.forEach(row=>{
+  const rec=row.rank_one_comparison;
+  const item=rec?.stake_simulation?.[profile];
+  const stake=Number(item?.stake||0)*scale;
+  const gross=stake*Number(rec?.odds||0);
+  document.querySelectorAll(`[data-simulation-stake="${row.fixture_id}"]`).forEach(el=>el.textContent=`S/${stake.toFixed(2)}`);
+  document.querySelectorAll(`[data-simulation-gross="${row.fixture_id}"]`).forEach(el=>el.textContent=`S/${gross.toFixed(2)}`);
+  document.querySelectorAll(`[data-simulation-included="${row.fixture_id}"]`).forEach(el=>el.classList.toggle('hidden',stake<=0));
+  document.querySelectorAll(`[data-simulation-excluded="${row.fixture_id}"]`).forEach(el=>el.classList.toggle('hidden',stake>0));
+ });
 }
 function setResearchMode(enabled){
  document.body.classList.toggle('research-on',enabled);
@@ -718,7 +858,7 @@ async function load(){
   setHtml('#cards',DATA.predictions.map(card).join(''));
   bindTips();
   [...new Set(DATA.predictions.map(x=>x.kickoff_lima.slice(0,10)))].forEach(d=>$('#date-filter').insertAdjacentHTML('beforeend',`<option value="${d}">${d}</option>`));
-  ['#date-filter','#strength-filter','#risk-profile','#research-toggle'].forEach(selector=>{const el=$(selector);if(el)el.disabled=false;});
+  ['#date-filter','#strength-filter','#risk-profile','#research-toggle','#simulation-budget'].forEach(selector=>{const el=$(selector);if(el)el.disabled=false;});
   applyRiskProfile();
   const loading=$('#loading-shell'); if(loading)loading.classList.add('hidden');
   APP_READY=true;
@@ -733,8 +873,8 @@ function boot(){
  const updateLocalizedOptionLabels=()=>{const spanish=document.body.classList.contains('lang-es');document.querySelectorAll('option[data-en][data-es]').forEach(option=>{option.textContent=spanish?option.dataset.es:option.dataset.en;});};
  const lang=$('#lang'); if(lang)lang.addEventListener('click',()=>{const es=document.body.classList.contains('lang-es');document.body.classList.toggle('lang-es',!es);document.body.classList.toggle('lang-en',es);lang.textContent=es?'ES':'EN';document.documentElement.lang=es?'en':'es';updateLocalizedOptionLabels();});
  const researchToggle=$('#research-toggle'); if(researchToggle)researchToggle.addEventListener('click',()=>setResearchMode(researchToggle.getAttribute('aria-pressed')!=='true'));
- const date=$('#date-filter'),strength=$('#strength-filter'),riskProfile=$('#risk-profile');
- if(date)date.addEventListener('change',applyFilters); if(strength)strength.addEventListener('change',applyFilters); if(riskProfile)riskProfile.addEventListener('change',applyRiskProfile);
+ const date=$('#date-filter'),strength=$('#strength-filter'),riskProfile=$('#risk-profile'),simulationBudget=$('#simulation-budget');
+ if(date)date.addEventListener('change',applyFilters); if(strength)strength.addEventListener('change',applyFilters); if(riskProfile)riskProfile.addEventListener('change',applyRiskProfile); if(simulationBudget)simulationBudget.addEventListener('input',refreshStakeSimulation);
  bindTips();
  updateLocalizedOptionLabels();
  load();

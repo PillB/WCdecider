@@ -7,6 +7,7 @@ Pre-tournament Elo: wc_team_elo_baseline_june11.csv
 Historical Dataset A/B source: wc_backtest_historical_dataset.csv
 Screenshot-derived odds: odds_june22_23.csv, odds_june24.csv, odds_june25_26.csv, odds_june27.csv
 Complete screenshot inventory: wc_screenshot_manifest_june22_27.csv
+Verified sportsbook UI boundary: IMG_7523–IMG_7614 = Betsson; IMG_7615–IMG_7745 = Betano.
 OSINT notes: research_june22_23.csv, research_june24_25.csv, research_june26_27.csv
 Sanitized canonical OSINT output: wc_research_june22_27.csv (post-cutoff sources are excluded).
 
@@ -45,10 +46,10 @@ Model selection:
 - No current price is hard-coded in Python and no reported target is extracted from prose.
 
 Input hashes:
-- odds_june22_23.csv: 11f2470f953489af6966bd60cea31ab3f4437a278cba60a69c991841763f488d
-- odds_june24.csv: fe71b2941a9d4f477ce067f0341154e46a5f03e9be1cb6dc11aabadbc182daa8
-- odds_june25_26.csv: 910fa838a9314a5d30227a977c3a462e8f5a288855f21d66f4576becc0582957
-- odds_june27.csv: 6ace21a6cff0718dfd01be6b62ab3575014b9f2a531e9fac64c29a27c43cd0a4
+- odds_june22_23.csv: 817aa26510205feffc7b74780059a83268fc48efc08b887763d9b0776049ce9a
+- odds_june24.csv: 3fd7247e0240f651d0bbd46a25ffaf90773b025d465c2d496130c517b58565de
+- odds_june25_26.csv: 31a8964d1ad9277dda6ac875b1787e51e84eb96d44654470f3d7ee63e0c04a88
+- odds_june27.csv: a452dd19faf1e529989a8090d98afb52692d7197f56102881e1dafb81646b710
 - research_june22_23.csv: 73e84dac2994f81848af66a83db2bc41f7215576feac06d1bb06ed410e0fb606
 - research_june24_25.csv: d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517
 - research_june26_27.csv: 5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60
@@ -56,14 +57,14 @@ Input hashes:
 - wc_2026_results_through_june24.csv: 24276c96e32542f2145c91e60b878e1d98536032850006a460642bc99b256a50
 - wc_backtest_historical_dataset.csv: beee227402f102b146f785dc77d92a00863b9c5090f7de4ff6d7baaa9f75683a
 - wc_team_elo_baseline_june11.csv: f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b
-- pipeline: a4ecaa48f9e23d8c5acddd8aa874680ced69e8baa1379a1d72eb1a2728270068
+- pipeline: 91b2e6b9335e5a640647a0660cdd42ddab7776ef5c306a3e43e6503d933b6fb6
 
 Generated artifact hashes:
 - wc_dataset_a_world_cups.csv: 6293c0b6989bc7f4b8bc778ce6b85d327dfd43dd47b820612f6cc5a3045a6831
 - wc_dataset_b_supplementary.csv: 8f76eb0bb1fff775cf6de0c989173724b65daef41fac14ce03b7c0ea83c8945a
 - wc_june22_27_model_dataset.csv: 750360eda1e668216a11860c1a94c1019eaf8afc14332aeb097043fb36801f52
-- wc_june22_27_model_metrics.json: dafa775f76854004f20b45a6ed20a8a9176c285f7296422a89aff8d01e95001b
-- wc_june22_27_predictions.json: 1cdac390fa799b6a8d654acf0cdb801d98ac59551bc3aedf466f720203245e00
-- wc_odds_june_22-27.csv: b25ad781248693b577aa1505dcb0dfccd0a77b6f94c40a6f7659d3dc91f5b89e
+- wc_june22_27_model_metrics.json: 7d0a40a4273165702b31d630b5ffb67839d26d9462c2d528d679901f6dd9f4fe
+- wc_june22_27_predictions.json: d4ac7bc9ea3996fbdf7f55fda0099205a2329630e60558f0932aaf02e05bcdcf
+- wc_odds_june_22-27.csv: bf5a0239e6b5b062b541de77382acb7453bb6f4f151a96be339d99d61a5a88b3
 - wc_research_june22_27.csv: 1e7310c443256c70a9c31afebda811a04c557f7f88c59f5514da49128b88d22d
-- wc_screenshot_manifest_june22_27.csv: f19cbe911a219616ad492f879c3a04296ea05ba73928d3326e694ec15c0deab0
+- wc_screenshot_manifest_june22_27.csv: ab5671e938fe7ea7989256993f5cadb6450609dd496ac206a00b29ffc6cfd0be

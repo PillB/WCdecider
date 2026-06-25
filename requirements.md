@@ -58,6 +58,16 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R2.20: Profitability promotion consumes a dedicated hash-bound eligible-bet
   ledger derived from the canonical closing-odds corpus. Aggregate public proxy
   coverage cannot authorize ROI, CLV, recommendations, or staking.
+- R2.21: A user-controlled educational stake simulator may operate while
+  production authorization is blocked, but it must remain a separate JSON
+  object, label every amount hypothetical, evaluate only current-snapshot
+  future fixtures, explicitly flag any forced-coverage HALT/negative-EV/
+  negative-stress/below-fair row, preserve `recommendation=null` and authorized
+  stake `S/0.00`, and never describe simulated arithmetic as validated profit.
+- R2.22: Forward allocation uses S/100 independently per app, one sourced
+  single per current match when that app has transcribed prices, a 20% absolute
+  single cap with 15% balanced default, and an accumulator capped at 5% in the
+  balanced profile. Missing app prices reserve the full S/100 and request data.
 
 ## R3 — Safety and classification
 
