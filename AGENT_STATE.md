@@ -479,6 +479,10 @@
 - 426 | Complete browser and full regression validation | Browser/mobile/bilingual/JSON parity suite passed 22/22. Full CI-equivalent matrix passed 106 with 14 explicitly archived legacy v4 contract skips | Success
 - 427 | Normalize final release artifacts and complete exact-hash re-audit | Historical CSV now emits LF deterministically; all four reviewers reconfirmed exact normalized hashes, 57,231 PASS audit leaves, root/site parity, and zero-action safety controls | Success
 - 428 | Freeze release scope | Created `codex/june23-safety-model-update`, staged only reviewed data/model/governance/report/test files, passed staged whitespace checks, and excluded three unrelated user files plus the legacy test-mutated production CSV | Success
+- 429 | Publish reviewed safety update | Pushed reviewed commit `e8353405ca153c41c7d14163e73db03a76ae9b06` to main; initial CI exposed cross-platform JSON byte-hash drift between macOS and Linux | Diverged
+- 430 | Diagnose and repair CI governance portability | Added diagnostic hashes, reproduced Python 3.11, and replaced OS-sensitive review binding with independently approved canonical semantic JSON hashes while retaining exact runtime byte hashes in the audit summary and browser checks | Success
+- 431 | Complete final CI/CD and live validation | Commit `c55b6809af8bf674df99597701fb277ff50e1ac4` passed exact workflow run `28145426520`: build/test 3m35s, Pages deploy 11s, live Playwright validation 46s | Success
+- 432 | Independently verify public release | Live HTML contains exact SHA and final-result UI; live JSON has 32 fixtures, 8 elapsed, 24 future, zero recommendations; live audit has 57,231 PASS rows and zero blocked | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Prior production paths and documentation overstated reproducibility through hard-coded odds, optional silent TGNN fallback, and target extraction from prose; the June 22–27 path removes those dependencies.
@@ -502,6 +506,6 @@
 - Startup failures now need user-visible diagnostics because iOS may kill a tab before remote developer tools are available; the diagnostics panel records fetch stages, HTTP status, byte counts, URL, build SHA, audit hash, online status, and user agent.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Commit reviewed safety update and attempt GitHub push.
-- [ ] Next Step: Monitor exact GitHub Actions/Pages run and validate the live commit SHA.
-- [ ] Future Milestone: Approve and publish a current forecast release only after four exact-hash reviews, full CI, and live SHA validation pass.
+- [ ] Active Step: Maintain the deployed June 23 fail-closed safety release and collect fresh sportsbook screenshots/results for the next cutoff.
+- [ ] Next Step: Acquire timestamp-qualified historical closes and start a sealed prospective calibration/profitability holdout.
+- [ ] Future Milestone: Promote recommendations/staking only after empirical calibration, profitability, and model-promotion gates pass.
