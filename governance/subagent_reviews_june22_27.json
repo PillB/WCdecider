@@ -1,25 +1,30 @@
 {
-  "git_commit": "PENDING_HISTORICAL_ODDS_VISUALIZATION_RELEASE",
+  "git_commit": "PENDING_SAFETY_RELEASE_COMMIT",
+  "reviewed_model_version": "june22_27_v5_fail_closed_development_only",
+  "reviewed_artifact_hashes": {
+    "wc_june22_27_model_metrics.json": "09332cac4a76e723de2cca602c386380bb8120aea9f80aedf27fc6d63d453a83",
+    "wc_june22_27_predictions.json": "f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57"
+  },
   "global": {
     "owner": {
-      "id": "019ef7e7-f585-7a10-a681-e61814312147",
+      "id": "019efafa-f2b9-7480-8282-ffe7b56bba1e",
       "status": "PASS",
-      "evidence": "Exact owner/model review passed after 101 tests plus one expected live skip. It verified accurate production Poisson and zero-weight shadow Dixon-Coles representation, nested chronological folds, paired-bootstrap uncertainty, public/restricted odds separation, and truthful zero-eligible-close profitability blocking."
+      "evidence": "Exact-hash owner/model integrity review of the fail-closed safety artifact verified corrected June 22-23 results, pre-match Elo/form/rest snapshots, retraining, chronological championship, production Elo-Poisson, research-only Dixon-Coles, null recommendations, ABSTAIN comparisons, and zero stakes. Production promotion remains explicitly blocked by unsealed calibration and profitability gates."
     },
     "replication_1": {
-      "id": "019ef7ca-b226-7671-afed-000813f56e72",
+      "id": "019efaba-b9b5-7ab2-9ed8-edc4dbc8e93f",
       "status": "PASS",
-      "evidence": "Independent replication rebuilt corrected public and restricted datasets deterministically. Both 142,349-row public CSVs match SHA-256 3faae9c180ee1eeb0702aaca924877f9983bb0d09431410f349a15d1bf935033; 1,311 restricted rows remain private; all 38 restricted fixtures reconcile to public IDs; 13 historical tests passed."
+      "evidence": "Clean-room replication reproduced the exact predictions, metrics, results, and championship values; verified 48 pre-match contexts, eight elapsed and 24 future fixtures, no Elo/form/rest leakage, and zero recommendations/stakes. Focused replication suite passed."
     },
     "replication_2": {
-      "id": "019ef7ca-8adf-7513-a5c7-918245349abd",
+      "id": "019efafa-f366-7c63-8c3d-f9f83a4bd89a",
       "status": "PASS",
-      "evidence": "Independent source/statistics audit verified UK-local DST conversion, full 38-fixture cross-provider ID reconciliation, zero quarter-handicap settlement mismatches, 25 public plus 2 restricted source descriptors, zero malformed prices, no restricted rows in public CSV, Pinnacle staleness warnings, and zero primary-eligible closes."
+      "evidence": "Exact-hash lineage/statistics review verified all eight corrected scores and sources, 48 unique results, pre-match Elo/form/goal-difference/rest contexts, no post-cutoff match leakage, exact calibration/championship reproduction, and truthful zero-eligible-close profitability blocking. Recommendation and profit promotion remain prohibited."
     },
     "editor": {
-      "id": "019ef7cf-8760-7c71-87bf-bbd475b7f10f",
+      "id": "019efaba-b92c-7792-b361-78316a52d8b3",
       "status": "PASS",
-      "evidence": "Exact visualization/editor audit verified distinct solid production and dashed research diagrams, JSON-matched production/shadow/fold/bootstrap metrics, 8,908-event and 142,349-row public coverage, explicit unvalidated ROI/CLV, full Spanish localization, mobile bounds, reduced motion, accessibility, and 18 browser tests."
+      "evidence": "Exact-hash editor review verified eight elapsed result cards with archived pre-match wording, 24 future cards, JSON-driven diagram counts, null recommendations, ABSTAIN labels, zero stakes, bilingual/mobile presentation, and removal of empty app-step/betting language."
     }
   },
   "fixtures": {}

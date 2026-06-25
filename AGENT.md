@@ -12,10 +12,9 @@ This file is the binding operating contract for every data, model, recommendatio
 - Model selection is chronological. The untouched holdout is not used for parameter or policy selection.
 - A positive point-estimate EV is not automatically actionable.
 - Football bets are never “surefire.” A price near 1.10 still has loss risk, model risk, void/settlement risk, and market-vig risk.
-- Publish up to four economically distinct sourced recommendations per canonical
-  fixture; preserve rank one as `BEST_AVAILABLE`.
-- `BEST_AVAILABLE` means the highest-ranked sourced choice under the documented
-  uncertainty-adjusted utility; no rank means profitable, safe, or certain.
+- Publish up to four economically distinct sourced comparisons per canonical
+  fixture. An executable recommendation exists only when every actionability
+  gate passes; otherwise publish `ABSTAIN`.
 - Do not fill missing ranks with equivalent app prices, unsupported markets, or
   model-implied sportsbook odds.
 - Retain diagnostic classes:
@@ -36,21 +35,41 @@ For every phase:
 
 No gate is complete without command output, artifact evidence, or an independent review result.
 
-## 3. Mandatory subagent mission
+## 3. Mandatory STORM and loop-engineering method
+
+Every material research, data, model, recommendation, report, or deployment
+phase must follow `STORM_LOOP_ENGINEERING_PROTOCOL.md`.
+
+- Stanford STORM is used for perspective discovery, source-grounded
+  investigation, evidence-outline synthesis, and grounded documentation.
+- Loop engineering is used for the bounded executable cycle: invariant,
+  reproduction, measurement, adversarial review, root-cause repair, focused
+  tests, artifact regeneration, full regression, retrospective, and stop/block
+  decision.
+- STORM does not replace statistical validation, and agent agreement does not
+  create evidence.
+- The loop must not repeatedly optimize against the untouched final holdout.
+- Review approval is valid only when bound to the exact model version and
+  prediction/metrics hashes.
+- Missing reviewer capacity, credentials, data, or evidence produces
+  `BLOCKED`, never a simulated PASS.
+
+## 4. Mandatory subagent mission
 
 Every subagent that creates or validates a published model datapoint receives this mission, scoped to its assigned fixtures/fields:
 
 > Introspect and retrospect the model and completed-match backtests. Evaluate whether additional data, algorithms, calibration methods, ensembles, robustness checks, or profitability tests could materially improve the analysis. Use current, real, cited data only. Never claim a bet is certain; test any low-odds “near-certain” hypothesis against empirical frequency, calibration, vig, and downside. Execute the documented pipeline, reproduce assigned outputs from delivered files, identify discrepancies, and review the bilingual JSON-driven report for exact synchronization, clarity, UI/UX, and workflow-visualization correctness. Report PASS/FAIL, evidence, root cause, and required fixes.
 
-Each fixture must have three independent audit roles:
+Each release must have four distinct audit roles:
 
-1. Research/model auditor.
-2. Code/data replication auditor.
-3. Report/editor auditor.
+1. Owner/model-method auditor.
+2. Code/data replication auditor 1.
+3. Independent replication auditor 2.
+4. Report/editor auditor.
 
 One agent may cover multiple fields for one fixture, but the manifest must enumerate every published field and link it to the responsible audit results. Aggregate “looks good” approval is insufficient.
 
-## 4. Datapoint audit manifest
+## 5. Datapoint audit manifest
 
 The pipeline must generate `wc_datapoint_audit_<batch>.csv`. One row represents one published scalar or text field.
 
@@ -79,7 +98,7 @@ Release gates:
 2. Every row has source/model hashes and non-empty role ownership.
 3. All statuses are `PASS`; otherwise report generation or deployment fails.
 
-## 5. Data intake and provenance
+## 6. Data intake and provenance
 
 For each batch:
 
@@ -94,7 +113,7 @@ For each batch:
    - Dataset B: supplementary qualifiers/friendlies.
 8. Save source URLs, retrieval timestamps, formulas, transformations, and artifact hashes in provenance.
 
-## 6. Model research and backtesting
+## 7. Model research and backtesting
 
 Every update must consider, test where feasible, and document rejection/acceptance of:
 
@@ -119,7 +138,7 @@ Rules:
   closes, provider-labeled timestampless closes, and unknown-timestamp proxies.
   Only the first class can support primary profitability validation.
 
-## 7. “Near-certain” and low-odds analysis
+## 8. “Near-certain” and low-odds analysis
 
 For any proposed short-priced bet:
 
@@ -131,7 +150,7 @@ For any proposed short-priced bet:
 
 If no candidate survives these checks, say so directly. Rank safer and riskier comparisons only as analysis; do not imply certainty.
 
-## 8. Pipeline and deliverables
+## 9. Pipeline and deliverables
 
 The delivered pipeline must:
 
@@ -143,15 +162,18 @@ The delivered pipeline must:
 6. Update ratings using verified elapsed results.
 7. Generate probabilities and supported market comparisons.
 8. Rank up to four economically distinct sourced recommendations per fixture
-   using stressed EV, market shrinkage, disagreement, and family-risk
-   penalties; preserve rank one as `BEST_AVAILABLE` and retain `PASS`/`HALT`
-   diagnostics.
+   using independent structural-model EV, stressed EV, market disagreement,
+   and family-risk penalties. Market-implied probabilities remain diagnostics
+   and must not be blended into the probability evaluating that same quote.
+   Retain rank one only as the highest-ranked comparison. Authorize it as
+   `ACTIONABLE` only when data, model, price, settlement, freshness, and
+   profitability gates all pass; otherwise mark it `ABSTAIN`.
 9. Export model dataset, normalized odds, metrics, predictions, provenance, research, screenshot manifest, datapoint audit manifest, and lightweight audit summary.
 10. Produce deterministic outputs from the same inputs.
 
 Python code requires docstrings, examples, explicit formulas, comments explaining design choices, and fail-closed errors.
 
-## 9. Report contract
+## 10. Report contract
 
 The report must:
 
@@ -171,7 +193,7 @@ The report must:
   - JSON/report/audit/deployment.
 - Never display an ensemble weight, model, feature, recommendation, or profitability claim not present in validated artifacts.
 
-## 10. Independent validation loop
+## 11. Independent validation loop
 
 Run two iterations:
 
@@ -184,7 +206,7 @@ Run two iterations:
 
 For every failure record the exact issue, root cause, fix, regression test, and repeated gates.
 
-## 11. Tests and deployment
+## 12. Tests and deployment
 
 Required local/CI order:
 
@@ -198,7 +220,7 @@ Required local/CI order:
 
 The live validation test is the only test allowed to skip before deployment, and only because no deployment URL/SHA exists yet.
 
-## 12. Required files
+## 13. Required files
 
 - `AGENT_STATE.md`
 - `WCDECIDER_SYSTEM_DESIGN.md`

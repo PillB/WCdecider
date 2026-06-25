@@ -19,6 +19,7 @@ from __future__ import annotations
 import csv
 import math
 import urllib.request
+from collections import Counter
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from pathlib import Path
@@ -61,11 +62,34 @@ COMP_WEIGHT = {
     "WC_2026_GROUP": 1.00,
 }
 
+WORLD_CUP_GROUPS = {
+    "WC_2018_GROUP": (
+        ("RUS", "KSA", "EGY", "URU"),
+        ("POR", "ESP", "MAR", "IRN"),
+        ("FRA", "AUS", "PER", "DEN"),
+        ("ARG", "ISL", "CRO", "NGA"),
+        ("BRA", "SUI", "CRC", "SRB"),
+        ("GER", "MEX", "SWE", "KOR"),
+        ("BEL", "PAN", "TUN", "ENG"),
+        ("POL", "SEN", "COL", "JPN"),
+    ),
+    "WC_2022_GROUP": (
+        ("QAT", "ECU", "SEN", "NED"),
+        ("ENG", "IRN", "USA", "WAL"),
+        ("ARG", "KSA", "MEX", "POL"),
+        ("FRA", "AUS", "DEN", "TUN"),
+        ("ESP", "CRC", "GER", "JPN"),
+        ("BEL", "CAN", "MAR", "CRO"),
+        ("BRA", "SRB", "SUI", "CMR"),
+        ("POR", "GHA", "URU", "KOR"),
+    ),
+}
+
 # WC 2022 group stage — scores from FIFA official results
 # Sources: FIFA.com 2022 World Cup, football-data.co.uk closing odds where available
 # Elo at tournament: eloratings.net 2022_World_Cup snapshot (approximate pre-match)
 WC_2022_GROUP = [
-    ("20/11/2022", "QAT", "ECU", 0, 0, 3.40, 3.20, 2.25, 1893, 1834),
+    ("20/11/2022", "QAT", "ECU", 0, 2, 3.40, 3.20, 2.25, 1893, 1834),
     ("21/11/2022", "ENG", "IRN", 6, 2, 1.25, 6.50, 12.00, 2018, 1772),
     ("21/11/2022", "SEN", "NED", 0, 2, 4.50, 3.60, 1.85, 1792, 1968),
     ("21/11/2022", "USA", "WAL", 1, 1, 2.60, 3.10, 2.90, 1812, 1798),
@@ -93,10 +117,10 @@ WC_2022_GROUP = [
     ("27/11/2022", "BEL", "MAR", 0, 2, 1.75, 3.50, 5.00, 1896, 1838),
     ("27/11/2022", "CRO", "CAN", 4, 1, 1.65, 3.80, 5.50, 1898, 1778),
     ("27/11/2022", "ESP", "GER", 1, 1, 2.40, 3.30, 3.00, 2074, 2012),
-    ("28/11/2022", "CMR", "BRA", 1, 0, 8.00, 4.50, 1.40, 1722, 2012),
-    ("28/11/2022", "SRB", "SUI", 2, 3, 3.20, 3.20, 2.30, 1802, 1868),
-    ("28/11/2022", "GHA", "URU", 0, 2, 5.50, 3.80, 1.65, 1688, 1892),
-    ("28/11/2022", "KOR", "POR", 2, 1, 6.50, 4.20, 1.50, 1812, 1978),
+    ("28/11/2022", "CMR", "SRB", 3, 3, 3.80, 3.40, 2.00, 1722, 1802),
+    ("28/11/2022", "KOR", "GHA", 2, 3, 2.10, 3.20, 3.60, 1812, 1688),
+    ("28/11/2022", "BRA", "SUI", 1, 0, 1.45, 4.10, 7.50, 2012, 1868),
+    ("28/11/2022", "POR", "URU", 2, 0, 2.05, 3.20, 3.80, 1978, 1892),
     ("29/11/2022", "ECU", "SEN", 1, 2, 2.60, 3.20, 2.80, 1834, 1792),
     ("29/11/2022", "NED", "QAT", 2, 0, 1.12, 9.00, 21.00, 1968, 1893),
     ("29/11/2022", "IRN", "USA", 0, 1, 4.50, 3.40, 1.85, 1772, 1812),
@@ -109,6 +133,10 @@ WC_2022_GROUP = [
     ("01/12/2022", "JPN", "ESP", 2, 1, 5.50, 3.80, 1.60, 1838, 2074),
     ("01/12/2022", "CAN", "MAR", 1, 2, 4.00, 3.30, 1.95, 1778, 1838),
     ("01/12/2022", "CRO", "BEL", 0, 0, 3.40, 3.30, 2.15, 1898, 1896),
+    ("02/12/2022", "GHA", "URU", 0, 2, 5.50, 3.80, 1.65, 1688, 1892),
+    ("02/12/2022", "KOR", "POR", 2, 1, 6.50, 4.20, 1.50, 1812, 1978),
+    ("02/12/2022", "SRB", "SUI", 2, 3, 3.20, 3.20, 2.30, 1802, 1868),
+    ("02/12/2022", "CMR", "BRA", 1, 0, 8.00, 4.50, 1.40, 1722, 2012),
 ]
 
 # WC 2018 group stage subset (48 matches) — key calibration set
@@ -116,7 +144,7 @@ WC_2022_GROUP = [
 WC_2018_GROUP = [
     ("14/06/2018", "RUS", "KSA", 5, 0, 1.45, 4.50, 7.50, 1850, 1680),
     ("15/06/2018", "EGY", "URU", 0, 1, 4.50, 3.40, 1.85, 1720, 1900),
-    ("15/06/2018", "MAR", "IRN", 1, 0, 1.55, 3.80, 6.50, 1820, 1750),
+    ("15/06/2018", "MAR", "IRN", 0, 1, 1.55, 3.80, 6.50, 1820, 1750),
     ("15/06/2018", "POR", "ESP", 3, 3, 4.50, 3.60, 1.80, 1950, 2060),
     ("16/06/2018", "FRA", "AUS", 2, 1, 1.35, 5.00, 9.00, 2000, 1780),
     ("16/06/2018", "ARG", "ISL", 1, 1, 1.30, 5.50, 11.00, 2040, 1780),
@@ -137,31 +165,31 @@ WC_2018_GROUP = [
     ("20/06/2018", "DEN", "AUS", 1, 1, 1.95, 3.30, 4.20, 1920, 1780),
     ("21/06/2018", "FRA", "PER", 1, 0, 1.40, 4.50, 8.00, 2000, 1780),
     ("21/06/2018", "ARG", "CRO", 0, 3, 1.95, 3.30, 4.20, 2040, 1860),
-    ("21/06/2018", "BRA", "CRC", 2, 0, 1.30, 5.50, 11.00, 2000, 1760),
-    ("21/06/2018", "NGA", "ISL", 2, 0, 2.60, 3.20, 2.80, 1740, 1780),
-    ("22/06/2018", "BEL", "TUN", 5, 2, 1.25, 6.00, 12.00, 1920, 1700),
-    ("22/06/2018", "KOR", "MEX", 1, 0, 3.60, 3.20, 2.10, 1780, 1800),
-    ("22/06/2018", "GER", "SWE", 2, 1, 1.55, 4.00, 6.50, 2020, 1820),
-    ("23/06/2018", "ENG", "PAN", 6, 1, 1.15, 8.00, 17.00, 1980, 1680),
-    ("23/06/2018", "JPN", "SEN", 2, 2, 3.20, 3.10, 2.40, 1800, 1760),
-    ("23/06/2018", "POL", "COL", 0, 3, 2.80, 3.10, 2.70, 1840, 1880),
-    ("24/06/2018", "URU", "RUS", 3, 0, 1.75, 3.50, 5.00, 1900, 1850),
-    ("24/06/2018", "KSA", "EGY", 2, 1, 3.00, 3.10, 2.50, 1680, 1720),
-    ("24/06/2018", "ESP", "MAR", 2, 2, 1.55, 4.00, 6.50, 2060, 1820),
-    ("24/06/2018", "IRN", "POR", 1, 1, 6.50, 4.00, 1.55, 1750, 1950),
-    ("25/06/2018", "AUS", "PER", 0, 2, 3.40, 3.30, 2.15, 1780, 1780),
-    ("25/06/2018", "DEN", "FRA", 0, 0, 4.50, 3.40, 1.85, 1920, 2000),
-    ("25/06/2018", "NGA", "ARG", 1, 2, 5.00, 3.60, 1.70, 1740, 2040),
-    ("25/06/2018", "ISL", "CRO", 1, 2, 4.50, 3.40, 1.85, 1780, 1860),
-    ("26/06/2018", "MEX", "SWE", 0, 3, 2.60, 3.20, 2.80, 1800, 1820),
-    ("26/06/2018", "KOR", "GER", 2, 0, 8.00, 4.50, 1.40, 1780, 2020),
-    ("26/06/2018", "SRB", "BRA", 0, 2, 5.50, 3.80, 1.60, 1820, 2000),
-    ("26/06/2018", "SUI", "CRC", 2, 2, 1.75, 3.50, 5.00, 1860, 1760),
-    ("27/06/2018", "JPN", "POL", 0, 1, 3.20, 3.20, 2.30, 1800, 1840),
-    ("27/06/2018", "SEN", "COL", 0, 1, 3.60, 3.20, 2.10, 1760, 1880),
-    ("27/06/2018", "PAN", "TUN", 1, 2, 3.00, 3.10, 2.50, 1680, 1700),
-    ("27/06/2018", "ENG", "BEL", 0, 1, 2.60, 3.20, 2.80, 1980, 1920),
-    ("28/06/2018", "POL", "JPN", 1, 4, 2.40, 3.30, 3.00, 1840, 1800),
+    ("22/06/2018", "BRA", "CRC", 2, 0, 1.30, 5.50, 11.00, 2000, 1760),
+    ("22/06/2018", "NGA", "ISL", 2, 0, 2.60, 3.20, 2.80, 1740, 1780),
+    ("22/06/2018", "SRB", "SUI", 1, 2, 2.70, 3.10, 2.80, 1820, 1860),
+    ("23/06/2018", "BEL", "TUN", 5, 2, 1.25, 6.00, 12.00, 1920, 1700),
+    ("23/06/2018", "KOR", "MEX", 1, 2, 3.60, 3.20, 2.10, 1780, 1800),
+    ("23/06/2018", "GER", "SWE", 2, 1, 1.55, 4.00, 6.50, 2020, 1820),
+    ("24/06/2018", "ENG", "PAN", 6, 1, 1.15, 8.00, 17.00, 1980, 1680),
+    ("24/06/2018", "JPN", "SEN", 2, 2, 3.20, 3.10, 2.40, 1800, 1760),
+    ("24/06/2018", "POL", "COL", 0, 3, 2.80, 3.10, 2.70, 1840, 1880),
+    ("25/06/2018", "URU", "RUS", 3, 0, 1.75, 3.50, 5.00, 1900, 1850),
+    ("25/06/2018", "KSA", "EGY", 2, 1, 3.00, 3.10, 2.50, 1680, 1720),
+    ("25/06/2018", "ESP", "MAR", 2, 2, 1.55, 4.00, 6.50, 2060, 1820),
+    ("25/06/2018", "IRN", "POR", 1, 1, 6.50, 4.00, 1.55, 1750, 1950),
+    ("26/06/2018", "AUS", "PER", 0, 2, 3.40, 3.30, 2.15, 1780, 1780),
+    ("26/06/2018", "DEN", "FRA", 0, 0, 4.50, 3.40, 1.85, 1920, 2000),
+    ("26/06/2018", "NGA", "ARG", 1, 2, 5.00, 3.60, 1.70, 1740, 2040),
+    ("26/06/2018", "ISL", "CRO", 1, 2, 4.50, 3.40, 1.85, 1780, 1860),
+    ("27/06/2018", "MEX", "SWE", 0, 3, 2.60, 3.20, 2.80, 1800, 1820),
+    ("27/06/2018", "KOR", "GER", 2, 0, 8.00, 4.50, 1.40, 1780, 2020),
+    ("27/06/2018", "SRB", "BRA", 0, 2, 5.50, 3.80, 1.60, 1820, 2000),
+    ("27/06/2018", "SUI", "CRC", 2, 2, 1.75, 3.50, 5.00, 1860, 1760),
+    ("28/06/2018", "JPN", "POL", 0, 1, 3.20, 3.20, 2.30, 1800, 1840),
+    ("28/06/2018", "SEN", "COL", 0, 1, 3.60, 3.20, 2.10, 1760, 1880),
+    ("28/06/2018", "PAN", "TUN", 1, 2, 3.00, 3.10, 2.50, 1680, 1700),
+    ("28/06/2018", "ENG", "BEL", 0, 1, 2.60, 3.20, 2.80, 1980, 1920),
 ]
 
 # Extra codes for WC datasets
@@ -221,11 +249,14 @@ def safe_float(x: str, default: float = 0.0) -> float:
 
 
 def init_elo_state() -> Dict[str, float]:
-    state = dict(ELO_SNAPSHOT)
-    state.update(EXTRA_ELO_INIT)
-    for code in set(TEAM_NAME_MAP.values()):
-        state.setdefault(code, 1500.0)
-    return state
+    """Create a leakage-safe neutral supplementary-history rating state.
+
+    The previous state used a June 2026 snapshot to initialize matches starting
+    in September 2025. Until date-matched historical ratings are acquired, a
+    common 1500 baseline is less informative but temporally valid.
+    """
+    teams = set(ELO_SNAPSHOT) | set(EXTRA_ELO_INIT) | set(TEAM_NAME_MAP.values())
+    return {code: 1500.0 for code in teams}
 
 
 def update_elo(elo_a: float, elo_b: float, outcome: str, ha: float = 0.0, k: float = 20.0) -> Tuple[float, float]:
@@ -252,10 +283,45 @@ def classify_competition(date: datetime, home: str, away: str) -> str:
 
 
 def build_wc_rows(comp: str, rows_data: list, source: str) -> List[ExpandedMatch]:
+    """Build one complete group stage with replayable walk-forward Elo."""
+    if len(rows_data) != 48:
+        raise ValueError(f"{comp} must contain exactly 48 group fixtures")
+    pair_keys = [
+        tuple(sorted((row[1], row[2]))) for row in rows_data
+    ]
+    if len(pair_keys) != len(set(pair_keys)):
+        raise ValueError(f"{comp} contains a duplicate unordered team pair")
+    appearances = Counter(
+        team for row in rows_data for team in (row[1], row[2])
+    )
+    if len(appearances) != 32 or set(appearances.values()) != {3}:
+        raise ValueError(
+            f"{comp} must contain 32 teams with exactly three matches each"
+        )
+    expected_pairs = {
+        tuple(sorted((group[left], group[right])))
+        for group in WORLD_CUP_GROUPS[comp]
+        for left in range(4)
+        for right in range(left + 1, 4)
+    }
+    if set(pair_keys) != expected_pairs:
+        missing = sorted(expected_pairs - set(pair_keys))
+        extra = sorted(set(pair_keys) - expected_pairs)
+        raise ValueError(
+            f"{comp} group topology mismatch; missing={missing}, extra={extra}"
+        )
+    initial_ratings: Dict[str, float] = {}
+    for row in rows_data:
+        initial_ratings.setdefault(row[1], float(row[8]))
+        initial_ratings.setdefault(row[2], float(row[9]))
+    ratings = dict(initial_ratings)
     out = []
-    for i, row in enumerate(rows_data):
+    ordered = sorted(rows_data, key=lambda item: parse_date(item[0]))
+    for i, row in enumerate(ordered):
         date, ta, tb, hg, ag, ow, od, ob, ea, eb = row[:10]
         hg, ag = int(hg), int(ag)
+        pre_a, pre_b = ratings[ta], ratings[tb]
+        outcome = outcome_from_score(hg, ag)
         out.append(ExpandedMatch(
             match_id=f"{comp}_{i:03d}",
             date=date,
@@ -263,15 +329,21 @@ def build_wc_rows(comp: str, rows_data: list, source: str) -> List[ExpandedMatch
             comp_weight=COMP_WEIGHT["WC_TOURNAMENT"],
             team_a=ta, team_b=tb,
             team_a_name=ta, team_b_name=tb,
-            elo_a_pre=float(ea), elo_b_pre=float(eb),
-            outcome=outcome_from_score(hg, ag),
+            elo_a_pre=round(pre_a, 1), elo_b_pre=round(pre_b, 1),
+            outcome=outcome,
             score=f"{hg}-{ag}",
             total_goals=hg + ag,
             o_win_a=float(ow), o_draw=float(od), o_win_b=float(ob),
             source_result=source,
             source_odds="football-data.co.uk / Pinnacle closing proxies",
-            source_elo="eloratings.net tournament snapshot",
+            source_elo=(
+                "walk_forward_k20 initialized from documented tournament "
+                "start snapshot; updated after each prior fixture"
+            ),
         ))
+        ratings[ta], ratings[tb] = update_elo(
+            pre_a, pre_b, outcome, ha=0.0, k=20.0
+        )
     return out
 
 
@@ -340,7 +412,10 @@ def apply_walk_forward_elo(pending: List[dict]) -> List[ExpandedMatch]:
             o_win_b=p["o_win_b"],
             source_result=p["source_result"],
             source_odds=p["source_odds"],
-            source_elo="walk_forward_k20 from ELO_SNAPSHOT+EXTRA init",
+            source_elo=(
+                "walk_forward_k20 from neutral_1500 init; "
+                "no future rating snapshot used"
+            ),
         )
         results.append(em)
         na, nb = update_elo(ea, eb, p["outcome"], ha=0.0)
@@ -394,9 +469,9 @@ def build_full_dataset() -> List[ExpandedMatch]:
                          "FIFA World Cup 2022 Qatar group stage")
     wc18 = build_wc_rows("WC_2018_GROUP", WC_2018_GROUP,
                          "FIFA World Cup 2018 Russia group stage")
-    wc26 = build_wc2026_md_matches()
-
-    all_m = wc18 + wc22 + fd_matches + wc26
+    # Obsolete embedded 2026 rows are intentionally excluded. The production
+    # pipeline uses the canonical verified results file instead.
+    all_m = wc18 + wc22 + fd_matches
     # Deduplicate by date+teams
     seen = set()
     unique = []
@@ -411,8 +486,8 @@ def build_full_dataset() -> List[ExpandedMatch]:
 
 def save_csv(matches: List[ExpandedMatch], path: Path = OUTPUT_CSV) -> None:
     fields = list(asdict(matches[0]).keys()) if matches else []
-    with open(path, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fields)
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
         w.writeheader()
         for m in matches:
             w.writerow(asdict(m))

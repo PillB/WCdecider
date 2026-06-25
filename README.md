@@ -2,12 +2,26 @@
 
 Reproducible FIFA World Cup 2026 probability and betting-market analysis. The current production batch covers **June 22–27, 2026**: 32 fixtures and 216 Betano/Betsson screenshots.
 
+The code-linked production/research walkthrough and validation design are in
+[`MODEL_PIPELINE_EXPLAINED.md`](MODEL_PIPELINE_EXPLAINED.md).
+The mandatory research and improvement process is defined in
+[`STORM_LOOP_ENGINEERING_PROTOCOL.md`](STORM_LOOP_ENGINEERING_PROTOCOL.md).
+
 Live report: https://pillb.github.io/WCdecider/
 
 ## Reproduce the current batch
 
+Use Python 3.11. For a clean environment:
+
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 -B historical_odds_pipeline.py build
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-ci.txt
+playwright install chromium
+```
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -B historical_odds_pipeline.py build-canonical
 PYTHONDONTWRITEBYTECODE=1 python3 -B model_championship.py
 PYTHONDONTWRITEBYTECODE=1 python3 -B wc_june22_27_pipeline.py
 PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/merge_research_metrics.py
@@ -30,7 +44,7 @@ Open http://127.0.0.1:8765/.
 The pipeline requires:
 
 - `wc_2026_matches_june_22-27.csv`
-- `wc_2026_results_through_june21.csv`
+- `wc_2026_results_through_june23.csv`
 - `wc_team_elo_baseline_june11.csv`
 - `wc_backtest_historical_dataset.csv`
 - `odds_june22_23.csv`, `odds_june24.csv`, `odds_june25_26.csv`, `odds_june27.csv`
@@ -56,7 +70,9 @@ Historical-market and championship artifacts:
 
 Current limitations:
 
-- The production model is calibrated Elo 1X2; Poisson outputs are descriptive.
+- The production 1X2 model is proper-score-tuned Elo. The Poisson score grid is
+  production-critical for totals, BTTS, handicaps, and ranked comparisons, but
+  betting-policy profitability is unvalidated.
 - The 38-match untouched holdout shows forecast signal, not validated profitability.
 - The redistribution-safe public corpus has 142,349 evidence-graded closing
   rows across 8,908 events. A separate ignored private validation fixture has

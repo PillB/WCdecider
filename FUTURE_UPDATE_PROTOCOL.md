@@ -15,7 +15,13 @@ This is the release checklist for every new WCdecider match batch. Replace `<bat
 
 ## Phase 0 — Read state and define scope
 
-- [ ] Read `AGENT_STATE.md`, `WCDECIDER_SYSTEM_DESIGN.md`, `PROJECT_UNDERSTANDING.md`, `ARCHITECTURE.md`, and this protocol.
+- [ ] Read `AGENT_STATE.md`, `WCDECIDER_SYSTEM_DESIGN.md`,
+  `STORM_LOOP_ENGINEERING_PROTOCOL.md`, `PROJECT_UNDERSTANDING.md`,
+  `ARCHITECTURE.md`, and this protocol.
+- [ ] Define the research question, evidence boundary, invariant, and
+  stop/block condition before changing code or data.
+- [ ] Assign distinct STORM perspectives for model/statistics, clean-room
+  replication, data lineage/leakage, and editor/user experience.
 - [ ] Create the canonical `<batch>_matches.csv` with stable fixture IDs and timezone-aware kickoffs.
 - [ ] Record the source cutoff and separate elapsed matches from future matches.
 
@@ -74,7 +80,8 @@ Done tests:
 
 ## Phase 4 — Independent replication iteration 1
 
-- [ ] Assign data replication, code replication, and model-audit agents.
+- [ ] Assign owner/model-method, replication-1, replication-2, and
+  editor/user-experience agents with non-duplicative STORM questions.
 - [ ] Assign every fixture to an independent row-level audit.
 - [ ] Log each discrepancy, root cause, and exact fix in the validation record and state ledger.
 
@@ -86,6 +93,9 @@ Done tests:
 
 ## Phase 5 — Fixes and independent replication iteration 2
 
+- [ ] Follow the bounded loop-engineering cycle: reproduce, measure,
+  adversarial review, root-cause classification, smallest evidence-supported
+  fix, focused tests, regeneration, full regression, and retrospective.
 - [ ] Apply fixes without weakening fail-closed checks.
 - [ ] Regenerate every affected artifact.
 - [ ] Repeat data, code, model, and per-fixture audits.
@@ -102,6 +112,8 @@ Before report generation:
 
 - [ ] Expand prediction and metrics JSON into canonical leaf paths.
 - [ ] Assign distinct owner, replication-1, replication-2, and editor agents using the versioned mandatory mission.
+- [ ] Bind review evidence to the exact model version and exact SHA-256 hashes
+  of the predictions and metrics artifacts reviewed.
 - [ ] Generate the datapoint audit manifest and block on any missing/non-PASS row.
 - [ ] Generate the lightweight audit summary JSON and require the browser to load that summary instead of the full audit CSV.
 
@@ -127,6 +139,10 @@ Done tests:
 - [ ] Run schema, formulas, classification, determinism, hash, and corruption tests.
 - [ ] Run end-to-end pipeline → report → site build tests.
 - [ ] Run local HTTP Playwright and translation tests.
+- [ ] Confirm the final untouched holdout was not reused as an iterative
+  optimization target.
+- [ ] Record the final loop retrospective and explicit
+  `PASS`/`BLOCKED`/`DIVERGED` status.
 
 Done tests:
 

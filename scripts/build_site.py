@@ -23,21 +23,6 @@ def build() -> Path:
     if not REPORT.exists():
         raise FileNotFoundError(f"Report not found: {REPORT}")
 
-    if SITE.exists():
-        shutil.rmtree(SITE)
-    SITE.mkdir(parents=True)
-
-    build_sha = os.environ.get("GITHUB_SHA")
-    if not build_sha:
-        build_sha = subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
-        ).strip()
-    report_text = REPORT.read_text(encoding="utf-8").replace("__BUILD_SHA__", build_sha)
-    (SITE / "index.html").write_text(report_text, encoding="utf-8")
-
-    # Optional: keep canonical filename reachable (use latest name)
-    (SITE / "wc_june22_27_full_report.html").write_text(report_text, encoding="utf-8")
-
     # Copy dynamic data files for JS population in deployed site (per architecture for dynamic cards/table from JSON)
     required = [
         ROOT / "wc_june22_27_predictions.json",
@@ -64,6 +49,37 @@ def build() -> Path:
         audit_rows = list(csv.DictReader(handle))
     if not audit_rows or any(row.get("final_status") != "PASS" for row in audit_rows):
         raise ValueError("Datapoint audit is empty or contains non-PASS rows")
+
+    # Destructive replacement happens only after every release gate passes, so
+    # a blocked build cannot erase the last known-good local site artifact.
+    if SITE.exists():
+        shutil.rmtree(SITE)
+    SITE.mkdir(parents=True)
+
+    build_sha = os.environ.get("GITHUB_SHA")
+    if not build_sha:
+        try:
+            build_sha = subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True,
+                stderr=subprocess.DEVNULL,
+            ).strip()
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            build_sha = os.environ.get(
+                "SOURCE_BUNDLE_SHA", "LOCAL_SOURCE_BUNDLE_UNVERSIONED"
+            )
+            print(
+                "[build_site] Git metadata unavailable; set SOURCE_BUNDLE_SHA "
+                "to the exported commit for a versioned clean-room build."
+            )
+    report_text = REPORT.read_text(encoding="utf-8").replace(
+        "__BUILD_SHA__", build_sha
+    )
+    (SITE / "index.html").write_text(report_text, encoding="utf-8")
+
+    # Optional: keep canonical filename reachable (use latest name)
+    (SITE / "wc_june22_27_full_report.html").write_text(
+        report_text, encoding="utf-8"
+    )
     for path in required:
         shutil.copy2(path, SITE / path.name)
         print(f"[build_site] Copied: {path.name}")

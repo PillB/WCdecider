@@ -55,13 +55,21 @@ historical data ─────────┼──── elapsed WC results
 - Historical inputs are explicitly split:
   - Dataset A: World Cup rows.
   - Dataset B: qualifiers and friendlies used as supplementary evidence.
-- A three-way Elo conversion is selected using chronological evaluation windows.
+- A proper-score-tuned three-way Elo conversion is selected using
+  chronological evaluation windows. It is not described as empirically
+  calibrated until reliability diagnostics exist.
 - Current ratings are updated deterministically from the 40 World Cup results through June 21.
 - Tournament form and host adjustments are descriptive and zero in the current production probability path.
-- A Poisson score grid is descriptive; totals, BTTS, and handicap recommendation policies are not validated in this release.
+- A Poisson score grid is production-critical for totals, BTTS, handicap, and
+  recommendation calculations, but those recommendation policies and their
+  profitability are not historically validated in this release.
 - Current odds are external CSV data with screenshot SHA-256 hashes.
 - No neural model is silently loaded. No reported target is parsed from prose.
-- There is no production ensemble/stack in this release. Future candidates must beat calibrated Elo under nested chronological evaluation.
+- There is no validated production ensemble/stack in this release. Forecast
+  probabilities remain independent of the quote being evaluated; market
+  probabilities are shown separately as disagreement/risk diagnostics. Future
+  stacks must beat the proper-score-tuned baseline under nested chronological
+  evaluation.
 
 ## Website
 

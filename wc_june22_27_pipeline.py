@@ -4,7 +4,7 @@
 This module is intentionally stdlib-only. It reads:
 
 * ``wc_backtest_historical_dataset.csv`` — historical Dataset A/B source.
-* ``wc_2026_results_through_june21.csv`` — elapsed 2026 World Cup results.
+* ``wc_2026_results_through_june23.csv`` — elapsed 2026 World Cup results.
 * ``wc_team_elo_baseline_june11.csv`` — frozen pre-tournament Elo baseline.
 * ``wc_2026_matches_june_22-27.csv`` — canonical current fixtures.
 * ``odds_june*.csv`` — verbatim screenshot-derived odds.
@@ -42,7 +42,7 @@ from typing import Callable, Dict, Iterable, List, Mapping, Optional, Sequence, 
 
 ROOT = Path(__file__).resolve().parent
 HISTORICAL = ROOT / "wc_backtest_historical_dataset.csv"
-RESULTS_2026 = ROOT / "wc_2026_results_through_june21.csv"
+RESULTS_2026 = ROOT / "wc_2026_results_through_june23.csv"
 ELO_BASELINE = ROOT / "wc_team_elo_baseline_june11.csv"
 FIXTURES = ROOT / "wc_2026_matches_june_22-27.csv"
 ODDS_PARTS = (
@@ -51,6 +51,9 @@ ODDS_PARTS = (
     ROOT / "odds_june25_26.csv",
     ROOT / "odds_june27.csv",
 )
+ODDS_CAPTURE_DATE_BY_FILE = {
+    "odds_june27.csv": "2026-06-21",
+}
 RESEARCH_PARTS = (
     ROOT / "research_june22_23.csv",
     ROOT / "research_june24_25.csv",
@@ -69,7 +72,8 @@ RESEARCH_OUT = ROOT / "wc_research_june22_27.csv"
 
 SEED = 42
 EPS = 1e-12
-DATA_CUTOFF = datetime.fromisoformat("2026-06-21T23:59:00-05:00")
+DATA_CUTOFF = datetime.fromisoformat("2026-06-23T23:59:00-05:00")
+RELEASE_AS_OF = datetime.fromisoformat("2026-06-24T13:41:19-05:00")
 FRESHNESS_HORIZON_HOURS = 48
 HOSTS = {"USA", "CAN", "MEX"}
 
@@ -301,6 +305,21 @@ def load_historical() -> List[HistoricalRow]:
     baseline = {row["team"]: float(row["elo"]) for row in read_csv(ELO_BASELINE)}
     ratings = dict(baseline)
     for row in sorted(read_csv(RESULTS_2026), key=lambda item: item["date"]):
+        accessed_at = datetime.fromisoformat(row["accessed_at"])
+        # Result evidence may be retrieved after the modeling cutoff, provided
+        # the match itself finished by the cutoff and retrieval precedes the
+        # release timestamp. Treating retrieval time as event time would reject
+        # legitimate post-match verification.
+        if accessed_at > RELEASE_AS_OF:
+            raise ValueError(
+                f"Result accessed after release timestamp: {row['date']} "
+                f"{row['team_a']}-{row['team_b']}"
+            )
+        if date.fromisoformat(row["date"]) > DATA_CUTOFF.date():
+            raise ValueError(
+                f"Result dated after data cutoff: {row['date']} "
+                f"{row['team_a']}-{row['team_b']}"
+            )
         team_a, team_b = row["team_a"], row["team_b"]
         sa, sb = int(row["score_a"]), int(row["score_b"])
         ea, eb = ratings[team_a], ratings[team_b]
@@ -371,24 +390,51 @@ def log_loss(prob: Tuple[float, float, float], outcome: str) -> float:
 
 
 def temporal_folds(rows: Sequence[HistoricalRow], folds: int = 4) -> List[List[HistoricalRow]]:
-    """Return ordered evaluation windows; configuration never sees future rows."""
+    """Return date-blocked ordered evaluation windows.
+
+    A calendar date is the smallest split unit. This prevents matches from the
+    same matchday appearing in adjacent tuning windows.
+    """
     n = len(rows)
     start = max(40, int(n * 0.55))
+    while start < n and rows[start - 1].date == rows[start].date:
+        start += 1
     remaining = n - start
     width = max(1, remaining // folds)
     windows = []
+    lo = start
     for i in range(folds):
-        lo = start + i * width
         hi = n if i == folds - 1 else min(n, lo + width)
+        while hi < n and rows[hi - 1].date == rows[hi].date:
+            hi += 1
         if lo < hi:
             windows.append(list(rows[lo:hi]))
+        lo = hi
     return windows
+
+
+def date_block_split(
+    rows: Sequence[HistoricalRow], fraction: float,
+) -> int:
+    """Return a chronological split index that never divides one date."""
+    if not rows:
+        raise ValueError("Date-block split requires at least one row")
+    target = min(len(rows) - 1, max(1, int(len(rows) * fraction)))
+    while target < len(rows) and rows[target - 1].date == rows[target].date:
+        target += 1
+    if target >= len(rows):
+        target = min(len(rows) - 1, max(1, int(len(rows) * fraction)))
+        while target > 0 and rows[target - 1].date == rows[target].date:
+            target -= 1
+    if target <= 0 or target >= len(rows):
+        raise ValueError("Date-block split requires at least two date blocks")
+    return target
 
 
 def calibrate_elo(rows: Sequence[HistoricalRow]) -> Dict[str, object]:
     """Select parameters on pre-holdout rows and report untouched final holdout."""
     configs = []
-    holdout_start = int(len(rows) * 0.85)
+    holdout_start = date_block_split(rows, 0.85)
     selection_rows = rows[:holdout_start]
     holdout_rows = rows[holdout_start:]
     windows = temporal_folds(selection_rows)
@@ -535,6 +581,7 @@ def score_model_row_losses(
         p_over25 = event_probability(matrix, lambda ga, gb: ga + gb > 2.5)
         p_btts = event_probability(matrix, lambda ga, gb: ga > 0 and gb > 0)
         losses.append({
+            "date_ordinal": float(row.date.toordinal()),
             "weight": row.weight,
             "score_nll": -math.log(max(EPS, observed)),
             "over_2_5_brier": (
@@ -552,30 +599,54 @@ def paired_bootstrap_mean_difference(
     challenger: Sequence[Mapping[str, float]],
     metric: str,
     iterations: int = 2000,
-) -> Dict[str, float]:
-    """Bootstrap challenger-minus-production loss on the same holdout rows."""
+) -> Dict[str, object]:
+    """Date-block bootstrap weighted challenger-minus-production loss.
+
+    Reported score metrics use competition weights, so the comparison must use
+    the same estimand. Resampling whole dates also preserves within-matchday
+    dependence instead of treating every match as independent.
+    """
     if len(production) != len(challenger) or not production:
         raise ValueError("Paired bootstrap requires equal non-empty row losses")
-    differences = [
-        challenger[index][metric] - production[index][metric]
-        for index in range(len(production))
-    ]
+    blocks: Dict[int, List[Tuple[float, float]]] = defaultdict(list)
+    for index in range(len(production)):
+        if production[index]["date_ordinal"] != challenger[index]["date_ordinal"]:
+            raise ValueError("Paired bootstrap rows must share the same date")
+        blocks[int(production[index]["date_ordinal"])].append((
+            challenger[index][metric] - production[index][metric],
+            production[index]["weight"],
+        ))
+    ordered_blocks = [blocks[key] for key in sorted(blocks)]
+
+    def weighted_mean(sampled_blocks: Sequence[Sequence[Tuple[float, float]]]) -> float:
+        numerator = sum(
+            difference * weight
+            for block in sampled_blocks
+            for difference, weight in block
+        )
+        denominator = sum(
+            weight for block in sampled_blocks for _, weight in block
+        )
+        return numerator / denominator
+
     rng = random.Random(SEED)
     sampled_means = []
     for _ in range(iterations):
         sample = [
-            differences[rng.randrange(len(differences))]
-            for _ in range(len(differences))
+            ordered_blocks[rng.randrange(len(ordered_blocks))]
+            for _ in range(len(ordered_blocks))
         ]
-        sampled_means.append(sum(sample) / len(sample))
+        sampled_means.append(weighted_mean(sample))
     sampled_means.sort()
     lower = sampled_means[int(iterations * 0.025)]
     upper = sampled_means[int(iterations * 0.975)]
     return {
-        "challenger_minus_production_mean": sum(differences) / len(differences),
+        "challenger_minus_production_mean": weighted_mean(ordered_blocks),
         "ci_95_lower": lower,
         "ci_95_upper": upper,
         "iterations": iterations,
+        "resampling_method": "weighted_date_block_percentile_bootstrap",
+        "block_count": len(ordered_blocks),
         "statistically_secure_improvement": upper < 0.0,
     }
 
@@ -586,7 +657,7 @@ def calibrate_score_model(rows: Sequence[HistoricalRow]) -> Dict[str, object]:
     Dixon-Coles is retained as a shadow challenger. Production remains
     independent Poisson unless a statistically secure improvement is shown.
     """
-    holdout_start = int(len(rows) * 0.85)
+    holdout_start = date_block_split(rows, 0.85)
     selection_rows = rows[:holdout_start]
     holdout_rows = rows[holdout_start:]
     windows = temporal_folds(selection_rows)
@@ -674,6 +745,7 @@ def calibrate_score_model(rows: Sequence[HistoricalRow]) -> Dict[str, object]:
     ) / holdout_weight
     return {
         **best,
+        "tuning_status": "proper_score_tuned_not_empirically_calibrated",
         "selection_rows": len(selection_rows),
         "holdout_rows": len(holdout_rows),
         "production_model": "tuned_elo_independent_poisson",
@@ -1199,24 +1271,10 @@ def probability_and_ev(
             "ev": expected_net,
         }
     elif family == "handicap_total_combo":
-        try:
-            handicap = float(odd["handicap_selected_line"])
-            total_line = float(odd["total_line"])
-        except (TypeError, ValueError):
-            return None
-        selected = odd.get("selected_team")
-        total_side = odd.get("combo_leg_2_selection")
-        if selected not in {team_a, team_b} or total_side not in {"over", "under"}:
-            return None
-        for ga, gb, prob in matrix:
-            margin = ga - gb if selected == team_a else gb - ga
-            handicap_win = settle_line(margin, handicap) > 0
-            total = ga + gb
-            total_win = total > total_line if total_side == "over" else total < total_line
-            if handicap_win and total_win:
-                p_win += prob
-            else:
-                p_loss += prob
+        raise ValueError(
+            "handicap_total_combo settlement is disabled until an app-specific "
+            "push/void/half-result contract is implemented and tested"
+        )
     else:
         return None
 
@@ -1313,7 +1371,8 @@ def normalize_market_schema(
             row["handicap_selected_line"] = str(line)
             row["handicap_home_line"] = str(line if selected == team_a else -line)
             row["market_group_id"] = (
-                f"{row['fixture_id']}|{row['app']}|asian|{abs(line)}"
+                f"{row['fixture_id']}|{row['app']}|asian|home_line="
+                f"{row['handicap_home_line']}"
             )
     elif market in {"handicap_total", "handicap_total_goals_2_5"}:
         parsed = parse_handicap_total_market(row["market_original"])
@@ -1356,11 +1415,22 @@ def mark_complete_markets(rows: List[Dict[str, str]]) -> None:
             or (family == "total_goals" and selections == {"over", "under"})
             or (family == "btts" and selections == {"yes", "no"})
             or (family == "double_chance" and selections == {"AD", "AB", "DB"})
-            or (family == "asian_handicap" and selections == {"home", "away"})
             or (
-                family == "handicap_total_combo"
-                and selections == {"home_over", "home_under", "away_over", "away_under"}
+                family == "asian_handicap"
+                and len(group) == 2
+                and selections == {"home", "away"}
+                and len({
+                    float(row["handicap_home_line"]) for row in group
+                }) == 1
+                and sorted(
+                    float(row["handicap_selected_line"]) for row in group
+                )[0]
+                == -sorted(
+                    float(row["handicap_selected_line"]) for row in group
+                )[1]
             )
+            # Combo contracts remain source evidence only until app-specific
+            # push/void/half-result settlement rules are documented and tested.
         )
         for row in group:
             row["is_complete_market"] = "true" if complete else "false"
@@ -1391,6 +1461,33 @@ def load_and_merge_odds(fixtures: Sequence[Mapping[str, str]]) -> List[Dict[str,
                 row["fixture_id"] = canonical[key]
             row["source_sha256"] = sha256(ROOT / "Screenshots" / row["source_image"])
             row["kickoff_local"] = kickoff_by_id[row["fixture_id"]]
+            capture_raw = row.get("capture_time", "").strip()
+            if re.fullmatch(r"\d{2}:\d{2}", capture_raw):
+                capture_date = ODDS_CAPTURE_DATE_BY_FILE.get(path.name)
+                if not capture_date:
+                    raise ValueError(
+                        f"Time-only odds capture lacks source-date metadata: "
+                        f"{path.name} {capture_raw}"
+                    )
+                capture_raw = f"{capture_date} {capture_raw} -05:00"
+                row["capture_time"] = capture_raw
+                row["capture_time_derivation"] = (
+                    f"date_from_frozen_file_metadata:{path.name}"
+                )
+            else:
+                row["capture_time_derivation"] = "verbatim_timezone_aware"
+            capture_at = datetime.fromisoformat(
+                capture_raw.replace(" -05:00", "-05:00")
+            )
+            kickoff_at = datetime.fromisoformat(row["kickoff_local"])
+            if capture_at > DATA_CUTOFF:
+                raise ValueError(
+                    f"Odds captured after data cutoff: {row['source_image']}"
+                )
+            if capture_at >= kickoff_at:
+                raise ValueError(
+                    f"Odds captured at/after kickoff: {row['source_image']}"
+                )
             row = normalize_market_schema(row, *teams_by_id[row["fixture_id"]])
             unique = (
                 row["fixture_id"], row["app"], row["market_id"], row["selection_id"],
@@ -1421,6 +1518,11 @@ def load_research(fixtures: Sequence[Mapping[str, str]]) -> Dict[str, Dict[str, 
                 raise ValueError(f"Duplicate research row: {fixture_id}")
             if "https://" not in row["source_urls"]:
                 raise ValueError(f"Research row lacks direct URL: {fixture_id}")
+            accessed_at = datetime.fromisoformat(row["accessed_at"])
+            if accessed_at > DATA_CUTOFF:
+                raise ValueError(
+                    f"Research row accessed after cutoff: {fixture_id}"
+                )
             # Fail closed on sources dated after the declared June 21 cutoff.
             if "/jun/22/" in row["source_urls"] or "/2026/jun/22/" in row["source_urls"]:
                 row = dict(row)
@@ -1466,15 +1568,36 @@ def screenshot_manifest(odds: Sequence[Mapping[str, str]]) -> List[Dict[str, obj
 
 def current_team_state(
     results: Sequence[Mapping[str, str]], baseline: Mapping[str, float],
-) -> Tuple[Dict[str, float], Dict[str, Dict[str, float]], Dict[str, date]]:
+) -> Tuple[
+    Dict[str, float],
+    Dict[str, Dict[str, float]],
+    Dict[str, date],
+    Dict[Tuple[str, str, str], Tuple[float, float]],
+    Dict[Tuple[str, str, str], Dict[str, object]],
+]:
+    """Replay results and retain leakage-safe pre-match ratings per fixture."""
     ratings = dict(baseline)
     form: Dict[str, Dict[str, float]] = defaultdict(lambda: {
         "games": 0.0, "points": 0.0, "gf": 0.0, "ga": 0.0,
     })
     last_date: Dict[str, date] = {}
+    pre_match_ratings: Dict[Tuple[str, str, str], Tuple[float, float]] = {}
+    pre_match_context: Dict[
+        Tuple[str, str, str], Dict[str, object]
+    ] = {}
     for row in sorted(results, key=lambda item: item["date"]):
         ta, tb = row["team_a"], row["team_b"]
         sa, sb = int(row["score_a"]), int(row["score_b"])
+        key = (row["date"], ta, tb)
+        if key in pre_match_ratings:
+            raise ValueError(f"Duplicate result key during Elo replay: {key}")
+        pre_match_ratings[key] = (ratings[ta], ratings[tb])
+        pre_match_context[key] = {
+            "form_a": dict(form[ta]),
+            "form_b": dict(form[tb]),
+            "last_date_a": last_date.get(ta),
+            "last_date_b": last_date.get(tb),
+        }
         for team, gf, ga in ((ta, sa, sb), (tb, sb, sa)):
             form[team]["games"] += 1.0
             form[team]["gf"] += gf
@@ -1482,7 +1605,7 @@ def current_team_state(
             form[team]["points"] += 3.0 if gf > ga else 1.0 if gf == ga else 0.0
             last_date[team] = date.fromisoformat(row["date"])
         update_elo(ratings, ta, tb, sa, sb)
-    return ratings, form, last_date
+    return ratings, form, last_date, pre_match_ratings, pre_match_context
 
 
 def form_adjustment(stats: Mapping[str, float]) -> float:
@@ -1587,19 +1710,9 @@ def recommendation_equivalence_key(
                     margin, line, 2.0
                 )
             elif family == "handicap_total_combo":
-                handicap = float(row["handicap_selected_line"])
-                selected = str(row["selected_team"])
-                total_line = float(row["total_line"])
-                total_side = str(row["combo_leg_2_selection"])
-                margin = ga - gb if selected == team_a else gb - ga
-                handicap_win = settle_line(margin, handicap) > 0
-                total_win = (
-                    ga + gb > total_line if total_side == "over"
-                    else ga + gb < total_line
-                )
-                win, loss = (
-                    (1.0, 0.0)
-                    if handicap_win and total_win else (0.0, 1.0)
+                raise ValueError(
+                    "handicap_total_combo equivalence is disabled until an "
+                    "app-specific settlement contract is implemented"
                 )
             else:
                 return ("unsupported", family, row.get("selection_original"))
@@ -1691,6 +1804,7 @@ def public_recommendation(
         ),
         "raw_model_ev_pct": round(float(row["ev_pct"]), 2),
         "decision_model_weight": row["decision_model_weight"],
+        "decision_probability_method": row["decision_probability_method"],
         "divergence_pp": round(float(row["divergence_pp"]), 2),
         "strength": row["strength"], "confidence": row["confidence"],
         "recommendation_utility": round(
@@ -1912,6 +2026,53 @@ def attach_recommendation_context(
         item["risk_lens"] = risk_lens_for_recommendation(item)
 
 
+def authorize_recommendations(
+    recommendations: Sequence[Dict[str, object]],
+    freshness: str,
+    lifecycle_status: str,
+) -> None:
+    """Apply fail-closed gates while retaining rows as comparisons."""
+    for item in recommendations:
+        reasons = []
+        if lifecycle_status != "future":
+            reasons.append("fixture_elapsed_requires_verified_result")
+        if freshness != "current_snapshot":
+            reasons.append("forecast_requires_intervening_match_rerun")
+        if item["strength"] == "HALT":
+            reasons.append("model_market_anomaly_halt")
+        if float(item["ev_pct"]) <= 0.0:
+            reasons.append("non_positive_expected_value")
+        if float(item["stressed_ev_pct"]) <= 0.0:
+            reasons.append("non_positive_stressed_expected_value")
+        if item["price_gate_status"] != "at_or_above_model_fair_price":
+            reasons.append("source_price_below_model_fair_price")
+        if item["market_family"] == "handicap_total_combo":
+            reasons.append("combo_settlement_contract_not_validated")
+        # No timestamp-eligible policy backtest exists in this release.
+        reasons.append("historical_profitability_not_validated")
+        item["decision_status"] = "ABSTAIN"
+        item["actionability"] = {
+            "data_valid": (
+                lifecycle_status == "future"
+                and freshness == "current_snapshot"
+            ),
+            "model_valid": item["strength"] != "HALT",
+            "price_valid": (
+                float(item["ev_pct"]) > 0.0
+                and float(item["stressed_ev_pct"]) > 0.0
+                and item["price_gate_status"]
+                == "at_or_above_model_fair_price"
+            ),
+            "settlement_valid": (
+                item["market_family"] != "handicap_total_combo"
+            ),
+            "profitability_valid": False,
+            "actionable": False,
+            "reasons": reasons,
+        }
+        item["steps"] = {"en": [], "es": []}
+
+
 def risk_profile_summary(
     recommendations: Sequence[Mapping[str, object]],
 ) -> Dict[str, Dict[str, object]]:
@@ -1976,7 +2137,7 @@ def evaluate_sourced_markets(
             continue
         if odd["market_family"] not in {
             "1x2", "total_goals", "btts", "double_chance",
-            "asian_handicap", "handicap_total_combo",
+            "asian_handicap",
         }:
             continue
         evaluated = probability_and_ev(odd, team_a, team_b, p_1x2, matrix)
@@ -2008,39 +2169,16 @@ def evaluate_sourced_markets(
             )
         divergence = abs(evaluated["p_win"] - implied) * 100.0
         strength, confidence = classify(ev_pct, divergence)
-        base_model_weight = 0.50 if odd["market_family"] == "1x2" else 0.35
-        model_weight = base_model_weight * max(
-            0.10, 1.0 - divergence / 25.0
-        )
-        market_push = float(evaluated["p_push"])
-        market_win = (1.0 - market_push) * implied
-        market_loss = (1.0 - market_push) * (1.0 - implied)
-        decision_win = (
-            model_weight * float(evaluated["p_win"])
-            + (1.0 - model_weight) * market_win
-        )
-        decision_push = (
-            model_weight * float(evaluated["p_push"])
-            + (1.0 - model_weight) * market_push
-        )
-        decision_loss = (
-            model_weight * float(evaluated["p_loss"])
-            + (1.0 - model_weight) * market_loss
-        )
-        probability_total = decision_win + decision_push + decision_loss
-        decision_win /= probability_total
-        decision_push /= probability_total
-        decision_loss /= probability_total
-        market_ev_pct = (
-            market_win * (float(odd["odds"]) - 1.0) - market_loss
-        ) * 100.0
-        decision_ev_pct = (
-            decision_win * (float(odd["odds"]) - 1.0) - decision_loss
-        ) * 100.0
-        decision_stressed_ev_pct = (
-            model_weight * stressed_ev
-            + (1.0 - model_weight) * market_ev_pct
-        )
+        # The quoted price is a comparison signal, not an input to the
+        # probability used to evaluate that same price. Earlier releases
+        # blended the model toward the market and then calculated EV from the
+        # blend, creating a circular estimand. Keep forecast and market
+        # probability separate unless a stack has earned out-of-sample weight.
+        decision_win = float(evaluated["p_win"])
+        decision_push = float(evaluated["p_push"])
+        decision_loss = float(evaluated["p_loss"])
+        decision_ev_pct = ev_pct
+        decision_stressed_ev_pct = stressed_ev
         evaluated_row: Dict[str, object] = {
             **odd,
             **evaluated,
@@ -2056,7 +2194,10 @@ def evaluate_sourced_markets(
             "market_probability": implied,
             "decision_ev_pct": decision_ev_pct,
             "decision_stressed_ev_pct": decision_stressed_ev_pct,
-            "decision_model_weight": model_weight,
+            "decision_model_weight": 1.0,
+            "decision_probability_method": (
+                "independent_structural_forecast_no_market_price_blend"
+            ),
             "strength": strength,
             "confidence": confidence,
             "policy_status": "experimental_non_actionable",
@@ -2081,12 +2222,22 @@ def allocate_app_budget(
     """
     if not rows:
         return {}
-    if base_stake * len(rows) > budget or max_stake * len(rows) < budget:
-        raise ValueError("Bankroll constraints cannot cover the selected rows")
+    actionable_rows = [
+        row for row in rows
+        if row["rank_one_comparison"]["decision_status"] == "ACTIONABLE"
+    ]
+    stakes = {row["fixture_id"]: 0.0 for row in rows}
+    if not actionable_rows:
+        return stakes
+    if (
+        base_stake * len(actionable_rows) > budget
+        or max_stake * len(actionable_rows) < budget
+    ):
+        raise ValueError("Bankroll constraints cannot cover actionable rows")
 
     scores = {}
-    for row in rows:
-        rec = row["recommendation"]
+    for row in actionable_rows:
+        rec = row["rank_one_comparison"]
         risk_bonus = {
             "A": 1.5,
             "B": 1.0,
@@ -2100,9 +2251,10 @@ def allocate_app_budget(
             + risk_bonus
         )
         scores[row["fixture_id"]] = score
-    stakes = {row["fixture_id"]: base_stake for row in rows}
-    remaining = budget - base_stake * len(rows)
-    active = set(stakes)
+    for row in actionable_rows:
+        stakes[row["fixture_id"]] = base_stake
+    remaining = budget - base_stake * len(actionable_rows)
+    active = {row["fixture_id"] for row in actionable_rows}
     while remaining > 1e-9 and active:
         total_score = sum(scores[key] for key in active)
         if total_score <= 0:
@@ -2128,12 +2280,16 @@ def allocate_app_budget(
             break
 
     rounded = {
-        key: math.floor(value * 10.0 + 1e-9) / 10.0
+        key: (
+            math.floor(value * 10.0 + 1e-9) / 10.0
+            if key in active or value > 0.0 else 0.0
+        )
         for key, value in stakes.items()
     }
     tenths_left = int(round((budget - sum(rounded.values())) * 10))
+    actionable_ids = {row["fixture_id"] for row in actionable_rows}
     order = sorted(
-        rounded,
+        actionable_ids,
         key=lambda key: (
             stakes[key] - rounded[key], scores[key], key
         ),
@@ -2223,22 +2379,22 @@ def attach_bankroll_simulation(
     summary = {
         "currency": "PEN",
         "budget_per_app": 100.0,
-        "policy": "forced_all_match_coverage_educational_simulation",
+        "policy": "fail_closed_actionable_only_simulation",
         "warning": {
-            "en": "This forced-coverage simulation spends the full budget even when EV or stressed EV is negative. It is not a profitability-validated staking system.",
-            "es": "Esta simulación de cobertura forzada usa todo el presupuesto incluso cuando el EV o EV estresado es negativo. No es un sistema de apuestas con rentabilidad validada.",
+            "en": "No stake is allocated unless every actionability gate passes. Historical profitability is not validated, so this release allocates zero.",
+            "es": "No se asigna monto salvo que todas las puertas de acción pasen. La rentabilidad histórica no está validada, por lo que esta versión asigna cero.",
         },
         "apps": {},
     }
     for app in ("Betano", "Betsson"):
         app_rows = [
             row for row in predictions
-            if row["recommendation"]["app"] == app
+            if row["rank_one_comparison"]["app"] == app
         ]
         stakes = allocate_app_budget(app_rows)
         expected_net = gross_if_all_win = 0.0
         for row in app_rows:
-            rec = row["recommendation"]
+            rec = row["rank_one_comparison"]
             stake = stakes[row["fixture_id"]]
             gross_return = stake * float(rec["odds"])
             expected_net += stake * float(rec["ev_pct"]) / 100.0
@@ -2256,12 +2412,19 @@ def attach_bankroll_simulation(
                 ),
                 "gross_return_if_full_win": round(gross_return, 2),
                 "profit_if_full_win": round(gross_return - stake, 2),
-                "steps": app_navigation_steps(app, row, rec, stake),
+                "steps": (
+                    app_navigation_steps(app, row, rec, stake)
+                    if rec["decision_status"] == "ACTIONABLE"
+                    else {"en": [], "es": []}
+                ),
                 "warning": summary["warning"],
             }
         summary["apps"][app] = {
             "fixture_count": len(app_rows),
             "total_stake": round(sum(stakes.values()), 2),
+            "unallocated_budget": round(
+                100.0 - sum(stakes.values()), 2
+            ),
             "model_estimated_net": round(expected_net, 2),
             "gross_return_if_every_pick_fully_wins": round(
                 gross_if_all_win, 2
@@ -2298,7 +2461,19 @@ def build() -> Dict[str, object]:
     baseline_rows = read_csv(ELO_BASELINE)
     baseline = {row["team"]: float(row["elo"]) for row in baseline_rows}
     results = read_csv(RESULTS_2026)
-    ratings, form, last_dates = current_team_state(results, baseline)
+    result_by_key = {
+        (row["date"], row["team_a"], row["team_b"]): row
+        for row in results
+    }
+    verified_result_keys = {
+        (row["date"], row["team_a"], row["team_b"])
+        for row in results
+    }
+    (
+        ratings, form, last_dates, pre_match_ratings, pre_match_context,
+    ) = current_team_state(
+        results, baseline
+    )
     odds = load_and_merge_odds(fixtures)
     research = load_research(fixtures)
     research_fields = (
@@ -2324,17 +2499,23 @@ def build() -> Dict[str, object]:
     for fixture in fixtures:
         ta, tb = split_fixture(fixture["match"])
         kickoff = datetime.fromisoformat(fixture["kickoff_lima"])
+        result_key = (kickoff.date().isoformat(), ta, tb)
+        fixture_ratings = pre_match_ratings.get(
+            result_key, (ratings[ta], ratings[tb])
+        )
+        fixture_context = pre_match_context.get(result_key)
         # Tournament form is published descriptively but not added again to Elo:
         # current results have already changed the updated rating.
         fa, fb = 0.0, 0.0
         host_a = host_b = 0.0
         p_base = three_way_elo(
-            ratings[ta], ratings[tb], float(best["divisor"]),
+            fixture_ratings[0], fixture_ratings[1], float(best["divisor"]),
             float(best["draw_base"]), float(best["draw_slope"]),
             fa + host_a, fb + host_b,
         )
         la, lb = expected_lambdas(
-            ratings[ta], ratings[tb], mu_total, fa + host_a, fb + host_b,
+            fixture_ratings[0], fixture_ratings[1], mu_total,
+            fa + host_a, fb + host_b,
             float(score_config["allocation"]), float(score_config["gap_scale"]),
             float(score_config["gap_intensity"]),
         )
@@ -2377,7 +2558,8 @@ def build() -> Dict[str, object]:
             (0.90, 0.0), (1.10, 0.0), (1.0, -0.05), (1.0, 0.05)
         ):
             stress_la, stress_lb = expected_lambdas(
-                ratings[ta], ratings[tb], mu_total * mu_multiplier, 0.0, 0.0,
+                fixture_ratings[0], fixture_ratings[1],
+                mu_total * mu_multiplier, 0.0, 0.0,
                 max(0.20, float(score_config["allocation"]) + allocation_shift),
                 float(score_config["gap_scale"]),
                 float(score_config["gap_intensity"]),
@@ -2427,27 +2609,42 @@ def build() -> Dict[str, object]:
             ranked_recommendations[0][1]
             if ranked_recommendations else "no_complete_sourced_market"
         )
-        last_a = last_dates.get(ta)
-        last_b = last_dates.get(tb)
+        form_a = (
+            fixture_context["form_a"] if fixture_context else form[ta]
+        )
+        form_b = (
+            fixture_context["form_b"] if fixture_context else form[tb]
+        )
+        last_a = (
+            fixture_context["last_date_a"]
+            if fixture_context else last_dates.get(ta)
+        )
+        last_b = (
+            fixture_context["last_date_b"]
+            if fixture_context else last_dates.get(tb)
+        )
         rest_a = (kickoff.date() - last_a).days if last_a else None
         rest_b = (kickoff.date() - last_b).days if last_b else None
         model_row = {
             "fixture_id": fixture["fixture_id"], "kickoff_lima": fixture["kickoff_lima"],
             "kickoff_utc": fixture["kickoff_utc"], "team_a": ta, "team_b": tb,
             "elo_a_baseline": baseline[ta], "elo_b_baseline": baseline[tb],
-            "elo_a_updated": round(ratings[ta], 3), "elo_b_updated": round(ratings[tb], 3),
-            "form_games_a": int(form[ta]["games"]), "form_games_b": int(form[tb]["games"]),
-            "form_points_a": int(form[ta]["points"]), "form_points_b": int(form[tb]["points"]),
-            "form_gd_a": int(form[ta]["gf"] - form[ta]["ga"]),
-            "form_gd_b": int(form[tb]["gf"] - form[tb]["ga"]),
+            "elo_a_updated": round(fixture_ratings[0], 3),
+            "elo_b_updated": round(fixture_ratings[1], 3),
+            "form_games_a": int(form_a["games"]),
+            "form_games_b": int(form_b["games"]),
+            "form_points_a": int(form_a["points"]),
+            "form_points_b": int(form_b["points"]),
+            "form_gd_a": int(form_a["gf"] - form_a["ga"]),
+            "form_gd_b": int(form_b["gf"] - form_b["ga"]),
             "form_adjust_a": round(fa, 3), "form_adjust_b": round(fb, 3),
             "host_adjust_a": host_a, "host_adjust_b": host_b,
             "rest_days_a": rest_a, "rest_days_b": rest_b,
             "mu_total": round(mu_total, 5), "lambda_a": round(la, 5), "lambda_b": round(lb, 5),
             "p_win_a": round(p_base[0], 8), "p_draw": round(p_base[1], 8),
             "p_win_b": round(p_base[2], 8),
-            "source_elo": "wc_team_elo_baseline_june11.csv + deterministic Elo updates from wc_2026_results_through_june21.csv",
-            "source_form": "wc_2026_results_through_june21.csv",
+            "source_elo": "wc_team_elo_baseline_june11.csv + deterministic Elo updates from wc_2026_results_through_june23.csv",
+            "source_form": "wc_2026_results_through_june23.csv",
             "source_schedule": fixture["schedule_source"],
             "research_confidence": research[fixture["fixture_id"]]["confidence"],
             "research_sources": research[fixture["fixture_id"]]["source_urls"],
@@ -2491,26 +2688,53 @@ def build() -> Dict[str, object]:
         attach_recommendation_context(
             public_research_ranked_recommendations, fixture_names, "research"
         )
+        fixture_freshness = freshness_status(kickoff)
+        lifecycle_status = (
+            "elapsed_result_verified"
+            if result_key in verified_result_keys
+            else "elapsed_requires_verified_result"
+            if kickoff <= RELEASE_AS_OF
+            else "future"
+        )
+        verified_result = result_by_key.get(result_key)
+        authorize_recommendations(
+            public_ranked_recommendations,
+            fixture_freshness,
+            lifecycle_status,
+        )
+        authorize_recommendations(
+            public_research_ranked_recommendations,
+            fixture_freshness,
+            lifecycle_status,
+        )
         production_risk_summary = risk_profile_summary(
             public_ranked_recommendations
         )
         research_risk_summary = risk_profile_summary(
             public_research_ranked_recommendations
         )
-        research_mode["top_recommendations"] = public_research_ranked_recommendations
-        research_mode["top_recommendations_requested"] = 4
-        research_mode["top_recommendations_available"] = len(
+        research_mode["ranked_comparisons"] = (
             public_research_ranked_recommendations
         )
-        research_mode["top_recommendations_shortfall_reason"] = (
+        research_mode["top_recommendations"] = []
+        research_mode["ranked_comparisons_requested"] = 4
+        research_mode["ranked_comparisons_available"] = len(
+            public_research_ranked_recommendations
+        )
+        research_mode["ranked_comparisons_shortfall_reason"] = (
             ""
             if len(public_research_ranked_recommendations) == 4
             else "fewer_than_four_distinct_complete_sourced_events"
         )
+        research_mode["top_recommendations_requested"] = 0
+        research_mode["top_recommendations_available"] = 0
+        research_mode["top_recommendations_shortfall_reason"] = (
+            "release_blocked_all_rows_abstain"
+        )
         research_mode["recommendation_scope"] = (
-            "research-mode recommendations are ranked with the gated shadow "
-            "score model against the same sourced screenshot odds; they do not "
-            "replace production recommendations or validate profitability"
+            "research-mode non-actionable comparisons are ranked with the "
+            "gated shadow score model against the same sourced screenshot odds; "
+            "they do not authorize a bet or validate profitability"
         )
         research_mode["risk_profile_summary"] = research_risk_summary
         production_rank_one_key = (
@@ -2623,6 +2847,9 @@ def build() -> Dict[str, object]:
                 row["decision_stressed_ev_pct"], 2
             ),
             "decision_model_weight": round(row["decision_model_weight"], 6),
+            "decision_probability_method": row[
+                "decision_probability_method"
+            ],
             "market_probability": round(row["market_probability"], 6),
             "recommendation_utility": round(
                 row["recommendation_utility"], 2
@@ -2681,8 +2908,26 @@ def build() -> Dict[str, object]:
                     for row in expanded_ranked
                 ),
             },
-            "recommendation": rec,
-            "top_recommendations": public_ranked_recommendations,
+            "recommendation": (
+                rec if rec and rec["decision_status"] == "ACTIONABLE" else None
+            ),
+            "rank_one_comparison": rec,
+            "fixture_lifecycle_status": lifecycle_status,
+            "verified_result": (
+                {
+                    "score_a": int(verified_result["score_a"]),
+                    "score_b": int(verified_result["score_b"]),
+                    "score": (
+                        f"{verified_result['score_a']}-"
+                        f"{verified_result['score_b']}"
+                    ),
+                    "source_url": verified_result["source_result"],
+                    "accessed_at": verified_result["accessed_at"],
+                }
+                if verified_result else None
+            ),
+            "ranked_comparisons": public_ranked_recommendations,
+            "top_recommendations": [],
             "risk_profile_summary": production_risk_summary,
             "halt_improvement_loop": halt_improvement_loop,
             "risk_aversion_profiles": [
@@ -2706,18 +2951,23 @@ def build() -> Dict[str, object]:
                 }
                 for profile in RISK_AVERSION_PROFILES
             ],
-            "top_recommendations_requested": 4,
-            "top_recommendations_available": len(
+            "ranked_comparisons_requested": 4,
+            "ranked_comparisons_available": len(
                 public_ranked_recommendations
             ),
-            "top_recommendations_shortfall_reason": (
+            "ranked_comparisons_shortfall_reason": (
                 ""
                 if len(public_ranked_recommendations) == 4
                 else "fewer_than_four_distinct_complete_sourced_events"
             ),
+            "top_recommendations_requested": 0,
+            "top_recommendations_available": 0,
+            "top_recommendations_shortfall_reason": (
+                "release_blocked_all_rows_abstain"
+            ),
             "supported_markets_evaluated": len(expanded_rows),
-            "recommendation_scope": "up to four distinct sourced recommendations are ranked per fixture by stressed EV, disagreement, and family-validation penalties; rank one remains the backward-compatible BEST_AVAILABLE field and historical profitability is not validated",
-            "freshness_status": freshness_status(kickoff),
+            "recommendation_scope": "up to four distinct sourced non-actionable comparisons are ranked per fixture by stressed EV, disagreement, and family-validation penalties; recommendation remains null, rank_one_comparison is audit-only, and historical profitability is not validated",
+            "freshness_status": fixture_freshness,
             "risk_notes": {
                 "en": [
                     "Football outcomes remain high variance even when expected value is positive.",
@@ -2750,7 +3000,7 @@ def build() -> Dict[str, object]:
         (HISTORICAL, RESULTS_2026, ELO_BASELINE, FIXTURES, *ODDS_PARTS, *RESEARCH_PARTS)
     }
     metrics = {
-        "version": "june22_27_best_available_v3",
+        "version": "june22_27_v5_fail_closed_development_only",
         "seed": SEED,
         "dataset_a_rows": len(dataset_a),
         "dataset_b_rows": len(dataset_b),
@@ -2761,8 +3011,12 @@ def build() -> Dict[str, object]:
         "mu_dataset_b": mu_b,
         "mu_production": mu_total,
         "expanded_market_policy": {
-            "status": "best_available_recommendations_unvalidated_profitability",
-            "reason": "No timestamped historical totals, BTTS, Asian-handicap, or combo prices exist for untouched profitability validation.",
+            "status": "abstain_no_validated_recommendation_policy",
+            "reason": (
+                "Historical profitability is unvalidated, the nominal holdout "
+                "has been used for development feedback, source prices are "
+                "stale, and conditional fixtures require intervening results."
+            ),
             "priced_fixtures": len({
                 row["fixture_id"] for row in odds
                 if row["market_family"] in {
@@ -2772,8 +3026,13 @@ def build() -> Dict[str, object]:
                 and row["is_complete_market"] == "true"
             }),
             "all_fixture_probability_coverage": 32,
-            "recommendations_required": 32,
-            "selection_rule": "maximize minimum(base EV, stressed EV) minus 0.35*model-market divergence and market-family uncertainty penalties",
+            "recommendations_required": 0,
+            "selection_rule": (
+                "rank independent structural-model EV and stressed EV; use "
+                "market-implied probability only as a disagreement/risk "
+                "diagnostic, never as an input to the probability evaluating "
+                "that same quote"
+            ),
         },
         "research_mode_policy": {
             "toggle_available": True,
@@ -2783,12 +3042,13 @@ def build() -> Dict[str, object]:
             "status": "research_gated_not_production",
             "production_recommendations_unchanged": True,
             "why_selected": (
-                "Dixon-Coles is the best currently feasible research-gated "
-                "architecture from the expanded registry because it is "
-                "football-specific, low-parameter, and reproducible with the "
-                "available score data. High-capacity temporal graph and "
-                "sequence models remain blocked by the sample-size/edge-count "
-                "promotion gate."
+                "Dixon-Coles is the selected tested shadow candidate because "
+                "it is football-specific, low-parameter, and reproducible "
+                "with the available score data. Other registered candidates "
+                "have not all been fit and compared, so this is not a claim "
+                "that Dixon-Coles is globally best. High-capacity temporal "
+                "graph and sequence models remain blocked by the "
+                "sample-size/edge-count promotion gate."
             ),
             "why_not_promoted": (
                 "Shadow paired-bootstrap intervals cross zero and no "
@@ -2805,12 +3065,28 @@ def build() -> Dict[str, object]:
                 ),
             },
         },
+        "evaluation_governance": {
+            "current_holdout_status": (
+                "development_validation_only_not_confirmatory"
+            ),
+            "reason": (
+                "The nominal holdout informed prior development decisions and "
+                "cannot be described as untouched or confirmatory."
+            ),
+            "new_sealed_holdout_required": True,
+            "probability_release_status": "development_only",
+            "recommendation_release_status": "blocked",
+            "bankroll_release_status": "prohibited_zero_allocation",
+        },
         "input_hashes": input_hashes,
         "pipeline_sha256": sha256(Path(__file__)),
     }
     payload = {
         "schema_version": "2.0",
-        "generated_at": "2026-06-21T23:59:00-05:00",
+        "generated_at": RELEASE_AS_OF.isoformat(),
+        "data_cutoff": DATA_CUTOFF.isoformat(),
+        "release_as_of": RELEASE_AS_OF.isoformat(),
+        "lifecycle_policy_version": "fail_closed_v1",
         "batch": {"start": "2026-06-22", "end": "2026-06-27", "fixture_count": 32},
         "model": metrics,
         "bankroll_simulation": bankroll_simulation,
@@ -2839,7 +3115,7 @@ def build() -> Dict[str, object]:
             "=======================================",
             "",
             "Canonical fixtures: wc_2026_matches_june_22-27.csv",
-            "Elapsed outcomes: wc_2026_results_through_june21.csv",
+            "Elapsed outcomes: wc_2026_results_through_june23.csv",
             "Pre-tournament Elo: wc_team_elo_baseline_june11.csv",
             "Historical Dataset A/B source: wc_backtest_historical_dataset.csv",
             "Screenshot-derived odds: odds_june22_23.csv, odds_june24.csv, odds_june25_26.csv, odds_june27.csv",
@@ -2850,36 +3126,34 @@ def build() -> Dict[str, object]:
             "Column derivations:",
             "- updated Elo: sequential neutral-site World Cup Elo update with K=60 and goal-margin multiplier.",
             "- goal-margin multiplier: 1.0 for one-goal/draw, 1.5 for two goals, (11+margin)/8 for three or more.",
-            "- form features: tournament games, points, goals for/against through June 21.",
+            "- form features: elapsed cards use strictly pre-match tournament state; future cards use tournament state through the June 23 cutoff.",
             "- tournament form: descriptive only in production; no second adjustment after Elo updates.",
-            "- probabilities: chronologically calibrated Elo three-way conversion.",
+            "- probabilities: chronologically proper-score-tuned Elo three-way conversion; empirical calibration is not claimed without reliability diagnostics.",
             "- parameter grid: divisor {350,400,450,500}; draw_base {.14,.16,.18,.20,.22}; draw_slope {.06,.08,.10,.12}.",
-            "- selection split: first 85% by time; final 15% untouched holdout. Selection rows use four ordered windows after the first 55%.",
+            "- selection split: first 85% by date block and final 15% development-validation block. This set informed prior development and is not a sealed confirmatory holdout.",
             "- score-model parameter grid: base total goals {2.25,2.50,2.75,3.00}; allocation {.30,.35,.40}; Elo gap scale {350,420,500}; gap intensity {0,.15,.30,.45}.",
             "- expected goals: match total = base_mu + gap_intensity*abs(Elo gap)/400, bounded to [1.5,4.5], then split as .5 + allocation*tanh(Elo gap/gap_scale).",
             "- score grid: tuned independent Poisson scores 0..10, renormalized; Dixon-Coles rho {-0.15,-0.10,-0.05,0,.05,.10,.15} is evaluated as a shadow challenger only.",
             "- score-market outputs: totals 0.5–5.5, BTTS, double chance, total-goal buckets, top correct scores, and Asian handicaps are derived by exact score-grid summation.",
             "- Asian settlement: integer/half lines settle directly; quarter lines split the stake equally across adjacent half-lines and preserve win/push/loss equivalents.",
-            "- handicap-plus-total settlement: the signed header handicap applies to selection 1/home and the opposite line to selection 2/away; the total leg and handicap leg are evaluated jointly on each score state.",
-            "- visually checked combo semantics: IMG_7660.PNG confirms a negative home header; IMG_7677.PNG confirms the corresponding positive-home convention.",
+            "- handicap-plus-total combos: retained as source evidence but disabled from completeness, EV, rankings, and recommendations until app-specific push/void/half-result contracts are documented and exhaustively tested.",
             "- normalized odds schema: market family, period, settlement rule, selected team, canonical selection, handicap/total lines, combo legs, market group, completeness, transcription status, and confidence.",
             "- unsupported or ambiguous markets: result handicap, early payout, corners, heterogeneous boosts, and incomplete/truncated selections are retained as source rows but excluded from evaluation.",
             "- double-chance consistency: displayed fair prices and screenshot EV both use the same production score grid.",
-            "- decision stack: 1X2 starts at 50% structural model / 50% de-vigged market; expanded families start at 35% / 65%; model weight shrinks further as divergence approaches 25pp.",
+            "- quote evaluation: structural forecast probabilities remain independent of the quoted price; de-vigged market probabilities are used only for disagreement/risk diagnostics.",
             "- recommendation utility: minimum(decision EV, stressed decision EV) minus 0.35*divergence, family uncertainty, and HALT penalties.",
-            "- ranked recommendations: publish up to four score-state-distinct sourced events; rank one is the highest-utility non-HALT row, or the highest de-vigged market-probability fallback when every row is HALT. Missing ranks remain explicit.",
-            "- expanded-market policy: recommendations are best-available comparisons; historical profitability remains unvalidated because the holdout has no timestamped totals/BTTS/Asian/combo prices for ROI or CLV.",
+            "- ranked comparisons: publish up to four score-state-distinct sourced events for audit only; no comparison becomes actionable in this release.",
+            "- actionability policy: every row is ABSTAIN because historical profitability is unvalidated, prices are stale, conditional fixtures require intervening results, and the nominal holdout is development-only.",
             "- price coverage: all 32 fixtures receive model probabilities/fair prices; EV is computed only for complete screenshot-derived source markets, currently on 12 fixtures.",
-            "- recommendation labels: BEST_AVAILABLE is mandatory per fixture; PASS/HALT remain diagnostic and no label implies certainty.",
+            "- recommendation field: null for ABSTAIN rows; rank_one_comparison preserves the non-actionable audit comparison separately.",
             "- metric_explanations: bilingual educational JSON generated from the published fixture values for 1/X/2, expected goals, totals, BTTS, and Asian handicap; these fields do not alter model probabilities.",
-            "- bankroll simulation: S/100 is allocated separately within the recommendation's sourced app only; every assigned match receives at least S/1, no match exceeds S/10, remaining funds use positive stressed/base EV plus monotonic A>B>C>D risk bonuses, and stakes round to S/0.10 with exact app totals.",
-            "- bankroll warnings: forced all-match coverage may include negative-EV/below-fair-price picks; gross return assumes a full win and the model-estimated net is explicitly unvalidated.",
+            "- bankroll simulation: only ACTIONABLE rows may receive a stake; every ABSTAIN row receives S/0 and unallocated app budget is preserved.",
             "- stress EV: subtract 3 percentage points from selected win probability and add 3 points to loss probability.",
             "- classification: divergence >15pp or EV >25% HALT; all other selections PASS until recommendation-policy profitability is validated out of sample.",
             "- source_sha256: SHA-256 of the exact screenshot containing the price.",
             "",
             "Model selection:",
-            "- Hyperparameters are selected on pre-holdout chronological windows and evaluated on an untouched final 15% holdout.",
+            "- Hyperparameters are selected on chronological development windows. The final development-validation block is descriptive only; a new prospective sealed holdout is required.",
             "- Dataset A contains World Cup rows; Dataset B contains qualifiers/friendlies.",
             "- No current price is hard-coded in Python and no reported target is extracted from prose.",
             "",

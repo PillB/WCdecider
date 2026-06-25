@@ -1,84 +1,72 @@
-WCdecider Backtest Historical Dataset — Column Provenance & Replication
-======================================================================
+WCdecider Historical Development Dataset — Provenance and Limits
+================================================================
 File: wc_backtest_historical_dataset.csv
-Builder: wc_backtest_historical_loader.py
-Rows: 222 (as of 2026-06-15 build)
-Purpose: N=222 expanded backtest for v4/v4.1/Bayesian search (Rules 25–26)
+Repair script: scripts/repair_historical_world_cups.py
+Current rows: 217
+Status: development-only; not confirmatory and not profitability-eligible
 
-REPLICATION COMMAND (rebuild from live sources):
-  python3 wc_backtest_historical_loader.py
-  # Writes wc_backtest_historical_dataset.csv
+CURRENT COMPOSITION
+-------------------
+- WC_2018_GROUP: 48 structurally validated group fixtures.
+- WC_2022_GROUP: 48 structurally validated group fixtures.
+- Supplementary international rows: 121.
+- Obsolete embedded WC_2026_GROUP rows: removed. The production pipeline loads
+  verified 2026 results from wc_2026_results_through_june21.csv instead.
 
-DATA SOURCES (all real, no fabricated odds):
-  1. football-data.co.uk — https://www.football-data.co.uk/worldcup2022.csv
-     - 121 international friendlies/WCQ rows (2023–2026)
-     - Columns used: Date, Home, Away, HG, AG, H_Avg, D_Avg, A_Avg
-     - Odds: H_Avg/D_Avg/A_Avg = average closing prices across listed bookmakers
-  2. FIFA World Cup 2018 Russia — group stage (48 matches)
-     - Scores: FIFA official results archive
-     - Odds: football-data.co.uk / Pinnacle closing proxies (embedded in loader)
-     - Elo: eloratings.net 2018_World_Cup tournament snapshot (pre-match approx)
-  3. FIFA World Cup 2022 Qatar — group stage (44 matches)
-     - Same provenance as 2018
-  4. FIFA World Cup 2026 MD1–MD3 (9 matches)
-     - Scores: AGENT.md settled results + live reports 2026-06-12..15
-     - Odds: Betsson/Betano screenshot transcriptions (user-supplied, not invented)
-     - Elo: eloratings.net 2026-06-15 snapshot (wc_model_v3.ELO dict)
+WORLD CUP STRUCTURAL CONTROLS
+-----------------------------
+- Exactly 48 fixtures per tournament.
+- Exactly 32 teams and three appearances per team.
+- No duplicate unordered team pair.
+- Frozen eight-group membership.
+- Exactly the six unordered pairings within every four-team group.
+- No cross-group pairing.
+- Global chronological output ordering.
 
-COLUMN DEFINITIONS AND PROVENANCE
----------------------------------
-match_id       — Unique key: WC_2018_GROUP_NNN | WC_2022_GROUP_NNN | FD_YYYYMMDD_NNNN | WC26_NNN
-date           — Kickoff DD/MM/YYYY. Source: football-data Date field or FIFA schedule
-competition    — WC_2018_GROUP | WC_2022_GROUP | WC_2026_GROUP | FRIENDLY | WC_QUALIFIER
-comp_weight    — Rule 26 weight: WC=1.0, WCQ=0.85, FRIENDLY=0.60. Source: AGENT.md §14
-team_a         — FIFA 3-letter code. Source: TEAM_NAME_MAP in loader (football-data names)
-team_b         — FIFA 3-letter code. Same as team_a
-team_a_name    — Display name from football-data Home or embedded WC tuple
-team_b_name    — Display name from football-data Away or embedded WC tuple
-elo_a_pre      — Pre-match Elo for team A BEFORE this fixture
-  - WC 2018/2022: eloratings.net tournament snapshot (static per match in loader)
-  - football-data rows: walk-forward K=20 from ELO_SNAPSHOT init (no look-ahead)
-  - WC 2026: eloratings.net 2026-06-15 snapshot (wc_model_v3.ELO)
-  - Provenance column: source_elo
-elo_b_pre      — Pre-match Elo for team B. Same rules as elo_a_pre
-outcome        — A (team_a win) | D (draw) | B (team_b win). Derived from final score
-score          — Final score "H-A" format. Source: HG-AG or embedded WC results
-total_goals    — Integer sum of goals. Derived from score
-o_win_a        — Decimal odds team A win. See source_odds column
-o_draw         — Decimal odds draw
-o_win_b        — Decimal odds team B win
-ha             — Home advantage Elo overlay (0.0 for neutral internationals in this dataset)
-mu             — Expected total goals prior for Poisson leg (default 2.25). Source: v4 calibration
-finetune       — Rule finetune string (e.g. "Rule 21 opener/minnow/rotation" for ESP-CPV)
-source_result  — Row-level citation for match result/score
-source_odds    — Row-level citation for closing odds
-source_elo     — Row-level citation for Elo method (snapshot vs walk_forward_k20)
+WORLD CUP RESULT CONTRACT STATUS
+--------------------------------
+The embedded 2018/2022 contracts were corrected after independent model-risk
+validation found duplicate, missing, misdated, and incorrect fixtures. They are
+internally complete and structurally validated. They remain interim because the
+repository does not yet include a hash-bound authoritative raw FIFA result file
+with row-level URL, retrieval timestamp, and locator for each fixture.
 
-PROCESSING STEPS (in order)
----------------------------
-Step 1: Fetch football-data.co.uk CSV via urllib (live URL above)
-Step 2: Map team names → FIFA codes via TEAM_NAME_MAP
-Step 3: Filter rows with valid scores and odds > 1.0
-Step 4: Classify competition (FRIENDLY vs WC_QUALIFIER heuristic by month)
-Step 5: Sort chronologically; apply walk-forward Elo (K=20, draw=0.5) — predictions use PRE-match Elo only
-Step 6: Append embedded WC 2018/2022 tuples with tournament Elo snapshots
-Step 7: Append WC 2026 MD1-3 from AGENT backtest with screenshot odds
-Step 8: Deduplicate by (date, team_a, team_b)
-Step 9: Write CSV
+WORLD CUP ELO
+-------------
+Each tournament starts from the documented tournament-start snapshot values in
+wc_backtest_historical_loader.py. Pre-match Elo is then replayed chronologically
+with neutral-site K=20 updates after each prior fixture. Static tournament Elo
+is no longer copied into every row.
 
-WHY walk-forward Elo for friendlies?
-  - Prevents look-ahead bias: post-match rating updates cannot contaminate pre-match predictions
-  - Required by Rule 25 expanded backtest mandate (AGENT.md)
+SUPPLEMENTARY ROWS
+------------------
+The 121 friendlies/qualifier rows retain their prior source and walk-forward
+construction. Their competition classification and source metadata remain
+insufficient for confirmatory validation. They must be replaced or explicitly
+regime-stratified before performance claims.
 
-VALIDATION CHECKS (automated in wc_model_v4_replicable_pipeline.py):
-  - Row count == 222
-  - Competitions present: WC_2018_GROUP, WC_2022_GROUP, WC_2026_GROUP, FRIENDLY, WC_QUALIFIER
-  - All o_win_a, o_draw, o_win_b > 1.0
-  - v4_elo weighted Brier ≈ 0.6157 (tolerance ±0.002)
-  - trap_count on MOD favorites == 0 under v4.1
+ODDS LIMIT
+----------
+Historical odds in this file are legacy proxies without verified quote
+timestamps. They are excluded from primary profitability, ROI, CLV, or staking
+validation.
 
-STUDENT REPLICATION (predictions only, no rebuild):
-  1. Load wc_backtest_historical_dataset.csv
-  2. For each row: elo_a=elo_a_pre, elo_b=elo_b_pre, finetune_str=finetune
-  3. Call model_v4_1x2 or run_match_v41 with o_win_a/o_draw/o_win_b
-  4. Compare Brier to locked values in tests/test_peer_replication.py
+REPRODUCTION
+------------
+Run:
+
+  PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/repair_historical_world_cups.py
+
+The script preserves only the 121 supplementary rows, rebuilds both complete
+World Cup group stages, sorts true parsed dates, and writes deterministic CSV.
+
+REMAINING BLOCKERS
+------------------
+- Hash-bound authoritative fixture/result manifests.
+- Row-level direct URLs and retrieval timestamps.
+- Raw tournament-start Elo snapshots and hashes.
+- Unified or regime-stratified Elo validation.
+- Verified competition metadata for supplementary rows.
+- A new prospective sealed holdout.
+
+No current metric derived from this file is a confirmatory performance claim.

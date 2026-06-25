@@ -7,7 +7,11 @@ Status: mandatory design and validation contract
 This document is the canonical technical design for WCdecider. Every future
 data, model, recommendation, report, test, and deployment update must read this
 file together with `AGENT_STATE.md`, `AGENT.md`, `PROJECT_UNDERSTANDING.md`,
-`ARCHITECTURE.md`, and `FUTURE_UPDATE_PROTOCOL.md`.
+`ARCHITECTURE.md`, `FUTURE_UPDATE_PROTOCOL.md`, and
+`STORM_LOOP_ENGINEERING_PROTOCOL.md`.
+
+`MODEL_PIPELINE_EXPLAINED.md` is the code-linked student walkthrough. It must
+remain synchronized with this contract and the executable functions.
 
 ## 1. Product objective
 
@@ -19,8 +23,8 @@ analysis system. It:
 2. selects models using chronological validation;
 3. generates match-result and score-derived market probabilities;
 4. compares model probabilities with complete sourced markets;
-5. produces one rank-one `BEST_AVAILABLE` recommendation and up to three
-   economically distinct sourced alternatives per fixture;
+5. produces up to four economically distinct sourced comparisons and a
+   separate fail-closed `ACTIONABLE`/`ABSTAIN` decision;
 6. publishes a bilingual JSON-driven report;
 7. records every JSON leaf in a four-role audit manifest;
 8. tests, deploys, and validates the exact GitHub Pages revision.
@@ -50,12 +54,27 @@ No checklist item is complete without:
 2. an automated or independently reproducible validation;
 3. a defined failure condition.
 
+### Mandatory research and repair method
+
+Every material phase must apply the two-layer method defined in
+`STORM_LOOP_ENGINEERING_PROTOCOL.md`:
+
+1. STORM structures multi-perspective, source-grounded research and evidence
+   synthesis.
+2. Loop engineering executes a bounded reproduce–measure–review–repair–test–
+   retrospect cycle.
+
+They are not synonyms. STORM does not replace statistical tests, and loop
+engineering may not reuse the final holdout as an iterative optimization set.
+Release review evidence must name the exact model version and prediction/
+metrics hashes, or the release remains blocked.
+
 ## 3. Repository source-of-truth map
 
 ### Inputs
 
 - `wc_2026_matches_june_22-27.csv`: canonical fixture IDs and kickoffs.
-- `wc_2026_results_through_june21.csv`: verified elapsed tournament results.
+- `wc_2026_results_through_june23.csv`: verified elapsed tournament results.
 - `wc_team_elo_baseline_june11.csv`: frozen pre-tournament ratings.
 - `wc_backtest_historical_dataset.csv`: historical modeling data.
 - `odds_june*.csv`: verbatim screenshot transcription.
@@ -210,7 +229,9 @@ evidence for a high-capacity temporal GNN. Promotion requires, at minimum:
 
 - Ratings are updated sequentially using verified elapsed results.
 - Neutral-site Elo uses K=60 and a goal-margin multiplier.
-- A calibrated three-way conversion produces win/draw/loss probabilities.
+- A proper-score-tuned three-way conversion produces win/draw/loss
+  probabilities. It must not be called empirically calibrated until reliability
+  diagnostics are reported.
 - Hyperparameters are selected on chronological pre-holdout windows.
 
 ### Score model
@@ -236,9 +257,10 @@ Shadow:
 ### Rejected complexity
 
 TGNN, GraphMixer-like, and tabular MLP research implementations remain excluded
-from production because their chronological Brier scores were materially worse
-than calibrated Elo/market baselines. Complexity is adopted only when it beats a
-simpler baseline on untouched data and calibration.
+from production because prior chronological experiments did not establish
+secure superiority over proper-score-tuned simple/market benchmarks.
+Complexity is adopted only when it beats a simpler baseline on untouched data
+with reliability evidence.
 
 Registered research-track families include CatBoost/LightGBM tabular models,
 hierarchical dynamic Poisson, Dixon-Coles, Temporal Graph Networks, TGAT-style
@@ -254,9 +276,9 @@ shadow/sensitivity view, not a production override.
 Current implementation:
 
 - selected gated candidate: Dixon-Coles low-score correction;
-- reason: it is the best currently feasible football-specific research model
-  from the registry because it adds low-parameter score dependence without
-  violating the small-sample gate;
+- reason: it is the selected tested low-parameter football-specific shadow
+  candidate because it adds low-parameter score dependence without violating
+  the small-sample gate; untested registered families are not claimed inferior;
 - blocked candidates: temporal GNN, TGAT-style, GraphMixer/DyGFormer, and
   sequence transformers remain registry-only until the data gate is met;
 - production recommendations, stake simulation, and top-four ranking remain
@@ -304,14 +326,17 @@ the same probability engine.
 ## 8. Recommendation policy
 
 Every fixture receives up to four economically distinct sourced
-recommendations. Rank one remains the backward-compatible `BEST_AVAILABLE`
-recommendation.
+comparisons. Rank one is not an executable recommendation unless all
+actionability gates pass.
 
 ### Decision probability
 
-- 1X2 starts with 50% structural model / 50% de-vigged source market.
-- Expanded families start with 35% model / 65% source market.
-- Model weight shrinks further when model-market disagreement rises.
+- Structural forecast probabilities remain independent of the quote being
+  evaluated.
+- De-vigged source-market probabilities are retained separately as
+  disagreement and risk diagnostics.
+- Any future probability stack requires out-of-sample weight selection and
+  untouched superiority before deployment.
 
 ### Ranking utility
 
@@ -370,25 +395,27 @@ Rules:
   shadow models. A shadow reclassification is a sensitivity-review lead, not a
   resolved HALT or evidence that the shadow model is better.
 
-## 9. S/100-per-app bankroll simulation
+## 9. Fail-closed bankroll simulation
 
-The bankroll planner is educational and forced-coverage by user request.
+The bankroll planner is educational and allocates only to `ACTIONABLE` rows.
 
 ### Scope
 
-- Budget: S/100 in Betano and S/100 in Betsson.
+- Maximum budget: S/100 in Betano and S/100 in Betsson.
 - A fixture is assigned only to the app containing its sourced selected price.
-- Current coverage is 21 Betano recommendations and 11 Betsson recommendations.
+- App coverage is derived from the current rank-one sourced comparison and is
+  not a fixed release constant.
 - The system never invents the same price in the other app.
 
 ### Allocation
 
-- Every assigned fixture receives a S/1 base stake.
+- Every `ACTIONABLE` fixture may receive a S/1 base stake.
 - Remaining budget is weighted toward positive stressed EV and lower risk.
 - Risk-grade bonus is monotonic: A > B > C > D.
 - Maximum stake is S/10 per match.
 - Stakes round to S/0.10.
-- Each app allocation must sum exactly to S/100.
+- Unallocated budget is allowed and expected when gates fail.
+- `ABSTAIN` always has stake zero.
 
 ### Per-match simulation fields
 
@@ -398,12 +425,11 @@ The bankroll planner is educational and forced-coverage by user request.
 - model fair-price threshold;
 - price-gate status;
 - full-win gross return and profit illustration;
-- six bilingual navigation/check steps;
-- forced-coverage and unvalidated-profitability warning.
+- six bilingual navigation/check steps only for `ACTIONABLE` rows;
+- abstention and unvalidated-profitability warning.
 
 If the current price is below the fair threshold, the website must state that a
-disciplined real-money process would pause, even though the forced simulation
-still assigns the minimum coverage stake.
+disciplined process pauses and preserves the unallocated budget.
 
 ## 10. JSON-driven newbie explanations
 
@@ -538,7 +564,7 @@ before an error handler can render.
 - diagnostics panel appears on missing/tampered artifacts and includes the
   failing artifact path;
 - footer last-updated, version, and build marker;
-- S/100 app totals;
+- allocated and unallocated app totals;
 - per-match stake, return, and six-step flow parity.
 
 ### Release test
@@ -587,7 +613,7 @@ A future update is done only when:
 
 1. canonical source coverage and hashes pass;
 2. chronological model and market-specific metrics pass;
-3. exactly one rank-one `BEST_AVAILABLE` recommendation per fixture exists and
+3. every fixture has an explicit `ACTIONABLE` or `ABSTAIN` status and
    every additional rank is settlement-distinct or an explicit source
    shortfall is published;
 4. app prices and bankroll simulations use only sourced app data;

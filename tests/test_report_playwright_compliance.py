@@ -5,6 +5,7 @@ from __future__ import annotations
 import contextlib
 import http.server
 import json
+import os
 import re
 import socket
 import threading
@@ -13,7 +14,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
-SITE = ROOT / "site"
+SITE = Path(os.environ.get("WCDECIDER_SITE_DIR", ROOT / "site"))
 
 
 @contextlib.contextmanager
@@ -63,6 +64,48 @@ def test_exactly_32_unique_json_driven_cards(page):
     assert len(set(ids)) == 32
 
 
+def test_elapsed_cards_show_verified_results_and_future_cards_do_not(page):
+    browser_page, _ = page
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    elapsed = [
+        row for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "elapsed_result_verified"
+    ]
+    future = [
+        row for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "future"
+    ]
+    assert len(elapsed) == 8
+    assert len(future) == 24
+    for row in elapsed:
+        text = browser_page.locator(
+            f'[data-fixture-id="{row["fixture_id"]}"]'
+        ).inner_text()
+        assert f'Final result: {row["verified_result"]["score"]}' in text
+        assert "Archived pre-match forecast" in text
+    for row in future:
+        text = browser_page.locator(
+            f'[data-fixture-id="{row["fixture_id"]}"]'
+        ).inner_text()
+        assert "Final result:" not in text
+
+
+def test_workflow_counts_are_json_driven(page):
+    browser_page, _ = page
+    metrics = json.loads(
+        (SITE / "wc_june22_27_model_metrics.json").read_text(encoding="utf-8")
+    )
+    historical = metrics["dataset_a_rows"] + metrics["dataset_b_rows"]
+    assert browser_page.locator("#production-history-count").text_content() == (
+        f"{historical} rows"
+    )
+    assert browser_page.locator("#elapsed-results-count").text_content() == (
+        f'{metrics["elapsed_wc2026_rows"]} results'
+    )
+
+
 def test_no_dynamic_resource_failures(page):
     _, failed = page
     assert failed == []
@@ -94,9 +137,10 @@ def test_rendered_recommendations_match_json(page):
     for item in payload["predictions"]:
         card = browser_page.locator(f'[data-fixture-id="{item["fixture_id"]}"]')
         assert card.count() == 1
-        rec = item["recommendation"]
-        assert rec is not None
-        assert rec["decision_status"] == "BEST_AVAILABLE"
+        assert item["recommendation"] is None
+        rec = item["rank_one_comparison"]
+        assert rec["decision_status"] == "ABSTAIN"
+        assert rec["budget_simulation"]["stake"] == 0.0
         text = card.inner_text()
         assert rec["selection_original"] in text
         displayed = re.search(r"Decision EV (-?\d+\.\d)%", text)
@@ -104,6 +148,7 @@ def test_rendered_recommendations_match_json(page):
         assert float(displayed.group(1)) == pytest.approx(rec["ev_pct"], abs=0.11)
         assert rec["strength"] in text
         assert f"risk grade {rec['risk_grade']}" in text
+        assert "ABSTAIN — highest-ranked comparison only" in text
 
 
 def test_top_ranked_recommendations_match_json_and_disclose_shortfalls(page):
@@ -116,18 +161,18 @@ def test_top_ranked_recommendations_match_json_and_disclose_shortfalls(page):
             f'[data-fixture-id="{item["fixture_id"]}"]'
         )
         ranked = card.locator("[data-recommendation-rank]")
-        assert ranked.count() == item["top_recommendations_available"]
+        assert ranked.count() == item["ranked_comparisons_available"]
         assert 1 <= ranked.count() <= 4
         for index, recommendation in enumerate(
-            item["top_recommendations"], start=1
+            item["ranked_comparisons"], start=1
         ):
             rendered = card.locator(
                 f'[data-recommendation-rank="{index}"]'
             ).inner_text()
             assert recommendation["selection_original"] in rendered
             assert f'{recommendation["odds"]:.2f}' in rendered
-        if item["top_recommendations_available"] < 4:
-            assert "was not invented" in card.inner_text()
+        if item["ranked_comparisons_available"] < 4:
+            assert "was not manufactured" in card.inner_text()
 
 
 def test_forbidden_legacy_fixtures_are_absent(page):
@@ -199,23 +244,27 @@ def test_per_match_bankroll_steps_and_app_totals_match_json(page):
     plan_text = browser_page.locator("#bankroll-plan").inner_text()
     assert "Betano · S/100.00" in plan_text
     assert "Betsson · S/100.00" in plan_text
-    assert "21 sourced match picks" in plan_text
-    assert "11 sourced match picks" in plan_text
+    for app, summary in payload["bankroll_simulation"]["apps"].items():
+        assert f"{summary['fixture_count']} sourced match picks" in plan_text
+        assert summary["total_stake"] == 0.0
+        assert summary["unallocated_budget"] == 100.0
 
     for item in payload["predictions"]:
         card = browser_page.locator(f'[data-fixture-id="{item["fixture_id"]}"]')
-        rec = item["recommendation"]
+        assert item["recommendation"] is None
+        rec = item["rank_one_comparison"]
         budget = rec["budget_simulation"]
+        assert budget["stake"] == 0.0
         text = card.inner_text()
-        assert f"stake S/{budget['stake']:.2f} in {rec['app']}" in text
+        assert f"stake S/{budget['stake']:.2f}" in text
         details = card.locator("details").filter(
-            has_text="S/100 app-budget simulation"
+            has_text="Fail-closed allocation"
         )
         assert details.count() == 1
         details.locator("summary").click()
         assert f"S/{budget['gross_return_if_full_win']:.2f}" in details.inner_text()
-        assert details.locator("ol.en li").count() == 6
-        assert budget["steps"]["en"][-1] in details.inner_text()
+        assert details.locator("ol.en li").count() == 0
+        assert "No stake is allocated" in details.inner_text()
 
 
 def test_mobile_shell_survives_delayed_json_without_crashing():
@@ -292,8 +341,8 @@ def test_research_mode_toggle_reveals_gated_shadow_model(page):
     assert "not production" in text
     assert f'{first["research_mode"]["probabilities"]["team_a_win"] * 100:.1f}%' in text
     research_ranked = panel.locator("[data-research-recommendation-rank]")
-    assert research_ranked.count() == first["research_mode"]["top_recommendations_available"]
-    assert first["research_mode"]["top_recommendations"][0]["selection_original"] in text
+    assert research_ranked.count() == first["research_mode"]["ranked_comparisons_available"]
+    assert first["research_mode"]["ranked_comparisons"][0]["selection_original"] in text
     research_workflow = browser_page.locator("#research-workflow")
     assert research_workflow.locator(".research-path").count() == 1
     assert "CI crosses zero" in research_workflow.text_content()

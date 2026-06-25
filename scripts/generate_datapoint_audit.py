@@ -81,13 +81,14 @@ def source_for(artifact: str, pointer: str, fixture_id: str) -> Tuple[str, str, 
                 "wc_backtest_historical_dataset.csv"
             )
         if pointer.startswith("/historical_closing_odds/"):
-            return "historical_odds_coverage.json", pointer, (
-                "historical_odds_proxy.csv"
+            return "historical_closing_odds_canonical_coverage.json", pointer, (
+                "historical_closing_odds_canonical.csv;"
+                "historical_closing_odds_source_manifest.csv"
             )
         return "wc_backtest_historical_dataset.csv", pointer, "historical rows + documented formula"
     if "/research/" in pointer:
         return "wc_research_june22_27.csv", fixture_id, ""
-    if "/research_mode/top_recommendations/" in pointer:
+    if "/research_mode/ranked_comparisons/" in pointer:
         parts = pointer.strip("/").split("/")
         base = f"/predictions/{parts[1]}/research_mode"
         return "wc_odds_june_22-27.csv", fixture_id, (
@@ -96,7 +97,10 @@ def source_for(artifact: str, pointer: str, fixture_id: str) -> Tuple[str, str, 
             f"{PREDICTIONS.name}:{base}/probabilities/team_b_win;"
             f"{PREDICTIONS.name}:{base}/rho"
         )
-    if "/recommendation/" in pointer or "/top_recommendations/" in pointer:
+    if (
+        "/rank_one_comparison/" in pointer
+        or "/ranked_comparisons/" in pointer
+    ):
         parts = pointer.strip("/").split("/")
         base = f"/predictions/{parts[1]}"
         return "wc_odds_june_22-27.csv", fixture_id, (
@@ -137,6 +141,15 @@ def main() -> None:
     metrics = json.loads(METRICS.read_text(encoding="utf-8"))
     registry = json.loads(REVIEWS.read_text(encoding="utf-8"))
     registry_hash = sha256(REVIEWS)
+    current_artifact_hashes = {
+        PREDICTIONS.name: sha256(PREDICTIONS),
+        METRICS.name: sha256(METRICS),
+    }
+    reviewed_artifact_hashes = registry.get("reviewed_artifact_hashes", {})
+    review_binding_valid = (
+        registry.get("reviewed_model_version") == metrics["version"]
+        and reviewed_artifact_hashes == current_artifact_hashes
+    )
     pipeline_hash = metrics["pipeline_sha256"]
     mission_hash = sha256(MISSION)
     git_commit = os.environ.get("GITHUB_SHA", registry.get("git_commit", "LOCAL_UNCOMMITTED"))
@@ -175,6 +188,7 @@ def main() -> None:
                 if statuses == ["PASS"] * 4
                 and all(reviewer_ids)
                 and len(set(reviewer_ids)) == 4
+                and review_binding_valid
                 else "BLOCKED"
             )
             datapoint_id = hashlib.sha256(
@@ -189,7 +203,10 @@ def main() -> None:
                     for item in research.get("source_urls", "").split("|")
                     if item.strip().startswith("http")
                 ]
-                source_url = urls[0] if urls else ""
+                # The current source schema provides a claim bundle rather than
+                # one field-specific citation. Preserve the complete bundle;
+                # selecting only the first URL overstated field-level lineage.
+                source_url = " | ".join(urls)
                 source_accessed_at = research.get("accessed_at") or source_accessed_at
             rows.append({
                 "datapoint_id": datapoint_id,
@@ -280,6 +297,16 @@ def main() -> None:
         "expected_paths_sha256": sha256_text("\n".join(expected_paths)),
         "audit_paths_sha256": sha256_text("\n".join(expected_paths)),
         "final_status": "PASS" if blocked == 0 else "BLOCKED",
+        "review_binding_valid": review_binding_valid,
+        "reviewed_model_version": registry.get("reviewed_model_version", ""),
+        "current_model_version": metrics["version"],
+        "reviewed_artifact_hashes": reviewed_artifact_hashes,
+        "current_artifact_hashes": current_artifact_hashes,
+        "blocking_reason": (
+            ""
+            if review_binding_valid
+            else "review_registry_not_bound_to_current_model_and_artifact_hashes"
+        ),
     }
     SUMMARY_OUT.write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n",

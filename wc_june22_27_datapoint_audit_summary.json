@@ -1,21 +1,33 @@
 {
   "artifact": "wc_june22_27_datapoint_audit.csv",
-  "artifact_bytes": 67313960,
+  "artifact_bytes": 64281818,
   "artifact_counts": {
-    "wc_june22_27_model_metrics.json": 342,
-    "wc_june22_27_predictions.json": 58610
+    "wc_june22_27_model_metrics.json": 538,
+    "wc_june22_27_predictions.json": 56693
   },
-  "artifact_sha256": "bcd1f1997dba9ea25cdadb7bc7ef20e11f664de4301e0c703b745db202608f46",
-  "audit_paths_sha256": "f4f2b163ccfbff6f59bb20505e95858dca63da784dfb7663471a2918b6baefcf",
-  "audit_rows": 58952,
+  "artifact_sha256": "76a402a8928b5beb588fea9cb3d3e4bb79cc67a29d6ad6c0ff6ed0ebd2213ad3",
+  "audit_paths_sha256": "5289d8a48d6f618165fed1dbdb6398e3a2360558d35b6bab17795fd271795ac2",
+  "audit_rows": 57231,
   "blocked_rows": 0,
-  "expected_json_leaf_count": 58952,
-  "expected_paths_sha256": "f4f2b163ccfbff6f59bb20505e95858dca63da784dfb7663471a2918b6baefcf",
+  "blocking_reason": "",
+  "current_artifact_hashes": {
+    "wc_june22_27_model_metrics.json": "09332cac4a76e723de2cca602c386380bb8120aea9f80aedf27fc6d63d453a83",
+    "wc_june22_27_predictions.json": "f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57"
+  },
+  "current_model_version": "june22_27_v5_fail_closed_development_only",
+  "expected_json_leaf_count": 57231,
+  "expected_paths_sha256": "5289d8a48d6f618165fed1dbdb6398e3a2360558d35b6bab17795fd271795ac2",
   "final_status": "PASS",
-  "metrics_sha256": "7b5dd8ce1838f0231359793c22f44ea7ef92dac6df2de967e7ddb6d3e44f1bfd",
-  "predictions_sha256": "0509a3acd04052dbd06eb0733ef220665bd031cac024d8736141b33d21484dfa",
+  "metrics_sha256": "09332cac4a76e723de2cca602c386380bb8120aea9f80aedf27fc6d63d453a83",
+  "predictions_sha256": "f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57",
+  "review_binding_valid": true,
+  "reviewed_artifact_hashes": {
+    "wc_june22_27_model_metrics.json": "09332cac4a76e723de2cca602c386380bb8120aea9f80aedf27fc6d63d453a83",
+    "wc_june22_27_predictions.json": "f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57"
+  },
+  "reviewed_model_version": "june22_27_v5_fail_closed_development_only",
   "schema_version": "1.0",
   "status_counts": {
-    "PASS": 58952
+    "PASS": 57231
   }
 }

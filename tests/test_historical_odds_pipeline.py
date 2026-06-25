@@ -2,13 +2,55 @@ import csv
 import json
 import hashlib
 import re
+from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
 
 import historical_odds_pipeline as pipeline
 import model_championship
+import wc_backtest_historical_loader as historical_loader
+from wc_june22_27_pipeline import HistoricalRow
 from scripts import merge_research_metrics
+
+
+@pytest.mark.parametrize(
+    "competition,rows",
+    [
+        ("WC_2018_GROUP", historical_loader.WC_2018_GROUP),
+        ("WC_2022_GROUP", historical_loader.WC_2022_GROUP),
+    ],
+)
+def test_world_cup_group_contract_is_complete_and_pair_unique(
+    competition, rows,
+):
+    assert len(rows) == 48
+    pairs = [tuple(sorted((row[1], row[2]))) for row in rows]
+    assert len(pairs) == len(set(pairs))
+    appearances = {}
+    for row in rows:
+        for team in (row[1], row[2]):
+            appearances[team] = appearances.get(team, 0) + 1
+    assert len(appearances) == 32
+    assert set(appearances.values()) == {3}
+    built = historical_loader.build_wc_rows(
+        competition, rows, "test canonical contract"
+    )
+    assert len(built) == 48
+    assert len({row.match_id for row in built}) == 48
+
+
+def test_repaired_historical_dataset_is_globally_chronological_and_has_no_obsolete_2026():
+    rows = list(csv.DictReader(
+        (pipeline.ROOT / "wc_backtest_historical_dataset.csv").open()
+    ))
+    dates = [
+        historical_loader.parse_date(row["date"]) for row in rows
+    ]
+    assert dates == sorted(dates)
+    assert not any(
+        row["competition"] == "WC_2026_GROUP" for row in rows
+    )
 
 
 def test_public_legacy_inventory_is_explicitly_ineligible(tmp_path, monkeypatch):
@@ -18,8 +60,11 @@ def test_public_legacy_inventory_is_explicitly_ineligible(tmp_path, monkeypatch)
     pipeline.build_public_proxy()
     rows = list(csv.DictReader((tmp_path / "proxy.csv").open()))
     coverage = json.loads((tmp_path / "coverage.json").read_text())
-    assert len(rows) == 666
-    assert len({row["event_id"] for row in rows}) == 222
+    historical_rows = list(csv.DictReader(
+        (pipeline.ROOT / "wc_backtest_historical_dataset.csv").open()
+    ))
+    assert len(rows) == 3 * len(historical_rows)
+    assert len({row["event_id"] for row in rows}) == len(historical_rows)
     assert {row["evidence_class"] for row in rows} == {
         "legacy_proxy_unknown_timestamp"
     }
@@ -277,7 +322,82 @@ def test_public_build_preserves_restricted_summary_without_private_payloads(
     }
 
 
-def test_model_championship_is_nested_and_does_not_claim_profitability():
+def historical_row(
+    day, *, weight=1.0, outcome="A", team_a="A", team_b="B",
+):
+    return HistoricalRow(
+        date=day,
+        competition="TEST",
+        weight=weight,
+        team_a=team_a,
+        team_b=team_b,
+        elo_a=1500.0,
+        elo_b=1500.0,
+        outcome=outcome,
+        score_a=1 if outcome == "A" else 0,
+        score_b=1 if outcome == "B" else 0,
+        odds_a=2.0,
+        odds_d=3.0,
+        odds_b=4.0,
+    )
+
+
+def test_inner_rolling_windows_keep_each_date_block_intact():
+    rows = []
+    first = date(2020, 1, 1)
+    for offset in range(20):
+        rows.extend([
+            historical_row(first + timedelta(days=offset)),
+            historical_row(first + timedelta(days=offset)),
+        ])
+    for start, end in model_championship.rolling_windows(rows):
+        assert start == 0 or rows[start - 1].date < rows[start].date
+        assert end == len(rows) or rows[end - 1].date < rows[end].date
+
+
+def test_weighted_paired_bootstrap_resamples_fixture_date_blocks():
+    rows = [
+        historical_row(date(2020, 1, 1), weight=9.0, outcome="A"),
+        historical_row(date(2020, 1, 1), weight=1.0, outcome="B"),
+        historical_row(date(2020, 1, 2), weight=1.0, outcome="A"),
+    ]
+    challenger = lambda row: (0.8, 0.1, 0.1)
+    market = lambda row: (0.2, 0.1, 0.7)
+    result = model_championship.paired_bootstrap(
+        rows, challenger, market, iterations=200,
+    )
+    expected = sum(
+        row.weight * (
+            model_championship.log_loss(challenger(row), row.outcome)
+            - model_championship.log_loss(market(row), row.outcome)
+        )
+        for row in rows
+    ) / sum(row.weight for row in rows)
+    assert result["challenger_minus_market_log_loss"] == pytest.approx(expected)
+    assert result["block_count"] == 2
+    assert result["method"] == "weighted_paired_bootstrap_by_fixture_date"
+
+
+def test_market_benchmark_winner_is_compared_with_best_non_market_challenger():
+    means = {
+        "market_devigged_proxy": {
+            "mean_log_loss": 0.9, "mean_brier": 0.5,
+        },
+        "elo_fixed_400": {"mean_log_loss": 1.1, "mean_brier": 0.6},
+        "elo_tuned_nested": {"mean_log_loss": 1.0, "mean_brier": 0.55},
+        "elo_market_stack_nested": {
+            "mean_log_loss": 0.9, "mean_brier": 0.5,
+        },
+    }
+    assert model_championship.select_holdout_challenger(
+        means, "market_devigged_proxy",
+    ) == "elo_tuned_nested"
+    assert model_championship.select_holdout_challenger(
+        means, "elo_fixed_400",
+    ) == "elo_fixed_400"
+
+
+def test_model_benchmark_is_nested_and_does_not_claim_deployment_or_profitability():
     result = model_championship.build()
     assert result["selection_rows"] + result["untouched_holdout_rows"] == (
         result["rows"]
@@ -288,11 +408,28 @@ def test_model_championship_is_nested_and_does_not_claim_profitability():
         "blocked_no_timestamp_verified_closing_odds"
     )
     assert result["rival_500_percent_claim_status"].startswith("unverified")
-    assert result["champion_vs_market_paired_bootstrap"]["iterations"] == 5000
+    comparison = result["challenger_vs_market_paired_bootstrap"]
+    assert comparison["iterations"] == 5000
+    complete_rows = [
+        row for row in model_championship.load_historical()
+        if row.odds_a is not None and row.odds_d is not None
+        and row.odds_b is not None
+        and min(row.odds_a, row.odds_d, row.odds_b) > 1.0
+    ]
+    split = model_championship.date_block_split(complete_rows, 0.85)
+    assert comparison["block_count"] == len({
+        row.date for row in complete_rows[split:]
+    })
+    assert comparison["challenger"] != comparison["market_benchmark"]
     assert "temporal_graph_neural_network" in result["capacity_rejections"]
-    outer = result["nested_outer_championship"]
+    assert result["benchmark_champion_is_deployment_decision"] is False
+    outer = result["nested_outer_benchmark"]
+    assert result["nested_outer_championship"] is outer
+    assert result["legacy_schema_aliases"] == {
+        "nested_outer_championship": "nested_outer_benchmark",
+    }
     assert len(outer["folds"]) == 4
-    assert outer["champion"] == result["champion"]
+    assert outer["benchmark_champion"] == result["benchmark_champion"]
     assert all(
         fold["train_rows"] + fold["test_rows"] <= result["selection_rows"]
         for fold in outer["folds"]
@@ -300,6 +437,15 @@ def test_model_championship_is_nested_and_does_not_claim_profitability():
     assert all(
         fold["train_end"] < fold["test_start"]
         for fold in outer["folds"]
+    )
+    gate = result["deep_learning_research"]["promotion_gate"]
+    assert gate["actual_fixture_count"] == result["source_rows"]
+    assert gate["actual_team_count"] == len(
+        gate["actual_temporal_edges_per_team"]
+    )
+    assert gate["research_promotion_gate_passed"] == (
+        gate["fixture_count_gate_passed"]
+        and gate["temporal_edge_gate_passed"]
     )
 
 

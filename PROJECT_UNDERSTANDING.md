@@ -1,5 +1,9 @@
 # WCdecider Project Understanding
 
+All material updates must follow `STORM_LOOP_ENGINEERING_PROTOCOL.md`: STORM
+for multi-perspective source-grounded research synthesis, and bounded loop
+engineering for reproduce–measure–review–repair–test–retrospect execution.
+
 **Last grounded:** 2026-06-23
 
 **Active prediction batch:** FIFA World Cup matches from 2026-06-22 through 2026-06-27

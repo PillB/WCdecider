@@ -19,7 +19,8 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R2.3: Parameter/model selection uses only pre-holdout chronological windows.
 - R2.4: Final holdout remains untouched until evaluation.
 - R2.5: Report Brier, log loss, sample sizes, calibration parameters, and simple baselines.
-- R2.6: Rank one is the single backward-compatible `BEST_AVAILABLE`
+- R2.6: Rank one is a comparison only. It becomes `ACTIONABLE` only when every
+  authorization gate passes; otherwise it is `ABSTAIN`.
   recommendation; up to three additional economically distinct sourced
   alternatives may be published from settlement-validated 1X2, totals, BTTS,
   double-chance, Asian-handicap, or supported combo markets.
@@ -37,17 +38,22 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R2.15: A timestamped fixed-odds snapshot is primary closing evidence only
   when complete, strictly before kickoff, and no more than 120 minutes before
   kickoff. Older snapshots remain pre-event observations.
-- R2.14: Research mode may expose the best currently feasible gated shadow model, but it must be off by default, clearly labeled non-production, and unable to mutate production recommendations or staking outputs.
+- R2.16: Research mode may expose a selected tested gated shadow model, but it
+  must be off by default, clearly labeled non-production, unable to mutate
+  production recommendations or staking outputs, and must not imply that
+  untested registered candidates were beaten.
 
 ## R3 — Safety and classification
 
-- R3.1: Every fixture has one `BEST_AVAILABLE` decision plus a `PASS` or investigative `HALT` diagnostic.
+- R3.1: Every fixture has an explicit `ACTIONABLE` or `ABSTAIN` decision plus
+  independent `PASS`/`HALT` anomaly diagnostics.
 - R3.2: `BEST_AVAILABLE` is a comparative recommendation, not a guarantee; cards must show risk grade, stress case, source price, and profitability-validation status.
 - R3.3: No “surefire,” “certain,” or “easy multiplier” claim is permitted.
 - R3.4: A low-odds candidate must be rejected unless its conservative lower probability bound exceeds vig-adjusted break-even.
 - R3.5: Conditional forecasts visibly require rerunning after intervening matches or material lineup/odds changes.
 - R3.6: Confidence is capped at 70% and described as model evidence, not outcome certainty.
-- R3.7: Publish up to four economically distinct sourced recommendations per fixture. Preserve rank one as `BEST_AVAILABLE`; disclose rather than fabricate any rank shortfall.
+- R3.7: Publish up to four economically distinct sourced comparisons per
+  fixture; disclose rather than fabricate any rank shortfall.
 - R3.8: Equivalent market/selection/line events across screenshots or apps cannot occupy multiple top-four ranks.
 
 ## R4 — Datapoint subagent governance
@@ -64,7 +70,7 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R5.1: Exactly one JSON-driven `bg-slate-900` card exists per canonical fixture.
 - R5.2: All visible application text, errors, diagrams, filters, and explanations switch English/Spanish.
 - R5.3: Displayed values match JSON within explicit display tolerance.
-- R5.4: The report shows one rank-one `BEST_AVAILABLE` recommendation plus up
+- R5.4: The report shows one rank-one comparison plus up
   to three sourced alternatives per fixture and clearly distinguishes every
   rank from validated profitability or certainty.
 - R5.5: Cards show current/conditional freshness and audit status.
@@ -91,7 +97,9 @@ This document defines testable production requirements. `AGENT.md` defines behav
 
 ## R7 — CI and deployment
 
-- R7.1: CI order is pipeline → report → audit manifest → site build → full tests.
+- R7.1: CI order is canonical historical odds → model championship →
+  prediction pipeline → merged metrics → audit manifest → report → site build
+  → full tests.
 - R7.2: CI starts without relying on a pre-existing `site/`.
 - R7.3: Browser tests run against the exact site artifact later uploaded.
 - R7.4: Required dependency versions are bounded/pinned and Python is fixed by workflow.

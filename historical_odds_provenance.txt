@@ -7,9 +7,9 @@ Primary source contract:
 
 Current public build:
 - Input: wc_backtest_historical_dataset.csv
-- Input SHA-256: 41a5c7732582314e32d42135ee09f212a7e4fe70f398d491df8b80f6275b3add
-- Rows: 666
-- Events: 222
+- Input SHA-256: 339fe8fee64eb757c333d7e7b7e450099c9fe412aa66e688aca87fc61a0e53d5
+- Rows: 651
+- Events: 217
 - Evidence class: legacy_proxy_unknown_timestamp
 - Primary profitability eligibility: zero rows.
 

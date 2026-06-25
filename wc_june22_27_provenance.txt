@@ -2,7 +2,7 @@ WCdecider June 22–27, 2026 provenance
 =======================================
 
 Canonical fixtures: wc_2026_matches_june_22-27.csv
-Elapsed outcomes: wc_2026_results_through_june21.csv
+Elapsed outcomes: wc_2026_results_through_june23.csv
 Pre-tournament Elo: wc_team_elo_baseline_june11.csv
 Historical Dataset A/B source: wc_backtest_historical_dataset.csv
 Screenshot-derived odds: odds_june22_23.csv, odds_june24.csv, odds_june25_26.csv, odds_june27.csv
@@ -13,36 +13,34 @@ Sanitized canonical OSINT output: wc_research_june22_27.csv (post-cutoff sources
 Column derivations:
 - updated Elo: sequential neutral-site World Cup Elo update with K=60 and goal-margin multiplier.
 - goal-margin multiplier: 1.0 for one-goal/draw, 1.5 for two goals, (11+margin)/8 for three or more.
-- form features: tournament games, points, goals for/against through June 21.
+- form features: elapsed cards use strictly pre-match tournament state; future cards use tournament state through the June 23 cutoff.
 - tournament form: descriptive only in production; no second adjustment after Elo updates.
-- probabilities: chronologically calibrated Elo three-way conversion.
+- probabilities: chronologically proper-score-tuned Elo three-way conversion; empirical calibration is not claimed without reliability diagnostics.
 - parameter grid: divisor {350,400,450,500}; draw_base {.14,.16,.18,.20,.22}; draw_slope {.06,.08,.10,.12}.
-- selection split: first 85% by time; final 15% untouched holdout. Selection rows use four ordered windows after the first 55%.
+- selection split: first 85% by date block and final 15% development-validation block. This set informed prior development and is not a sealed confirmatory holdout.
 - score-model parameter grid: base total goals {2.25,2.50,2.75,3.00}; allocation {.30,.35,.40}; Elo gap scale {350,420,500}; gap intensity {0,.15,.30,.45}.
 - expected goals: match total = base_mu + gap_intensity*abs(Elo gap)/400, bounded to [1.5,4.5], then split as .5 + allocation*tanh(Elo gap/gap_scale).
 - score grid: tuned independent Poisson scores 0..10, renormalized; Dixon-Coles rho {-0.15,-0.10,-0.05,0,.05,.10,.15} is evaluated as a shadow challenger only.
 - score-market outputs: totals 0.5–5.5, BTTS, double chance, total-goal buckets, top correct scores, and Asian handicaps are derived by exact score-grid summation.
 - Asian settlement: integer/half lines settle directly; quarter lines split the stake equally across adjacent half-lines and preserve win/push/loss equivalents.
-- handicap-plus-total settlement: the signed header handicap applies to selection 1/home and the opposite line to selection 2/away; the total leg and handicap leg are evaluated jointly on each score state.
-- visually checked combo semantics: IMG_7660.PNG confirms a negative home header; IMG_7677.PNG confirms the corresponding positive-home convention.
+- handicap-plus-total combos: retained as source evidence but disabled from completeness, EV, rankings, and recommendations until app-specific push/void/half-result contracts are documented and exhaustively tested.
 - normalized odds schema: market family, period, settlement rule, selected team, canonical selection, handicap/total lines, combo legs, market group, completeness, transcription status, and confidence.
 - unsupported or ambiguous markets: result handicap, early payout, corners, heterogeneous boosts, and incomplete/truncated selections are retained as source rows but excluded from evaluation.
 - double-chance consistency: displayed fair prices and screenshot EV both use the same production score grid.
-- decision stack: 1X2 starts at 50% structural model / 50% de-vigged market; expanded families start at 35% / 65%; model weight shrinks further as divergence approaches 25pp.
+- quote evaluation: structural forecast probabilities remain independent of the quoted price; de-vigged market probabilities are used only for disagreement/risk diagnostics.
 - recommendation utility: minimum(decision EV, stressed decision EV) minus 0.35*divergence, family uncertainty, and HALT penalties.
-- ranked recommendations: publish up to four score-state-distinct sourced events; rank one is the highest-utility non-HALT row, or the highest de-vigged market-probability fallback when every row is HALT. Missing ranks remain explicit.
-- expanded-market policy: recommendations are best-available comparisons; historical profitability remains unvalidated because the holdout has no timestamped totals/BTTS/Asian/combo prices for ROI or CLV.
+- ranked comparisons: publish up to four score-state-distinct sourced events for audit only; no comparison becomes actionable in this release.
+- actionability policy: every row is ABSTAIN because historical profitability is unvalidated, prices are stale, conditional fixtures require intervening results, and the nominal holdout is development-only.
 - price coverage: all 32 fixtures receive model probabilities/fair prices; EV is computed only for complete screenshot-derived source markets, currently on 12 fixtures.
-- recommendation labels: BEST_AVAILABLE is mandatory per fixture; PASS/HALT remain diagnostic and no label implies certainty.
+- recommendation field: null for ABSTAIN rows; rank_one_comparison preserves the non-actionable audit comparison separately.
 - metric_explanations: bilingual educational JSON generated from the published fixture values for 1/X/2, expected goals, totals, BTTS, and Asian handicap; these fields do not alter model probabilities.
-- bankroll simulation: S/100 is allocated separately within the recommendation's sourced app only; every assigned match receives at least S/1, no match exceeds S/10, remaining funds use positive stressed/base EV plus monotonic A>B>C>D risk bonuses, and stakes round to S/0.10 with exact app totals.
-- bankroll warnings: forced all-match coverage may include negative-EV/below-fair-price picks; gross return assumes a full win and the model-estimated net is explicitly unvalidated.
+- bankroll simulation: only ACTIONABLE rows may receive a stake; every ABSTAIN row receives S/0 and unallocated app budget is preserved.
 - stress EV: subtract 3 percentage points from selected win probability and add 3 points to loss probability.
 - classification: divergence >15pp or EV >25% HALT; all other selections PASS until recommendation-policy profitability is validated out of sample.
 - source_sha256: SHA-256 of the exact screenshot containing the price.
 
 Model selection:
-- Hyperparameters are selected on pre-holdout chronological windows and evaluated on an untouched final 15% holdout.
+- Hyperparameters are selected on chronological development windows. The final development-validation block is descriptive only; a new prospective sealed holdout is required.
 - Dataset A contains World Cup rows; Dataset B contains qualifiers/friendlies.
 - No current price is hard-coded in Python and no reported target is extracted from prose.
 
@@ -55,17 +53,17 @@ Input hashes:
 - research_june24_25.csv: d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517
 - research_june26_27.csv: 5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60
 - wc_2026_matches_june_22-27.csv: 5c8f68a44f90ce000568d0618046d45cedd07557d1ee175162f3a86459af0a2d
-- wc_2026_results_through_june21.csv: 478fe45b6945af10e10cdf637ba84dc876dc92bc62795074c064a0035ae37c7a
-- wc_backtest_historical_dataset.csv: 41a5c7732582314e32d42135ee09f212a7e4fe70f398d491df8b80f6275b3add
+- wc_2026_results_through_june23.csv: ed25fd5f0fdc408ce18f4c24a04c0cd513894a5d1510c5906a3d9a9daf8daa44
+- wc_backtest_historical_dataset.csv: beee227402f102b146f785dc77d92a00863b9c5090f7de4ff6d7baaa9f75683a
 - wc_team_elo_baseline_june11.csv: f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b
-- pipeline: 1d96650db1a29b2fe22a35a28131c68ffbb53480fe4731042c30620722795b32
+- pipeline: 2951dba26b421e5e60c218bac0cae613552ede38f37605c84e664dee69073b10
 
 Generated artifact hashes:
-- wc_dataset_a_world_cups.csv: 7201bba4742ec97394b68c00056235996d6b4ea3df1bc4093e59857290b40be3
-- wc_dataset_b_supplementary.csv: ec3eac9206beb113cd88e27ea00610edf9ddce60c913910f61760517ec86d2db
-- wc_june22_27_model_dataset.csv: 90e6d330db0fd7ca540d5f32137ca3a25fb8d65093285e8dcf14321a359162fc
-- wc_june22_27_model_metrics.json: 7b5dd8ce1838f0231359793c22f44ea7ef92dac6df2de967e7ddb6d3e44f1bfd
-- wc_june22_27_predictions.json: 0509a3acd04052dbd06eb0733ef220665bd031cac024d8736141b33d21484dfa
-- wc_odds_june_22-27.csv: e110813231b42e04bbd020a59afc6d24ba1e36e4704af9ee529c4f6d05081317
+- wc_dataset_a_world_cups.csv: 5b7cb0f7afd6c2242757121a749c526b2d5f270b66dcfd921061122581114a46
+- wc_dataset_b_supplementary.csv: 8f76eb0bb1fff775cf6de0c989173724b65daef41fac14ce03b7c0ea83c8945a
+- wc_june22_27_model_dataset.csv: d7389395d8ff129210c23076de31bff225bf80930dd45a2de3299b0ac6ebb3dc
+- wc_june22_27_model_metrics.json: 09332cac4a76e723de2cca602c386380bb8120aea9f80aedf27fc6d63d453a83
+- wc_june22_27_predictions.json: f1b5844fc166879e563201e8acfab444b7974264e006430e83eda629a1f4cd57
+- wc_odds_june_22-27.csv: b25ad781248693b577aa1505dcb0dfccd0a77b6f94c40a6f7659d3dc91f5b89e
 - wc_research_june22_27.csv: 1e7310c443256c70a9c31afebda811a04c557f7f88c59f5514da49128b88d22d
 - wc_screenshot_manifest_june22_27.csv: f19cbe911a219616ad492f879c3a04296ea05ba73928d3326e694ec15c0deab0

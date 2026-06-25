@@ -1,15 +1,20 @@
 {
+  "benchmark_champion": "market_devigged_proxy",
+  "benchmark_champion_is_deployment_decision": false,
   "capacity_rejections": {
     "graphmixer_or_dygformer": "Efficient temporal graph architectures are appropriate once the graph has enough repeated pre-event interactions; current outer folds still favor the de-vigged market proxy.",
-    "temporal_graph_neural_network": "253 matches and sparse team histories are insufficient for a credible high-capacity chronological comparison. Production gate requires at least 2000 timestamped fixtures and roughly 30 temporal edges per team.",
-    "transformer_sequence_model": "Effective sample size is orders of magnitude below a defensible sequence-model championship; fitting would invite leakage and variance-driven selection."
+    "temporal_graph_neural_network": "265 matches and sparse team histories are insufficient for a credible high-capacity chronological comparison. Production gate requires at least 2000 timestamped fixtures and roughly 30 temporal edges per team.",
+    "transformer_sequence_model": "Effective sample size is orders of magnitude below a defensible sequence-model benchmark; fitting would invite leakage and variance-driven selection."
   },
-  "champion": "market_devigged_proxy",
-  "champion_vs_market_paired_bootstrap": {
-    "champion_minus_baseline_log_loss": 0.0,
-    "ci_95_lower": 0.0,
-    "ci_95_upper": 0.0,
+  "challenger_vs_market_paired_bootstrap": {
+    "block_count": 13,
+    "challenger": "elo_tuned_nested",
+    "challenger_minus_market_log_loss": -0.001385938933597222,
+    "ci_95_lower": -0.2055418341648799,
+    "ci_95_upper": 0.2160729942799684,
     "iterations": 5000,
+    "market_benchmark": "market_devigged_proxy",
+    "method": "weighted_paired_bootstrap_by_fixture_date",
     "secure_improvement": false
   },
   "deep_learning_research": {
@@ -49,9 +54,82 @@
       "naive stacking weights selected outside chronological folds"
     ],
     "promotion_gate": {
+      "actual_fixture_count": 265,
+      "actual_team_count": 65,
+      "actual_temporal_edges_per_team": {
+        "ALG": 2,
+        "ARG": 22,
+        "AUS": 12,
+        "AUT": 4,
+        "BEL": 10,
+        "BIH": 6,
+        "BRA": 22,
+        "CAN": 5,
+        "CHI": 14,
+        "CIV": 2,
+        "CMR": 5,
+        "COD": 2,
+        "COL": 19,
+        "CPV": 4,
+        "CRC": 6,
+        "CRO": 10,
+        "CUR": 2,
+        "CZE": 6,
+        "DEN": 11,
+        "ECU": 19,
+        "EGY": 5,
+        "ENG": 10,
+        "ESP": 10,
+        "FIN": 4,
+        "FRA": 12,
+        "GER": 8,
+        "GHA": 5,
+        "GRE": 4,
+        "HAI": 2,
+        "HUN": 4,
+        "IRL": 5,
+        "IRN": 10,
+        "IRQ": 7,
+        "ISL": 7,
+        "ITA": 3,
+        "JOR": 8,
+        "JPN": 12,
+        "KOR": 12,
+        "KSA": 15,
+        "MAR": 8,
+        "MEX": 8,
+        "NED": 9,
+        "NGA": 5,
+        "NOR": 4,
+        "NZL": 2,
+        "PAN": 5,
+        "PAR": 16,
+        "PER": 17,
+        "POL": 11,
+        "POR": 12,
+        "QAT": 7,
+        "RSA": 4,
+        "RUS": 3,
+        "SCO": 6,
+        "SEN": 8,
+        "SRB": 8,
+        "SUI": 10,
+        "SWE": 9,
+        "TUN": 8,
+        "TUR": 4,
+        "UKR": 5,
+        "URU": 22,
+        "USA": 5,
+        "UZB": 2,
+        "WAL": 6
+      },
+      "fixture_count_gate_passed": false,
       "minimum_temporal_edges_per_team": 30,
       "minimum_timestamped_fixtures": 2000,
-      "required_validation": "nested walk-forward model selection, final untouched holdout, paired bootstrap for proper scores, calibration plots, profitability/CLV only against timestamp-verified closing odds, and multiple-testing correction across searched variants"
+      "required_validation": "nested walk-forward model selection, final untouched holdout, paired bootstrap for proper scores, calibration plots, profitability/CLV only against timestamp-verified closing odds, and multiple-testing correction across searched variants",
+      "research_promotion_gate_passed": false,
+      "teams_meeting_temporal_edge_minimum": 0,
+      "temporal_edge_gate_passed": false
     },
     "research_sources": [
       {
@@ -70,61 +148,104 @@
         "url": "https://arxiv.org/abs/1810.03993"
       }
     ],
-    "summary": "Deep and graph models remain research-track only. The available complete 1X2 proxy-market corpus has 213 complete matches after filtering and 253 total historical match rows, far below the prespecified evidence gate for a production temporal GNN or sequence transformer."
+    "summary": "Deep and graph models remain research-track only. The available complete 1X2 proxy-market corpus has 217 complete matches after filtering and 265 total historical match rows, far below the prespecified evidence gate for a production temporal GNN or sequence transformer."
   },
-  "excluded_missing_complete_1x2": 40,
+  "excluded_missing_complete_1x2": 48,
+  "holdout_challenger": "elo_tuned_nested",
   "holdout_metrics": {
     "elo_fixed_400": {
-      "brier": 0.6923538511554563,
-      "log_loss": 1.1203999104407385,
-      "rows": 32
+      "brier": 0.6773923378394026,
+      "log_loss": 1.1174200734331552,
+      "rows": 29
     },
     "elo_market_stack_nested": {
-      "brier": 0.6791323736833921,
-      "log_loss": 1.0945338768830604,
-      "rows": 32
+      "brier": 0.6779875845728588,
+      "log_loss": 1.0906638800715345,
+      "rows": 29
     },
     "elo_tuned_nested": {
-      "brier": 0.6767092195800914,
-      "log_loss": 1.096510393330235,
-      "rows": 32
+      "brier": 0.6606150934349363,
+      "log_loss": 1.0892779411379374,
+      "rows": 29
     },
     "market_devigged_proxy": {
-      "brier": 0.6863334407846196,
-      "log_loss": 1.1040954629831117,
-      "rows": 32
+      "brier": 0.6779875845728588,
+      "log_loss": 1.0906638800715345,
+      "rows": 29
     },
     "uniform": {
-      "brier": 0.6666666666666662,
+      "brier": 0.6666666666666664,
       "log_loss": 1.098612288668109,
-      "rows": 32
+      "rows": 29
     }
   },
-  "nested_outer_championship": {
-    "champion": "market_devigged_proxy",
+  "legacy_schema_aliases": {
+    "nested_outer_championship": "nested_outer_benchmark"
+  },
+  "nested_outer_benchmark": {
+    "benchmark_champion": "market_devigged_proxy",
     "folds": [
       {
         "fold": 1,
         "metrics": {
           "elo_market_stack_nested": {
-            "brier": 0.5629379300611407,
-            "log_loss": 0.9420626403525806,
-            "rows": 21
+            "brier": 0.594936314553507,
+            "log_loss": 0.9812915975429686,
+            "rows": 13
           },
           "elo_tuned_nested": {
-            "brier": 0.5937413920210224,
-            "log_loss": 0.9966952251515466,
-            "rows": 21
+            "brier": 0.6864542908798584,
+            "log_loss": 1.1345048538934412,
+            "rows": 13
           },
           "market_devigged_proxy": {
-            "brier": 0.5639136218792155,
-            "log_loss": 0.9409899312095897,
-            "rows": 21
+            "brier": 0.594936314553507,
+            "log_loss": 0.9812915975429686,
+            "rows": 13
+          },
+          "uniform": {
+            "brier": 0.6666666666666669,
+            "log_loss": 1.09861228866811,
+            "rows": 13
+          }
+        },
+        "selected_elo": {
+          "divisor": 500.0,
+          "draw_base": 0.14,
+          "draw_slope": 0.06
+        },
+        "selected_stack": {
+          "elo_weight": 0.0,
+          "market_weight": 1.0
+        },
+        "test_end": "2024-10-10",
+        "test_rows": 13,
+        "test_start": "2024-06-07",
+        "train_end": "2023-11-22",
+        "train_rows": 115
+      },
+      {
+        "fold": 2,
+        "metrics": {
+          "elo_market_stack_nested": {
+            "brier": 0.5998486947023851,
+            "log_loss": 0.9933114003550236,
+            "rows": 16
+          },
+          "elo_tuned_nested": {
+            "brier": 0.6833620331380238,
+            "log_loss": 1.1254391706947928,
+            "rows": 16
+          },
+          "market_devigged_proxy": {
+            "brier": 0.5998486947023851,
+            "log_loss": 0.9933114003550236,
+            "rows": 16
           },
           "uniform": {
             "brier": 0.6666666666666669,
             "log_loss": 1.0986122886681098,
-            "rows": 21
+            "rows": 16
           }
         },
         "selected_elo": {
@@ -133,53 +254,14 @@
           "draw_slope": 0.12
         },
         "selected_stack": {
-          "elo_weight": 0.1,
-          "market_weight": 0.9
-        },
-        "test_end": "2024-09-10",
-        "test_rows": 21,
-        "test_start": "2023-10-13",
-        "train_end": "2023-10-12",
-        "train_rows": 99
-      },
-      {
-        "fold": 2,
-        "metrics": {
-          "elo_market_stack_nested": {
-            "brier": 0.6190657175401606,
-            "log_loss": 1.0252777463587033,
-            "rows": 20
-          },
-          "elo_tuned_nested": {
-            "brier": 0.6237388308853568,
-            "log_loss": 1.0439264617426822,
-            "rows": 20
-          },
-          "market_devigged_proxy": {
-            "brier": 0.6190657175401606,
-            "log_loss": 1.0252777463587033,
-            "rows": 20
-          },
-          "uniform": {
-            "brier": 0.6666666666666667,
-            "log_loss": 1.0986122886681096,
-            "rows": 20
-          }
-        },
-        "selected_elo": {
-          "divisor": 500.0,
-          "draw_base": 0.14,
-          "draw_slope": 0.14
-        },
-        "selected_stack": {
           "elo_weight": 0.0,
           "market_weight": 1.0
         },
         "test_end": "2024-11-20",
-        "test_rows": 20,
-        "test_start": "2024-09-11",
-        "train_end": "2024-09-10",
-        "train_rows": 120
+        "test_rows": 16,
+        "test_start": "2024-10-11",
+        "train_end": "2024-10-10",
+        "train_rows": 128
       },
       {
         "fold": 3,
@@ -190,8 +272,8 @@
             "rows": 19
           },
           "elo_tuned_nested": {
-            "brier": 0.6506224234210284,
-            "log_loss": 1.0799305910968269,
+            "brier": 0.6586502632224527,
+            "log_loss": 1.0877265512105705,
             "rows": 19
           },
           "market_devigged_proxy": {
@@ -207,7 +289,7 @@
         },
         "selected_elo": {
           "divisor": 500.0,
-          "draw_base": 0.14,
+          "draw_base": 0.16,
           "draw_slope": 0.14
         },
         "selected_stack": {
@@ -218,67 +300,250 @@
         "test_rows": 19,
         "test_start": "2025-03-20",
         "train_end": "2024-11-20",
-        "train_rows": 140
+        "train_rows": 144
       },
       {
         "fold": 4,
         "metrics": {
           "elo_market_stack_nested": {
-            "brier": 0.5075359145863488,
-            "log_loss": 0.8560552266137691,
-            "rows": 22
+            "brier": 0.5404037760095313,
+            "log_loss": 0.9038245302666722,
+            "rows": 25
           },
           "elo_tuned_nested": {
-            "brier": 0.5246189124374361,
-            "log_loss": 0.8975265351669589,
-            "rows": 22
+            "brier": 0.6605234054369089,
+            "log_loss": 1.0894710525537317,
+            "rows": 25
           },
           "market_devigged_proxy": {
-            "brier": 0.5075359145863488,
-            "log_loss": 0.8560552266137691,
-            "rows": 22
+            "brier": 0.5404037760095313,
+            "log_loss": 0.9038245302666722,
+            "rows": 25
           },
           "uniform": {
-            "brier": 0.6666666666666666,
-            "log_loss": 1.0986122886681093,
-            "rows": 22
+            "brier": 0.6666666666666664,
+            "log_loss": 1.0986122886681091,
+            "rows": 25
           }
         },
         "selected_elo": {
-          "divisor": 450.0,
-          "draw_base": 0.2,
+          "divisor": 325.0,
+          "draw_base": 0.22,
+          "draw_slope": 0.08
+        },
+        "selected_stack": {
+          "elo_weight": 0.0,
+          "market_weight": 1.0
+        },
+        "test_end": "2025-09-10",
+        "test_rows": 25,
+        "test_start": "2025-06-10",
+        "train_end": "2025-06-09",
+        "train_rows": 163
+      }
+    ],
+    "means": {
+      "elo_market_stack_nested": {
+        "mean_brier": 0.5854784337191461,
+        "mean_log_loss": 0.9652014249974757,
+        "positive_log_loss_folds_vs_market": 0
+      },
+      "elo_tuned_nested": {
+        "mean_brier": 0.672247498169311,
+        "mean_log_loss": 1.1092854070881342,
+        "positive_log_loss_folds_vs_market": 0
+      },
+      "market_devigged_proxy": {
+        "mean_brier": 0.5854784337191461,
+        "mean_log_loss": 0.9652014249974757,
+        "positive_log_loss_folds_vs_market": 0
+      },
+      "uniform": {
+        "mean_brier": 0.6666666666666669,
+        "mean_log_loss": 1.0986122886681098,
+        "positive_log_loss_folds_vs_market": 0
+      }
+    }
+  },
+  "nested_outer_championship": {
+    "benchmark_champion": "market_devigged_proxy",
+    "folds": [
+      {
+        "fold": 1,
+        "metrics": {
+          "elo_market_stack_nested": {
+            "brier": 0.594936314553507,
+            "log_loss": 0.9812915975429686,
+            "rows": 13
+          },
+          "elo_tuned_nested": {
+            "brier": 0.6864542908798584,
+            "log_loss": 1.1345048538934412,
+            "rows": 13
+          },
+          "market_devigged_proxy": {
+            "brier": 0.594936314553507,
+            "log_loss": 0.9812915975429686,
+            "rows": 13
+          },
+          "uniform": {
+            "brier": 0.6666666666666669,
+            "log_loss": 1.09861228866811,
+            "rows": 13
+          }
+        },
+        "selected_elo": {
+          "divisor": 500.0,
+          "draw_base": 0.14,
+          "draw_slope": 0.06
+        },
+        "selected_stack": {
+          "elo_weight": 0.0,
+          "market_weight": 1.0
+        },
+        "test_end": "2024-10-10",
+        "test_rows": 13,
+        "test_start": "2024-06-07",
+        "train_end": "2023-11-22",
+        "train_rows": 115
+      },
+      {
+        "fold": 2,
+        "metrics": {
+          "elo_market_stack_nested": {
+            "brier": 0.5998486947023851,
+            "log_loss": 0.9933114003550236,
+            "rows": 16
+          },
+          "elo_tuned_nested": {
+            "brier": 0.6833620331380238,
+            "log_loss": 1.1254391706947928,
+            "rows": 16
+          },
+          "market_devigged_proxy": {
+            "brier": 0.5998486947023851,
+            "log_loss": 0.9933114003550236,
+            "rows": 16
+          },
+          "uniform": {
+            "brier": 0.6666666666666669,
+            "log_loss": 1.0986122886681098,
+            "rows": 16
+          }
+        },
+        "selected_elo": {
+          "divisor": 500.0,
+          "draw_base": 0.14,
+          "draw_slope": 0.12
+        },
+        "selected_stack": {
+          "elo_weight": 0.0,
+          "market_weight": 1.0
+        },
+        "test_end": "2024-11-20",
+        "test_rows": 16,
+        "test_start": "2024-10-11",
+        "train_end": "2024-10-10",
+        "train_rows": 128
+      },
+      {
+        "fold": 3,
+        "metrics": {
+          "elo_market_stack_nested": {
+            "brier": 0.606724949611161,
+            "log_loss": 0.9823781718252387,
+            "rows": 19
+          },
+          "elo_tuned_nested": {
+            "brier": 0.6586502632224527,
+            "log_loss": 1.0877265512105705,
+            "rows": 19
+          },
+          "market_devigged_proxy": {
+            "brier": 0.606724949611161,
+            "log_loss": 0.9823781718252387,
+            "rows": 19
+          },
+          "uniform": {
+            "brier": 0.6666666666666671,
+            "log_loss": 1.09861228866811,
+            "rows": 19
+          }
+        },
+        "selected_elo": {
+          "divisor": 500.0,
+          "draw_base": 0.16,
           "draw_slope": 0.14
         },
         "selected_stack": {
           "elo_weight": 0.0,
           "market_weight": 1.0
         },
-        "test_end": "2025-09-09",
-        "test_rows": 22,
+        "test_end": "2025-06-09",
+        "test_rows": 19,
+        "test_start": "2025-03-20",
+        "train_end": "2024-11-20",
+        "train_rows": 144
+      },
+      {
+        "fold": 4,
+        "metrics": {
+          "elo_market_stack_nested": {
+            "brier": 0.5404037760095313,
+            "log_loss": 0.9038245302666722,
+            "rows": 25
+          },
+          "elo_tuned_nested": {
+            "brier": 0.6605234054369089,
+            "log_loss": 1.0894710525537317,
+            "rows": 25
+          },
+          "market_devigged_proxy": {
+            "brier": 0.5404037760095313,
+            "log_loss": 0.9038245302666722,
+            "rows": 25
+          },
+          "uniform": {
+            "brier": 0.6666666666666664,
+            "log_loss": 1.0986122886681091,
+            "rows": 25
+          }
+        },
+        "selected_elo": {
+          "divisor": 325.0,
+          "draw_base": 0.22,
+          "draw_slope": 0.08
+        },
+        "selected_stack": {
+          "elo_weight": 0.0,
+          "market_weight": 1.0
+        },
+        "test_end": "2025-09-10",
+        "test_rows": 25,
         "test_start": "2025-06-10",
         "train_end": "2025-06-09",
-        "train_rows": 159
+        "train_rows": 163
       }
     ],
     "means": {
       "elo_market_stack_nested": {
-        "mean_brier": 0.5740661279497028,
-        "mean_log_loss": 0.9514434462875729,
+        "mean_brier": 0.5854784337191461,
+        "mean_log_loss": 0.9652014249974757,
         "positive_log_loss_folds_vs_market": 0
       },
       "elo_tuned_nested": {
-        "mean_brier": 0.5981803896912109,
-        "mean_log_loss": 1.0045197032895037,
+        "mean_brier": 0.672247498169311,
+        "mean_log_loss": 1.1092854070881342,
         "positive_log_loss_folds_vs_market": 0
       },
       "market_devigged_proxy": {
-        "mean_brier": 0.5743100509042215,
-        "mean_log_loss": 0.9511752690018251,
+        "mean_brier": 0.5854784337191461,
+        "mean_log_loss": 0.9652014249974757,
         "positive_log_loss_folds_vs_market": 0
       },
       "uniform": {
-        "mean_brier": 0.6666666666666667,
-        "mean_log_loss": 1.0986122886681096,
+        "mean_brier": 0.6666666666666669,
+        "mean_log_loss": 1.0986122886681098,
         "positive_log_loss_folds_vs_market": 0
       }
     }
@@ -303,67 +568,67 @@
     "transformer_sequence_model_rejected_low_sample"
   ],
   "rival_500_percent_claim_status": "unverified_requires_complete_timestamped_executable_bet_ledger",
-  "rows": 213,
-  "selection_rows": 181,
+  "rows": 217,
+  "selection_rows": 188,
   "selection_rule": "inner rolling-origin tuning inside four expanding outer folds; minimum outer mean log loss then Brier; final holdout is evaluation-only",
-  "source_rows": 253,
+  "source_rows": 265,
   "tuned_elo": {
-    "divisor": 400.0,
-    "draw_base": 0.2,
-    "draw_slope": 0.14,
+    "divisor": 325.0,
+    "draw_base": 0.24,
+    "draw_slope": 0.12,
     "folds": [
       {
-        "brier": 0.5728952921743947,
-        "log_loss": 0.9648758193431255,
+        "brier": 0.6716742966797874,
+        "log_loss": 1.1052885320823458,
+        "rows": 10
+      },
+      {
+        "brier": 0.6744774401133755,
+        "log_loss": 1.1115333902051712,
+        "rows": 17
+      },
+      {
+        "brier": 0.6423381214564414,
+        "log_loss": 1.061271253505618,
         "rows": 18
       },
       {
-        "brier": 0.610566551532503,
-        "log_loss": 1.02938338781937,
-        "rows": 18
-      },
-      {
-        "brier": 0.6762169489412618,
-        "log_loss": 1.1177959718351598,
-        "rows": 18
-      },
-      {
-        "brier": 0.5204675498806381,
-        "log_loss": 0.8917857228082468,
+        "brier": 0.6613341412183911,
+        "log_loss": 1.089957478481649,
         "rows": 28
       }
     ],
-    "mean_brier": 0.5950365856321995,
-    "mean_log_loss": 1.0009602254514756
+    "mean_brier": 0.6624559998669988,
+    "mean_log_loss": 1.092012663568696
   },
   "tuned_stack": {
-    "elo_weight": 0.2,
+    "elo_weight": 0.0,
     "folds": [
       {
-        "brier": 0.5521073147425725,
-        "log_loss": 0.9333219507477982,
+        "brier": 0.6194664675561268,
+        "log_loss": 1.0249828861126933,
+        "rows": 10
+      },
+      {
+        "brier": 0.5990869761662794,
+        "log_loss": 0.992876842934671,
+        "rows": 17
+      },
+      {
+        "brier": 0.650174049597003,
+        "log_loss": 1.033881557221315,
         "rows": 18
       },
       {
-        "brier": 0.6041946207536558,
-        "log_loss": 1.006055375836569,
-        "rows": 18
-      },
-      {
-        "brier": 0.6629921778485289,
-        "log_loss": 1.0664308361783348,
-        "rows": 18
-      },
-      {
-        "brier": 0.49472090831755383,
-        "log_loss": 0.8437338491876119,
+        "brier": 0.5137255962877115,
+        "log_loss": 0.8673983659728618,
         "rows": 28
       }
     ],
-    "market_weight": 0.8,
-    "mean_brier": 0.5785037554155777,
-    "mean_log_loss": 0.9623855029875785
+    "market_weight": 1.0,
+    "mean_brier": 0.5956132724017802,
+    "mean_log_loss": 0.9797849130603853
   },
-  "untouched_holdout_rows": 32,
-  "version": "nested_chronological_championship_v1"
+  "untouched_holdout_rows": 29,
+  "version": "nested_chronological_benchmark_v2"
 }

@@ -8,6 +8,7 @@ import inspect
 import json
 import subprocess
 import sys
+from datetime import date, datetime
 from pathlib import Path
 
 import pytest
@@ -30,13 +31,64 @@ def test_canonical_fixture_file_has_32_unique_timezone_aware_rows():
     assert all(row["kickoff_utc"].endswith("Z") for row in rows)
 
 
-def test_elapsed_result_file_has_40_unique_matches_through_june21():
-    rows = read_rows("wc_2026_results_through_june21.csv")
-    assert len(rows) == 40
+def test_elapsed_result_file_has_48_unique_matches_through_june23():
+    rows = read_rows("wc_2026_results_through_june23.csv")
+    assert len(rows) == 48
     keys = {(row["date"], row["team_a"], row["team_b"]) for row in rows}
-    assert len(keys) == 40
-    assert max(row["date"] for row in rows) == "2026-06-21"
+    assert len(keys) == 48
+    assert max(row["date"] for row in rows) == "2026-06-23"
     assert all(row["source_result"].startswith("https://") for row in rows)
+
+
+def test_elapsed_fixture_probabilities_use_pre_result_elo_snapshots():
+    results = read_rows("wc_2026_results_through_june23.csv")
+    baseline = {
+        row["team"]: float(row["elo"])
+        for row in read_rows("wc_team_elo_baseline_june11.csv")
+    }
+    terminal, _, _, snapshots, contexts = pipeline.current_team_state(
+        results, baseline
+    )
+    argentina_key = ("2026-06-22", "ARG", "AUT")
+    portugal_key = ("2026-06-23", "POR", "UZB")
+    assert snapshots[argentina_key] != (terminal["ARG"], terminal["AUT"])
+    assert snapshots[portugal_key] != (terminal["POR"], terminal["UZB"])
+
+    model_rows = {
+        row["fixture_id"]: row
+        for row in read_rows("wc_june22_27_model_dataset.csv")
+    }
+    for fixture_id, key in (
+        ("2026-06-22-arg-aut", argentina_key),
+        ("2026-06-23-por-uzb", portugal_key),
+    ):
+        assert float(model_rows[fixture_id]["elo_a_updated"]) == pytest.approx(
+            snapshots[key][0], abs=0.001
+        )
+        assert float(model_rows[fixture_id]["elo_b_updated"]) == pytest.approx(
+            snapshots[key][1], abs=0.001
+        )
+        assert int(model_rows[fixture_id]["form_games_a"]) == int(
+            contexts[key]["form_a"]["games"]
+        )
+        assert int(model_rows[fixture_id]["form_games_b"]) == int(
+            contexts[key]["form_b"]["games"]
+        )
+        assert int(model_rows[fixture_id]["form_gd_a"]) == int(
+            contexts[key]["form_a"]["gf"] - contexts[key]["form_a"]["ga"]
+        )
+        assert int(model_rows[fixture_id]["form_gd_b"]) == int(
+            contexts[key]["form_b"]["gf"] - contexts[key]["form_b"]["ga"]
+        )
+
+
+def test_updated_payload_separates_verified_elapsed_and_future_fixtures():
+    payload = json.loads(
+        (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    statuses = [row["fixture_lifecycle_status"] for row in payload["predictions"]]
+    assert statuses.count("elapsed_result_verified") == 8
+    assert statuses.count("future") == 24
 
 
 def test_pipeline_source_does_not_embed_current_odds_or_extract_prose_targets():
@@ -114,8 +166,11 @@ def test_expanded_market_schema_has_only_complete_supported_groups():
 
 def test_score_market_calibration_is_chronological_and_non_actionable():
     config = pipeline.calibrate_score_model(pipeline.load_historical())
-    assert config["selection_rows"] == 215
-    assert config["holdout_rows"] == 38
+    rows = pipeline.load_historical()
+    split = pipeline.date_block_split(rows, 0.85)
+    assert config["selection_rows"] == split
+    assert config["holdout_rows"] == len(rows) - split
+    assert rows[split - 1].date < rows[split].date
     assert config["production_model"] == "tuned_elo_independent_poisson"
     assert config["shadow_model"] == "dixon_coles_low_score_correction"
     assert config["policy_status"].startswith("experimental_non_actionable")
@@ -127,6 +182,10 @@ def test_score_market_calibration_is_chronological_and_non_actionable():
     assert 0.0 < baselines["selection_btts_rate"] < 1.0
     for comparison in config["shadow_paired_bootstrap"].values():
         assert comparison["iterations"] == 2000
+        assert comparison["resampling_method"] == (
+            "weighted_date_block_percentile_bootstrap"
+        )
+        assert comparison["block_count"] > 1
         assert comparison["ci_95_lower"] <= comparison["ci_95_upper"]
     assert (
         config["shadow_paired_bootstrap"]["score_nll"][
@@ -134,6 +193,69 @@ def test_score_market_calibration_is_chronological_and_non_actionable():
         ]
         is False
     )
+
+
+def test_temporal_folds_never_split_a_matchday():
+    rows = pipeline.load_historical()
+    selection = rows[: int(len(rows) * 0.85)]
+    windows = pipeline.temporal_folds(selection)
+    seen_dates = set()
+    for window in windows:
+        dates = {row.date for row in window}
+        assert not seen_dates.intersection(dates)
+        seen_dates.update(dates)
+
+
+def test_production_holdout_split_never_divides_a_matchday():
+    rows = pipeline.load_historical()
+    split = pipeline.date_block_split(rows, 0.85)
+    assert rows[split - 1].date < rows[split].date
+    elo = pipeline.calibrate_elo(rows)
+    score = pipeline.calibrate_score_model(rows)
+    assert elo["selection_rows"] == score["selection_rows"] == split
+    assert elo["holdout_rows"] == score["holdout_rows"] == len(rows) - split
+
+
+def test_results_research_and_odds_are_cutoff_eligible():
+    for row in pipeline.read_csv(pipeline.RESULTS_2026):
+        assert datetime.fromisoformat(row["accessed_at"]) <= pipeline.RELEASE_AS_OF
+        assert date.fromisoformat(row["date"]) <= pipeline.DATA_CUTOFF.date()
+
+    fixtures = pipeline.read_csv(pipeline.FIXTURES)
+    research = pipeline.load_research(fixtures)
+    assert all(
+        datetime.fromisoformat(row["accessed_at"]) <= pipeline.DATA_CUTOFF
+        for row in research.values()
+    )
+    odds = pipeline.load_and_merge_odds(fixtures)
+    for row in odds:
+        captured = datetime.fromisoformat(
+            row["capture_time"].replace(" -05:00", "-05:00")
+        )
+        assert captured <= pipeline.DATA_CUTOFF
+        assert captured < datetime.fromisoformat(row["kickoff_local"])
+        assert row["capture_time_derivation"] in {
+            "verbatim_timezone_aware",
+            "date_from_frozen_file_metadata:odds_june27.csv",
+        }
+
+
+def test_recommendation_probability_is_independent_of_quoted_market_probability():
+    payload = json.loads(
+        (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    for fixture in payload["predictions"]:
+        for comparison in fixture["market_comparisons"]:
+            assert comparison["decision_probability_method"] == (
+                "independent_structural_forecast_no_market_price_blend"
+            )
+            assert comparison["decision_model_weight"] == pytest.approx(1.0)
+            assert comparison["decision_probability"] == pytest.approx(
+                comparison["p_win"], abs=1e-6
+            )
+            assert comparison["decision_ev_pct"] == pytest.approx(
+                comparison["ev_pct"], abs=0.011
+            )
 
 
 def test_research_mode_policy_is_gated_and_non_production():
@@ -157,17 +279,20 @@ def test_research_mode_policy_is_gated_and_non_production():
         assert sum(research["probabilities"].values()) == pytest.approx(1.0, abs=2e-6)
         assert "common_markets" in research
         assert research["common_markets"]["policy_status"] == "experimental_non_actionable"
-        assert research["top_recommendations_requested"] == 4
-        assert research["top_recommendations_available"] == len(
-            research["top_recommendations"]
+        assert research["top_recommendations_requested"] == 0
+        assert research["top_recommendations_available"] == 0
+        assert research["top_recommendations"] == []
+        assert research["ranked_comparisons_requested"] == 4
+        assert research["ranked_comparisons_available"] == len(
+            research["ranked_comparisons"]
         )
-        assert research["top_recommendations"]
-        assert research["top_recommendations"][0]["decision_status"] == "BEST_AVAILABLE"
-        assert "sensitivity analysis" in research["top_recommendations"][0]["why_ranked"]["en"]
+        assert research["ranked_comparisons"]
+        assert research["ranked_comparisons"][0]["decision_status"] == "ABSTAIN"
+        assert "sensitivity analysis" in research["ranked_comparisons"][0]["why_ranked"]["en"]
         assert set(research["risk_profile_summary"]) == {
             "exploratory", "balanced", "cautious", "strict", "audit_only",
         }
-        for recommendation in research["top_recommendations"]:
+        for recommendation in research["ranked_comparisons"]:
             assert set(recommendation["risk_lens"]) == {
                 "exploratory", "balanced", "cautious", "strict", "audit_only",
             }
@@ -190,7 +315,8 @@ def test_research_mode_policy_is_gated_and_non_production():
                         assert recommendation["price_gate_status"] == (
                             "at_or_above_model_fair_price"
                         )
-        assert row["recommendation"]["decision_status"] == "BEST_AVAILABLE"
+        assert row["recommendation"] is None
+        assert row["rank_one_comparison"]["decision_status"] == "ABSTAIN"
         assert set(row["risk_profile_summary"]) == {
             "exploratory", "balanced", "cautious", "strict", "audit_only",
         }
@@ -219,7 +345,10 @@ def test_research_mode_policy_is_gated_and_non_production():
             assert candidate["research_raw_ev_pct"] <= 25.0
         assert len(halt_loop["required_checks"]["en"]) == 4
         assert len(halt_loop["required_checks"]["es"]) == 4
-        for recommendation in row["top_recommendations"]:
+        assert row["top_recommendations"] == []
+        assert row["top_recommendations_requested"] == 0
+        assert row["top_recommendations_available"] == 0
+        for recommendation in row["ranked_comparisons"]:
             assert set(recommendation["risk_lens"]) == {
                 "exploratory", "balanced", "cautious", "strict", "audit_only",
             }
@@ -251,7 +380,7 @@ def test_risk_profiles_are_ordered_and_exploratory_is_distinct():
     }
     for row in payload["predictions"]:
         for container in (row, row["research_mode"]):
-            for recommendation in container["top_recommendations"]:
+            for recommendation in container["ranked_comparisons"]:
                 for profile_id, lens in recommendation["risk_lens"].items():
                     counts[profile_id] += lens["status"] == "PASS"
     ordered = [counts[profile["id"]] for profile in pipeline.RISK_AVERSION_PROFILES]
@@ -261,10 +390,13 @@ def test_risk_profiles_are_ordered_and_exploratory_is_distinct():
 
 def test_dataset_a_and_b_are_disjoint_by_competition():
     rows = pipeline.load_historical()
+    # The persisted historical CSV contains only completed 2018/2022 World
+    # Cups; load_historical appends the current batch's 40 completed 2026
+    # fixtures from the cutoff-safe results source.
     finals = {"WC_2018_GROUP", "WC_2022_GROUP", "WC_2026_GROUP"}
     dataset_a = [row for row in rows if row.competition in finals]
     dataset_b = [row for row in rows if row.competition not in finals]
-    assert len(dataset_a) == 132
+    assert len(dataset_a) == 144
     assert len(dataset_b) == 121
     assert not ({id(row) for row in dataset_a} & {id(row) for row in dataset_b})
 
@@ -316,7 +448,7 @@ def test_ci_builds_site_before_browser_tests():
 
 def test_canonical_system_design_is_mandatory_and_cross_referenced():
     design = (ROOT / "WCDECIDER_SYSTEM_DESIGN.md").read_text(encoding="utf-8")
-    assert "S/100-per-app bankroll simulation" in design
+    assert "Fail-closed bankroll simulation" in design
     assert "Tooltip and responsive UI design" in design
     assert "Datapoint governance" in design
     assert "Deployment design" in design
@@ -373,7 +505,7 @@ def test_research_recommendation_audit_uses_research_model_dependencies():
     rows = read_rows("wc_june22_27_datapoint_audit.csv")
     research_rows = [
         row for row in rows
-        if "/research_mode/top_recommendations/" in row["json_pointer"]
+        if "/research_mode/ranked_comparisons/" in row["json_pointer"]
     ]
     assert research_rows
 
@@ -442,24 +574,25 @@ def pipeline_json_leaves(value, pointer=""):
 
 
 def test_audit_generator_is_deterministic():
-    subprocess.run(
+    first_run = subprocess.run(
         [sys.executable, "-B", "scripts/generate_datapoint_audit.py"],
         cwd=ROOT,
-        check=True,
+        check=False,
         capture_output=True,
         text=True,
     )
     first = (ROOT / "wc_june22_27_datapoint_audit.csv").read_bytes()
     first_summary = (ROOT / "wc_june22_27_datapoint_audit_summary.json").read_bytes()
-    subprocess.run(
+    second_run = subprocess.run(
         [sys.executable, "-B", "scripts/generate_datapoint_audit.py"],
         cwd=ROOT,
-        check=True,
+        check=False,
         capture_output=True,
         text=True,
     )
     assert (ROOT / "wc_june22_27_datapoint_audit.csv").read_bytes() == first
     assert (ROOT / "wc_june22_27_datapoint_audit_summary.json").read_bytes() == first_summary
+    assert first_run.returncode == second_run.returncode == 0
 
 
 def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
@@ -508,12 +641,15 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
             assert comparison["policy_status"] == "experimental_non_actionable"
         if any(row["expanded_price_coverage"].values()):
             priced += 1
-        recommendation = row["recommendation"]
-        assert recommendation is not None
-        ranked = row["top_recommendations"]
+        recommendation = row["rank_one_comparison"]
+        assert row["recommendation"] is None
+        assert row["top_recommendations"] == []
+        assert row["top_recommendations_available"] == 0
+        assert row["top_recommendations_requested"] == 0
+        ranked = row["ranked_comparisons"]
         assert 1 <= len(ranked) <= 4
-        assert row["top_recommendations_available"] == len(ranked)
-        assert row["top_recommendations_requested"] == 4
+        assert row["ranked_comparisons_available"] == len(ranked)
+        assert row["ranked_comparisons_requested"] == 4
         assert [item["rank"] for item in ranked] == list(
             range(1, len(ranked) + 1)
         )
@@ -527,16 +663,15 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
         }
         assert len(keys) == len(ranked)
         if len(ranked) < 4:
-            assert row["top_recommendations_shortfall_reason"] == (
+            assert row["ranked_comparisons_shortfall_reason"] == (
                 "fewer_than_four_distinct_complete_sourced_events"
             )
         else:
-            assert not row["top_recommendations_shortfall_reason"]
+            assert not row["ranked_comparisons_shortfall_reason"]
         for rank, item in enumerate(ranked, start=1):
             assert item["rank"] == rank
-            assert item["decision_status"] == (
-                "BEST_AVAILABLE" if rank == 1 else "RANKED_ALTERNATIVE"
-            )
+            assert item["decision_status"] == "ABSTAIN"
+            assert item["actionability"]["actionable"] is False
             assert item["profitability_validation"] == (
                 "not_validated_historical_market_odds"
             )
@@ -551,8 +686,8 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
             assert len(item["uncertainty"]["es"]) == 3
             assert item["why_ranked"]["en"]
             assert item["why_ranked"]["es"]
-            assert len(item["steps"]["en"]) == 6
-            assert len(item["steps"]["es"]) == 6
+            assert item["steps"]["en"] == []
+            assert item["steps"]["es"] == []
             assert item["fair_odds"] > 1.0
             assert (
                 item["p_win"] + item["p_push"] + item["p_loss"]
@@ -568,7 +703,7 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
                 reconstructed_fair, abs=0.0011
             )
         recommendations += 1
-        assert recommendation["decision_status"] == "BEST_AVAILABLE"
+        assert recommendation["decision_status"] == "ABSTAIN"
         assert recommendation["risk_grade"] in {"A", "B", "C", "D"}
         assert recommendation["profitability_validation"] == (
             "not_validated_historical_market_odds"
@@ -611,34 +746,37 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
     assert priced == 12
     assert recommendations == 32
     assert payload["model"]["expanded_market_policy"]["priced_fixtures"] == 12
-    assert payload["model"]["expanded_market_policy"]["recommendations_required"] == 32
+    assert payload["model"]["expanded_market_policy"]["recommendations_required"] == 0
     plan = payload["bankroll_simulation"]
     assert plan["currency"] == "PEN"
     assert plan["budget_per_app"] == 100.0
     app_counts = {"Betano": 0, "Betsson": 0}
     app_stakes = {"Betano": 0.0, "Betsson": 0.0}
     for row in payload["predictions"]:
-        recommendation = row["recommendation"]
+        recommendation = row["rank_one_comparison"]
+        assert row["recommendation"] is None
         budget = recommendation["budget_simulation"]
         app = recommendation["app"]
         app_counts[app] += 1
         app_stakes[app] += budget["stake"]
-        assert 1.0 <= budget["stake"] <= 10.0
+        assert budget["stake"] == 0.0
         assert budget["gross_return_if_full_win"] == pytest.approx(
             budget["stake"] * recommendation["odds"], abs=0.011
         )
-        assert len(budget["steps"]["en"]) == 6
-        assert len(budget["steps"]["es"]) == 6
-        assert f'S/{budget["stake"]:.2f}' in budget["steps"]["en"][-1]
+        assert budget["steps"]["en"] == []
+        assert budget["steps"]["es"] == []
         assert budget["price_gate_status"] in {
             "at_or_above_model_fair_price",
             "below_model_fair_price_forced_coverage_only",
         }
-    assert app_counts == {"Betano": 21, "Betsson": 11}
-    assert app_stakes["Betano"] == pytest.approx(100.0)
-    assert app_stakes["Betsson"] == pytest.approx(100.0)
-    assert plan["apps"]["Betano"]["total_stake"] == 100.0
-    assert plan["apps"]["Betsson"]["total_stake"] == 100.0
+    assert sum(app_counts.values()) == 32
+    assert set(app_counts) == {"Betano", "Betsson"}
+    assert app_stakes["Betano"] == pytest.approx(0.0)
+    assert app_stakes["Betsson"] == pytest.approx(0.0)
+    assert plan["apps"]["Betano"]["total_stake"] == 0.0
+    assert plan["apps"]["Betsson"]["total_stake"] == 0.0
+    assert plan["apps"]["Betano"]["unallocated_budget"] == 100.0
+    assert plan["apps"]["Betsson"]["unallocated_budget"] == 100.0
 
 
 def test_full_build_emits_exactly_32_predictions_when_inputs_are_complete(tmp_path, monkeypatch):
@@ -659,3 +797,42 @@ def test_full_build_emits_exactly_32_predictions_when_inputs_are_complete(tmp_pa
     for row in payload["predictions"]:
         probs = row["probabilities"]
         assert sum(probs.values()) == pytest.approx(1.0, abs=2e-6)
+        assert row["recommendation"] is None
+        assert row["rank_one_comparison"]["decision_status"] == "ABSTAIN"
+        assert row["rank_one_comparison"]["budget_simulation"]["stake"] == 0.0
+
+
+def test_asian_complete_groups_have_one_reciprocal_pair_only():
+    fixtures = pipeline.read_csv(pipeline.FIXTURES)
+    odds = pipeline.load_and_merge_odds(fixtures)
+    groups = {}
+    for row in odds:
+        if (
+            row["market_family"] == "asian_handicap"
+            and row["is_complete_market"] == "true"
+        ):
+            groups.setdefault(row["market_group_id"], []).append(row)
+    assert groups
+    for rows in groups.values():
+        assert len(rows) == 2
+        assert {row["selection_canonical"] for row in rows} == {
+            "home", "away",
+        }
+        selected_lines = sorted(
+            float(row["handicap_selected_line"]) for row in rows
+        )
+        assert selected_lines[0] == pytest.approx(-selected_lines[1])
+        assert len({
+            float(row["handicap_home_line"]) for row in rows
+        }) == 1
+
+
+def test_combo_markets_are_source_only_until_contract_is_validated():
+    payload = json.loads(
+        (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    assert not any(
+        comparison["market_family"] == "handicap_total_combo"
+        for row in payload["predictions"]
+        for comparison in row["market_comparisons"]
+    )
