@@ -372,9 +372,9 @@ Code: `score_model_row_losses` and `paired_bootstrap_mean_difference`.
 
 For each holdout match, weighted challenger loss minus weighted production loss
 is stored inside its calendar-date block. Whole date blocks are resampled 2,000
-times. Dixon-Coles has slightly better point estimates for score NLL and BTTS,
-but both 95% intervals cross zero, so the improvement is not statistically
-secure.
+times. Dixon-Coles is worse on score NLL and BTTS Brier and effectively tied
+on Over 2.5 within the published numeric tolerance. No paired comparison shows
+a statistically secure improvement.
 
 Current limitation: date blocking preserves within-matchday dependence but
 does not fully model repeated-team and competition dependence. With more data,

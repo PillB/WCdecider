@@ -72,6 +72,7 @@ RESEARCH_OUT = ROOT / "wc_research_june22_27.csv"
 
 SEED = 42
 EPS = 1e-12
+BOOTSTRAP_NUMERIC_TOLERANCE = 1e-12
 DATA_CUTOFF = datetime.fromisoformat("2026-06-24T22:30:00-05:00")
 RELEASE_AS_OF = datetime.fromisoformat("2026-06-24T22:30:00-05:00")
 FRESHNESS_HORIZON_HOURS = 48
@@ -640,14 +641,18 @@ def paired_bootstrap_mean_difference(
     sampled_means.sort()
     lower = sampled_means[int(iterations * 0.025)]
     upper = sampled_means[int(iterations * 0.975)]
+    point = weighted_mean(ordered_blocks)
     return {
-        "challenger_minus_production_mean": weighted_mean(ordered_blocks),
-        "ci_95_lower": lower,
-        "ci_95_upper": upper,
+        "challenger_minus_production_mean": round(point, 12),
+        "ci_95_lower": round(lower, 12),
+        "ci_95_upper": round(upper, 12),
         "iterations": iterations,
         "resampling_method": "weighted_date_block_percentile_bootstrap",
         "block_count": len(ordered_blocks),
-        "statistically_secure_improvement": upper < 0.0,
+        "numeric_tolerance": BOOTSTRAP_NUMERIC_TOLERANCE,
+        "statistically_secure_improvement": (
+            upper < -BOOTSTRAP_NUMERIC_TOLERANCE
+        ),
     }
 
 

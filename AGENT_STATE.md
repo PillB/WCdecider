@@ -529,6 +529,11 @@
 - 476 | Monitor first June 25 deployment run | Exact run `28195824515` regenerated model artifacts but governance blocked all 60,576 fields because Linux semantic hashes differed from reviewed hashes; report, site, deploy, and live validation correctly did not run | Failed
 - 477 | Reproduce CI generation under Python 3.11 locally | The exact workflow generation order under Python 3.11 on macOS reproduced the reviewed prediction and metrics files byte-for-byte, isolating the remaining drift to the Linux execution environment rather than Python version or step order | Success
 - 478 | Add bounded cross-platform drift diagnostics | CI now compares regenerated prediction/metrics JSON to the committed reviewed artifacts and prints the first 40 differing pointers before retaining the unchanged fail-closed audit gate | Success (diagnostic run pending)
+- 479 | Diagnose Linux semantic drift exactly | Run `28196265854` found only nine differences: eight sub-1e-16 bootstrap float changes and one false boolean flip where an effectively-zero upper bound was `-2.9e-18` on macOS and `0.0` on Linux | Success
+- 480 | Stabilize bootstrap inference across platforms | Published bootstrap point/interval diagnostics are rounded to 12 decimals and secure improvement now requires the upper bound below `-1e-12`; Python 3.9 and 3.11 local runs are byte-identical and the effectively-zero Over 2.5 comparison is correctly non-secure | Success
+- 481 | Complete fresh exact-hash four-role review | Owner/model, three-run clean-room replication, data/statistics, and editor/UI reviewers passed prediction hash `1cdac390…245e00` and metrics hash `dafa775f…95001b` after correcting stale challenger wording | Success
+- 482 | Regenerate governed stable release | Rebound semantic hashes, generated 60,582 PASS audit leaves with zero blocked, regenerated the bilingual report and site, and preserved 14 elapsed/12 current/six conditional zero-stake journeys | Success
+- 483 | Validate stable release locally | Pipeline/promotion/build-safety suite passed 42/42; mobile/browser/bilingual suite passed 25/25; staged-scope whitespace validation remains clean outside the protected legacy CSV | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Prior production paths and documentation overstated reproducibility through hard-coded odds, optional silent TGNN fallback, and target extraction from prose; the June 22–27 path removes those dependencies.
@@ -552,6 +557,6 @@
 - Startup failures now need user-visible diagnostics because iOS may kill a tab before remote developer tools are available; the diagnostics panel records fetch stages, HTTP status, byte counts, URL, build SHA, audit hash, online status, and user agent.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Publish and inspect the Linux drift diagnostic run.
-- [ ] Next Step: Remove the nondeterminism, rerun CI/CD, and validate the exact live SHA and mobile journeys.
+- [ ] Active Step: Commit and push the cross-platform-stable governed release.
+- [ ] Next Step: Monitor CI/CD and validate the exact live SHA and mobile journeys.
 - [ ] Future Milestone: Seal the first confirmatory cohort before predictions and promote recommendations/staking only after all calibration, profitability/CLV, and governance gates pass.

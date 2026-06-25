@@ -2,33 +2,33 @@
   "git_commit": "PENDING_SAFETY_RELEASE_COMMIT",
   "reviewed_model_version": "june22_27_v5_fail_closed_development_only",
   "reviewed_artifact_hashes": {
-    "wc_june22_27_model_metrics.json": "220f8ec805d877a6a4f2a525d28ce483dfb4a3d74b61dfd9fac4dd12db804e47",
-    "wc_june22_27_predictions.json": "bf696077a9ae44ba3e96fb83afcaf2030636eaf43a5550f30da7833fa5e5d5fc"
+    "wc_june22_27_model_metrics.json": "dafa775f76854004f20b45a6ed20a8a9176c285f7296422a89aff8d01e95001b",
+    "wc_june22_27_predictions.json": "1cdac390fa799b6a8d654acf0cdb801d98ac59551bc3aedf466f720203245e00"
   },
   "reviewed_semantic_hashes": {
-    "wc_june22_27_model_metrics.json": "6b1d762aa0109757490276c6c8f91a22c67f84276f185bf15cb257e72b8ce8b1",
-    "wc_june22_27_predictions.json": "d7826627ca8a94af326f1d4026df33baa7418b5d58c7e6b7f27d14223c1d75a6"
+    "wc_june22_27_model_metrics.json": "abdb75e23edbc1b83b34bdfb777702dff26eadea39af15968bdfaec1259b2ceb",
+    "wc_june22_27_predictions.json": "8f1db5ffb19514c2cb8c616ca712e13e79a447bc21e822c1ee977246549416e8"
   },
   "global": {
     "owner": {
       "id": "019efd1e-5b50-7f90-8ec4-d5e5e414b429",
       "status": "PASS",
-      "evidence": "Exact-hash owner/model review verified model values unchanged, 18 future zero-stake or conditional watchlists, 14 archived rows, 129 chronological OOF rows, tuned Elo superiority over the rejected stack, BLOCKED promotion, null recommendations, ABSTAIN comparisons, and zero stakes."
+      "evidence": "Exact-hash owner/model review verified the 1e-12 bootstrap tolerance, platform-stable rounded diagnostics, no false near-zero secure-improvement claim, unchanged forecasts/watchlists, BLOCKED promotion, null recommendations, ABSTAIN comparisons, and zero stakes."
     },
     "replication_1": {
       "id": "019efd1e-5bf9-77b0-8701-adeb0a9bfae6",
       "status": "PASS",
-      "evidence": "Two isolated clean-room builds were byte-identical and matched prediction, metrics, result, promotion, and OOF hashes; one rank-one row exists per fixture, localized current/conditional/archive flows reproduce, and all stakes remain zero."
+      "evidence": "Three isolated clean-room builds were byte-identical and matched the reviewed prediction and metrics hashes; 32 fixtures reproduce as 14 elapsed, 12 current, and six conditional, with rounded bootstrap diagnostics and zero recommendations/stakes."
     },
     "replication_2": {
       "id": "019efd1e-5cce-7cd1-a4d7-8fbe5df740b3",
       "status": "PASS",
-      "evidence": "Data/safety review verified all 216 production/research comparison labels, no duplicated total lines, Spanish localization, current-price disclaimers, conditional hard stops, elapsed no-bet language, ABSTAIN status, zero stakes, and zero of 142349 canonical odds rows eligible for closing validation."
+      "evidence": "Data/statistics review verified the 1e-12 tolerance is conservative, rounded confidence intervals preserve interpretation, the effectively-zero Over 2.5 interval does not claim secure improvement, and all comparisons remain ABSTAIN with unvalidated profitability and zero stakes."
     },
     "editor": {
       "id": "019efd1e-5d8f-7521-a557-4bd88228ab26",
       "status": "PASS",
-      "evidence": "Novice editor/UI review verified current fixtures alone show bilingual watchlist and ELI5 controls; conditional fixtures show permanent S/0.00 and one rerun stop only; elapsed fixtures show verified archive review only; primary markets are bilingual; mobile tooltips support tap, scroll, outside-click, and Escape."
+      "evidence": "Editor/UI review verified accurate challenger wording (worse NLL/BTTS, effective Over 2.5 tie, no secure improvement), 12 bilingual six-step current watchlists, six conditional STOP-only cards, 14 archive-only cards, null recommendations, and permanent zero-stake safeguards."
     }
   },
   "fixtures": {}

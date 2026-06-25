@@ -211,6 +211,13 @@ def test_score_market_calibration_is_chronological_and_non_actionable():
         )
         assert comparison["block_count"] > 1
         assert comparison["ci_95_lower"] <= comparison["ci_95_upper"]
+        assert comparison["numeric_tolerance"] == 1e-12
+    assert (
+        config["shadow_paired_bootstrap"]["over_2_5_brier"][
+            "statistically_secure_improvement"
+        ]
+        is False
+    )
     assert (
         config["shadow_paired_bootstrap"]["score_nll"][
             "statistically_secure_improvement"

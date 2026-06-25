@@ -82,30 +82,33 @@
       },
       "shadow_paired_bootstrap": {
         "score_nll": {
-          "challenger_minus_production_mean": 0.013370450691255998,
-          "ci_95_lower": -0.01724675406135481,
-          "ci_95_upper": 0.04413139231150733,
+          "challenger_minus_production_mean": 0.013370450691,
+          "ci_95_lower": -0.017246754061,
+          "ci_95_upper": 0.044131392312,
           "iterations": 2000,
           "resampling_method": "weighted_date_block_percentile_bootstrap",
           "block_count": 9,
+          "numeric_tolerance": 1e-12,
           "statistically_secure_improvement": false
         },
         "over_2_5_brier": {
-          "challenger_minus_production_mean": -1.3877787807814457e-17,
-          "ci_95_lower": -2.6213599192538418e-17,
-          "ci_95_upper": -2.921639538487254e-18,
+          "challenger_minus_production_mean": -0.0,
+          "ci_95_lower": -0.0,
+          "ci_95_upper": -0.0,
           "iterations": 2000,
           "resampling_method": "weighted_date_block_percentile_bootstrap",
           "block_count": 9,
-          "statistically_secure_improvement": true
+          "numeric_tolerance": 1e-12,
+          "statistically_secure_improvement": false
         },
         "btts_brier": {
-          "challenger_minus_production_mean": 0.001289625673406819,
-          "ci_95_lower": -0.003536596782957467,
-          "ci_95_upper": 0.006635606624505033,
+          "challenger_minus_production_mean": 0.001289625673,
+          "ci_95_lower": -0.003536596783,
+          "ci_95_upper": 0.006635606625,
           "iterations": 2000,
           "resampling_method": "weighted_date_block_percentile_bootstrap",
           "block_count": 9,
+          "numeric_tolerance": 1e-12,
           "statistically_secure_improvement": false
         }
       },
@@ -158,7 +161,7 @@
       "research_june24_25.csv": "d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517",
       "research_june26_27.csv": "5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60"
     },
-    "pipeline_sha256": "2b8b88a6b77e2bb3546a3e90a881a6be8d36ef897945911e70ec8f259de7a2c6"
+    "pipeline_sha256": "a4ecaa48f9e23d8c5acddd8aa874680ced69e8baa1379a1d72eb1a2728270068"
   },
   "bankroll_simulation": {
     "currency": "PEN",
