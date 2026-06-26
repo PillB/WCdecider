@@ -900,6 +900,94 @@ def test_educational_stake_simulation_is_per_app_and_covers_current_matches():
     )
 
 
+def test_previous_day_matches_are_folded_as_elapsed_and_current_day_stays_live():
+    payload = json.loads(
+        (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    june24 = [
+        row for row in payload["predictions"]
+        if row["kickoff_lima"].startswith("2026-06-24")
+    ]
+    june25 = [
+        row for row in payload["predictions"]
+        if row["kickoff_lima"].startswith("2026-06-25")
+    ]
+    assert len(june24) == 6
+    assert len(june25) == 6
+    assert all(
+        row["fixture_lifecycle_status"] == "elapsed_result_verified"
+        for row in june24
+    )
+    assert all(row["verified_result"] for row in june24)
+    assert all(
+        row["fixture_lifecycle_status"] == "future"
+        and row["freshness_status"] == "current_snapshot"
+        for row in june25
+    )
+
+
+def test_complementary_bet_analysis_separates_arbitrage_from_hedges():
+    payload = json.loads(
+        (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    checked = 0
+    for row in payload["predictions"]:
+        analysis = row["complementary_bet_analysis"]
+        assert analysis["scope"] == "same_app_complete_1x2_screenshot_prices"
+        assert analysis["budget"] == 10.0
+        assert "Two-outcome hedges can still lose" in analysis["warning"]["en"]
+        assert analysis["status"] in {
+            "full_cover_arbitrage_available",
+            "no_full_cover_arbitrage",
+        }
+        for app_analysis in analysis["apps"]:
+            inverse_sum = sum(
+                1.0 / float(app_analysis["odds"][outcome])
+                for outcome in ("A", "D", "B")
+            )
+            assert app_analysis["inverse_odds_sum"] == pytest.approx(
+                inverse_sum, abs=1e-6
+            )
+            full = app_analysis["full_cover"]
+            assert full["guaranteed_profit"] == (inverse_sum < 1.0)
+            if inverse_sum >= 1.0:
+                assert full["profit_any_outcome"] <= 0.0
+            hedge = app_analysis["best_two_outcome_hedge"]
+            assert hedge["status"] == "two_outcome_hedge_not_guaranteed"
+            assert hedge["uncovered_outcome"] in {"A", "D", "B"}
+            assert set(hedge["covered_outcomes"]) == (
+                {"A", "D", "B"} - {hedge["uncovered_outcome"]}
+            )
+            assert hedge["loss_if_uncovered_outcome"] == -10.0
+            checked += 1
+    assert checked >= 32
+
+
+def test_ranked_comparisons_include_research_only_double_discount_gate():
+    payload = json.loads(
+        (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    checked = 0
+    for row in payload["predictions"]:
+        for recommendation in row["ranked_comparisons"]:
+            gate = recommendation["margin_of_safety"]
+            assert gate["method"] == "double_discount_probability_gate"
+            assert gate["entry_authorized"] is False
+            assert gate["required_market_probability_max"] == pytest.approx(
+                recommendation["p_win"] * 0.5, abs=1e-6
+            )
+            assert gate["observed_market_probability"] == pytest.approx(
+                recommendation["market_probability"], abs=1e-6
+            )
+            assert gate["passes"] == (
+                recommendation["market_probability"]
+                <= recommendation["p_win"] * 0.5 + 1e-12
+            )
+            assert "not proof of profit" in gate["explanation"]["en"]
+            checked += 1
+    assert checked >= 32
+
+
 def test_screenshot_app_boundary_matches_verified_interfaces():
     for path in pipeline.ODDS_PARTS:
         for row in pipeline.read_csv(path):

@@ -1790,6 +1790,9 @@ def public_recommendation(
         published_win * (float(row["odds"]) - 1.0) - published_loss
     ) * 100.0
     published_fair = 1.0 + published_loss / published_win
+    market_probability = round(float(row["market_probability"]), 6)
+    double_discount_threshold = round(published_win * 0.5, 6)
+    double_discount_pass = market_probability <= double_discount_threshold
     return {
         "rank": rank,
         "app": row["app"], "market_id": row["market_id"],
@@ -1802,6 +1805,7 @@ def public_recommendation(
         "model_p_win": round(float(row["p_win"]), 6),
         "p_push": published_push,
         "p_loss": published_loss,
+        "market_probability": market_probability,
         "fair_odds": round(published_fair, 3),
         "ev_pct": round(published_ev, 2),
         "stressed_ev_pct": round(
@@ -1820,6 +1824,28 @@ def public_recommendation(
             "BEST_AVAILABLE" if rank == 1 else "RANKED_ALTERNATIVE"
         ),
         "selection_reason": reason,
+        "margin_of_safety": {
+            "method": "double_discount_probability_gate",
+            "required_market_probability_max": double_discount_threshold,
+            "observed_market_probability": market_probability,
+            "passes": double_discount_pass,
+            "entry_authorized": False,
+            "explanation": {
+                "en": (
+                    "Research-only double-discount check: the saved market "
+                    "implied probability must be no more than half the model "
+                    "decision probability. This is a margin-of-safety flag, "
+                    "not proof of profit or authorization to bet."
+                ),
+                "es": (
+                    "Chequeo de doble descuento solo de investigación: la "
+                    "probabilidad implícita de la cuota guardada debe ser como "
+                    "máximo la mitad de la probabilidad de decisión del modelo. "
+                    "Es una señal de margen de seguridad, no prueba de beneficio "
+                    "ni autorización para apostar."
+                ),
+            },
+        },
         "profitability_validation": "not_validated_historical_market_odds",
         "source_image": row["source_image"],
         "source_sha256": row["source_sha256"],
@@ -2614,6 +2640,156 @@ def attach_educational_stake_simulation(
         },
     }
 
+
+def complementary_bet_analysis(
+    grouped_1x2: Dict[str, Dict[str, Dict[str, str]]],
+    team_a_names: Tuple[str, str],
+    team_b_names: Tuple[str, str],
+    budget: float = 10.0,
+) -> Dict[str, object]:
+    """Analyze dutching and two-outcome hedge math from sourced 1X2 odds.
+
+    A guaranteed same-match profit requires complete mutually exclusive and
+    collectively exhaustive outcomes and ``sum(1 / decimal_odds) < 1``. The
+    common "small longshot + larger favorite" idea is only a hedge when one
+    outcome is intentionally left uncovered; it can still lose the full two-leg
+    stake if the uncovered outcome lands. This function therefore separates
+    full-cover arbitrage from uncovered two-outcome hedge candidates.
+
+    Example
+    -------
+    >>> odds = {"A": 2.20, "D": 3.40, "B": 3.80}
+    >>> inv_sum = sum(1.0 / value for value in odds.values())
+    >>> inv_sum < 1.0
+    True
+    """
+    labels = {
+        "A": {"en": f"{team_a_names[0]} win", "es": f"Gana {team_a_names[1]}"},
+        "D": {"en": "Draw", "es": "Empate"},
+        "B": {"en": f"{team_b_names[0]} win", "es": f"Gana {team_b_names[1]}"},
+    }
+    app_analyses = []
+    for app, selections in sorted(grouped_1x2.items()):
+        if set(selections) != {"A", "D", "B"}:
+            continue
+        prices = {
+            outcome: float(selections[outcome]["odds"])
+            for outcome in ("A", "D", "B")
+        }
+        inverse_sum = sum(1.0 / price for price in prices.values())
+        full_cover_stakes = {
+            outcome: round(budget * (1.0 / prices[outcome]) / inverse_sum, 2)
+            for outcome in ("A", "D", "B")
+        }
+        full_cover_gross = round(budget / inverse_sum, 2)
+        full_cover_profit = round(full_cover_gross - budget, 2)
+        full_cover_status = (
+            "mathematical_arbitrage_available"
+            if inverse_sum < 1.0 else "no_full_cover_arbitrage"
+        )
+        pair_candidates = []
+        for covered in (("A", "B"), ("A", "D"), ("D", "B")):
+            uncovered = next(
+                outcome for outcome in ("A", "D", "B")
+                if outcome not in covered
+            )
+            pair_inverse_sum = sum(1.0 / prices[outcome] for outcome in covered)
+            pair_stakes = {
+                outcome: round(
+                    budget * (1.0 / prices[outcome]) / pair_inverse_sum, 2
+                )
+                for outcome in covered
+            }
+            pair_gross = round(budget / pair_inverse_sum, 2)
+            pair_profit = round(pair_gross - budget, 2)
+            pair_candidates.append({
+                "covered_outcomes": list(covered),
+                "covered_labels": {
+                    outcome: labels[outcome] for outcome in covered
+                },
+                "uncovered_outcome": uncovered,
+                "uncovered_label": labels[uncovered],
+                "stakes": pair_stakes,
+                "gross_return_if_covered_outcome": pair_gross,
+                "profit_if_covered_outcome": pair_profit,
+                "loss_if_uncovered_outcome": round(-budget, 2),
+                "inverse_sum": round(pair_inverse_sum, 6),
+                "status": "two_outcome_hedge_not_guaranteed",
+            })
+        pair_candidates.sort(
+            key=lambda row: (
+                row["profit_if_covered_outcome"],
+                -row["inverse_sum"],
+                row["uncovered_outcome"],
+            ),
+            reverse=True,
+        )
+        app_analyses.append({
+            "app": app,
+            "budget": budget,
+            "odds": prices,
+            "labels": labels,
+            "source_images": {
+                outcome: selections[outcome]["source_image"]
+                for outcome in ("A", "D", "B")
+            },
+            "inverse_odds_sum": round(inverse_sum, 6),
+            "bookmaker_margin_pct": round((inverse_sum - 1.0) * 100.0, 2),
+            "full_cover": {
+                "status": full_cover_status,
+                "stakes": full_cover_stakes,
+                "gross_return_any_outcome": full_cover_gross,
+                "profit_any_outcome": full_cover_profit,
+                "guaranteed_profit": inverse_sum < 1.0,
+            },
+            "best_two_outcome_hedge": pair_candidates[0],
+            "two_outcome_candidates": pair_candidates,
+        })
+    best_full_cover = [
+        row for row in app_analyses
+        if row["full_cover"]["guaranteed_profit"]
+    ]
+    best_full_cover.sort(
+        key=lambda row: row["full_cover"]["profit_any_outcome"],
+        reverse=True,
+    )
+    best_two_outcome = sorted(
+        app_analyses,
+        key=lambda row: row["best_two_outcome_hedge"][
+            "profit_if_covered_outcome"
+        ],
+        reverse=True,
+    )
+    return {
+        "currency": "PEN",
+        "budget": budget,
+        "scope": "same_app_complete_1x2_screenshot_prices",
+        "status": (
+            "full_cover_arbitrage_available"
+            if best_full_cover else "no_full_cover_arbitrage"
+        ),
+        "full_cover_arbitrage_available": bool(best_full_cover),
+        "best_full_cover": best_full_cover[0] if best_full_cover else None,
+        "best_two_outcome_hedge": (
+            best_two_outcome[0] if best_two_outcome else None
+        ),
+        "apps": app_analyses,
+        "warning": {
+            "en": (
+                "A true guaranteed arbitrage requires all mutually exclusive "
+                "outcomes to be covered and the inverse-odds sum to be below 1. "
+                "Two-outcome hedges can still lose the full stake on the "
+                "uncovered outcome."
+            ),
+            "es": (
+                "Un arbitraje garantizado real requiere cubrir todos los "
+                "resultados mutuamente excluyentes y que la suma de inversas de "
+                "cuotas sea menor que 1. Las coberturas de dos resultados aún "
+                "pueden perder todo el monto si cae el resultado no cubierto."
+            ),
+        },
+    }
+
 def _legacy_attach_educational_stake_simulation_disabled(
     predictions: Sequence[Dict[str, object]],
 ) -> Dict[str, object]:
@@ -3085,6 +3261,9 @@ def build() -> Dict[str, object]:
         }
         model_rows.append(model_row)
         names_a, names_b = CODE_NAMES[ta], CODE_NAMES[tb]
+        complementary_analysis = complementary_bet_analysis(
+            grouped, names_a, names_b
+        )
         published_lambda_a = round(la, 3)
         published_lambda_b = round(lb, 3)
         common_markets = common_market_probabilities(matrix)
@@ -3320,6 +3499,7 @@ def build() -> Dict[str, object]:
             "common_markets": common_markets,
             "metric_explanations": explanations,
             "market_comparisons": market_comparisons,
+            "complementary_bet_analysis": complementary_analysis,
             "expanded_price_coverage": {
                 "has_total_price": any(
                     row["market_family"] == "total_goals"

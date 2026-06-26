@@ -1,38 +1,39 @@
-# SYSTEM STATE: Maintain WCdecider report layout regression coverage and documented release requirements
+# SYSTEM STATE: Add research-only double-discount gate and media-ignore protection
 
 ## 🎯 Final Success Criteria
-- The current report user journey has an automated browser regression test covering layout order, required sections, top-summary anchors, card count, and footer build/version markers.
-- `requirements.md` documents the same layout contract as a testable production requirement.
-- Relevant browser regression tests pass without weakening existing mobile, tooltip, research-mode, bankroll, and JSON-parity checks.
+- Tweet-derived ideas are integrated only where defensible: feature/model diversification and confidence filters remain research guidance; double-discount is implemented as a non-authorizing margin-of-safety flag.
+- The report shows observed market probability, required double-discount threshold, pass/fail status, and bilingual non-authorization language.
+- Large local video/audio files under repo `tmp/` are ignored and not staged.
+- Pipeline, governance-audit, and browser regression tests pass with updated JSON/report artifacts.
 
 ## 🛑 Immutable Constraints & Guardrails
 - Follow READ → ACT → WRITE & COMPRESS every phase/turn; `AGENT_STATE.md` remains in this exact schema.
-- Do not modify unrelated user-owned worktree changes: historical odds/provenance CSV updates and untracked local artifacts remain out of scope unless explicitly requested.
-- Preserve production safety language: stake simulations are hypothetical, authorized stake remains zero unless profitability gates pass, and no guaranteed-profit language is allowed.
-- Page layout tests must validate the generated site artifact, not only static source text.
-- Hidden loading-shell behavior must be validated by DOM order/state, not by post-load visual offset after the shell is intentionally hidden.
+- Do not modify or stage unrelated user-owned files unless explicitly requested. Existing historical/proxy artifacts and untracked local files remain protected.
+- Do not copy marketing claims such as “pure math,” “money printer,” or guaranteed win rates into production logic.
+- A double-discount gate is research-only and cannot authorize a wager; production authorization remains blocked with `recommendation=null` and `S/0.00` authorized stake.
+- Video/audio files in local temp folders must not be committed. If a provided video is unavailable locally, record that limitation rather than inventing lecture content.
 
 ## 🕒 Transactional Ledger (Chronological)
-- 508 | Read `AGENT_STATE.md` and inspected report tests/docs | Active state required layout regression/docs update; existing Playwright suite and `requirements.md` were the correct scope | Success
-- 509 | Added `test_current_page_layout_contract_and_user_journey` to `tests/test_report_playwright_compliance.py` | Test asserts required sections, DOM order of the current journey, production/research workflow default visibility, bankroll/top-summary/card counts, summary-to-card anchor navigation, and footer/build marker | Success
-- 510 | Added `R5.16` to `requirements.md` | Requirements now define the report layout as hero summary/model evidence → performance/profitability visuals → controls → defensive loading shell → bankroll plan → top-two summary → 32 cards → footer marker, with top-summary anchors and `bg-slate-900` card contract | Success
-- 511 | Ran report Playwright suite iteration 1 | 25 tests passed and new layout test failed because hidden `#loading-shell` has visual offset 0 after JSON load | Diverged
-- 512 | Corrected layout-order assertion | Switched from rendered offsets to DOM order so the hidden-after-load defensive shell is still regression-tested correctly | Success
-- 513 | Reran report Playwright suite | `PYTHONDONTWRITEBYTECODE=1 python3 -B -m pytest tests/test_report_playwright_compliance.py -q --tb=short -p no:cacheprovider` passed 26/26 in 86.29s | Success
-- 514 | Checked worktree/diff | Intended changes are `requirements.md`, `tests/test_report_playwright_compliance.py`, and this state update; pre-existing unrelated modified/untracked files remain untouched | Success
-- 515 | Created local commit | Staged only `AGENT_STATE.md`, `requirements.md`, and `tests/test_report_playwright_compliance.py`; commit `10d1711` records the layout regression contract without staging unrelated artifacts | Success
-- 516 | Amended local commit with final state ledger | Final local commit is `0e10d94` on `codex/june23-safety-model-update`; unrelated modified/untracked artifacts remain outside the commit | Success
-- 517 | Pushed branch to GitHub | `git push -u origin codex/june23-safety-model-update` succeeded, updating remote branch from `e835340` to `860c311` and setting upstream tracking | Success
-- 518 | Attempted draft PR creation | GitHub connector returned `403 Resource not accessible by integration`; `gh auth status` also reports the local token for `PillB` is invalid, so PR creation is blocked until GitHub auth/integration permissions are repaired | Blocked
-- 519 | Rechecked local branch status | Local branch now tracks `origin/codex/june23-safety-model-update`; unrelated modified/untracked artifacts remain outside the published layout-regression commit | Success
-- 520 | Retried draft PR creation after user requested proceed | `gh auth status` still reports invalid `PillB` token, and GitHub connector again returned `403 Resource not accessible by integration`; branch remains pushed, PR creation remains externally blocked | Blocked
+- 534 | Read state, inspected worktree, searched temp locations for the Stanford video/audio | No `.mp4`, `.mov`, `.m4v`, `.webm`, `.mkv`, `.mp3`, `.m4a`, or `.wav` file was found in repo `tmp/`, `/tmp`, `/private/tmp`, or the macOS temp directory during scan; only `tmp/AGENT.md` exists locally | Blocked for video analysis
+- 535 | Analyzed provided tweet content | Accepted defensible ideas: feature subsampling/ensemble diversity, probability thresholds as filters, margin-of-safety entry, log-return/Sharpe/path-risk evaluation; rejected unsafe claims and fixed win-rate/guarantee rhetoric | Success
+- 536 | Added repo temp media ignore rules | `.gitignore` now ignores large media/audio extensions under `tmp/` without ignoring `tmp/AGENT.md` or staging any video | Success
+- 537 | Implemented research-only double-discount gate | `public_recommendation` now emits `margin_of_safety` with method, observed market probability, required max probability `0.5 * model decision probability`, pass/fail, `entry_authorized=false`, and bilingual explanation | Success
+- 538 | Updated report UI | Ranked comparison tiles show the double-discount gate, observed vs required probabilities, pass/fail status, and bilingual non-authorization text | Success
+- 539 | Updated requirements | Added R2.24/R2.25 for research-only double-discount, log returns, drawdown, Sharpe/risk metrics, MAE/MFE-style diagnostics, and win-rate non-sufficiency; added R5.18 for UI disclosure | Success
+- 540 | Added tests | Pipeline test validates all ranked comparisons include deterministic non-authorizing double-discount metadata; browser test validates visible English/Spanish double-discount safety text | Success
+- 541 | Regenerated canonical artifacts | Ran prediction pipeline, merged research metrics, regenerated report, regenerated datapoint audit, and rebuilt site; audit manifest contains 70,634 datapoints and zero blocked rows | Success
+- 542 | Browser validation | `PYTHONDONTWRITEBYTECODE=1 python3 -B -m pytest tests/test_report_playwright_compliance.py -q --tb=short -p no:cacheprovider` passed 28/28 in 90.62s under local-server browser permissions | Success
+- 543 | Pipeline/governance validation | `PYTHONDONTWRITEBYTECODE=1 python3 -B -m pytest tests/test_june22_27_pipeline.py -q --tb=short -p no:cacheprovider` passed 38/38 in 193.06s | Success
+- 544 | Final artifact sanity check | 32 predictions, 108 ranked comparisons, 7 double-discount pass flags, and 0 blocked audit rows | Success
+- 545 | Created and amended local implementation commit | Staged only `.gitignore`, governance binding, report/pipeline/tests/requirements, and regenerated June 22–27 artifacts; excluded unrelated historical/proxy files, local untracked files, and repo `tmp/`; local branch is ahead of origin with one implementation commit | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
-- Visual-offset ordering is fragile for elements that intentionally disappear after successful JSON load. DOM ordering is the correct regression invariant for the defensive loading shell.
-- The existing suite already covered individual widgets; the missing guard was the full top-to-bottom user journey contract.
-- No implementation HTML/JS change was needed; this request was satisfied by regression coverage plus documented requirements.
+- The tweet’s “70% confidence” and “80% win rate” framing is not a valid standalone betting promotion rule. The implemented version treats confidence/discount as a review flag subordinate to source freshness, settlement, profitability validation, and audit gates.
+- The “Double Discount” rule maps cleanly to football odds as `market_implied_probability <= 0.5 * model_decision_probability`, but this can still be wrong if the model is miscalibrated or the price is stale.
+- The Stanford video could not be analyzed because no video/audio file was found in the scanned temp paths. If the file is provided at a concrete path, analyze it before making additional lecture-derived changes.
+- Browser tests require permission to bind a local `127.0.0.1` server; sandbox-only runs fail with `PermissionError: [Errno 1] Operation not permitted`.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Commit and push this state-only PR-blocker ledger entry.
-- [ ] Next Step: After GitHub auth/integration permissions are repaired, open a draft PR from `codex/june23-safety-model-update` to `main`.
-- [ ] Future Milestone: Keep layout contract synchronized with any future report redesign and CI/browser artifact validation.
+- [ ] Active Step: Push/publish the branch.
+- [ ] Next Step: Handle PR creation if GitHub auth permits it.
+- [ ] Future Milestone: If the Stanford lecture file path is supplied, transcribe/analyze the audio and convert only validated insights into gated requirements/tests.

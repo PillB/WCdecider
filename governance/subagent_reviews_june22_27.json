@@ -2,33 +2,33 @@
   "git_commit": "PENDING_SAFETY_RELEASE_COMMIT",
   "reviewed_model_version": "june22_27_v5_fail_closed_development_only",
   "reviewed_artifact_hashes": {
-    "wc_june22_27_model_metrics.json": "7d0a40a4273165702b31d630b5ffb67839d26d9462c2d528d679901f6dd9f4fe",
-    "wc_june22_27_predictions.json": "d4ac7bc9ea3996fbdf7f55fda0099205a2329630e60558f0932aaf02e05bcdcf"
+    "wc_june22_27_model_metrics.json": "dc52760da9e0b143dd9156dc69319bb3897a7fcad85d8307a963e1f8a42f3d79",
+    "wc_june22_27_predictions.json": "1c644cf808fb9824f67c4d0829d52bb94bb06bd040242039a2a0b4ba31834b9f"
   },
   "reviewed_semantic_hashes": {
-    "wc_june22_27_model_metrics.json": "74bf775cb43c9958318efd53d939be10bffedfc5024d526c83cd052d82dcc6a9",
-    "wc_june22_27_predictions.json": "36234ee089826693dc6fd12bcb48b827d2de9ef9219fe5720ede6d24c0a56d6b"
+    "wc_june22_27_model_metrics.json": "179d5f0997889994c744b0adcad325f6f9d791f7744513bb7c3dd19d6bfed795",
+    "wc_june22_27_predictions.json": "5da4a47d533d33edc9369234d064cc8f7878d83b40ee10e1fdaf2078aaff03be"
   },
   "global": {
     "owner": {
       "id": "019efd1e-5b50-7f90-8ec4-d5e5e414b429",
       "status": "PASS",
-      "evidence": "Exact-hash owner/model review verified the corrected IMG_7523–7614 Betsson and IMG_7615–7745 Betano boundary, 12 current Betsson singles totaling S/95 with maximum S/14, a sourced S/5 accumulator, forced-coverage warnings, Betano S/100 reserve, BLOCKED promotion, null recommendations, and zero authorized stakes."
+      "evidence": "Exact-hash owner/model review verified the corrected IMG_7523–7614 Betsson and IMG_7615–7745 Betano boundary, 12 current Betsson singles totaling S/95 with maximum S/14, a sourced S/5 accumulator, forced-coverage warnings, Betano S/100 reserve, previous-day elapsed-result folding, complementary/dutching math separated from non-guaranteed two-outcome hedges, research-only double-discount margin-of-safety gates, BLOCKED promotion, null recommendations, and zero authorized stakes."
     },
     "replication_1": {
       "id": "019efd1e-5bf9-77b0-8701-adeb0a9bfae6",
       "status": "PASS",
-      "evidence": "Two isolated clean-room builds matched exact prediction/metrics hashes and all 756 corrected app labels; Betsson reproduced 12 positive singles totaling S/95 with maximum S/14 plus an S/5 accumulator, while Betano reserved S/100 and authorized stakes remained zero."
+      "evidence": "Two isolated clean-room builds matched exact prediction/metrics hashes and all 756 corrected app labels; Betsson reproduced 12 positive singles totaling S/95 with maximum S/14 plus an S/5 accumulator, previous-day fixtures remained archived, complementary 1X2 inverse-sum analysis and double-discount probability thresholds were deterministic, while Betano reserved S/100 and authorized stakes remained zero."
     },
     "replication_2": {
       "id": "019efd1e-5cce-7cd1-a4d7-8fbe5df740b3",
       "status": "PASS",
-      "evidence": "Data/statistics review visually confirmed the sportsbook boundary and all 756 corrected source rows, verified one sourced single per current Betsson fixture, the 15% single and 5% accumulator caps, explicit forced-coverage/stale-price warnings, no invented Betano prices, and no validated-profit claim."
+      "evidence": "Data/statistics review visually confirmed the sportsbook boundary and all 756 corrected source rows, verified one sourced single per current Betsson fixture, the 15% single and 5% accumulator caps, explicit forced-coverage/stale-price warnings, 1X2 dutching/arbitrage requires inverse odds below 1, two-outcome hedges disclose uncovered-outcome loss, double-discount gates compare market implied probability to half of model decision probability, no invented Betano prices, and no validated-profit claim."
     },
     "editor": {
       "id": "019efd1e-5d8f-7521-a557-4bd88228ab26",
       "status": "PASS",
-      "evidence": "Editor/UI review verified JSON-driven profile totals, dynamically scaled per-app headers/reserves, 12 current Betsson singles, three localized ranked comparisons, localized three-leg accumulator with all-legs and gross-not-profit warnings, bilingual Betano missing-data request, forced-coverage warnings, mobile flow, and permanent authorized S/0 safeguards."
+      "evidence": "Editor/UI review verified JSON-driven profile totals, dynamically scaled per-app headers/reserves, 12 current Betsson singles, three localized ranked comparisons, localized three-leg accumulator with all-legs and gross-not-profit warnings, bilingual Betano missing-data request, complementary/dutching panel with no-guarantee disclosure, double-discount UI with research-only non-authorization disclosure, forced-coverage warnings, mobile flow, and permanent authorized S/0 safeguards."
     }
   },
   "fixtures": {}

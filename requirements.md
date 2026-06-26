@@ -68,6 +68,22 @@ This document defines testable production requirements. `AGENT.md` defines behav
   single per current match when that app has transcribed prices, a 20% absolute
   single cap with 15% balanced default, and an accumulator capped at 5% in the
   balanced profile. Missing app prices reserve the full S/100 and request data.
+- R2.23: Complementary-bet/dutching logic is allowed only as a sourced,
+  educational arithmetic object. A guaranteed-profit label requires a complete
+  mutually exclusive and exhaustive market, normally same-app 1X2, with
+  `sum(1 / decimal_odds) < 1`. Two-outcome favorite/longshot hedges must
+  disclose the uncovered result and full loss if it lands; they cannot be
+  labeled guaranteed or used to bypass the blocked production authorization.
+- R2.24: Research-only confidence/margin-of-safety gates may be displayed, but
+  must not authorize a wager. A “double-discount” gate passes only when the
+  sourced market-implied probability is no more than half the model decision
+  probability. This is a conservative review flag, not a guarantee, and it is
+  subordinate to source freshness, settlement, profitability, and audit gates.
+- R2.25: Strategy health must be evaluated with risk-adjusted and path-aware
+  metrics before promotion, including log returns, drawdown, variance, Sharpe
+  or equivalent excess-return-per-risk measures, MAE/MFE-style adverse/favorable
+  excursion diagnostics where price paths exist, and out-of-sample calibration.
+  Win rate alone is not a promotion criterion.
 
 ## R3 — Safety and classification
 
@@ -119,6 +135,15 @@ This document defines testable production requirements. `AGENT.md` defines behav
   fixture, link to the matching card anchor, preserve the production/research
   workflow toggle state, and keep all 32 cards rendered as `bg-slate-900`
   fixture cards.
+- R5.17: The report may display a complementary/dutching panel per current
+  fixture, but it must show whether full-cover arbitrage exists, show the
+  inverse-odds logic, identify two-outcome hedges as non-guaranteed, disclose
+  the uncovered outcome and loss amount, and keep all language bilingual and
+  consistent with the zero-authorized-stake gate.
+- R5.18: The report may display a double-discount margin-of-safety flag on
+  ranked comparisons, but it must show the observed market probability, the
+  required maximum probability, whether the gate passes, and an explicit
+  bilingual statement that this is research-only and not betting authorization.
 
 ## R6 — Pipeline and reproducibility
 

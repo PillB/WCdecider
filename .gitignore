@@ -13,3 +13,12 @@ historical_closing_odds_football_data.csv
 historical_closing_odds_football_data_coverage.json
 wc_bayesian_search_results.json
 model_run_june16.txt
+tmp/*.mp4
+tmp/*.mov
+tmp/*.m4v
+tmp/*.webm
+tmp/*.mkv
+tmp/*.mp3
+tmp/*.m4a
+tmp/*.wav
+tmp/*.aac

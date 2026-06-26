@@ -525,6 +525,57 @@ def test_interactive_stake_simulation_scales_and_preserves_authorization(page):
     ).inner_text() == f"S/{strict_expected:.2f}"
 
 
+def test_complementary_betting_panel_discloses_dutching_math_and_risk(page):
+    browser_page, _ = page
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    first = next(
+        row for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "future"
+        and row["freshness_status"] == "current_snapshot"
+    )
+    card = browser_page.locator(f'[data-fixture-id="{first["fixture_id"]}"]')
+    text = card.inner_text()
+    assert "Complementary / dutching check" in text
+    analysis = first["complementary_bet_analysis"]
+    if analysis["full_cover_arbitrage_available"]:
+        assert "Full-cover arbitrage found" in text
+        assert "before app limits, stale-price risk" in text
+    else:
+        assert "No guaranteed full-cover arbitrage" in text
+        assert "leaves one result uncovered" in text
+        assert "loss S/10.00" in text
+    assert "Two-outcome hedges can still lose" in text
+    browser_page.locator("#lang").click()
+    spanish = card.inner_text()
+    assert "Chequeo complementario / dutching" in spanish
+    assert "resultado no cubierto" in spanish
+
+
+def test_double_discount_gate_is_visible_and_non_authorizing(page):
+    browser_page, _ = page
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    first = next(
+        row for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "future"
+        and row["freshness_status"] == "current_snapshot"
+    )
+    card = browser_page.locator(f'[data-fixture-id="{first["fixture_id"]}"]')
+    text = card.inner_text()
+    assert "Double-discount gate" in text
+    assert "not proof of profit" in text
+    gate = first["ranked_comparisons"][0]["margin_of_safety"]
+    assert f"{gate['observed_market_probability'] * 100:.1f}%" in text
+    assert f"{gate['required_market_probability_max'] * 100:.1f}%" in text
+    browser_page.locator("#lang").click()
+    spanish = card.inner_text()
+    assert "Puerta doble descuento" in spanish
+    assert "no prueba de beneficio" in spanish
+
+
 def test_mobile_shell_survives_delayed_json_without_crashing():
     from playwright.sync_api import sync_playwright
 

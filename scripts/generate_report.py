@@ -445,7 +445,44 @@ function summaryBetCell(row,item,rank){
     <span><span class="en">Gross</span><span class="es">Bruto</span>: <b ${grossAttr}>S/0.00</b></span>
    </div>
    <div class="mt-1 text-[10px] text-amber-200" data-summary-note="${escapeHtml(row.fixture_id)}" data-summary-rank="${rank}"></div>
-  </div>`;
+   </div>`;
+}
+function complementaryBetPanel(row){
+ const analysis=row.complementary_bet_analysis||{};
+ const bestFull=analysis.best_full_cover;
+ const bestHedge=analysis.best_two_outcome_hedge;
+ const hedge=bestHedge?.best_two_outcome_hedge;
+ const fullRows=bestFull?Object.entries(bestFull.full_cover?.stakes||{}).map(([outcome,stake])=>{
+  const label=bestFull.labels?.[outcome]||{};
+  const price=bestFull.odds?.[outcome];
+  return `<li><span class="en">${escapeHtml(label.en||outcome)}</span><span class="es">${escapeHtml(label.es||outcome)}</span>: S/${Number(stake).toFixed(2)} @ ${Number(price).toFixed(2)}</li>`;
+ }).join(''):'';
+ const hedgeRows=hedge?Object.entries(hedge.stakes||{}).map(([outcome,stake])=>{
+  const label=hedge.covered_labels?.[outcome]||{};
+  const price=bestHedge.odds?.[outcome];
+  return `<li><span class="en">${escapeHtml(label.en||outcome)}</span><span class="es">${escapeHtml(label.es||outcome)}</span>: S/${Number(stake).toFixed(2)} @ ${Number(price).toFixed(2)}</li>`;
+ }).join(''):'';
+ const uncovered=hedge?.uncovered_label||{};
+ return `<section class="mt-4 rounded-2xl border border-indigo-800 bg-indigo-950/20 p-4 text-sm">
+  <div class="flex items-start justify-between gap-3">
+   <div>
+    <div class="font-semibold text-white"><span class="en">Complementary / dutching check</span><span class="es">Chequeo complementario / dutching</span></div>
+    <p class="mt-1 text-xs text-slate-300"><span class="en">This tests the exact math behind covering multiple outcomes with sourced 1X2 prices.</span><span class="es">Esto prueba la matemática exacta de cubrir varios resultados con cuotas 1X2 con fuente.</span></p>
+   </div>
+   <span class="rounded-full border ${analysis.full_cover_arbitrage_available?'border-emerald-700 text-emerald-200':'border-amber-700 text-amber-200'} px-2 py-1 text-[10px]">${analysis.status||'not_available'}</span>
+  </div>
+  ${bestFull?`<div class="mt-3 rounded-xl border border-emerald-800 bg-emerald-950/25 p-3">
+    <div class="font-semibold text-emerald-100"><span class="en">Full-cover arbitrage found in ${escapeHtml(bestFull.app)}</span><span class="es">Arbitraje de cobertura total encontrado en ${escapeHtml(bestFull.app)}</span></div>
+    <ul class="mt-2 list-disc pl-5 text-xs text-slate-200">${fullRows}</ul>
+    <p class="mt-2 text-xs text-emerald-200"><span class="en">For S/${Number(analysis.budget||10).toFixed(2)} total, gross return is S/${Number(bestFull.full_cover.gross_return_any_outcome).toFixed(2)} for any 1X2 outcome; math profit S/${Number(bestFull.full_cover.profit_any_outcome).toFixed(2)} before app limits, stale-price risk, voids, and human execution error.</span><span class="es">Para S/${Number(analysis.budget||10).toFixed(2)} total, el bruto es S/${Number(bestFull.full_cover.gross_return_any_outcome).toFixed(2)} en cualquier resultado 1X2; beneficio matemático S/${Number(bestFull.full_cover.profit_any_outcome).toFixed(2)} antes de límites de app, riesgo de cuota vieja, anulaciones y error humano.</span></p>
+  </div>`:`<div class="mt-3 rounded-xl border border-amber-800 bg-amber-950/20 p-3">
+    <div class="font-semibold text-amber-100"><span class="en">No guaranteed full-cover arbitrage in the saved same-app 1X2 prices.</span><span class="es">No hay arbitraje garantizado de cobertura total en las cuotas 1X2 guardadas de la misma app.</span></div>
+    ${bestHedge?`<p class="mt-2 text-xs text-slate-300"><span class="en">Best two-outcome hedge candidate from ${escapeHtml(bestHedge.app)} covers two outcomes but leaves one result uncovered.</span><span class="es">La mejor cobertura de dos resultados de ${escapeHtml(bestHedge.app)} cubre dos resultados pero deja uno sin cubrir.</span></p>
+    <ul class="mt-2 list-disc pl-5 text-xs text-slate-200">${hedgeRows}</ul>
+    <p class="mt-2 text-xs text-amber-200"><span class="en">If a covered outcome lands: gross S/${Number(hedge.gross_return_if_covered_outcome).toFixed(2)}, profit S/${Number(hedge.profit_if_covered_outcome).toFixed(2)}. If the uncovered outcome lands (${escapeHtml(uncovered.en||hedge.uncovered_outcome)}): loss S/${Math.abs(Number(hedge.loss_if_uncovered_outcome)).toFixed(2)}.</span><span class="es">Si cae un resultado cubierto: bruto S/${Number(hedge.gross_return_if_covered_outcome).toFixed(2)}, beneficio S/${Number(hedge.profit_if_covered_outcome).toFixed(2)}. Si cae el resultado no cubierto (${escapeHtml(uncovered.es||hedge.uncovered_outcome)}): pérdida S/${Math.abs(Number(hedge.loss_if_uncovered_outcome)).toFixed(2)}.</span></p>`:''}
+  </div>`}
+  <p class="mt-3 text-xs text-red-200"><span class="en">${escapeHtml(analysis.warning?.en||'No guaranteed-profit claim is made.')}</span><span class="es">${escapeHtml(analysis.warning?.es||'No se afirma beneficio garantizado.')}</span></p>
+ </section>`;
 }
 function renderTopSummaryTable(){
  const rows=DATA.predictions.map(row=>{
@@ -594,6 +631,13 @@ function recommendationTile(item,i,mode){
     <div><span class="en">Probability</span><span class="es">Probabilidad</span> <b>${pct(item.p_win)}</b></div>
     <div><span class="en">Fair threshold</span><span class="es">Umbral justo</span> <b>${odds(item.fair_odds)}</b></div>
    </div>
+   <div class="mt-2 rounded-lg border ${item.margin_of_safety?.passes?'border-emerald-800 bg-emerald-950/20 text-emerald-200':'border-amber-800 bg-amber-950/20 text-amber-200'} p-2 text-xs">
+    <span class="en">Double-discount gate</span><span class="es">Puerta doble descuento</span>:
+    <b>${item.margin_of_safety?.passes?'<span class="en">passes</span><span class="es">pasa</span>':'<span class="en">does not pass</span><span class="es">no pasa</span>'}</b>
+    · <span class="en">market</span><span class="es">mercado</span> ${safePct(item.margin_of_safety?.observed_market_probability)}
+    ≤ <span class="en">required</span><span class="es">requerido</span> ${safePct(item.margin_of_safety?.required_market_probability_max)}
+    <div class="mt-1 text-slate-300"><span class="en">${escapeHtml(item.margin_of_safety?.explanation?.en||'Research-only margin-of-safety flag; not authorization.')}</span><span class="es">${escapeHtml(item.margin_of_safety?.explanation?.es||'Señal de margen de seguridad solo de investigación; no es autorización.')}</span></div>
+   </div>
    <div class="mt-2 grid gap-1">${riskLensBlocks(item)}</div>
    <div class="mt-2 text-xs ${item.price_gate_status==='at_or_above_model_fair_price'?'text-emerald-300':'text-amber-200'}"><span class="en">${item.price_gate_status==='at_or_above_model_fair_price'?'Saved price meets the model fair threshold.':'Saved price is below the model fair threshold.'}</span><span class="es">${item.price_gate_status==='at_or_above_model_fair_price'?'La cuota guardada alcanza el umbral justo.':'La cuota guardada está debajo del umbral justo.'}</span></div>
    <div class="mt-2 text-xs text-slate-400"><span class="en">${escapeHtml(item.display?.market?.en||item.market_original)}</span><span class="es">${escapeHtml(item.display?.market?.es||item.market_original)}</span> • ${escapeHtml(item.source_image)} • <span class="en">utility</span><span class="es">utilidad</span> ${Number(item.recommendation_utility).toFixed(1)}</div>
@@ -731,6 +775,7 @@ function card(row,index){
       </div>
       <p class="mt-2 text-xs text-amber-200"><span class="en">Model-derived and experimental. A fair odd is not an app quote or betting instruction.</span><span class="es">Derivado del modelo y experimental. Una cuota justa no es una cuota de app ni una instrucción de apuesta.</span></p>
     </div>
+    ${complementaryBetPanel(row)}
     <div class="mt-4 rounded-2xl border border-slate-700 bg-slate-950 p-4">
       <div class="text-xs text-red-300"><span class="en">${escapeHtml(r?.watchlist_label?.en||'ABSTAIN — highest-ranked comparison only')}</span><span class="es">${escapeHtml(r?.watchlist_label?.es||'ABSTAIN — solo comparación mejor clasificada')}</span></div>
       <div class="mt-1 font-bold text-white" data-json-pointer="${ptr}/rank_one_comparison/selection_original"><span class="en">${escapeHtml(r?.display?.selection?.en||rec)}</span><span class="es">${escapeHtml(r?.display?.selection?.es||rec)}</span></div>
