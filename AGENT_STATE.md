@@ -26,6 +26,8 @@
 - 543 | Pipeline/governance validation | `PYTHONDONTWRITEBYTECODE=1 python3 -B -m pytest tests/test_june22_27_pipeline.py -q --tb=short -p no:cacheprovider` passed 38/38 in 193.06s | Success
 - 544 | Final artifact sanity check | 32 predictions, 108 ranked comparisons, 7 double-discount pass flags, and 0 blocked audit rows | Success
 - 545 | Created and amended local implementation commit | Staged only `.gitignore`, governance binding, report/pipeline/tests/requirements, and regenerated June 22–27 artifacts; excluded unrelated historical/proxy files, local untracked files, and repo `tmp/`; local branch is ahead of origin with one implementation commit | Success
+- 546 | Pushed implementation branch | `git push origin codex/june23-safety-model-update` succeeded, updating remote branch from `7f016aa` to `b70dfb7`; GitHub warned `wc_june22_27_datapoint_audit.csv` is 76.11 MB and recommends Git LFS | Success
+- 547 | Retried draft PR creation | GitHub connector returned `403 Resource not accessible by integration`; draft PR creation remains blocked by integration/auth permissions, but the branch is published | Blocked
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - The tweet’s “70% confidence” and “80% win rate” framing is not a valid standalone betting promotion rule. The implemented version treats confidence/discount as a review flag subordinate to source freshness, settlement, profitability validation, and audit gates.
@@ -34,6 +36,6 @@
 - Browser tests require permission to bind a local `127.0.0.1` server; sandbox-only runs fail with `PermissionError: [Errno 1] Operation not permitted`.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Push/publish the branch.
-- [ ] Next Step: Handle PR creation if GitHub auth permits it.
+- [ ] Active Step: Commit and push this state-only publish ledger update.
+- [ ] Next Step: After GitHub auth/integration permissions are repaired, open a draft PR from `codex/june23-safety-model-update` to `main`.
 - [ ] Future Milestone: If the Stanford lecture file path is supplied, transcribe/analyze the audio and convert only validated insights into gated requirements/tests.
