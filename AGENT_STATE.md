@@ -552,6 +552,9 @@
 - 499 | Diagnose and fix mobile simulator startup failure | Browser diagnostics surfaced `Cannot read properties of undefined (reading 'singles_deployed')`: Betano's intentionally empty `profiles: {}` object was treated as an available plan. Availability now requires all five named profile records, so Betano remains blocked/reserved while Betsson renders normally | Success
 - 500 | Validate corrected mobile and allocation journeys | Non-browser suite passed 96 tests with only the sandbox-localhost browser case excluded; focused regressions passed 5/5; complete Playwright/mobile/bilingual suite passed 26/26. Mobile loads 32 cards, Betsson shows S/95 singles plus S/5 accumulator, Betano reserves S/100, and authorized production stake remains S/0 | Success
 - 501 | Check publication prerequisites and release scope | Intended simulator/model/report/test artifacts are separable from the protected legacy production CSV and three unrelated untracked files. GitHub CLI 2.94.0 is installed, but the active PillB token is invalid, so no staging, commit, or push was attempted | Blocked
+- 502 | Publish reviewed forward simulator | Created release commit `a59c3ced6e464211f8074e04d028dbf7c983b6f7` from 21 explicitly staged artifacts and pushed it to `origin/main`; the protected legacy production CSV and three unrelated files remained excluded | Success
+- 503 | Complete exact CI/CD validation | GitHub Actions run `28207348016` completed successfully for exact SHA `a59c3ced6e464211f8074e04d028dbf7c983b6f7`, including governed rebuild, tests, Pages deployment, and workflow live validation | Success
+- 504 | Independently validate public mobile simulator | Public Pages exposes exact build SHA `a59c3ced6e464211f8074e04d028dbf7c983b6f7`; live Playwright passed JSON parity, 32 unique cards, resource loading, and EN/ES. An iPhone-sized run reported verified JSON, Betsson S/95 singles plus S/5 accumulator, Betano blocked/reserved, authorized S/0, zero horizontal overflow, zero request failures, and zero page errors | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Prior production paths and documentation overstated reproducibility through hard-coded odds, optional silent TGNN fallback, and target extraction from prose; the June 22–27 path removes those dependencies.
@@ -575,6 +578,6 @@
 - Startup failures now need user-visible diagnostics because iOS may kill a tab before remote developer tools are available; the diagnostics panel records fetch stages, HTTP status, byte counts, URL, build SHA, audit hash, online status, and user agent.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Restore GitHub CLI authentication for PillB.
-- [ ] Next Step: Freeze reviewed release scope, publish, monitor exact GitHub Actions SHA, and validate the live mobile simulator.
+- [ ] Active Step: Await current Betano screenshots or manually supplied current prices for the 12 upcoming fixtures.
+- [ ] Next Step: Transcribe and independently validate current Betano prices, then regenerate the separate S/100 Betano simulation.
 - [ ] Future Milestone: Seal the first confirmatory cohort before predictions and promote recommendations/staking only after all calibration, profitability/CLV, and governance gates pass.
