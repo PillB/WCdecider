@@ -51,6 +51,25 @@ ODDS_PARTS = (
     ROOT / "odds_june25_26.csv",
     ROOT / "odds_june27.csv",
 )
+MANUAL_ODDS_PATTERN = "manual_odds_*.csv"
+MANUAL_ODDS_PREFERRED_AFTER = date(2026, 6, 26)
+MANUAL_SOURCE_PREFIX = "manual_user_input_"
+RAW_ODDS_FIELDS = (
+    "fixture_id",
+    "fixture_display",
+    "kickoff_local",
+    "app",
+    "market_original",
+    "market_id",
+    "selection_original",
+    "selection_id",
+    "line",
+    "odds",
+    "promo",
+    "source_image",
+    "capture_time",
+    "notes",
+)
 ODDS_CAPTURE_DATE_BY_FILE = {
     "odds_june27.csv": "2026-06-21",
 }
@@ -217,6 +236,19 @@ def sha256(path: Path) -> str:
     with path.open("rb") as handle:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
+    return digest.hexdigest()
+
+
+def sha256_many(paths: Sequence[Path]) -> str:
+    """Return one SHA-256 over named source files in deterministic order."""
+    digest = hashlib.sha256()
+    for path in sorted(paths, key=lambda item: item.name):
+        digest.update(path.name.encode("utf-8"))
+        digest.update(b"\0")
+        with path.open("rb") as handle:
+            for block in iter(lambda: handle.read(1024 * 1024), b""):
+                digest.update(block)
+        digest.update(b"\0")
     return digest.hexdigest()
 
 
@@ -1441,8 +1473,84 @@ def mark_complete_markets(rows: List[Dict[str, str]]) -> None:
             row["is_complete_market"] = "true" if complete else "false"
 
 
+def manual_odds_provenance_path(csv_path: Path) -> Path:
+    """Return the required provenance sidecar path for a manual odds CSV."""
+    return csv_path.with_suffix(".provenance.json")
+
+
+def discover_manual_odds_files(root: Path = ROOT) -> List[Path]:
+    """Discover root-level manual odds files created by the input GUI."""
+    return sorted(root.glob(MANUAL_ODDS_PATTERN))
+
+
+def validate_manual_odds_provenance(csv_path: Path) -> Mapping[str, object]:
+    """Validate the manual CSV sidecar before trusting user-entered odds."""
+    provenance_path = manual_odds_provenance_path(csv_path)
+    if not provenance_path.exists():
+        raise FileNotFoundError(
+            f"Manual odds provenance is missing: {provenance_path.name}"
+        )
+    payload = json.loads(provenance_path.read_text(encoding="utf-8"))
+    if payload.get("schema") != "manual_wcdecider_odds_v1":
+        raise ValueError(
+            f"Unsupported manual odds provenance schema: {provenance_path.name}"
+        )
+    if Path(str(payload.get("output_csv", ""))).name != csv_path.name:
+        raise ValueError(
+            f"Manual odds provenance output_csv does not match: {provenance_path.name}"
+        )
+    if tuple(payload.get("fields", ())) != RAW_ODDS_FIELDS:
+        raise ValueError(
+            f"Manual odds provenance fields do not match raw odds schema: "
+            f"{provenance_path.name}"
+        )
+    return payload
+
+
+def parse_odds_capture_time(
+    row: Dict[str, str], path: Path, source_kind: str,
+) -> datetime:
+    """Parse capture time while preserving screenshot date metadata behavior."""
+    capture_raw = row.get("capture_time", "").strip()
+    if source_kind == "screenshot" and re.fullmatch(r"\d{2}:\d{2}", capture_raw):
+        capture_date = ODDS_CAPTURE_DATE_BY_FILE.get(path.name)
+        if not capture_date:
+            raise ValueError(
+                f"Time-only odds capture lacks source-date metadata: "
+                f"{path.name} {capture_raw}"
+            )
+        capture_raw = f"{capture_date} {capture_raw} -05:00"
+        row["capture_time"] = capture_raw
+        row["capture_time_derivation"] = (
+            f"date_from_frozen_file_metadata:{path.name}"
+        )
+    elif source_kind == "manual_user_input":
+        if re.fullmatch(r"\d{2}:\d{2}", capture_raw):
+            raise ValueError(
+                f"Manual odds capture_time must include date and timezone: {path.name}"
+            )
+        row["capture_time_derivation"] = "manual_user_input_verbatim_timezone_aware"
+    else:
+        row["capture_time_derivation"] = "verbatim_timezone_aware"
+    capture_at = datetime.fromisoformat(capture_raw.replace(" -05:00", "-05:00"))
+    if capture_at.tzinfo is None:
+        raise ValueError(f"Odds capture_time must be timezone-aware: {path.name}")
+    return capture_at
+
+
+def odds_preference_key(row: Mapping[str, str]) -> Tuple[str, str, str, str, str]:
+    """Return the row key where manual odds may replace screenshot odds."""
+    return (
+        row["fixture_id"],
+        row["app"],
+        row["market_id"],
+        row.get("selection_canonical") or row["selection_id"],
+        row["line"],
+    )
+
+
 def load_and_merge_odds(fixtures: Sequence[Mapping[str, str]]) -> List[Dict[str, str]]:
-    """Merge date-owned extractions and attach canonical fixture IDs."""
+    """Merge screenshot odds plus preferred manual post-June-26 overrides."""
     canonical = {}
     canonical_ids = {fixture["fixture_id"] for fixture in fixtures}
     kickoff_by_id = {fixture["fixture_id"]: fixture["kickoff_lima"] for fixture in fixtures}
@@ -1451,57 +1559,86 @@ def load_and_merge_odds(fixtures: Sequence[Mapping[str, str]]) -> List[Dict[str,
         a, b = split_fixture(fixture["match"])
         canonical[frozenset((a, b))] = fixture["fixture_id"]
         teams_by_id[fixture["fixture_id"]] = (a, b)
-    merged: List[Dict[str, str]] = []
-    seen = set()
+
+    def canonical_fixture_id(raw: Mapping[str, str]) -> str:
+        if raw.get("fixture_id") in canonical_ids:
+            return raw["fixture_id"]
+        a, b = split_fixture(raw["fixture_display"])
+        key = frozenset((a, b))
+        if key not in canonical:
+            raise ValueError(
+                f"Odds fixture absent from canonical schedule: "
+                f"{raw['fixture_display']}"
+            )
+        return canonical[key]
+
+    def normalize_raw_row(
+        raw: Mapping[str, str],
+        path: Path,
+        source_kind: str,
+        source_sha256: str,
+    ) -> Dict[str, str]:
+        row = dict(raw)
+        row["fixture_id"] = canonical_fixture_id(row)
+        row["source_kind"] = source_kind
+        row["source_file"] = path.name
+        row["source_sha256"] = source_sha256
+        row["kickoff_local"] = kickoff_by_id[row["fixture_id"]]
+        capture_at = parse_odds_capture_time(row, path, source_kind)
+        kickoff_at = datetime.fromisoformat(row["kickoff_local"])
+        if source_kind == "screenshot" and capture_at > DATA_CUTOFF:
+            raise ValueError(
+                f"Odds captured after data cutoff: {row['source_image']}"
+            )
+        if capture_at >= kickoff_at:
+            raise ValueError(
+                f"Odds captured at/after kickoff: {row['source_image']}"
+            )
+        return normalize_market_schema(row, *teams_by_id[row["fixture_id"]])
+
+    screenshot_rows: List[Dict[str, str]] = []
     for path in ODDS_PARTS:
         for row in read_csv(path):
-            row = dict(row)
-            if row.get("fixture_id") in canonical_ids:
-                row["fixture_id"] = row["fixture_id"]
-            else:
-                a, b = split_fixture(row["fixture_display"])
-                key = frozenset((a, b))
-                if key not in canonical:
-                    raise ValueError(f"Odds fixture absent from canonical schedule: {row['fixture_display']}")
-                row["fixture_id"] = canonical[key]
-            row["source_sha256"] = sha256(ROOT / "Screenshots" / row["source_image"])
-            row["kickoff_local"] = kickoff_by_id[row["fixture_id"]]
-            capture_raw = row.get("capture_time", "").strip()
-            if re.fullmatch(r"\d{2}:\d{2}", capture_raw):
-                capture_date = ODDS_CAPTURE_DATE_BY_FILE.get(path.name)
-                if not capture_date:
-                    raise ValueError(
-                        f"Time-only odds capture lacks source-date metadata: "
-                        f"{path.name} {capture_raw}"
-                    )
-                capture_raw = f"{capture_date} {capture_raw} -05:00"
-                row["capture_time"] = capture_raw
-                row["capture_time_derivation"] = (
-                    f"date_from_frozen_file_metadata:{path.name}"
-                )
-            else:
-                row["capture_time_derivation"] = "verbatim_timezone_aware"
-            capture_at = datetime.fromisoformat(
-                capture_raw.replace(" -05:00", "-05:00")
-            )
-            kickoff_at = datetime.fromisoformat(row["kickoff_local"])
-            if capture_at > DATA_CUTOFF:
-                raise ValueError(
-                    f"Odds captured after data cutoff: {row['source_image']}"
-                )
-            if capture_at >= kickoff_at:
-                raise ValueError(
-                    f"Odds captured at/after kickoff: {row['source_image']}"
-                )
-            row = normalize_market_schema(row, *teams_by_id[row["fixture_id"]])
-            unique = (
-                row["fixture_id"], row["app"], row["market_id"], row["selection_id"],
-                row["line"], row["odds"], row["source_image"],
-            )
-            if unique in seen:
+            screenshot_rows.append(normalize_raw_row(
+                row,
+                path,
+                "screenshot",
+                sha256(ROOT / "Screenshots" / row["source_image"]),
+            ))
+
+    manual_rows: List[Dict[str, str]] = []
+    for path in discover_manual_odds_files(ROOT):
+        validate_manual_odds_provenance(path)
+        source_sha = sha256_many([path, manual_odds_provenance_path(path)])
+        for row in read_csv(path):
+            fixture_id = canonical_fixture_id(row)
+            kickoff_day = date.fromisoformat(kickoff_by_id[fixture_id][:10])
+            if kickoff_day <= MANUAL_ODDS_PREFERRED_AFTER:
                 continue
-            seen.add(unique)
-            merged.append(row)
+            if not row.get("source_image", "").startswith(MANUAL_SOURCE_PREFIX):
+                raise ValueError(
+                    f"Manual odds row has non-manual source token: {path.name}"
+                )
+            normalized = normalize_raw_row(row, path, "manual_user_input", source_sha)
+            manual_rows.append(normalized)
+
+    manual_keys = {odds_preference_key(row) for row in manual_rows}
+    candidate_rows = [
+        row for row in screenshot_rows
+        if odds_preference_key(row) not in manual_keys
+    ] + manual_rows
+
+    merged: List[Dict[str, str]] = []
+    seen = set()
+    for row in candidate_rows:
+        unique = (
+            row["fixture_id"], row["app"], row["market_id"], row["selection_id"],
+            row["line"], row["odds"], row["source_image"],
+        )
+        if unique in seen:
+            continue
+        seen.add(unique)
+        merged.append(row)
     mark_complete_markets(merged)
     merged.sort(key=lambda item: (
         item["fixture_id"], item["app"], item["market_id"],
@@ -1549,7 +1686,8 @@ def screenshot_manifest(odds: Sequence[Mapping[str, str]]) -> List[Dict[str, obj
     """Inventory every current screenshot, including images without transcribed selections."""
     odds_counts: Dict[str, int] = defaultdict(int)
     for row in odds:
-        odds_counts[row["source_image"]] += 1
+        if row.get("source_kind", "screenshot") == "screenshot":
+            odds_counts[row["source_image"]] += 1
     rows = []
     for path in sorted((ROOT / "Screenshots").glob("IMG_*.PNG")):
         number = int(path.stem.split("_")[1])
@@ -3607,9 +3745,17 @@ def build() -> Dict[str, object]:
     educational_stake_simulation = attach_educational_stake_simulation(
         predictions
     )
+    manual_odds_sources = discover_manual_odds_files(ROOT)
+    manual_odds_provenance = [
+        manual_odds_provenance_path(path) for path in manual_odds_sources
+    ]
     input_hashes = {
         path.name: sha256(path) for path in
-        (HISTORICAL, RESULTS_2026, ELO_BASELINE, FIXTURES, *ODDS_PARTS, *RESEARCH_PARTS)
+        (
+            HISTORICAL, RESULTS_2026, ELO_BASELINE, FIXTURES,
+            *ODDS_PARTS, *manual_odds_sources, *manual_odds_provenance,
+            *RESEARCH_PARTS,
+        )
     }
     metrics = {
         "version": "june22_27_v5_fail_closed_development_only",
@@ -3732,6 +3878,7 @@ def build() -> Dict[str, object]:
             "Pre-tournament Elo: wc_team_elo_baseline_june11.csv",
             "Historical Dataset A/B source: wc_backtest_historical_dataset.csv",
             "Screenshot-derived odds: odds_june22_23.csv, odds_june24.csv, odds_june25_26.csv, odds_june27.csv",
+            "Manual odds overrides: root-level manual_odds_*.csv files with matching .provenance.json sidecars are preferred for fixtures after 2026-06-26 at the normalized row key fixture_id/app/market_id/selection_canonical/line.",
             "Complete screenshot inventory: wc_screenshot_manifest_june22_27.csv",
             "Verified sportsbook UI boundary: IMG_7523–IMG_7614 = Betsson; IMG_7615–IMG_7745 = Betano.",
             "OSINT notes: research_june22_23.csv, research_june24_25.csv, research_june26_27.csv",
@@ -3752,6 +3899,7 @@ def build() -> Dict[str, object]:
             "- Asian settlement: integer/half lines settle directly; quarter lines split the stake equally across adjacent half-lines and preserve win/push/loss equivalents.",
             "- handicap-plus-total combos: retained as source evidence but disabled from completeness, EV, rankings, and recommendations until app-specific push/void/half-result contracts are documented and exhaustively tested.",
             "- normalized odds schema: market family, period, settlement rule, selected team, canonical selection, handicap/total lines, combo legs, market group, completeness, transcription status, and confidence.",
+            "- odds source_kind/source_file: screenshot rows point to the original odds_june*.csv extraction and manual_user_input rows point to the manual_odds_*.csv file entered through the GUI.",
             "- unsupported or ambiguous markets: result handicap, early payout, corners, heterogeneous boosts, and incomplete/truncated selections are retained as source rows but excluded from evaluation.",
             "- double-chance consistency: displayed fair prices and screenshot EV both use the same production score grid.",
             "- quote evaluation: structural forecast probabilities remain independent of the quoted price; de-vigged market probabilities are used only for disagreement/risk diagnostics.",
@@ -3764,7 +3912,7 @@ def build() -> Dict[str, object]:
             "- bankroll simulation: only ACTIONABLE rows may receive a stake; every ABSTAIN row receives S/0 and unallocated app budget is preserved.",
             "- stress EV: subtract 3 percentage points from selected win probability and add 3 points to loss probability.",
             "- classification: divergence >15pp or EV >25% HALT; all other selections PASS until recommendation-policy profitability is validated out of sample.",
-            "- source_sha256: SHA-256 of the exact screenshot containing the price.",
+            "- source_sha256: screenshot rows use the SHA-256 of the exact screenshot containing the price; manual rows use one combined SHA-256 over the manual CSV and its provenance JSON.",
             "",
             "Model selection:",
             "- Hyperparameters are selected on chronological development windows. The final development-validation block is descriptive only; a new prospective sealed holdout is required.",

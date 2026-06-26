@@ -24,6 +24,58 @@ def read_rows(name: str):
         return list(csv.DictReader(handle))
 
 
+def write_manual_odds_file(path: Path, rows: list[dict[str, str]]) -> Path:
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=pipeline.RAW_ODDS_FIELDS, lineterminator="\n")
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({field: row.get(field, "") for field in pipeline.RAW_ODDS_FIELDS})
+    provenance = path.with_suffix(".provenance.json")
+    provenance.write_text(
+        json.dumps({
+            "schema": "manual_wcdecider_odds_v1",
+            "created_at": "2026-06-26T15:00:00+00:00",
+            "output_csv": str(path),
+            "row_count_written": len(rows),
+            "append_mode": False,
+            "fields": list(pipeline.RAW_ODDS_FIELDS),
+            "required_minimum": "complete 1X2 rows per fixture/app: home, draw, away",
+            "supported_markets": ["match_result"],
+            "warnings": [],
+        }, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return provenance
+
+
+def manual_1x2_row(
+    fixture_id: str,
+    fixture_display: str,
+    kickoff_local: str,
+    app: str,
+    selection_original: str,
+    selection_id: str,
+    odds: str,
+    source_token: str = "manual_user_input_testtoken",
+) -> dict[str, str]:
+    return {
+        "fixture_id": fixture_id,
+        "fixture_display": fixture_display,
+        "kickoff_local": kickoff_local,
+        "app": app,
+        "market_original": "Match Result",
+        "market_id": "match_result",
+        "selection_original": selection_original,
+        "selection_id": selection_id,
+        "line": "",
+        "odds": odds,
+        "promo": "false",
+        "source_image": source_token,
+        "capture_time": "2026-06-26 09:00 -05:00",
+        "notes": "pytest manual odds override",
+    }
+
+
 def test_canonical_fixture_file_has_32_unique_timezone_aware_rows():
     rows = read_rows("wc_2026_matches_june_22-27.csv")
     assert len(rows) == 32
@@ -439,11 +491,96 @@ def test_all_odds_rows_reference_real_images_when_extractions_are_complete():
     rows = pipeline.load_and_merge_odds(fixtures)
     assert rows
     assert {row["app"] for row in rows} <= {"Betano", "Betsson"}
-    assert all((ROOT / "Screenshots" / row["source_image"]).exists() for row in rows)
+    screenshot_rows = [
+        row for row in rows if row.get("source_kind", "screenshot") == "screenshot"
+    ]
+    manual_rows = [
+        row for row in rows if row.get("source_kind") == "manual_user_input"
+    ]
+    assert all((ROOT / "Screenshots" / row["source_image"]).exists() for row in screenshot_rows)
+    assert all(row["source_image"].startswith("manual_user_input_") for row in manual_rows)
+    assert all(row.get("source_file", "").startswith("manual_odds_") for row in manual_rows)
     assert all(len(row["source_sha256"]) == 64 for row in rows)
     manifest = pipeline.screenshot_manifest(rows)
     assert len(manifest) == 216
     assert len({row["source_image"] for row in manifest}) == 216
+
+
+def test_manual_odds_replace_matching_screenshot_rows_after_june26(tmp_path, monkeypatch):
+    fixtures = read_rows("wc_2026_matches_june_22-27.csv")
+    manual_path = tmp_path / "manual_odds_20260627_20260629.csv"
+    write_manual_odds_file(manual_path, [
+        manual_1x2_row(
+            "2026-06-27-cro-gha", "Croatia vs Ghana",
+            "2026-06-27T16:00:00-05:00", "Betano", "Croatia", "home", "1.77",
+        ),
+        manual_1x2_row(
+            "2026-06-27-cro-gha", "Croatia vs Ghana",
+            "2026-06-27T16:00:00-05:00", "Betano", "Draw", "draw", "3.99",
+        ),
+        manual_1x2_row(
+            "2026-06-27-cro-gha", "Croatia vs Ghana",
+            "2026-06-27T16:00:00-05:00", "Betano", "Ghana", "away", "5.55",
+        ),
+    ])
+    monkeypatch.setattr(pipeline, "discover_manual_odds_files", lambda root=pipeline.ROOT: [manual_path])
+
+    rows = pipeline.load_and_merge_odds(fixtures)
+    croatia_home = [
+        row for row in rows
+        if row["fixture_id"] == "2026-06-27-cro-gha"
+        and row["app"] == "Betano"
+        and row["market_id"] == "match_result"
+        and row["selection_canonical"] == "A"
+    ]
+
+    assert len(croatia_home) == 1
+    assert croatia_home[0]["odds"] == "1.77"
+    assert croatia_home[0]["source_kind"] == "manual_user_input"
+    assert croatia_home[0]["source_file"] == manual_path.name
+    assert croatia_home[0]["source_image"].startswith("manual_user_input_")
+    assert len(croatia_home[0]["source_sha256"]) == 64
+
+
+def test_manual_odds_do_not_override_june26_or_earlier_rows(tmp_path, monkeypatch):
+    fixtures = read_rows("wc_2026_matches_june_22-27.csv")
+    manual_path = tmp_path / "manual_odds_20260625_20260625.csv"
+    write_manual_odds_file(manual_path, [
+        manual_1x2_row(
+            "2026-06-25-ecu-ger", "Ecuador vs Germany",
+            "2026-06-25T15:00:00-05:00", "Betsson", "Ecuador", "home", "9.99",
+        ),
+    ])
+    monkeypatch.setattr(pipeline, "discover_manual_odds_files", lambda root=pipeline.ROOT: [manual_path])
+
+    rows = pipeline.load_and_merge_odds(fixtures)
+    ecuador_home = [
+        row for row in rows
+        if row["fixture_id"] == "2026-06-25-ecu-ger"
+        and row["app"] == "Betsson"
+        and row["market_id"] == "match_result"
+        and row["selection_canonical"] == "A"
+    ]
+
+    assert len(ecuador_home) == 1
+    assert ecuador_home[0]["odds"] == "3.60"
+    assert ecuador_home[0]["source_kind"] == "screenshot"
+
+
+def test_manual_odds_missing_provenance_fails_closed(tmp_path, monkeypatch):
+    fixtures = read_rows("wc_2026_matches_june_22-27.csv")
+    manual_path = tmp_path / "manual_odds_20260627_20260629.csv"
+    with manual_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=pipeline.RAW_ODDS_FIELDS, lineterminator="\n")
+        writer.writeheader()
+        writer.writerow(manual_1x2_row(
+            "2026-06-27-cro-gha", "Croatia vs Ghana",
+            "2026-06-27T16:00:00-05:00", "Betano", "Croatia", "home", "1.77",
+        ))
+    monkeypatch.setattr(pipeline, "discover_manual_odds_files", lambda root=pipeline.ROOT: [manual_path])
+
+    with pytest.raises(FileNotFoundError, match="Manual odds provenance is missing"):
+        pipeline.load_and_merge_odds(fixtures)
 
 
 def test_research_tables_cover_every_fixture_with_direct_urls():
