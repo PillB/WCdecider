@@ -170,6 +170,42 @@ def test_workflow_counts_are_json_driven(page):
     )
 
 
+def test_top_summary_table_links_top_two_and_allocations(page):
+    browser_page, _ = page
+    payload = json.loads(
+        (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
+    )
+    rows = browser_page.locator("#top-summary tbody tr")
+    assert rows.count() == 32
+
+    first_current = next(
+        row for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "future"
+        and row["freshness_status"] == "current_snapshot"
+    )
+    summary_row = browser_page.locator(
+        f'[data-top-summary-row="{first_current["fixture_id"]}"]'
+    )
+    assert summary_row.count() == 1
+    assert first_current["ranked_comparisons"][0]["display"]["selection"]["en"] in (
+        summary_row.inner_text()
+    )
+    assert first_current["ranked_comparisons"][1]["display"]["selection"]["en"] in (
+        summary_row.inner_text()
+    )
+    balanced_stake = first_current["rank_one_comparison"]["stake_simulation"][
+        "Betsson"
+    ]["balanced"]["stake"]
+    assert f"S/{balanced_stake:.2f}" in summary_row.inner_text()
+    assert summary_row.locator('a[href="#match-' + first_current["fixture_id"] + '"]').count() >= 1
+    assert browser_page.locator(f'#match-{first_current["fixture_id"]}').count() == 1
+
+    browser_page.locator("#simulation-budget").fill("200")
+    assert f"S/{balanced_stake * 2:.2f}" in summary_row.inner_text()
+    summary_row.locator('a[href="#match-' + first_current["fixture_id"] + '"]').first.click()
+    assert browser_page.evaluate("location.hash") == f"#match-{first_current['fixture_id']}"
+
+
 def test_blocked_app_empty_profiles_do_not_break_stake_simulator(page):
     browser_page, failed = page
     payload = json.loads(

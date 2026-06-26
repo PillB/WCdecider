@@ -555,6 +555,8 @@
 - 502 | Publish reviewed forward simulator | Created release commit `a59c3ced6e464211f8074e04d028dbf7c983b6f7` from 21 explicitly staged artifacts and pushed it to `origin/main`; the protected legacy production CSV and three unrelated files remained excluded | Success
 - 503 | Complete exact CI/CD validation | GitHub Actions run `28207348016` completed successfully for exact SHA `a59c3ced6e464211f8074e04d028dbf7c983b6f7`, including governed rebuild, tests, Pages deployment, and workflow live validation | Success
 - 504 | Independently validate public mobile simulator | Public Pages exposes exact build SHA `a59c3ced6e464211f8074e04d028dbf7c983b6f7`; live Playwright passed JSON parity, 32 unique cards, resource loading, and EN/ES. An iPhone-sized run reported verified JSON, Betsson S/95 singles plus S/5 accumulator, Betano blocked/reserved, authorized S/0, zero horizontal overflow, zero request failures, and zero page errors | Success
+- 505 | Validate historical profitability and stacking gate | Rebuilt historical odds/profitability evidence and reran `promotion_pipeline.py`. Canonical coverage has 142,349 rows across 8,908 events but 0 timestamp-verified primary validation rows/events, so profitability status remains `blocked_no_timestamp_verified_closing_rows`. Promotion output is `status=BLOCKED`, `model_promotion_eligible=false`, `recommendation_authorized=false`, and stack log loss is 0.99446; 28 historical/promotion tests passed. Stacking remains gated and was not enabled | Success (negative gate)
+- 506 | Add top-two match summary table | Implemented a JSON-driven bilingual top summary above the match cards with 32 rows, top two sourced comparisons per fixture, simulated rank-one allocation, info-only rank-two allocation, authorized S/0 disclosure, and anchor links to each `#match-{fixture_id}` card. Rebuilt report/site and Playwright/mobile/bilingual compliance passed 27/27 | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Prior production paths and documentation overstated reproducibility through hard-coded odds, optional silent TGNN fallback, and target extraction from prose; the June 22–27 path removes those dependencies.
@@ -578,6 +580,6 @@
 - Startup failures now need user-visible diagnostics because iOS may kill a tab before remote developer tools are available; the diagnostics panel records fetch stages, HTTP status, byte counts, URL, build SHA, audit hash, online status, and user agent.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Await current Betano screenshots or manually supplied current prices for the 12 upcoming fixtures.
-- [ ] Next Step: Transcribe and independently validate current Betano prices, then regenerate the separate S/100 Betano simulation.
+- [ ] Active Step: Publish and live-validate the top-two summary table release.
+- [ ] Next Step: Acquire timestamp-verified pre-kickoff/closing odds rows from an authorized historical source.
 - [ ] Future Milestone: Seal the first confirmatory cohort before predictions and promote recommendations/staking only after all calibration, profitability/CLV, and governance gates pass.

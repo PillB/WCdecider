@@ -201,6 +201,7 @@
       <p class="mt-4 text-sm"><span class="en">Loading the verified JSON bundle before rendering match cards. If this stays visible, refresh or check your connection.</span><span class="es">Cargando el paquete JSON verificado antes de mostrar tarjetas. Si esto permanece visible, actualiza o revisa tu conexión.</span></p>
     </section>
     <section id="bankroll-plan" class="mb-8 grid lg:grid-cols-2 gap-5"></section>
+    <section id="top-summary" class="mb-8"></section>
     <section id="error" class="hidden rounded-3xl border border-red-800 bg-red-950 p-6 mb-8"></section>
     <section id="diagnostics" class="hidden rounded-3xl border border-amber-800 bg-amber-950/40 p-5 mb-8 text-xs text-amber-100" aria-live="polite"></section>
     <section id="cards" class="grid lg:grid-cols-2 gap-6"></section>
@@ -416,6 +417,64 @@ function renderBankrollPlanLegacyDisabled(){
   </article>`;
  refreshStakeSimulation();
 }
+function summaryBetCell(row,item,rank){
+ if(!item)return `<div class="text-xs text-slate-500"><span class="en">No sourced alternative</span><span class="es">Sin alternativa con fuente</span></div>`;
+ const stakeAttr=`data-summary-stake="${escapeHtml(row.fixture_id)}" data-summary-rank="${rank}"`;
+ const grossAttr=`data-summary-gross="${escapeHtml(row.fixture_id)}" data-summary-rank="${rank}"`;
+ const line=item.line?` (${escapeHtml(item.line)})`:'';
+ return `<div class="rounded-xl border ${rank===1?'border-cyan-800 bg-cyan-950/20':'border-slate-800 bg-slate-950/60'} p-2">
+   <div class="text-[11px] text-slate-500">#${rank} · ${escapeHtml(item.app)} · <span class="en">${escapeHtml(item.display?.market?.en||item.market_original)}</span><span class="es">${escapeHtml(item.display?.market?.es||item.market_original)}</span></div>
+   <div class="mt-1 text-sm font-semibold text-white"><span class="en">${escapeHtml(item.display?.selection?.en||item.selection_original)}</span><span class="es">${escapeHtml(item.display?.selection?.es||item.selection_original)}</span>${line} @ ${Number(item.odds).toFixed(2)}</div>
+   <div class="mt-1 grid grid-cols-2 gap-1 text-[11px] text-slate-300">
+    <span><span class="en">EV</span><span class="es">EV</span>: <b class="${Number(item.ev_pct)>=0?'text-emerald-300':'text-rose-300'}">${Number(item.ev_pct).toFixed(1)}%</b></span>
+    <span><span class="en">Fair</span><span class="es">Justa</span>: <b>${safeOdds(item.fair_odds)}</b></span>
+    <span><span class="en">Sim amount</span><span class="es">Monto sim.</span>: <b ${stakeAttr}>S/0.00</b></span>
+    <span><span class="en">Gross</span><span class="es">Bruto</span>: <b ${grossAttr}>S/0.00</b></span>
+   </div>
+   <div class="mt-1 text-[10px] text-amber-200" data-summary-note="${escapeHtml(row.fixture_id)}" data-summary-rank="${rank}"></div>
+  </div>`;
+}
+function renderTopSummaryTable(){
+ const rows=DATA.predictions.map(row=>{
+  const ranked=safeList(row.ranked_comparisons);
+  const first=ranked[0]||row.rank_one_comparison;
+  const second=ranked[1];
+  const state=row.fixture_lifecycle_status==='elapsed_result_verified'
+   ?'<span class="en">Archived</span><span class="es">Archivado</span>'
+   :row.freshness_status==='current_snapshot'
+    ?'<span class="en">Current</span><span class="es">Vigente</span>'
+    :'<span class="en">Rerun required</span><span class="es">Recalcular</span>';
+  return `<tr class="border-t border-slate-800 align-top" data-top-summary-row="${escapeHtml(row.fixture_id)}">
+    <td class="py-3 pr-3 min-w-[12rem]">
+      <a class="font-bold text-cyan-300 hover:underline" href="#match-${escapeHtml(row.fixture_id)}"><span class="en">${escapeHtml(row.fixture.en)}</span><span class="es">${escapeHtml(row.fixture.es)}</span></a>
+      <div class="mt-1 text-[11px] text-slate-500">${escapeHtml(row.kickoff_lima.replace('T',' ').slice(0,16))} · ${state}</div>
+    </td>
+    <td class="py-3 pr-3 min-w-[19rem]">${summaryBetCell(row,first,1)}</td>
+    <td class="py-3 pr-3 min-w-[19rem]">${summaryBetCell(row,second,2)}</td>
+    <td class="py-3 min-w-[9rem] text-xs text-slate-300">
+      <div><span class="en">Authorized</span><span class="es">Autorizado</span>: <b class="text-red-200">S/0.00</b></div>
+      <div class="mt-1"><span class="en">Mode</span><span class="es">Modo</span>: <span data-summary-profile="${escapeHtml(row.fixture_id)}">balanced</span></div>
+      <a class="mt-2 inline-block rounded-lg border border-slate-700 px-2 py-1 text-cyan-300 hover:border-cyan-500" href="#match-${escapeHtml(row.fixture_id)}"><span class="en">Open card</span><span class="es">Abrir tarjeta</span></a>
+    </td>
+   </tr>`;
+ }).join('');
+ $('#top-summary').innerHTML=`<article class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
+  <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+   <div>
+    <h2 class="text-xl font-black text-white"><span class="en">Top-two match summary and simulated allocation</span><span class="es">Resumen top dos y asignación simulada</span></h2>
+    <p class="mt-1 text-sm text-slate-400"><span class="en">One row per match. Rank one receives the current profile's hypothetical single amount when the fixture is current and sourced; rank two is informational unless you manually replace rank one.</span><span class="es">Una fila por partido. El rango uno recibe el monto hipotético del perfil actual cuando el partido está vigente y con fuente; el rango dos es informativo salvo que reemplaces manualmente el rango uno.</span></p>
+   </div>
+   <div class="text-xs text-amber-200"><span class="en">Not betting authorization. Full profitability gate remains blocked.</span><span class="es">No es autorización de apuesta. La puerta de rentabilidad sigue bloqueada.</span></div>
+  </div>
+  <div class="mt-4 overflow-x-auto">
+   <table class="w-full min-w-[900px] text-left">
+    <thead class="text-xs uppercase tracking-wide text-slate-500"><tr><th class="pb-2 pr-3"><span class="en">Match</span><span class="es">Partido</span></th><th class="pb-2 pr-3"><span class="en">Top 1</span><span class="es">Top 1</span></th><th class="pb-2 pr-3"><span class="en">Top 2</span><span class="es">Top 2</span></th><th class="pb-2"><span class="en">Funds</span><span class="es">Fondos</span></th></tr></thead>
+    <tbody>${rows}</tbody>
+   </table>
+  </div>
+ </article>`;
+ refreshStakeSimulation();
+}
 const pct=p=>`${(Number(p)*100).toFixed(1)}%`;
 const odds=o=>Number(o).toFixed(2);
 const safePct=p=>Number.isFinite(Number(p))?pct(p):'n/a';
@@ -578,7 +637,7 @@ function card(row,index){
       <span class="en">Current model snapshot at the documented cutoff; sportsbook screenshots may still be stale.</span><span class="es">Instantánea actual del modelo al corte documentado; las capturas de cuotas aún pueden estar desactualizadas.</span>
     </div>`
   :'';
- return `<article class="card-anchor bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden" data-fixture-id="${escapeHtml(row.fixture_id)}" data-date="${row.kickoff_lima.slice(0,10)}" data-strength="${strength}">
+ return `<article id="match-${escapeHtml(row.fixture_id)}" class="card-anchor bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden scroll-mt-24" data-fixture-id="${escapeHtml(row.fixture_id)}" data-date="${row.kickoff_lima.slice(0,10)}" data-strength="${strength}">
    <header class="p-5 border-b border-slate-800 flex justify-between gap-4">
     <div><div class="text-xs text-slate-500" data-json-pointer="${ptr}/kickoff_lima">${escapeHtml(row.kickoff_lima.replace('T',' ').slice(0,16))} • <span class="en">Group</span><span class="es">Grupo</span> <span data-json-pointer="${ptr}/group">${escapeHtml(row.group)}</span></div>
     <h2 class="mt-1 text-xl font-black text-white"><span class="en" data-json-pointer="${ptr}/fixture/en">${escapeHtml(row.fixture.en)}</span><span class="es" data-json-pointer="${ptr}/fixture/es">${escapeHtml(row.fixture.es)}</span></h2></div>
@@ -772,8 +831,30 @@ function refreshStakeSimulation(){
   const item=rec?.stake_simulation?.[rec?.app]?.[profile];
   const stake=Number(item?.stake||0)*scale;
   const gross=stake*Number(rec?.odds||0);
+  document.querySelectorAll(`[data-summary-profile="${row.fixture_id}"]`).forEach(el=>el.textContent=profile);
   document.querySelectorAll(`[data-simulation-stake="${row.fixture_id}"]`).forEach(el=>el.textContent=`S/${stake.toFixed(2)}`);
   document.querySelectorAll(`[data-simulation-gross="${row.fixture_id}"]`).forEach(el=>el.textContent=`S/${gross.toFixed(2)}`);
+  document.querySelectorAll(`[data-summary-stake="${row.fixture_id}"]`).forEach(el=>{
+   const rank=Number(el.dataset.summaryRank||0);
+   el.textContent=`S/${rank===1?stake.toFixed(2):'0.00'}`;
+  });
+  document.querySelectorAll(`[data-summary-gross="${row.fixture_id}"]`).forEach(el=>{
+   const rank=Number(el.dataset.summaryRank||0);
+   el.textContent=`S/${rank===1?gross.toFixed(2):'0.00'}`;
+  });
+  document.querySelectorAll(`[data-summary-note="${row.fixture_id}"]`).forEach(el=>{
+   const rank=Number(el.dataset.summaryRank||0);
+   const isCurrent=row.fixture_lifecycle_status==='future'&&row.freshness_status==='current_snapshot';
+   if(rank===1&&stake>0){
+    el.innerHTML='<span class="en">Hypothetical single amount for this profile.</span><span class="es">Monto simple hipotético para este perfil.</span>';
+   }else if(!isCurrent){
+    el.innerHTML=row.fixture_lifecycle_status==='elapsed_result_verified'
+     ?'<span class="en">Archived match: no current allocation.</span><span class="es">Partido archivado: sin asignación vigente.</span>'
+     :'<span class="en">Rerun required before allocation.</span><span class="es">Requiere recalcular antes de asignar.</span>';
+   }else{
+    el.innerHTML='<span class="en">Info only; use as a replacement candidate, not an added stake.</span><span class="es">Solo informativo; úsalo como reemplazo candidato, no como monto adicional.</span>';
+   }
+  });
   const forced=safeList(item?.forced_coverage_reasons);
   document.querySelectorAll(`[data-simulation-forced="${row.fixture_id}"]`).forEach(el=>{
    el.classList.toggle('hidden',forced.length===0);
@@ -855,6 +936,7 @@ async function load(){
   renderSummary(DATA.predictions);
   renderValidationVisuals();
   renderBankrollPlan();
+  renderTopSummaryTable();
   setHtml('#cards',DATA.predictions.map(card).join(''));
   bindTips();
   [...new Set(DATA.predictions.map(x=>x.kickoff_lima.slice(0,10)))].forEach(d=>$('#date-filter').insertAdjacentHTML('beforeend',`<option value="${d}">${d}</option>`));
