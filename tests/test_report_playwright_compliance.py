@@ -170,6 +170,68 @@ def test_workflow_counts_are_json_driven(page):
     )
 
 
+def test_current_page_layout_contract_and_user_journey(page):
+    browser_page, _ = page
+    required_sections = [
+        "#summary",
+        "#model-evidence",
+        "#performance-viz",
+        "#profitability-viz",
+        "#date-filter",
+        "#strength-filter",
+        "#risk-profile",
+        "#simulation-budget",
+        "#loading-shell",
+        "#bankroll-plan",
+        "#top-summary",
+        "#cards",
+        "footer",
+    ]
+    for selector in required_sections:
+        assert browser_page.locator(selector).count() >= 1, selector
+
+    ordered_selectors = [
+        "#summary",
+        "#model-evidence",
+        "#performance-viz",
+        "#profitability-viz",
+        "#date-filter",
+        "#loading-shell",
+        "#bankroll-plan",
+        "#top-summary",
+        "#cards",
+        "footer",
+    ]
+    dom_order = browser_page.evaluate(
+        """selectors => selectors.map(selector =>
+            Array.from(document.querySelectorAll('*')).indexOf(
+                document.querySelector(selector)
+            )
+        )""",
+        ordered_selectors,
+    )
+    assert dom_order == sorted(dom_order)
+    assert all(index >= 0 for index in dom_order)
+
+    assert browser_page.locator("#production-workflow").is_visible()
+    assert browser_page.locator("#research-workflow").is_hidden()
+    assert browser_page.locator("#bankroll-plan article").count() >= 3
+    assert browser_page.locator("#top-summary tbody tr").count() == 32
+    assert browser_page.locator("#cards article.bg-slate-900").count() == 32
+
+    first_summary_link = browser_page.locator("#top-summary tbody a[href^='#match-']").first
+    target = first_summary_link.get_attribute("href")
+    assert target
+    assert browser_page.locator(target).count() == 1
+    first_summary_link.click()
+    assert browser_page.evaluate("location.hash") == target
+
+    footer = browser_page.locator("footer").inner_text()
+    assert "last updated" in footer
+    assert "Version" in footer
+    assert browser_page.locator('meta[name="wcdecider-build"]').get_attribute("content")
+
+
 def test_top_summary_table_links_top_two_and_allocations(page):
     browser_page, _ = page
     payload = json.loads(

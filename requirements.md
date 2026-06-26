@@ -111,6 +111,14 @@ This document defines testable production requirements. `AGENT.md` defines behav
 - R5.13: The report includes 3–5 bilingual risk-aversion levels; changing the level updates visible PASS/HALT lens diagnostics but must not mutate saved probabilities, source odds, production rank one, or bankroll simulation.
 - R5.14: Every risk lens enforces its published divergence, stressed-EV, risk-grade, and applicable fair-price thresholds; no lens may override an underlying anomaly `HALT`, and `PASS` must be described as a diagnostic rather than robustness or profitability.
 - R5.15: HALT review compares identical sourced candidates across production and research models; aggregate or unpaired top-four counts cannot be described as model improvement.
+- R5.16: The current page layout is a regression-tested user journey:
+  hero summary and model evidence → performance/profitability visuals →
+  filters/risk/budget controls → defensive loading shell → bankroll plan →
+  top-two match summary table → exactly 32 match cards → footer
+  freshness/version/build marker. The top summary must contain one row per
+  fixture, link to the matching card anchor, preserve the production/research
+  workflow toggle state, and keep all 32 cards rendered as `bg-slate-900`
+  fixture cards.
 
 ## R6 — Pipeline and reproducibility
 
