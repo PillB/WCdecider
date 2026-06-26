@@ -25,6 +25,7 @@
 - 517 | Pushed branch to GitHub | `git push -u origin codex/june23-safety-model-update` succeeded, updating remote branch from `e835340` to `860c311` and setting upstream tracking | Success
 - 518 | Attempted draft PR creation | GitHub connector returned `403 Resource not accessible by integration`; `gh auth status` also reports the local token for `PillB` is invalid, so PR creation is blocked until GitHub auth/integration permissions are repaired | Blocked
 - 519 | Rechecked local branch status | Local branch now tracks `origin/codex/june23-safety-model-update`; unrelated modified/untracked artifacts remain outside the published layout-regression commit | Success
+- 520 | Retried draft PR creation after user requested proceed | `gh auth status` still reports invalid `PillB` token, and GitHub connector again returned `403 Resource not accessible by integration`; branch remains pushed, PR creation remains externally blocked | Blocked
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Visual-offset ordering is fragile for elements that intentionally disappear after successful JSON load. DOM ordering is the correct regression invariant for the defensive loading shell.
@@ -32,6 +33,6 @@
 - No implementation HTML/JS change was needed; this request was satisfied by regression coverage plus documented requirements.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Commit and push this state-only publish ledger entry.
-- [ ] Next Step: If requested after GitHub auth is repaired, open a draft PR from `codex/june23-safety-model-update` to `main`.
+- [ ] Active Step: Commit and push this state-only PR-blocker ledger entry.
+- [ ] Next Step: After GitHub auth/integration permissions are repaired, open a draft PR from `codex/june23-safety-model-update` to `main`.
 - [ ] Future Milestone: Keep layout contract synchronized with any future report redesign and CI/browser artifact validation.
