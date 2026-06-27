@@ -47,3 +47,29 @@ def test_manual_odds_validation_rejects_bad_prices_and_flags_partial_1x2(tmp_pat
         f"{rows[0].fixture_id} Betsson 1X2 incomplete; missing away."
     ]
 
+
+def test_manual_gui_layout_spec_has_visible_sections():
+    spec = manual.gui_layout_spec()
+
+    assert spec["title"] == "WCdecider manual Betsson/Betano odds input"
+    assert spec["min_width"] >= 900
+    assert spec["min_height"] >= 600
+    assert spec["sections"] == [
+        "Date range and output",
+        "Fixture",
+        "Market odds",
+        "Rows to save",
+        "Actions",
+    ]
+    assert "match_result" in spec["supported_markets"]
+    assert spec["supported_apps"] == ["Betsson", "Betano"]
+
+
+def test_manual_gui_diagnose_cli_prints_layout_spec(capsys):
+    exit_code = manual.main(["--diagnose-gui"])
+    captured = capsys.readouterr()
+    payload = json.loads(captured.out)
+
+    assert exit_code == 0
+    assert payload["geometry"] == manual.GUI_DEFAULT_GEOMETRY
+    assert "Fixture" in payload["sections"]

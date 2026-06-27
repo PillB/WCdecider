@@ -1,11 +1,10 @@
-# SYSTEM STATE: Dirty artifact diagnosis and cleanup
+# SYSTEM STATE: Fix blank manual odds Tkinter GUI
 
 ## 🎯 Final Success Criteria
-- Dirty tracked generated artifacts are classified as active, legacy, or archival before commit.
-- Active generated artifacts are regenerated in the correct order and pass governance gates.
-- Legacy replication scripts no longer advertise or enforce stale row counts/metrics.
-- Large local scratch files are ignored and not committed.
-- Root-level ad hoc validation artifacts are archived or committed only when referenced by project documentation.
+- Running `python3 manual_odds_input_gui.py --start 2026-06-27 --end 2026-06-29` opens a visible, usable odds-entry form instead of a blank Tk window.
+- The GUI has deterministic visible sections for date/output, fixture, market odds, rows to save, and actions.
+- The GUI remains usable on smaller windows via scrolling and explicit minimum sizing.
+- Headless diagnostics and regression tests can detect an accidentally empty GUI contract without needing a display server.
 
 ## 🛑 Immutable Constraints & Guardrails
 - Follow READ → ACT → WRITE & COMPRESS every phase/turn; `AGENT_STATE.md` remains in this exact schema.
@@ -48,6 +47,12 @@
 - 577 | Protected local scratch directory | Added `tmp/` to `.gitignore`, preventing accidental staging of the 1.59 GB local `tmp/AGENT.md` scratch artifact | Success
 - 578 | Ran validation | `wc_model_v4_replicable_pipeline.py` exited success; `pytest tests/test_manual_odds_input_gui.py tests/test_build_site_safety.py tests/test_peer_replication.py` passed 3 and skipped 10 archived peer tests; `pytest tests/test_june22_27_pipeline.py` passed 41/41; `git diff --check` passed | Success
 - 579 | Created cleanup commit | Commit `f426d18` with message `Clean up generated artifacts and legacy locks`; post-commit worktree is clean | Success
+- 580 | Reproduced GUI issue path | Sandbox GUI smoke test reached `ManualOddsGui` construction but hung on Tk window refresh/update; direct screenshot was not reliable in this environment | Blocked
+- 581 | Researched Tkinter rendering/layout basics | Python docs confirm widgets need geometry management and an event loop to appear; TkDocs grid guidance supports explicit weights/sticky behavior for predictable resizing | Success
+- 582 | Hardened manual odds GUI layout | Added explicit `1180x820` geometry, `980x680` minimum size, scrollable canvas/content frame, visible classic Tk header, action label frame, and scroll-region synchronization | Success
+- 583 | Added headless GUI contract | Added `gui_layout_spec()` and `--diagnose-gui` so users/tests can confirm expected visible sections without opening a display window | Success
+- 584 | Added GUI regression tests | `tests/test_manual_odds_input_gui.py` now checks visible section contract and diagnostic CLI JSON output | Success
+- 585 | Ran validation | `manual_odds_input_gui.py --self-test` passed; `manual_odds_input_gui.py --diagnose-gui` printed expected geometry/sections; `pytest tests/test_manual_odds_input_gui.py` passed 4/4; manual ingestion focused tests passed 8/8; AST syntax check passed; `git diff --check` passed | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Raw screenshot `selection_id` values are not consistently semantic (`croatia` vs GUI `home`), so override matching uses the normalized semantic selection (`A/D/B`, over/under, home/away) rather than raw selection IDs.
@@ -58,8 +63,10 @@
 - `scripts/generate_datapoint_audit.py` correctly fails closed when governance semantic hashes are stale; after review-binding update, the audit returned PASS with zero blocked rows.
 - `wc_model_production_results.csv` previously generated CRLF line endings; the generator now writes deterministic LF rows.
 - `tmp/` is untracked scratch space and is now ignored; no tracked source was hidden by this ignore rule.
+- The blank-window symptom is consistent with a window being created before content is reliably visible/painted. The fix makes the first visible child a classic `tk.Label` header and moves the rest into an explicitly sized, scrollable, weighted content frame.
+- In this sandbox, Tk object construction succeeded but `root.update()` hung in the macOS window-refresh path; validation therefore used headless layout contracts plus command-line simulation instead of screenshot evidence.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Report commit hash and clean status.
-- [ ] Next Step: If requested, push branch and validate remote CI/deploy.
+- [ ] Active Step: Stage and commit the manual GUI blank-window fix.
+- [ ] Next Step: Ask user to rerun the exact GUI command locally and report whether the visible sections appear.
 - [ ] Future Milestone: Run a real `manual_odds_YYYYMMDD_YYYYMMDD.csv` export for post-June-26 fixtures, rebuild model artifacts, validate report/site consistency, then deploy.

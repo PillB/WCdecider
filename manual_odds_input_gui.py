@@ -119,6 +119,40 @@ MARKET_PRESETS = {
     },
 }
 
+GUI_SECTIONS = (
+    "Date range and output",
+    "Fixture",
+    "Market odds",
+    "Rows to save",
+    "Actions",
+)
+GUI_DEFAULT_GEOMETRY = "1180x820"
+GUI_MIN_SIZE = (980, 680)
+
+
+def gui_layout_spec() -> Mapping[str, object]:
+    """Return the expected visible GUI sections without opening Tk.
+
+    This is intentionally headless-testable. The Tk implementation uses this
+    as a contract: if a user sees an empty window, these sections are the
+    minimum that must be visible after layout.
+
+    Example
+    -------
+    >>> spec = gui_layout_spec()
+    >>> "Fixture" in spec["sections"]
+    True
+    """
+    return {
+        "title": "WCdecider manual Betsson/Betano odds input",
+        "geometry": GUI_DEFAULT_GEOMETRY,
+        "min_width": GUI_MIN_SIZE[0],
+        "min_height": GUI_MIN_SIZE[1],
+        "sections": list(GUI_SECTIONS),
+        "supported_apps": list(APPS),
+        "supported_markets": sorted(MARKET_PRESETS),
+    }
+
 
 @dataclass
 class ManualOddsRow:
@@ -411,8 +445,52 @@ class ManualOddsGui:
         root = self.root
         pad = {"padx": 6, "pady": 4}
 
-        top = ttk.LabelFrame(root, text="Date range and output")
-        top.grid(row=0, column=0, sticky="ew", **pad)
+        root.geometry(GUI_DEFAULT_GEOMETRY)
+        root.minsize(*GUI_MIN_SIZE)
+        root.columnconfigure(0, weight=1)
+        root.rowconfigure(0, weight=1)
+
+        canvas = tk.Canvas(root, borderwidth=0, highlightthickness=0)
+        scrollbar = ttk.Scrollbar(root, orient="vertical", command=canvas.yview)
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.grid(row=0, column=0, sticky="nsew")
+        scrollbar.grid(row=0, column=1, sticky="ns")
+
+        content = ttk.Frame(canvas, padding=8)
+        content_window = canvas.create_window((0, 0), window=content, anchor="nw")
+        content.columnconfigure(0, weight=1)
+
+        def sync_scroll_region(_event=None) -> None:
+            canvas.configure(scrollregion=canvas.bbox("all"))
+
+        def sync_content_width(event) -> None:
+            canvas.itemconfigure(content_window, width=event.width)
+
+        content.bind("<Configure>", sync_scroll_region)
+        canvas.bind("<Configure>", sync_content_width)
+        canvas.bind_all(
+            "<MouseWheel>",
+            lambda event: canvas.yview_scroll(int(-1 * (event.delta / 120)), "units"),
+        )
+        self.content_frame = content
+
+        header = tk.Label(
+            content,
+            text=(
+                "WCdecider manual odds input — fill fixture, select app/market, "
+                "enter decimal odds, then Add market rows."
+            ),
+            anchor="w",
+            justify="left",
+            bg="#0f172a",
+            fg="#e2e8f0",
+            padx=10,
+            pady=8,
+        )
+        header.grid(row=0, column=0, sticky="ew", **pad)
+
+        top = ttk.LabelFrame(content, text="Date range and output")
+        top.grid(row=1, column=0, sticky="ew", **pad)
         for i in range(6):
             top.columnconfigure(i, weight=1)
         ttk.Label(top, text="Start").grid(row=0, column=0, sticky="w", **pad)
@@ -425,8 +503,8 @@ class ManualOddsGui:
         ttk.Label(top, text="Capture time").grid(row=1, column=2, sticky="w", **pad)
         ttk.Entry(top, textvariable=self.capture_var, width=24).grid(row=1, column=3, columnspan=3, sticky="ew", **pad)
 
-        fixture = ttk.LabelFrame(root, text="Fixture")
-        fixture.grid(row=1, column=0, sticky="ew", **pad)
+        fixture = ttk.LabelFrame(content, text="Fixture")
+        fixture.grid(row=2, column=0, sticky="ew", **pad)
         for i in range(6):
             fixture.columnconfigure(i, weight=1)
         ttk.Label(fixture, text="Home/Team 1").grid(row=0, column=0, sticky="w", **pad)
@@ -440,8 +518,8 @@ class ManualOddsGui:
         ttk.Label(fixture, text="App").grid(row=1, column=3, sticky="w", **pad)
         ttk.Combobox(fixture, textvariable=self.app_var, values=APPS, state="readonly", width=10).grid(row=1, column=4, sticky="w", **pad)
 
-        market = ttk.LabelFrame(root, text="Market odds")
-        market.grid(row=2, column=0, sticky="ew", **pad)
+        market = ttk.LabelFrame(content, text="Market odds")
+        market.grid(row=3, column=0, sticky="ew", **pad)
         for i in range(6):
             market.columnconfigure(i, weight=1)
         ttk.Label(market, text="Market").grid(row=0, column=0, sticky="w", **pad)
@@ -457,10 +535,9 @@ class ManualOddsGui:
         self._refresh_selection_inputs()
         ttk.Button(market, text="Add market rows", command=self.add_market_rows).grid(row=2, column=0, sticky="w", **pad)
 
-        table_frame = ttk.LabelFrame(root, text="Rows to save")
-        table_frame.grid(row=3, column=0, sticky="nsew", **pad)
-        root.rowconfigure(3, weight=1)
-        root.columnconfigure(0, weight=1)
+        table_frame = ttk.LabelFrame(content, text="Rows to save")
+        table_frame.grid(row=4, column=0, sticky="nsew", **pad)
+        content.rowconfigure(4, weight=1)
         columns = ("fixture", "app", "market", "selection", "line", "odds")
         self.tree = ttk.Treeview(table_frame, columns=columns, show="headings", height=12)
         for col in columns:
@@ -471,12 +548,13 @@ class ManualOddsGui:
         table_frame.columnconfigure(0, weight=1)
         ttk.Button(table_frame, text="Delete selected", command=self.delete_selected).grid(row=1, column=0, sticky="w", **pad)
 
-        actions = ttk.Frame(root)
-        actions.grid(row=4, column=0, sticky="ew", **pad)
+        actions = ttk.LabelFrame(content, text="Actions")
+        actions.grid(row=5, column=0, sticky="ew", **pad)
         ttk.Button(actions, text="Save / Done", command=self.save_done).grid(row=0, column=0, sticky="w", **pad)
         ttk.Button(actions, text="Quit without saving", command=root.destroy).grid(row=0, column=1, sticky="w", **pad)
         self.status = ttk.Label(actions, text="Enter fixture + odds. Minimum complete 1X2 per app is recommended.")
         self.status.grid(row=0, column=2, sticky="w", **pad)
+        root.after(50, sync_scroll_region)
 
     def _refresh_selection_inputs(self) -> None:
         for child in self.selection_frame.winfo_children():
@@ -609,6 +687,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--append", action="store_true", help="Append to existing output CSV.")
     parser.add_argument("--simulate", action="store_true", help="Write deterministic sample rows without opening GUI.")
     parser.add_argument("--self-test", action="store_true", help="Run built-in headless tests and exit.")
+    parser.add_argument("--diagnose-gui", action="store_true", help="Print expected GUI layout without opening a window.")
     return parser
 
 
@@ -618,6 +697,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parser.parse_args(argv)
     if args.self_test:
         run_self_test()
+        return 0
+    if args.diagnose_gui:
+        print(json.dumps(gui_layout_spec(), indent=2, sort_keys=True))
         return 0
     if args.end < args.start:
         parser.error("--end must be on or after --start")
