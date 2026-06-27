@@ -58,6 +58,7 @@ import hashlib
 import html
 import json
 import re
+import socket
 import tempfile
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
@@ -134,6 +135,7 @@ FORM_SECTIONS = (
 )
 WEB_DEFAULT_HOST = "127.0.0.1"
 WEB_DEFAULT_PORT = 8765
+WEB_PORT_SCAN_LIMIT = 50
 
 
 def web_layout_spec() -> Mapping[str, object]:
@@ -153,6 +155,52 @@ def web_layout_spec() -> Mapping[str, object]:
         "supported_markets": sorted(MARKET_PRESETS),
         "save_format": "manual_wcdecider_odds_v1 CSV plus provenance JSON",
     }
+
+
+def bind_available_server_socket(
+    host: str,
+    preferred_port: int,
+    scan_limit: int = WEB_PORT_SCAN_LIMIT,
+) -> Tuple[socket.socket, int, bool]:
+    """Bind and return a localhost server socket, falling forward if occupied.
+
+    The socket is returned already bound so there is no time-of-check/time-of-use
+    race between detecting a free port and starting Uvicorn.
+
+    Example
+    -------
+    >>> sock, port, changed = bind_available_server_socket("127.0.0.1", 0)
+    >>> port > 0
+    True
+    >>> sock.close()
+    """
+    if preferred_port < 0 or preferred_port > 65535:
+        raise ValueError(f"Port must be between 0 and 65535: {preferred_port}")
+    if scan_limit < 1:
+        raise ValueError("scan_limit must be at least 1")
+
+    candidate_ports = [preferred_port]
+    if preferred_port != 0:
+        upper = min(65535, preferred_port + scan_limit)
+        candidate_ports.extend(range(preferred_port + 1, upper + 1))
+
+    last_error: Optional[OSError] = None
+    for port in candidate_ports:
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server_socket.bind((host, port))
+            server_socket.listen(2048)
+            actual_port = int(server_socket.getsockname()[1])
+            return server_socket, actual_port, actual_port != preferred_port
+        except OSError as exc:
+            last_error = exc
+            server_socket.close()
+            continue
+    raise RuntimeError(
+        f"No available localhost port found from {preferred_port} "
+        f"through {candidate_ports[-1]}: {last_error}"
+    )
 
 
 @dataclass
@@ -780,8 +828,13 @@ def run_web_app(
             "FastAPI web mode requires dependencies: python3 -m pip install fastapi uvicorn"
         ) from exc
     app = create_fastapi_app(start, end, output_path, append=append)
-    print(f"Open manual odds form: http://{host}:{port}/")
-    uvicorn.run(app, host=host, port=port, log_level="info")
+    server_socket, actual_port, changed = bind_available_server_socket(host, port)
+    if changed:
+        print(f"Port {port} is already in use; using {actual_port} instead.")
+    print(f"Open manual odds form: http://{host}:{actual_port}/")
+    config = uvicorn.Config(app, host=host, port=actual_port, log_level="info")
+    server = uvicorn.Server(config)
+    server.run(sockets=[server_socket])
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -795,7 +848,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--simulate", action="store_true", help="Write deterministic sample rows without opening GUI.")
     parser.add_argument("--self-test", action="store_true", help="Run built-in headless tests and exit.")
     parser.add_argument("--host", default=WEB_DEFAULT_HOST, help="FastAPI host; default 127.0.0.1.")
-    parser.add_argument("--port", type=int, default=WEB_DEFAULT_PORT, help="FastAPI port; default 8765.")
+    parser.add_argument("--port", type=int, default=WEB_DEFAULT_PORT, help="Preferred FastAPI port; default 8765. If occupied, the script uses the next free port.")
     parser.add_argument("--diagnose-web", action="store_true", help="Print expected web form contract without starting the server.")
     return parser
 

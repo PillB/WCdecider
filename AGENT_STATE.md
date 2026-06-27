@@ -1,7 +1,7 @@
 # SYSTEM STATE: Replace blank-prone manual odds Tkinter UI with FastAPI web input
 
 ## 🎯 Final Success Criteria
-- Running `python3 manual_odds_input_gui.py --start 2026-06-27 --end 2026-06-29` starts a local FastAPI web form instead of opening Tkinter.
+- Running `python3 manual_odds_input_gui.py --start 2026-06-27 --end 2026-06-29` starts a local FastAPI web form instead of opening Tkinter, and falls forward to the next free localhost port if the preferred port is occupied.
 - The web form supports Betsson/Betano manual odds entry for 1X2, totals, BTTS, Asian handicap, and double chance.
 - The web route, CLI, and pure conversion functions all write the same `manual_wcdecider_odds_v1` raw CSV/provenance schema consumed by the model pipeline.
 - Tests validate form rendering, route add/save/download behavior, manual CSV schema, and post-June-26 manual odds ingestion.
@@ -43,6 +43,10 @@
 - 573 | Added route-level tests | `tests/test_manual_odds_input_gui.py` now verifies web contract, HTML sections/market switching, form-field conversion, FastAPI `/add`, `/save`, `/download`, and `/health` | Success
 - 574 | Ran validation | `pytest tests/test_manual_odds_input_gui.py` passed 7/7; manual-ingestion pipeline subset passed 3/3; `manual_odds_input_gui.py --self-test` passed; `manual_odds_input_gui.py --diagnose-web` printed expected contract; AST syntax check passed; `git diff --check` passed | Success
 - 575 | Ran black-box server smoke | Sandbox blocked local bind; reran with approval and confirmed CLI FastAPI server starts and `/health` returns expected JSON | Success
+- 576 | Diagnosed user port-bind failure | User command failed because `127.0.0.1:8765` was already occupied; current script printed the URL before Uvicorn attempted to bind and then exited on `Errno 48` | Success
+- 577 | Implemented occupied-port fallback | Added `bind_available_server_socket()` to pre-bind the preferred port or next available port, then pass the bound socket to Uvicorn; printed URL now reflects the actual usable port | Success
+- 578 | Added regression coverage | Added pure unit test with fake sockets proving fallback from 8765 to 8766 without needing real network bind permission | Success
+- 579 | Ran validation | `pytest tests/test_manual_odds_input_gui.py` passed 8/8; `manual_odds_input_gui.py --self-test` passed; AST syntax check passed; `git diff --check` passed; approved black-box smoke occupied port 18000 and confirmed CLI served `/health` on 18001 | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - Raw screenshot `selection_id` values are not consistently semantic (`croatia` vs `home`), so override matching uses normalized semantic selection (`A/D/B`, over/under, home/away) rather than raw selection IDs.
@@ -51,8 +55,9 @@
 - Tkinter is removed rather than retained because the failure mode was platform/window-server dependent and not worth supporting for a straightforward data-entry workflow.
 - FastAPI route validation required explicit `httpx`; Starlette `TestClient` does not work without it.
 - Route annotations must use a globally resolvable `Request` type because postponed annotations otherwise make FastAPI treat `request` as a required query parameter.
+- Uvicorn should receive a pre-bound socket for this tool. That both fixes occupied default ports and avoids a race between "port available" checks and actual server bind.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Stage and commit the FastAPI-only manual odds input refactor.
-- [ ] Next Step: Provide the local run command and dependency install command for the user.
+- [ ] Active Step: Stage and commit the occupied-port fallback fix.
+- [ ] Next Step: Tell the user to rerun the same command and use the printed fallback URL if 8765 remains occupied.
 - [ ] Future Milestone: Use the saved `manual_odds_YYYYMMDD_YYYYMMDD.csv` files for post-June-26 fixtures, rebuild model artifacts, validate report/site consistency, then deploy.

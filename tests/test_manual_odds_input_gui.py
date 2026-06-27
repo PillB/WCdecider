@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import errno
 import json
 from datetime import date
 
@@ -73,6 +74,47 @@ def test_manual_web_diagnose_cli_prints_layout_spec(capsys):
     assert exit_code == 0
     assert payload["default_url"] == "http://127.0.0.1:8765/"
     assert "Fixture" in payload["sections"]
+
+
+def test_bind_available_server_socket_falls_forward_when_port_is_occupied(monkeypatch):
+    created = []
+
+    class FakeSocket:
+        def __init__(self):
+            self.closed = False
+            self.bound_port = None
+            created.append(self)
+
+        def setsockopt(self, *_args):
+            return None
+
+        def bind(self, address):
+            _host, port = address
+            if port == 8765:
+                raise OSError(errno.EADDRINUSE, "address already in use")
+            self.bound_port = port
+
+        def listen(self, _backlog):
+            return None
+
+        def getsockname(self):
+            return ("127.0.0.1", self.bound_port)
+
+        def close(self):
+            self.closed = True
+
+    monkeypatch.setattr(manual.socket, "socket", lambda *_args, **_kwargs: FakeSocket())
+
+    chosen_socket, chosen_port, changed = manual.bind_available_server_socket(
+        "127.0.0.1",
+        8765,
+        scan_limit=10,
+    )
+
+    assert changed is True
+    assert chosen_port == 8766
+    assert chosen_socket.closed is False
+    assert created[0].closed is True
 
 
 def test_manual_web_form_renders_required_sections_and_market_switching(tmp_path):
