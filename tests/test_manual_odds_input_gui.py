@@ -4,6 +4,7 @@ import csv
 import errno
 import json
 from datetime import date
+from urllib.parse import urlencode
 
 import pytest
 from fastapi.testclient import TestClient
@@ -131,6 +132,14 @@ def test_manual_web_form_renders_required_sections_and_market_switching(tmp_path
     assert "data-market-card='match_result'" in html
     assert "data-market-card='asian_handicap'" in html
     assert "syncMarketCards" in html
+    assert "data-add-line" in html
+    assert "data-remove-line" in html
+    assert "renumberLineGroups" in html
+    assert "active-market" in html
+    assert 'card.classList.toggle("hidden"' not in html
+    assert "Add all filled market rows" in html
+    assert "odds_match_result_home" in html
+    assert "odds_asian_handicap_home" in html
     assert "Tkinter" not in html
 
 
@@ -143,9 +152,9 @@ def test_rows_from_form_fields_match_pipeline_schema(tmp_path):
             "kickoff_local": "2026-06-27T15:00:00-05:00",
             "app": "Betano",
             "market_id": "match_result",
-            "odds_home": "2.20",
-            "odds_draw": "3.10",
-            "odds_away": "3.40",
+            "odds_match_result_home": "2.20",
+            "odds_match_result_draw": "3.10",
+            "odds_match_result_away": "3.40",
             "notes": "web form test",
         },
         output,
@@ -156,6 +165,157 @@ def test_rows_from_form_fields_match_pipeline_schema(tmp_path):
     assert rows[0].fixture_id == "2026-06-27-per-jap"
     assert rows[0].source_image.startswith("manual_user_input_")
     assert rows[0].as_dict().keys() == set(manual.RAW_FIELDS)
+
+
+def test_rows_from_form_fields_uses_market_specific_line(tmp_path):
+    output = tmp_path / "manual_odds.csv"
+
+    total_rows = manual.rows_from_form_fields(
+        {
+            "home": "Peru",
+            "away": "Japan",
+            "kickoff_local": "2026-06-27T15:00:00-05:00",
+            "app": "Betano",
+            "market_id": "total_goals",
+            "line_total_goals": "2.5",
+            "line_asian_handicap": "-0.5",
+            "odds_total_goals_over": "1.91",
+            "odds_total_goals_under": "1.89",
+        },
+        output,
+    )
+    assert {row.line for row in total_rows} == {"2.5"}
+    assert [row.selection_id for row in total_rows] == ["over", "under"]
+
+    handicap_rows = manual.rows_from_form_fields(
+        {
+            "home": "Peru",
+            "away": "Japan",
+            "kickoff_local": "2026-06-27T15:00:00-05:00",
+            "app": "Betano",
+            "market_id": "asian_handicap",
+            "line_total_goals": "2.5",
+            "line_asian_handicap": "-0.5",
+            "odds_asian_handicap_home": "1.95",
+            "odds_asian_handicap_away": "1.85",
+        },
+        output,
+    )
+    assert {row.line for row in handicap_rows} == {"-0.5"}
+    assert [row.selection_id for row in handicap_rows] == ["home", "away"]
+
+
+def test_rows_from_form_fields_accepts_multiple_line_groups(tmp_path):
+    output = tmp_path / "manual_odds.csv"
+
+    total_rows = manual.rows_from_form_fields(
+        {
+            "home": "Peru",
+            "away": "Japan",
+            "kickoff_local": "2026-06-27T15:00:00-05:00",
+            "app": "Betano",
+            "market_id": "total_goals",
+            "line_total_goals": ["1.5", "2.5", "3.5"],
+            "odds_total_goals_over": ["1.35", "1.91", "2.80"],
+            "odds_total_goals_under": ["3.10", "1.89", "1.45"],
+        },
+        output,
+    )
+    assert len(total_rows) == 6
+    assert [(row.line, row.selection_id, row.odds) for row in total_rows] == [
+        ("1.5", "over", "1.35"),
+        ("1.5", "under", "3.10"),
+        ("2.5", "over", "1.91"),
+        ("2.5", "under", "1.89"),
+        ("3.5", "over", "2.80"),
+        ("3.5", "under", "1.45"),
+    ]
+
+    handicap_rows = manual.rows_from_form_fields(
+        {
+            "home": "Peru",
+            "away": "Japan",
+            "kickoff_local": "2026-06-27T15:00:00-05:00",
+            "app": "Betsson",
+            "market_id": "asian_handicap",
+            "line_asian_handicap": ["-0.5", "+0.5"],
+            "odds_asian_handicap_home": ["2.05", "1.62"],
+            "odds_asian_handicap_away": ["1.78", "2.25"],
+        },
+        output,
+    )
+    assert len(handicap_rows) == 4
+    assert [(row.line, row.selection_id, row.odds) for row in handicap_rows] == [
+        ("-0.5", "home", "2.05"),
+        ("-0.5", "away", "1.78"),
+        ("+0.5", "home", "1.62"),
+        ("+0.5", "away", "2.25"),
+    ]
+
+
+def test_rows_from_form_fields_ignores_blank_line_groups_without_misalignment(tmp_path):
+    output = tmp_path / "manual_odds.csv"
+    rows = manual.rows_from_form_fields(
+        {
+            "home": "Peru",
+            "away": "Japan",
+            "kickoff_local": "2026-06-27T15:00:00-05:00",
+            "app": "Betano",
+            "market_id": "total_goals",
+            "line_total_goals": ["1.5", "", "3.5"],
+            "odds_total_goals_over": ["1.35", "", "2.80"],
+            "odds_total_goals_under": ["3.10", "", "1.45"],
+        },
+        output,
+    )
+
+    assert [(row.line, row.selection_id, row.odds) for row in rows] == [
+        ("1.5", "over", "1.35"),
+        ("1.5", "under", "3.10"),
+        ("3.5", "over", "2.80"),
+        ("3.5", "under", "1.45"),
+    ]
+
+
+def test_rows_from_all_filled_markets_parses_whole_match_without_collisions(tmp_path):
+    output = tmp_path / "manual_odds.csv"
+    rows = manual.rows_from_all_filled_markets(
+        {
+            "home": "Peru",
+            "away": "Japan",
+            "kickoff_local": "2026-06-27T15:00:00-05:00",
+            "app": "Betano",
+            "market_id": "match_result",
+            "odds_match_result_home": "2.20",
+            "odds_match_result_draw": "3.10",
+            "odds_match_result_away": "3.40",
+            "line_total_goals": ["1.5", "2.5"],
+            "odds_total_goals_over": ["1.35", "1.91"],
+            "odds_total_goals_under": ["3.10", "1.89"],
+            "line_asian_handicap": ["-0.5"],
+            "odds_asian_handicap_home": ["2.05"],
+            "odds_asian_handicap_away": ["1.78"],
+            "odds_both_teams_to_score_yes": "1.80",
+            "odds_both_teams_to_score_no": "1.95",
+        },
+        output,
+    )
+
+    assert len(rows) == 11
+    assert {row.market_id for row in rows} == {
+        "match_result",
+        "total_goals",
+        "asian_handicap",
+        "both_teams_to_score",
+    }
+    assert [
+        (row.market_id, row.selection_id, row.line, row.odds)
+        for row in rows
+        if row.selection_id == "home"
+    ] == [
+        ("match_result", "home", "", "2.20"),
+        ("asian_handicap", "home", "-0.5", "2.05"),
+    ]
 
 
 def test_fastapi_manual_odds_add_save_and_download(tmp_path):
@@ -179,19 +339,92 @@ def test_fastapi_manual_odds_add_save_and_download(tmp_path):
             "kickoff_local": "2026-06-27T15:00:00-05:00",
             "app": "Betsson",
             "market_id": "match_result",
-            "odds_home": "2.20",
-            "odds_draw": "3.10",
-            "odds_away": "3.40",
+            "odds_match_result_home": "2.20",
+            "odds_match_result_draw": "3.10",
+            "odds_match_result_away": "3.40",
             "notes": "route test",
         },
     )
     assert add.status_code == 200
     assert "Added 3 row(s)" in add.text
     assert client.get("/health").json()["rows_in_memory"] == 3
+    assert 'value="Peru"' in add.text
+    assert '<option value="total_goals" selected>' in add.text
+
+    add_total_goals = client.post(
+        "/add",
+        data={
+            "home": "Peru",
+            "away": "Japan",
+            "kickoff_local": "2026-06-27T15:00:00-05:00",
+            "app": "Betsson",
+            "market_id": "total_goals",
+            "line_total_goals": "2.5",
+            "odds_total_goals_over": "1.91",
+            "odds_total_goals_under": "1.89",
+            "notes": "route test",
+        },
+    )
+    assert add_total_goals.status_code == 200
+    assert "Added 2 row(s)" in add_total_goals.text
+    assert client.get("/health").json()["rows_in_memory"] == 5
+
+    add_multi_total_goals = client.post(
+        "/add",
+        content=urlencode(
+            [
+                ("home", "Peru"),
+                ("away", "Japan"),
+                ("kickoff_local", "2026-06-27T15:00:00-05:00"),
+                ("app", "Betsson"),
+                ("market_id", "total_goals"),
+                ("line_total_goals", "1.5"),
+                ("line_total_goals", "3.5"),
+                ("odds_total_goals_over", "1.35"),
+                ("odds_total_goals_over", "2.80"),
+                ("odds_total_goals_under", "3.10"),
+                ("odds_total_goals_under", "1.45"),
+                ("notes", "multi-line route test"),
+            ]
+        ),
+        headers={"content-type": "application/x-www-form-urlencoded"},
+    )
+    assert add_multi_total_goals.status_code == 200
+    assert "Added 4 row(s)" in add_multi_total_goals.text
+    assert client.get("/health").json()["rows_in_memory"] == 9
+
+    add_all = client.post(
+        "/add-all",
+        content=urlencode(
+            [
+                ("home", "Peru"),
+                ("away", "Japan"),
+                ("kickoff_local", "2026-06-27T15:00:00-05:00"),
+                ("app", "Betano"),
+                ("market_id", "match_result"),
+                ("odds_match_result_home", "2.20"),
+                ("odds_match_result_draw", "3.10"),
+                ("odds_match_result_away", "3.40"),
+                ("line_total_goals", "2.5"),
+                ("odds_total_goals_over", "1.91"),
+                ("odds_total_goals_under", "1.89"),
+                ("line_asian_handicap", "-0.5"),
+                ("odds_asian_handicap_home", "2.05"),
+                ("odds_asian_handicap_away", "1.78"),
+                ("notes", "all market route test"),
+            ]
+        ),
+        headers={"content-type": "application/x-www-form-urlencoded"},
+    )
+    assert add_all.status_code == 200
+    assert "Added 7 row(s) from filled market cards" in add_all.text
+    assert client.get("/health").json()["rows_in_memory"] == 16
 
     save = client.post("/save", data={})
     assert save.status_code == 200
-    assert "Saved 3 row(s)" in save.text
+    assert "Saved 16 row(s)" in save.text
+    assert "Cleared the input buffer" in save.text
+    assert client.get("/health").json()["rows_in_memory"] == 0
     assert output.exists()
     assert output.with_suffix(".provenance.json").exists()
 

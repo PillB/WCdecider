@@ -73,8 +73,9 @@ metrics hashes, or the release remains blocked.
 
 ### Inputs
 
-- `wc_2026_matches_june_22-27.csv`: canonical fixture IDs and kickoffs.
-- `wc_2026_results_through_june24.csv`: verified elapsed tournament results.
+- `wc_2026_matches_june_27-29.csv`: active canonical fixture IDs and kickoffs.
+- `wc_2026_results_through_june26.csv`: verified elapsed tournament results through the active data cutoff.
+- `manual_odds_20260627_20260629.csv`: active expert-entered Betano/Betsson odds with provenance sidecar.
 - `wc_team_elo_baseline_june11.csv`: frozen pre-tournament ratings.
 - `wc_backtest_historical_dataset.csv`: historical modeling data.
 - `odds_june*.csv`: verbatim screenshot transcription.

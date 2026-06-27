@@ -123,7 +123,7 @@ def source_for(artifact: str, pointer: str, fixture_id: str) -> Tuple[str, str, 
     if any(token in pointer for token in (
         "/fixture", "/kickoff_", "/group", "/venue", "/fixture_id"
     )):
-        return "wc_2026_matches_june_22-27.csv", fixture_id, ""
+        return "wc_2026_matches_june_27-29.csv", fixture_id, ""
     return "wc_june22_27_pipeline.py", pointer, "/model/pipeline_sha256"
 
 
@@ -247,7 +247,7 @@ def main() -> None:
                 source_accessed_at = research.get("accessed_at") or source_accessed_at
             rows.append({
                 "datapoint_id": datapoint_id,
-                "batch_id": "2026-06-22_2026-06-27",
+                "batch_id": "2026-06-27_2026-06-29",
                 "fixture_id": fixture_id,
                 "output_artifact": artifact_path.name,
                 "json_pointer": pointer,

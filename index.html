@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 22–27.">
+  <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 27–29.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="e7c993e8a4c5226cdc96f22a58591d8e660eafd10bf2bb008ecfa983a75aec9c">
-  <title>WCdecider • June 22–27, 2026</title>
+  <meta name="wcdecider-audit-sha256" content="95e28d64ef4b492acd35edd3cdfb06cc0acdb5d9ea22e92b5c65bdde0045cb54">
+  <title>WCdecider • June 27–29, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .lang-es .en,.lang-en .es{display:none!important}
@@ -31,8 +31,8 @@
       <div>
         <div class="font-black tracking-tight text-white">WCdecider</div>
         <div class="text-xs text-slate-400">
-          <span class="en">June 22–27 • reproducible probabilities</span>
-          <span class="es">22–27 de junio • probabilidades reproducibles</span>
+          <span class="en">June 27–29 • reproducible probabilities</span>
+          <span class="es">27–29 de junio • probabilidades reproducibles</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -53,12 +53,12 @@
             <span class="en">Integrity-first update</span><span class="es">Actualización con integridad primero</span>
           </p>
           <h1 class="text-3xl md:text-5xl font-black text-white mt-2">
-            <span class="en">32 matches. One auditable pipeline.</span>
-            <span class="es">32 partidos. Un pipeline auditable.</span>
+            <span class="en">10 active fixtures. One auditable pipeline.</span>
+            <span class="es">10 partidos activos. Un pipeline auditable.</span>
           </h1>
           <p class="mt-4 text-slate-300 leading-7">
-            <span class="en">Every displayed odd comes from a Betano or Betsson screenshot. Probabilities are generated before market comparison, then tested for expected value, sensitivity and model-market disagreement.</span>
-            <span class="es">Cada cuota mostrada proviene de una captura de Betano o Betsson. Las probabilidades se generan antes de comparar el mercado y luego se prueban por valor esperado, sensibilidad y desacuerdo modelo-mercado.</span>
+            <span class="en">Every displayed odd comes from the expert-entered Betano/Betsson manual odds file and its provenance. Probabilities are generated before market comparison, then tested for expected value, sensitivity and model-market disagreement.</span>
+            <span class="es">Cada cuota mostrada proviene del archivo manual experto de cuotas Betano/Betsson y su procedencia. Las probabilidades se generan antes de comparar el mercado y luego se prueban por valor esperado, sensibilidad y desacuerdo modelo-mercado.</span>
           </p>
           <div id="summary" class="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3"></div>
           <div id="model-evidence" class="mt-4 rounded-2xl border border-slate-700 bg-slate-950/70 p-4 text-sm text-slate-300"></div>
@@ -294,6 +294,8 @@ function explanationTip(help){
 function metric(label,value,help=null){return `<div class="rounded-2xl border border-slate-800 bg-slate-950 p-3"><div class="text-xs text-slate-500 flex items-center justify-center">${label}${explanationTip(help)}</div><div class="text-lg font-black text-white">${value}</div></div>`}
 function renderSummary(rows){
  const halted=rows.filter(x=>x.rank_one_comparison?.strength==='HALT').length;
+ const champ=METRICS.model_championship||{registered_variants:[],benchmark_champion:'unavailable',deep_learning_research:{candidate_families:[]}};
+ const oddsInventory=METRICS.historical_closing_odds||{events:0,rows:0,primary_validation_rows:0,primary_validation_events:0};
  $('#summary').innerHTML=metric('<span class="en">Fixtures</span><span class="es">Partidos</span>',rows.length)+metric('<span class="en">Authorized bets</span><span class="es">Apuestas autorizadas</span>',rows.filter(x=>x.recommendation?.decision_status==='ACTIONABLE').length)+metric('<span class="en">Abstentions</span><span class="es">Abstenciones</span>',rows.filter(x=>x.rank_one_comparison?.decision_status==='ABSTAIN').length)+metric('<span class="en">Score NLL</span><span class="es">NLL de marcador</span>',Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4));
  const historicalRows=Number(METRICS.dataset_a_rows||0)+Number(METRICS.dataset_b_rows||0);
  setText('#production-history-count',`${historicalRows} rows`);
@@ -302,10 +304,10 @@ function renderSummary(rows){
  $('#model-evidence').innerHTML=`<p class="font-bold text-white"><span class="en">Validation evidence and limitations</span><span class="es">Evidencia de validación y limitaciones</span></p>
  <p class="mt-2"><span class="en">Development selection rows: ${METRICS.calibration.selection_rows}; development validation rows: ${METRICS.calibration.holdout_rows}; Brier: ${Number(METRICS.calibration.holdout_brier).toFixed(4)}; log loss: ${Number(METRICS.calibration.holdout_log_loss).toFixed(4)}. This validation set informed prior development and is not a sealed confirmatory holdout.</span><span class="es">Filas de selección de desarrollo: ${METRICS.calibration.selection_rows}; filas de validación de desarrollo: ${METRICS.calibration.holdout_rows}; Brier: ${Number(METRICS.calibration.holdout_brier).toFixed(4)}; pérdida logarítmica: ${Number(METRICS.calibration.holdout_log_loss).toFixed(4)}. Este conjunto informó decisiones previas y no es un holdout confirmatorio sellado.</span></p>
  <p class="mt-2"><span class="en">Score holdout: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Over 2.5 Brier ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, BTTS Brier ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles remains a shadow model because its paired-bootstrap confidence interval crosses zero.</span><span class="es">Holdout de goles: NLL ${Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4)}, Brier Más de 2,5 ${Number(METRICS.score_market_calibration.production_holdout.over_2_5_brier).toFixed(4)}, Brier ambos marcan ${Number(METRICS.score_market_calibration.production_holdout.btts_brier).toFixed(4)}. Dixon–Coles sigue como modelo sombra porque su intervalo bootstrap pareado cruza cero.</span></p>
- <p class="mt-2"><span class="en">Model benchmark: ${METRICS.model_championship.registered_variants.length} registered variants. Strict nested outer folds selected ${escapeHtml(METRICS.model_championship.benchmark_champion)} as the benchmark winner. This is evaluation evidence, not an automatic deployment decision. The best non-market challenger did not securely beat the market benchmark on the untouched comparison.</span><span class="es">Referencia de modelos: ${METRICS.model_championship.registered_variants.length} variantes registradas. Los pliegues externos anidados estrictos eligieron ${escapeHtml(METRICS.model_championship.benchmark_champion)} como ganador de referencia. Es evidencia de evaluación, no una decisión automática de despliegue. El mejor retador no basado en mercado no superó con seguridad al referente de mercado en la comparación intacta.</span></p>
- <p class="mt-2"><span class="en">Deep-learning research track: ${escapeHtml(METRICS.model_championship.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registered but gated')}. These variants need the published promotion gate before production use: more timestamped fixtures, enough repeated temporal edges per team, nested walk-forward selection, calibration checks, and closing-line profitability validation.</span><span class="es">Línea de investigación deep learning: ${escapeHtml(METRICS.model_championship.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registrada pero limitada')}. Estas variantes requieren la puerta de promoción publicada antes de usarse en producción: más partidos con marca de tiempo, suficientes aristas temporales repetidas por equipo, selección walk-forward anidada, calibración y validación de rentabilidad con líneas de cierre.</span></p>
+ <p class="mt-2"><span class="en">Model benchmark: ${champ.registered_variants.length} registered variants. Strict nested outer folds selected ${escapeHtml(champ.benchmark_champion)} as the benchmark winner. This is evaluation evidence, not an automatic deployment decision. The best non-market challenger did not securely beat the market benchmark on the untouched comparison.</span><span class="es">Referencia de modelos: ${champ.registered_variants.length} variantes registradas. Los pliegues externos anidados estrictos eligieron ${escapeHtml(champ.benchmark_champion)} como ganador de referencia. Es evidencia de evaluación, no una decisión automática de despliegue. El mejor retador no basado en mercado no superó con seguridad al referente de mercado en la comparación intacta.</span></p>
+ <p class="mt-2"><span class="en">Deep-learning research track: ${escapeHtml(champ.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registered but gated')}. These variants need the published promotion gate before production use: more timestamped fixtures, enough repeated temporal edges per team, nested walk-forward selection, calibration checks, and closing-line profitability validation.</span><span class="es">Línea de investigación deep learning: ${escapeHtml(champ.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registrada pero limitada')}. Estas variantes requieren la puerta de promoción publicada antes de usarse en producción: más partidos con marca de tiempo, suficientes aristas temporales repetidas por equipo, selección walk-forward anidada, calibración y validación de rentabilidad con líneas de cierre.</span></p>
  <p class="mt-2 text-violet-200"><span class="en">Research-mode toggle: ${escapeHtml(METRICS.research_mode_policy?.selected_candidate||'not available')} is available as a gated shadow view. Production authorization remains blocked unless a candidate passes the published promotion gate.</span><span class="es">Toggle de modo investigación: ${escapeHtml(METRICS.research_mode_policy?.selected_candidate||'no disponible')} está disponible como vista sombra limitada. La autorización de producción sigue bloqueada salvo que una candidata supere la puerta de promoción publicada.</span></p>
- <p class="mt-2"><span class="en">Historical odds inventory: ${METRICS.historical_closing_odds.events} events and ${METRICS.historical_closing_odds.rows} selection rows retained as timestamp-unknown proxies; primary timestamp-verified validation rows: ${METRICS.historical_closing_odds.primary_validation_rows}.</span><span class="es">Inventario histórico de cuotas: ${METRICS.historical_closing_odds.events} eventos y ${METRICS.historical_closing_odds.rows} filas de selecciones conservadas como proxies sin hora verificable; filas primarias verificadas por tiempo: ${METRICS.historical_closing_odds.primary_validation_rows}.</span></p>
+ <p class="mt-2"><span class="en">Historical odds inventory: ${oddsInventory.events} events and ${oddsInventory.rows} selection rows retained as timestamp-unknown proxies; primary timestamp-verified validation rows: ${oddsInventory.primary_validation_rows}.</span><span class="es">Inventario histórico de cuotas: ${oddsInventory.events} eventos y ${oddsInventory.rows} filas de selecciones conservadas como proxies sin hora verificable; filas primarias verificadas por tiempo: ${oddsInventory.primary_validation_rows}.</span></p>
  <p class="mt-2 text-red-200"><span class="en">Production authorization remains blocked: all decisions are ABSTAIN and authorized stakes are zero. The separate stake simulator is hypothetical and does not claim validated profit.</span><span class="es">La autorización de producción sigue bloqueada: todas las decisiones son ABSTAIN y los montos autorizados son cero. El simulador separado es hipotético y no afirma beneficio validado.</span></p>`;
 }
 function comparisonBar(label,value,maxValue,color,detail=''){
@@ -314,8 +316,8 @@ function comparisonBar(label,value,maxValue,color,detail=''){
 }
 function renderValidationVisuals(){
  const score=METRICS.score_market_calibration;
- const champ=METRICS.model_championship;
- const folds=(champ.nested_outer_benchmark||champ.nested_outer_championship).folds||[];
+ const champ=METRICS.model_championship||{nested_outer_benchmark:{folds:[]},nested_outer_championship:{folds:[]}};
+ const folds=((champ.nested_outer_benchmark||champ.nested_outer_championship)||{folds:[]}).folds||[];
  const foldRows=folds.map(f=>`<div class="grid grid-cols-[4.5rem_1fr_4rem] items-center gap-2 text-xs"><span><span class="en">Fold ${f.fold}</span><span class="es">Pliegue ${f.fold}</span></span><div class="h-2 rounded bg-slate-800 overflow-hidden"><div class="h-full bg-cyan-500" style="width:${Math.min(100,Number(f.metrics.market_devigged_proxy.log_loss)/1.2*100)}%"></div></div><span class="font-mono">${Number(f.metrics.market_devigged_proxy.log_loss).toFixed(3)}</span></div>`).join('');
  $('#performance-viz').innerHTML=`<h2 class="text-xl font-black text-white"><span class="en">Prediction performance and model comparison</span><span class="es">Rendimiento predictivo y comparación de modelos</span></h2>
   <p class="mt-2 text-xs text-slate-400"><span class="en">Lower is better. Comparisons use chronological folds and proper scoring rules, not accuracy alone.</span><span class="es">Menor es mejor. Las comparaciones usan pliegues cronológicos y reglas de puntuación propias, no solo exactitud.</span></p>
@@ -333,7 +335,7 @@ function renderValidationVisuals(){
    <p class="mt-3 rounded-xl border border-violet-800 bg-violet-950/30 p-3 text-xs text-violet-100"><span class="en">The challenger is worse on score NLL and BTTS Brier, and effectively tied on Over 2.5 within the numeric tolerance. No comparison shows a statistically secure improvement, so it receives zero production weight.</span><span class="es">El retador es peor en NLL de marcador y Brier de ambos marcan, y queda efectivamente empatado en Más de 2,5 dentro de la tolerancia numérica. Ninguna comparación muestra una mejora estadísticamente segura, por lo que recibe peso cero en producción.</span></p>
   </div>
   <details class="mt-4" open><summary class="cursor-pointer text-sm font-semibold"><span class="en">Nested chronological cross-validation</span><span class="es">Validación cruzada cronológica anidada</span></summary><div class="mt-3 space-y-2">${foldRows}</div><p class="mt-2 text-[11px] text-slate-500"><span class="en">Bars show market-proxy log loss by untouched outer fold. Fold boundaries are time ordered; no future match enters training.</span><span class="es">Las barras muestran log loss del proxy de mercado por pliegue externo intacto. Los límites son temporales; ningún partido futuro entra al entrenamiento.</span></p></details>`;
- const odds=METRICS.historical_closing_odds;
+ const odds=METRICS.historical_closing_odds||{events:0,rows:0,primary_validation_rows:0,primary_validation_events:0};
  $('#profitability-viz').innerHTML=`<h2 class="text-xl font-black text-white"><span class="en">Profitability evidence</span><span class="es">Evidencia de rentabilidad</span></h2>
   <div class="mt-4 grid grid-cols-2 gap-3">${metric('<span class="en">Historical events</span><span class="es">Eventos históricos</span>',odds.events)}${metric('<span class="en">Timestamped closes</span><span class="es">Cierres con hora</span>',odds.primary_validation_events)}</div>
   <div class="mt-4 rounded-2xl border border-amber-800 bg-amber-950/25 p-4">
@@ -973,8 +975,8 @@ async function load(){
   if(metricsHash&&auditSummary.metrics_sha256!==metricsHash)throw new Error('Metrics JSON hash does not match audit summary');
   if(expectedPathHash&&auditSummary.expected_paths_sha256!==expectedPathHash)throw new Error('Current JSON leaf hash does not match audit summary');
   AUDIT_COUNT=auditSummary.audit_rows;
-  if(DATA.batch.fixture_count!==32||DATA.predictions.length!==32)throw new Error('Expected exactly 32 predictions');
-  const ids=new Set(DATA.predictions.map(x=>x.fixture_id)); if(ids.size!==32)throw new Error('Duplicate fixture IDs');
+  if(DATA.predictions.length!==DATA.batch.fixture_count)throw new Error('Prediction count does not match batch metadata');
+  const ids=new Set(DATA.predictions.map(x=>x.fixture_id)); if(ids.size!==DATA.predictions.length)throw new Error('Duplicate fixture IDs');
   setText('#last-updated',DATA.generated_at||'unknown');
   setText('#site-version',DATA.model?.version||METRICS.version||DATA.schema_version||'unknown');
   const build=$('#build-sha'); if(build&&build.textContent.length>12)build.textContent=build.textContent.slice(0,12);

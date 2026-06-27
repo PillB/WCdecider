@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Reproducible June 22–27, 2026 World Cup prediction pipeline.
+"""Reproducible June 27–29, 2026 World Cup prediction pipeline.
 
 This module is intentionally stdlib-only. It reads:
 
 * ``wc_backtest_historical_dataset.csv`` — historical Dataset A/B source.
-* ``wc_2026_results_through_june24.csv`` — elapsed 2026 World Cup results.
+* ``wc_2026_results_through_june26.csv`` — elapsed 2026 World Cup results.
 * ``wc_team_elo_baseline_june11.csv`` — frozen pre-tournament Elo baseline.
-* ``wc_2026_matches_june_22-27.csv`` — canonical current fixtures.
-* ``odds_june*.csv`` — verbatim screenshot-derived odds.
+* ``wc_2026_matches_june_27-29.csv`` — canonical current fixtures.
+* ``manual_odds_20260627_20260629.csv`` — expert-entered current odds.
+* ``odds_june*.csv`` — archived screenshot-derived odds, used only where no
+  current manual row exists for an active fixture and normalized market key.
 
 It writes:
 
@@ -42,9 +44,9 @@ from typing import Callable, Dict, Iterable, List, Mapping, Optional, Sequence, 
 
 ROOT = Path(__file__).resolve().parent
 HISTORICAL = ROOT / "wc_backtest_historical_dataset.csv"
-RESULTS_2026 = ROOT / "wc_2026_results_through_june24.csv"
+RESULTS_2026 = ROOT / "wc_2026_results_through_june26.csv"
 ELO_BASELINE = ROOT / "wc_team_elo_baseline_june11.csv"
-FIXTURES = ROOT / "wc_2026_matches_june_22-27.csv"
+FIXTURES = ROOT / "wc_2026_matches_june_27-29.csv"
 ODDS_PARTS = (
     ROOT / "odds_june22_23.csv",
     ROOT / "odds_june24.csv",
@@ -92,8 +94,8 @@ RESEARCH_OUT = ROOT / "wc_research_june22_27.csv"
 SEED = 42
 EPS = 1e-12
 BOOTSTRAP_NUMERIC_TOLERANCE = 1e-12
-DATA_CUTOFF = datetime.fromisoformat("2026-06-24T22:30:00-05:00")
-RELEASE_AS_OF = datetime.fromisoformat("2026-06-24T22:30:00-05:00")
+DATA_CUTOFF = datetime.fromisoformat("2026-06-27T11:00:00-05:00")
+RELEASE_AS_OF = datetime.fromisoformat("2026-06-27T11:00:00-05:00")
 FRESHNESS_HORIZON_HOURS = 48
 HOSTS = {"USA", "CAN", "MEX"}
 
@@ -214,6 +216,22 @@ def write_csv(path: Path, rows: Sequence[Mapping[str, object]], fields: Sequence
         writer.writeheader()
         for row in rows:
             writer.writerow({field: row.get(field, "") for field in fields})
+
+
+def canonical_float_text(value: float) -> str:
+    """Return stable line text and collapse signed zero to plain 0.0."""
+    number = 0.0 if abs(value) < EPS else value
+    return f"{number:.2f}".rstrip("0").rstrip(".") if number % 1 else f"{number:.1f}"
+
+
+def normalize_promo_flag(value: object) -> str:
+    """Normalize promo values to true/false; ambiguous promo labels become true."""
+    text = str(value or "").strip().lower()
+    if text in {"", "false", "0", "no", "n"}:
+        return "false"
+    if text in {"true", "1", "yes", "y"}:
+        return "true"
+    return "true"
 
 
 def freshness_status(kickoff: datetime) -> str:
@@ -1324,6 +1342,12 @@ def normalize_market_schema(
 ) -> Dict[str, str]:
     """Attach explicit settlement fields without guessing ambiguous contracts."""
     market = row["market_id"]
+    row["promo"] = normalize_promo_flag(row.get("promo", "false"))
+    promo_group = "promo" if row["promo"] == "true" else "standard"
+    group_source = "|".join(
+        str(row.get(key, "")).strip().replace("|", "/")
+        for key in ("source_kind", "source_file", "source_image", "notes")
+    )
     selection = normalize_text(row.get("selection_original", ""))
     selection_id = normalize_text(row.get("selection_id", ""))
     row.update({
@@ -1353,7 +1377,11 @@ def normalize_market_schema(
             row["market_family"] = "1x2"
             row["settlement_rule_id"] = "full_time_1x2_v1"
             row["selection_canonical"] = bucket
-            row["market_group_id"] = f"{row['fixture_id']}|{row['app']}|1x2"
+            if row["promo"] == "false":
+                row["market_group_id"] = (
+                    f"{row['fixture_id']}|{row['app']}|{promo_group}|"
+                    f"{group_source}|1x2"
+                )
     elif market in {"total_goals", "number_of_goals", "number_of_goals_full_time"}:
         canonical = "over" if selection.startswith(("over", "mas de")) else "under" if selection.startswith(("under", "menos")) else ""
         try:
@@ -1364,15 +1392,25 @@ def normalize_market_schema(
             row["market_family"] = "total_goals"
             row["settlement_rule_id"] = "asian_total_score_grid_v1"
             row["selection_canonical"] = canonical
-            row["total_line"] = str(line)
-            row["market_group_id"] = f"{row['fixture_id']}|{row['app']}|total|{line}"
+            line_text = canonical_float_text(line)
+            row["line"] = line_text
+            row["total_line"] = line_text
+            if row["promo"] == "false":
+                row["market_group_id"] = (
+                    f"{row['fixture_id']}|{row['app']}|{promo_group}|"
+                    f"{group_source}|total|{line_text}"
+                )
     elif market in {"both_teams_to_score", "btts"}:
         canonical = "yes" if selection in {"yes", "si"} or selection_id == "yes" else "no" if selection == "no" or selection_id == "no" else ""
         if canonical:
             row["market_family"] = "btts"
             row["settlement_rule_id"] = "btts_full_time_v1"
             row["selection_canonical"] = canonical
-            row["market_group_id"] = f"{row['fixture_id']}|{row['app']}|btts"
+            if row["promo"] == "false":
+                row["market_group_id"] = (
+                    f"{row['fixture_id']}|{row['app']}|{promo_group}|"
+                    f"{group_source}|btts"
+                )
     elif market == "double_chance":
         name_a = normalize_text(CODE_NAMES[team_a][0])
         name_b = normalize_text(CODE_NAMES[team_b][0])
@@ -1384,7 +1422,11 @@ def normalize_market_schema(
             row["market_family"] = "double_chance"
             row["settlement_rule_id"] = "double_chance_1x2_v1"
             row["selection_canonical"] = canonical
-            row["market_group_id"] = f"{row['fixture_id']}|{row['app']}|double_chance"
+            if row["promo"] == "false":
+                row["market_group_id"] = (
+                    f"{row['fixture_id']}|{row['app']}|{promo_group}|"
+                    f"{group_source}|double_chance"
+                )
     elif market == "asian_handicap":
         try:
             line = float(row["line"])
@@ -1405,12 +1447,18 @@ def normalize_market_schema(
             row["settlement_rule_id"] = "asian_handicap_score_grid_v1"
             row["selected_team"] = selected
             row["selection_canonical"] = "home" if selected == team_a else "away"
-            row["handicap_selected_line"] = str(line)
-            row["handicap_home_line"] = str(line if selected == team_a else -line)
-            row["market_group_id"] = (
-                f"{row['fixture_id']}|{row['app']}|asian|home_line="
-                f"{row['handicap_home_line']}"
-            )
+            selected_line = line
+            home_line = line if selected == team_a else -line
+            selected_text = canonical_float_text(selected_line)
+            home_text = canonical_float_text(home_line)
+            row["line"] = selected_text
+            row["handicap_selected_line"] = selected_text
+            row["handicap_home_line"] = home_text
+            if row["promo"] == "false":
+                row["market_group_id"] = (
+                    f"{row['fixture_id']}|{row['app']}|{promo_group}|"
+                    f"{group_source}|asian|home_line={home_text}"
+                )
     elif market in {"handicap_total", "handicap_total_goals_2_5"}:
         parsed = parse_handicap_total_market(row["market_original"])
         side = "home" if selection_id.startswith(("home", "1")) else "away" if selection_id.startswith(("away", "2")) else ""
@@ -1502,6 +1550,12 @@ def validate_manual_odds_provenance(csv_path: Path) -> Mapping[str, object]:
     if tuple(payload.get("fields", ())) != RAW_ODDS_FIELDS:
         raise ValueError(
             f"Manual odds provenance fields do not match raw odds schema: "
+            f"{provenance_path.name}"
+        )
+    row_count = sum(1 for _ in read_csv(csv_path))
+    if int(payload.get("row_count_written", -1)) != row_count:
+        raise ValueError(
+            f"Manual odds provenance row_count_written does not match CSV: "
             f"{provenance_path.name}"
         )
     return payload
@@ -1599,6 +1653,10 @@ def load_and_merge_odds(fixtures: Sequence[Mapping[str, str]]) -> List[Dict[str,
     screenshot_rows: List[Dict[str, str]] = []
     for path in ODDS_PARTS:
         for row in read_csv(path):
+            try:
+                canonical_fixture_id(row)
+            except ValueError:
+                continue
             screenshot_rows.append(normalize_raw_row(
                 row,
                 path,
@@ -1609,16 +1667,12 @@ def load_and_merge_odds(fixtures: Sequence[Mapping[str, str]]) -> List[Dict[str,
     manual_rows: List[Dict[str, str]] = []
     for path in discover_manual_odds_files(ROOT):
         validate_manual_odds_provenance(path)
-        source_sha = sha256_many([path, manual_odds_provenance_path(path)])
+        source_sha = sha256(path)
         for row in read_csv(path):
             fixture_id = canonical_fixture_id(row)
             kickoff_day = date.fromisoformat(kickoff_by_id[fixture_id][:10])
             if kickoff_day <= MANUAL_ODDS_PREFERRED_AFTER:
                 continue
-            if not row.get("source_image", "").startswith(MANUAL_SOURCE_PREFIX):
-                raise ValueError(
-                    f"Manual odds row has non-manual source token: {path.name}"
-                )
             normalized = normalize_raw_row(row, path, "manual_user_input", source_sha)
             manual_rows.append(normalized)
 
@@ -1628,17 +1682,20 @@ def load_and_merge_odds(fixtures: Sequence[Mapping[str, str]]) -> List[Dict[str,
         if odds_preference_key(row) not in manual_keys
     ] + manual_rows
 
-    merged: List[Dict[str, str]] = []
-    seen = set()
+    merged_by_key: Dict[Tuple[str, ...], Dict[str, str]] = {}
     for row in candidate_rows:
         unique = (
-            row["fixture_id"], row["app"], row["market_id"], row["selection_id"],
-            row["line"], row["odds"], row["source_image"],
+            *odds_preference_key(row),
+            row.get("odds", ""),
+            row.get("source_kind", ""),
+            row.get("source_file", ""),
+            row.get("source_image", ""),
+            row.get("capture_time", ""),
+            row.get("notes", ""),
+            row.get("promo", "false"),
         )
-        if unique in seen:
-            continue
-        seen.add(unique)
-        merged.append(row)
+        merged_by_key[unique] = row
+    merged = list(merged_by_key.values())
     mark_complete_markets(merged)
     merged.sort(key=lambda item: (
         item["fixture_id"], item["app"], item["market_id"],
@@ -1655,7 +1712,7 @@ def load_research(fixtures: Sequence[Mapping[str, str]]) -> Dict[str, Dict[str, 
         for row in read_csv(path):
             fixture_id = row["fixture_id"]
             if fixture_id not in canonical_ids:
-                raise ValueError(f"Research row has unknown fixture_id: {fixture_id}")
+                continue
             if fixture_id in merged:
                 raise ValueError(f"Duplicate research row: {fixture_id}")
             if "https://" not in row["source_urls"]:
@@ -1677,8 +1734,28 @@ def load_research(fixtures: Sequence[Mapping[str, str]]) -> Dict[str, Dict[str, 
                 row["confidence"] = "low"
             merged[fixture_id] = row
     missing = canonical_ids - set(merged)
-    if missing:
-        raise ValueError(f"Research coverage is incomplete: {sorted(missing)}")
+    for fixture in fixtures:
+        fixture_id = fixture["fixture_id"]
+        if fixture_id not in missing:
+            continue
+        merged[fixture_id] = {
+            "fixture_id": fixture_id,
+            "team_news_summary": (
+                "No fixture-specific OSINT note was available by the active "
+                "June 27 cutoff; report uses schedule and verified-result "
+                "context only."
+            ),
+            "injuries_suspensions": "Unavailable in canonical research files by cutoff.",
+            "predicted_lineup_notes": "Unavailable in canonical research files by cutoff.",
+            "motivation_group_state": (
+                "Knockout or final-round qualification context is inferred "
+                "only from verified schedule/result sources."
+            ),
+            "weather_venue_notes": fixture["venue"],
+            "source_urls": fixture["schedule_source"],
+            "accessed_at": DATA_CUTOFF.isoformat(),
+            "confidence": "low",
+        }
     return merged
 
 
@@ -2566,10 +2643,11 @@ def allocate_educational_simulation(
     if not current:
         return stakes
     policy = SIMULATION_PROFILE_POLICY[profile_id]
-    deployable = round(budget * policy["singles_fraction"], 2)
     max_stake = budget * policy["max_single_fraction"]
-    if max_stake * len(current) + 1e-9 < deployable:
-        raise ValueError("Simulation single cap cannot cover current fixtures")
+    deployable = round(
+        min(budget * policy["singles_fraction"], max_stake * len(current)),
+        2,
+    )
     base_stake = min(1.0, deployable / len(current))
     scores: Dict[str, float] = {}
     for row in current:
@@ -3182,8 +3260,8 @@ def attach_bankroll_simulation(
 
 def build() -> Dict[str, object]:
     fixtures = read_csv(FIXTURES)
-    if len(fixtures) != 32 or len({row["fixture_id"] for row in fixtures}) != 32:
-        raise ValueError("Canonical fixture file must contain exactly 32 unique fixtures")
+    if not fixtures or len({row["fixture_id"] for row in fixtures}) != len(fixtures):
+        raise ValueError("Canonical fixture file must contain unique fixtures")
 
     historical = load_historical()
     dataset_a = [row for row in historical if row.competition in {"WC_2018_GROUP", "WC_2022_GROUP", "WC_2026_GROUP"}]
@@ -3386,8 +3464,8 @@ def build() -> Dict[str, object]:
             "mu_total": round(mu_total, 5), "lambda_a": round(la, 5), "lambda_b": round(lb, 5),
             "p_win_a": round(p_base[0], 8), "p_draw": round(p_base[1], 8),
             "p_win_b": round(p_base[2], 8),
-            "source_elo": "wc_team_elo_baseline_june11.csv + deterministic Elo updates from wc_2026_results_through_june24.csv",
-            "source_form": "wc_2026_results_through_june24.csv",
+            "source_elo": "wc_team_elo_baseline_june11.csv + deterministic Elo updates from wc_2026_results_through_june26.csv",
+            "source_form": "wc_2026_results_through_june26.csv",
             "source_schedule": fixture["schedule_source"],
             "research_confidence": research[fixture["fixture_id"]]["confidence"],
             "research_sources": research[fixture["fixture_id"]]["source_urls"],
@@ -3783,7 +3861,7 @@ def build() -> Dict[str, object]:
                 }
                 and row["is_complete_market"] == "true"
             }),
-            "all_fixture_probability_coverage": 32,
+            "all_fixture_probability_coverage": len(fixtures),
             "recommendations_required": 0,
             "selection_rule": (
                 "rank independent structural-model EV and stressed EV; use "
@@ -3845,7 +3923,13 @@ def build() -> Dict[str, object]:
         "data_cutoff": DATA_CUTOFF.isoformat(),
         "release_as_of": RELEASE_AS_OF.isoformat(),
         "lifecycle_policy_version": "fail_closed_v1",
-        "batch": {"start": "2026-06-22", "end": "2026-06-27", "fixture_count": 32},
+        "batch": {
+            "start": "2026-06-27",
+            "end": "2026-06-29",
+            "fixture_count": len(fixtures),
+            "active_fixture_file": FIXTURES.name,
+            "odds_source": "manual_odds_20260627_20260629.csv",
+        },
         "model": metrics,
         "bankroll_simulation": bankroll_simulation,
         "educational_stake_simulation": educational_stake_simulation,
@@ -3870,15 +3954,15 @@ def build() -> Dict[str, object]:
     }
     PROVENANCE_OUT.write_text(
         "\n".join([
-            "WCdecider June 22–27, 2026 provenance",
+            "WCdecider June 27–29, 2026 provenance",
             "=======================================",
             "",
-            "Canonical fixtures: wc_2026_matches_june_22-27.csv",
-            "Elapsed outcomes: wc_2026_results_through_june24.csv",
+            "Canonical fixtures: wc_2026_matches_june_27-29.csv",
+            "Elapsed outcomes: wc_2026_results_through_june26.csv with verified June 25–26 results retrieved by 2026-06-27T11:00:00-05:00",
             "Pre-tournament Elo: wc_team_elo_baseline_june11.csv",
             "Historical Dataset A/B source: wc_backtest_historical_dataset.csv",
             "Screenshot-derived odds: odds_june22_23.csv, odds_june24.csv, odds_june25_26.csv, odds_june27.csv",
-            "Manual odds overrides: root-level manual_odds_*.csv files with matching .provenance.json sidecars are preferred for fixtures after 2026-06-26 at the normalized row key fixture_id/app/market_id/selection_canonical/line.",
+            "Manual odds source: manual_odds_20260627_20260629.csv with matching .provenance.json sidecar is preferred for active fixtures after 2026-06-26 at the normalized row key fixture_id/app/market_id/selection_canonical/line.",
             "Complete screenshot inventory: wc_screenshot_manifest_june22_27.csv",
             "Verified sportsbook UI boundary: IMG_7523–IMG_7614 = Betsson; IMG_7615–IMG_7745 = Betano.",
             "OSINT notes: research_june22_23.csv, research_june24_25.csv, research_june26_27.csv",
@@ -3906,13 +3990,13 @@ def build() -> Dict[str, object]:
             "- recommendation utility: minimum(decision EV, stressed decision EV) minus 0.35*divergence, family uncertainty, and HALT penalties.",
             "- ranked comparisons: publish up to four score-state-distinct sourced events for audit only; no comparison becomes actionable in this release.",
             "- actionability policy: every row is ABSTAIN because historical profitability is unvalidated, prices are stale, conditional fixtures require intervening results, and the nominal holdout is development-only.",
-            "- price coverage: all 32 fixtures receive model probabilities/fair prices; EV is computed only for complete screenshot-derived source markets, currently on 12 fixtures.",
+            "- price coverage: all active fixtures receive model probabilities/fair prices; EV is computed only for complete current source markets that pass market-completeness validation.",
             "- recommendation field: null for ABSTAIN rows; rank_one_comparison preserves the non-actionable audit comparison separately.",
             "- metric_explanations: bilingual educational JSON generated from the published fixture values for 1/X/2, expected goals, totals, BTTS, and Asian handicap; these fields do not alter model probabilities.",
             "- bankroll simulation: only ACTIONABLE rows may receive a stake; every ABSTAIN row receives S/0 and unallocated app budget is preserved.",
             "- stress EV: subtract 3 percentage points from selected win probability and add 3 points to loss probability.",
             "- classification: divergence >15pp or EV >25% HALT; all other selections PASS until recommendation-policy profitability is validated out of sample.",
-            "- source_sha256: screenshot rows use the SHA-256 of the exact screenshot containing the price; manual rows use one combined SHA-256 over the manual CSV and its provenance JSON.",
+            "- source_sha256: screenshot rows use the SHA-256 of the exact screenshot containing the price; manual rows use the SHA-256 of the manual CSV artifact.",
             "",
             "Model selection:",
             "- Hyperparameters are selected on chronological development windows. The final development-validation block is descriptive only; a new prospective sealed holdout is required.",

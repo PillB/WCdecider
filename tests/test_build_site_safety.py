@@ -22,7 +22,7 @@ def test_blocked_audit_preserves_existing_site(tmp_path, monkeypatch):
         "wc_june22_27_model_metrics.json",
         "wc_june22_27_model_dataset.csv",
         "wc_odds_june_22-27.csv",
-        "wc_2026_matches_june_22-27.csv",
+        "wc_2026_matches_june_27-29.csv",
         "wc_june22_27_provenance.txt",
         "wc_screenshot_manifest_june22_27.csv",
         "wc_research_june22_27.csv",

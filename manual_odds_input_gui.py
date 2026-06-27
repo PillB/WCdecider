@@ -304,8 +304,70 @@ def validate_decimal_odds(value: str) -> float:
     return number
 
 
+def _field_values(fields: Mapping[str, object], name: str) -> List[str]:
+    """Return all submitted values for a form field name.
+
+    FastAPI route handlers pass ``parse_qs`` lists, while direct tests and
+    older callers pass plain strings. This helper keeps both contracts stable.
+    """
+    value = fields.get(name, "")
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, Sequence):
+        return [str(item) for item in value]
+    return [str(value)]
+
+
+def _field_text(fields: Mapping[str, object], name: str, default: str = "") -> str:
+    """Return the last submitted value for scalar form fields."""
+    values = _field_values(fields, name)
+    text = values[-1].strip() if values else ""
+    return text or default
+
+
+def _market_field_values(
+    fields: Mapping[str, object],
+    market_id: str,
+    field_prefix: str,
+    fallback_name: str,
+) -> List[str]:
+    """Return market-scoped values, with old unscoped names as compatibility fallback."""
+    scoped = f"{field_prefix}_{market_id}_{fallback_name}"
+    if scoped in fields:
+        return _field_values(fields, scoped)
+    return _field_values(fields, f"{field_prefix}_{fallback_name}")
+
+
+def _market_field_text(
+    fields: Mapping[str, object],
+    market_id: str,
+    field_prefix: str,
+    fallback_name: str,
+    default: str = "",
+) -> str:
+    """Return one market-scoped text value, with old unscoped names as fallback."""
+    values = _market_field_values(fields, market_id, field_prefix, fallback_name)
+    text = values[-1].strip() if values else ""
+    return text or default
+
+
+def _market_has_entered_values(fields: Mapping[str, object], market_id: str) -> bool:
+    """Return True when a specific market card contains any user-entered odds/line."""
+    preset = MARKET_PRESETS[market_id]
+    if preset["line_required"]:
+        if any(value.strip() for value in _field_values(fields, f"line_{market_id}")):
+            return True
+    for selection_id, _label in preset["selections"]:
+        if any(
+            value.strip()
+            for value in _market_field_values(fields, market_id, "odds", selection_id)
+        ):
+            return True
+    return False
+
+
 def rows_from_form_fields(
-    fields: Mapping[str, str],
+    fields: Mapping[str, object],
     output_path: Path,
 ) -> List[ManualOddsRow]:
     """Build validated odds rows from local web form fields.
@@ -316,6 +378,8 @@ def rows_from_form_fields(
 
     Required keys are ``home``, ``away``, ``kickoff_local``, ``app`` and
     ``market_id``. Odds are read from keys named ``odds_<selection_id>``.
+    Line-based markets may submit repeated ``line_<market_id>`` and repeated
+    selection odds fields; values at the same list index form one line block.
 
     Example
     -------
@@ -328,55 +392,123 @@ def rows_from_form_fields(
     >>> len(rows)
     3
     """
-    home = fields.get("home", "").strip()
-    away = fields.get("away", "").strip()
-    kickoff = fields.get("kickoff_local", "").strip()
+    home = _field_text(fields, "home")
+    away = _field_text(fields, "away")
+    kickoff = _field_text(fields, "kickoff_local")
     if not home or not away:
         raise ValueError("Home/Team 1 and Away/Team 2 are required.")
     if not kickoff:
         raise ValueError("Kickoff Lima ISO is required.")
-    app = fields.get("app", "").strip() or APPS[0]
+    app = _field_text(fields, "app", APPS[0])
     if app not in APPS:
         raise ValueError(f"Unsupported app: {app!r}")
-    market_id = fields.get("market_id", "").strip() or "match_result"
+    market_id = _field_text(fields, "market_id", "match_result")
     if market_id not in MARKET_PRESETS:
         raise ValueError(f"Unsupported market_id: {market_id!r}")
     preset = MARKET_PRESETS[market_id]
-    line = fields.get("line", "").strip()
-    if preset["line_required"] and not line:
-        raise ValueError(f"Line is required for {market_id}.")
-    fixture_id = fields.get("fixture_id", "").strip() or make_fixture_id(kickoff, home, away)
+    fixture_id = _field_text(fields, "fixture_id") or make_fixture_id(kickoff, home, away)
     fixture_display = f"{home} vs {away}"
-    capture = normalize_capture_time(fields.get("capture_time", ""))
+    capture = normalize_capture_time(_field_text(fields, "capture_time"))
     source = make_manual_source_token(capture, output_path)
-    notes = fields.get("notes", "manual user input").strip()
+    notes = _field_text(fields, "notes", "manual user input")
 
     rows: List[ManualOddsRow] = []
-    for selection_id, label in preset["selections"]:
-        odds = fields.get(f"odds_{selection_id}", "").strip()
-        if not odds:
-            continue
-        validate_decimal_odds(odds)
-        rows.append(
-            ManualOddsRow(
-                fixture_id=fixture_id,
-                fixture_display=fixture_display,
-                kickoff_local=kickoff,
-                app=app,
-                market_original=preset["market_original"],
-                market_id=market_id,
-                selection_original=selection_display_name(selection_id, home, away, label),
-                selection_id=selection_id,
-                line=line,
-                odds=odds,
-                promo="false",
-                source_image=source,
-                capture_time=capture,
-                notes=notes,
-            )
+    if preset["line_required"]:
+        lines = [value.strip() for value in _field_values(fields, f"line_{market_id}")]
+        if not any(lines):
+            fallback_line = _field_text(fields, "line")
+            lines = [fallback_line] if fallback_line else []
+        selection_values = {
+            selection_id: _market_field_values(fields, market_id, "odds", selection_id)
+            for selection_id, _label in preset["selections"]
+        }
+        group_count = max(
+            [len(lines)] + [len(values) for values in selection_values.values()]
         )
+        for group_index in range(group_count):
+            line = lines[group_index].strip() if group_index < len(lines) else ""
+            group_has_odds = any(
+                group_index < len(values) and values[group_index].strip()
+                for values in selection_values.values()
+            )
+            if not line and group_has_odds:
+                raise ValueError(f"Line is required for {market_id} group {group_index + 1}.")
+            if not line and not group_has_odds:
+                continue
+            for selection_id, label in preset["selections"]:
+                values = selection_values[selection_id]
+                odds = values[group_index].strip() if group_index < len(values) else ""
+                if not odds:
+                    continue
+                validate_decimal_odds(odds)
+                rows.append(
+                    ManualOddsRow(
+                        fixture_id=fixture_id,
+                        fixture_display=fixture_display,
+                        kickoff_local=kickoff,
+                        app=app,
+                        market_original=preset["market_original"],
+                        market_id=market_id,
+                        selection_original=selection_display_name(selection_id, home, away, label),
+                        selection_id=selection_id,
+                        line=line,
+                        odds=odds,
+                        promo="false",
+                        source_image=source,
+                        capture_time=capture,
+                        notes=notes,
+                    )
+                )
+    else:
+        for selection_id, label in preset["selections"]:
+            odds = _market_field_text(fields, market_id, "odds", selection_id)
+            if not odds:
+                continue
+            validate_decimal_odds(odds)
+            rows.append(
+                ManualOddsRow(
+                    fixture_id=fixture_id,
+                    fixture_display=fixture_display,
+                    kickoff_local=kickoff,
+                    app=app,
+                    market_original=preset["market_original"],
+                    market_id=market_id,
+                    selection_original=selection_display_name(selection_id, home, away, label),
+                    selection_id=selection_id,
+                    line="",
+                    odds=odds,
+                    promo="false",
+                    source_image=source,
+                    capture_time=capture,
+                    notes=notes,
+                )
+            )
     if not rows:
         raise ValueError("Enter at least one decimal odds value for the selected market.")
+    validate_rows(rows)
+    return rows
+
+
+def rows_from_all_filled_markets(
+    fields: Mapping[str, object],
+    output_path: Path,
+) -> List[ManualOddsRow]:
+    """Build rows from every market card that contains user-entered values."""
+    rows: List[ManualOddsRow] = []
+    errors: List[str] = []
+    for market_id in MARKET_PRESETS:
+        if not _market_has_entered_values(fields, market_id):
+            continue
+        market_fields = dict(fields)
+        market_fields["market_id"] = [market_id]
+        try:
+            rows.extend(rows_from_form_fields(market_fields, output_path))
+        except Exception as exc:
+            errors.append(f"{market_id}: {exc}")
+    if errors:
+        raise ValueError("; ".join(errors))
+    if not rows:
+        raise ValueError("Enter at least one odds value in any market card.")
     validate_rows(rows)
     return rows
 
@@ -587,6 +719,32 @@ def _rows_table_html(rows: Sequence[ManualOddsRow]) -> str:
     )
 
 
+def preserved_form_values(fields: Mapping[str, object], next_market_id: Optional[str] = None) -> dict:
+    """Keep match-level fields after adding a market, while clearing odds/line fields."""
+    keep = {
+        "home",
+        "away",
+        "kickoff_local",
+        "fixture_id",
+        "app",
+        "capture_time",
+        "notes",
+    }
+    values = {key: _field_text(fields, key) for key in keep if _field_text(fields, key)}
+    market_id = next_market_id or _field_text(fields, "market_id")
+    if market_id in MARKET_PRESETS:
+        values["market_id"] = market_id
+    return values
+
+
+def next_market_after(market_id: str) -> str:
+    """Return a practical next market after adding the current one."""
+    market_ids = list(MARKET_PRESETS)
+    if market_id not in market_ids:
+        return "match_result"
+    return market_ids[(market_ids.index(market_id) + 1) % len(market_ids)]
+
+
 def build_web_form_html(
     start: date,
     end: date,
@@ -595,6 +753,7 @@ def build_web_form_html(
     append: bool = False,
     message: str = "",
     errors: Sequence[str] = (),
+    form_values: Optional[Mapping[str, str]] = None,
 ) -> str:
     """Build the complete manual odds web form HTML.
 
@@ -602,25 +761,61 @@ def build_web_form_html(
     JS framework and no remote assets. That keeps the local data-entry tool
     usable on locked-down machines and easy to regression-test as plain text.
     """
+    values = dict(form_values or {})
+    selected_market = values.get("market_id", "match_result")
+    if selected_market not in MARKET_PRESETS:
+        selected_market = "match_result"
+
+    def field_value(name: str, default: str = "") -> str:
+        return html.escape(values.get(name, default))
+
     market_cards = []
     for market_id, preset in MARKET_PRESETS.items():
-        inputs = []
-        for selection_id, label in preset["selections"]:
-            inputs.append(
-                "<label>"
-                f"<span>{html.escape(label)} odds</span>"
-                f"<input name='odds_{html.escape(selection_id)}' inputmode='decimal' "
-                "placeholder='e.g. 1.91'>"
+        if preset["line_required"]:
+            line_inputs = [
+                "<label class='line-field'>"
+                f"<span>{html.escape(preset['market_original'])} line</span>"
+                f"<input name='line_{html.escape(market_id)}' inputmode='decimal' "
+                "placeholder='e.g. 1.5, 2.5, -0.5, +1.0'>"
                 "</label>"
+            ]
+            for selection_id, label in preset["selections"]:
+                line_inputs.append(
+                    "<label>"
+                    f"<span>{html.escape(label)} odds</span>"
+                    f"<input name='odds_{html.escape(market_id)}_{html.escape(selection_id)}' inputmode='decimal' "
+                    "placeholder='e.g. 1.91'>"
+                    "</label>"
+                )
+            line_group_html = (
+                "<div class='line-groups' data-line-groups>"
+                "<div class='line-group' data-line-group>"
+                "<div class='line-group-header'><strong>Line 1</strong>"
+                "<button type='button' class='remove-line' data-remove-line aria-label='Remove this line'>−</button>"
+                "</div>"
+                "<div class='grid'>"
+                + "\n".join(line_inputs)
+                + "</div></div></div>"
+                "<button type='button' class='secondary add-line' data-add-line>+ Add another line</button>"
             )
+            card_body = line_group_html
+        else:
+            inputs = []
+            for selection_id, label in preset["selections"]:
+                inputs.append(
+                    "<label>"
+                    f"<span>{html.escape(label)} odds</span>"
+                    f"<input name='odds_{html.escape(market_id)}_{html.escape(selection_id)}' inputmode='decimal' "
+                    "placeholder='e.g. 1.91'>"
+                    "</label>"
+                )
+            card_body = "<div class='grid'>" + "\n".join(inputs) + "</div>"
         requires_line = "Line required" if preset["line_required"] else "No line required"
         market_cards.append(
             f"<details class='market-card' data-market-card='{html.escape(market_id)}'>"
             f"<summary>{html.escape(market_id)} — {html.escape(preset['market_original'])} "
             f"<small>{requires_line}</small></summary>"
-            "<div class='grid'>"
-            + "\n".join(inputs)
-            + "</div></details>"
+            f"{card_body}</details>"
         )
     alerts = ""
     if message:
@@ -628,8 +823,10 @@ def build_web_form_html(
     for error in errors:
         alerts += f"<div class='alert error'>{html.escape(error)}</div>"
     checked = " checked" if append else ""
-    market_options = _html_attrs(MARKET_PRESETS.keys(), "match_result")
+    market_options = _html_attrs(MARKET_PRESETS.keys(), selected_market)
     app_options = _html_attrs(APPS, APPS[0])
+    if values.get("app") in APPS:
+        app_options = _html_attrs(APPS, values["app"])
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -654,7 +851,12 @@ def build_web_form_html(
     .ok {{ background: #064e3b; color: #d1fae5; }}
     .error {{ background: #7f1d1d; color: #fee2e2; }}
     details {{ border: 1px solid #334155; border-radius: 12px; padding: 10px; margin: 8px 0; }}
+    details.active-market {{ border-color: #38bdf8; box-shadow: 0 0 0 1px rgba(56,189,248,.35); }}
     summary {{ cursor: pointer; color: #e0f2fe; font-weight: 700; }}
+    .line-group {{ border: 1px dashed #475569; border-radius: 12px; padding: 10px; margin: 10px 0; background: #020617; }}
+    .line-group-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; color: #bfdbfe; }}
+    .remove-line {{ background: #f97316; color: #431407; padding: 4px 10px; }}
+    .add-line {{ margin-top: 8px; }}
     table {{ width: 100%; border-collapse: collapse; font-size: .88rem; }}
     th, td {{ border-bottom: 1px solid #334155; padding: 8px; text-align: left; vertical-align: top; }}
     .hidden {{ display: none; }}
@@ -665,7 +867,7 @@ def build_web_form_html(
 <main>
   <section class="card">
     <h1>WCdecider manual odds input</h1>
-    <p class="muted">Local-only FastAPI form. Add one market at a time, then Save / Done to write the raw CSV and provenance JSON used by the model pipeline.</p>
+    <p class="muted">Local-only FastAPI form. Fill one or many market cards for a match, add the entered rows to the buffer below, then Save / Done to write the raw CSV and provenance JSON used by the model pipeline.</p>
     {alerts}
   </section>
 
@@ -675,25 +877,28 @@ def build_web_form_html(
       <label><span>Start</span><input name="start" value="{start.isoformat()}"></label>
       <label><span>End</span><input name="end" value="{end.isoformat()}"></label>
       <label><span>Output CSV</span><input name="output_path" value="{html.escape(str(output_path))}" readonly></label>
-      <label><span>Capture time</span><input name="capture_time" value="{html.escape(normalize_capture_time(''))}"></label>
+      <label><span>Capture time</span><input name="capture_time" value="{field_value('capture_time', normalize_capture_time(''))}"></label>
     </div>
 
     <h2>Fixture</h2>
     <div class="grid">
-      <label><span>Home/Team 1</span><input name="home" required></label>
-      <label><span>Away/Team 2</span><input name="away" required></label>
-      <label><span>Kickoff Lima ISO</span><input name="kickoff_local" value="{start.isoformat()}T15:00:00-05:00" required></label>
-      <label><span>Fixture ID optional</span><input name="fixture_id" placeholder="auto-generated if blank"></label>
+      <label><span>Home/Team 1</span><input name="home" value="{field_value('home')}" required></label>
+      <label><span>Away/Team 2</span><input name="away" value="{field_value('away')}" required></label>
+      <label><span>Kickoff Lima ISO</span><input name="kickoff_local" value="{field_value('kickoff_local', start.isoformat() + 'T15:00:00-05:00')}" required></label>
+      <label><span>Fixture ID optional</span><input name="fixture_id" value="{field_value('fixture_id')}" placeholder="auto-generated if blank"></label>
       <label><span>App</span><select name="app">{app_options}</select></label>
       <label><span>Market to add</span><select name="market_id">{market_options}</select></label>
-      <label><span>Line, if market needs it</span><input name="line" placeholder="2.5, -0.5, +0.5"></label>
-      <label><span>Notes</span><input name="notes" value="manual user input"></label>
+      <label><span>Notes</span><input name="notes" value="{field_value('notes', 'manual user input')}"></label>
     </div>
 
     <h2>Market odds</h2>
-    <p class="muted">Fill only the odds boxes for the selected market. Complete 1X2 needs home, draw, and away.</p>
+    <p class="muted">Use the market selector to focus one card, or fill several cards and click Add all filled market rows. For Total Goals and Asian Handicap, use + Add another line to enter several lines such as O/U 1.5, 2.5, 3.5 or handicap -0.5, +0.5.</p>
     {''.join(market_cards)}
-    <div class="actions"><button type="submit">Add market rows</button></div>
+    <div class="actions">
+      <button type="submit">Add selected market rows</button>
+      <button class="secondary" formaction="/add-all" formmethod="post">Add all filled market rows</button>
+      <button class="secondary" formaction="/reset-form" formmethod="post">Start next match / reset inputs</button>
+    </div>
   </form>
 
   <section class="card">
@@ -716,11 +921,40 @@ def build_web_form_html(
     const selected = document.querySelector("select[name='market_id']").value;
     document.querySelectorAll("[data-market-card]").forEach((card) => {{
       const active = card.dataset.marketCard === selected;
-      card.classList.toggle("hidden", !active);
+      card.classList.toggle("active-market", active);
       card.open = active;
-      card.querySelectorAll("input").forEach((input) => input.disabled = !active);
     }});
   }}
+  function renumberLineGroups(card) {{
+    card.querySelectorAll("[data-line-group]").forEach((group, index) => {{
+      const title = group.querySelector(".line-group-header strong");
+      if (title) title.textContent = `Line ${{index + 1}}`;
+      const remove = group.querySelector("[data-remove-line]");
+      if (remove) remove.disabled = card.querySelectorAll("[data-line-group]").length <= 1;
+    }});
+  }}
+  document.querySelectorAll("[data-market-card]").forEach((card) => {{
+    const addButton = card.querySelector("[data-add-line]");
+    if (addButton) {{
+      addButton.addEventListener("click", () => {{
+        const groups = card.querySelector("[data-line-groups]");
+        const first = groups.querySelector("[data-line-group]");
+        const clone = first.cloneNode(true);
+        clone.querySelectorAll("input").forEach((input) => input.value = "");
+        groups.appendChild(clone);
+        renumberLineGroups(card);
+      }});
+    }}
+    card.addEventListener("click", (event) => {{
+      const button = event.target.closest("[data-remove-line]");
+      if (!button) return;
+      const groups = card.querySelectorAll("[data-line-group]");
+      if (groups.length <= 1) return;
+      button.closest("[data-line-group]").remove();
+      renumberLineGroups(card);
+    }});
+    renumberLineGroups(card);
+  }});
   document.querySelector("select[name='market_id']").addEventListener("change", syncMarketCards);
   syncMarketCards();
 </script>
@@ -746,6 +980,7 @@ def create_fastapi_app(start: date, end: date, output_path: Path, append: bool =
     app = FastAPI(title="WCdecider manual odds input", version="1.0")
     app.state.rows = []
     app.state.append = append
+    app.state.form_values = {}
 
     def page(message: str = "", errors: Sequence[str] = ()) -> HTMLResponse:
         return HTMLResponse(
@@ -757,6 +992,7 @@ def create_fastapi_app(start: date, end: date, output_path: Path, append: bool =
                 append=app.state.append,
                 message=message,
                 errors=errors,
+                form_values=app.state.form_values,
             )
         )
 
@@ -771,12 +1007,36 @@ def create_fastapi_app(start: date, end: date, output_path: Path, append: bool =
     @app.post("/add", response_class=HTMLResponse)
     async def add_rows(request: Request) -> HTMLResponse:
         body = (await request.body()).decode("utf-8")
-        fields = {key: values[-1] for key, values in parse_qs(body, keep_blank_values=True).items()}
+        fields = parse_qs(body, keep_blank_values=True)
         try:
             added = rows_from_form_fields(fields, output_path)
             app.state.rows.extend(added)
+            app.state.form_values = preserved_form_values(
+                fields,
+                next_market_id=next_market_after(_field_text(fields, "market_id")),
+            )
             return page(message=f"Added {len(added)} row(s). Unsaved total: {len(app.state.rows)}.")
         except Exception as exc:
+            app.state.form_values = preserved_form_values(fields)
+            return page(errors=[str(exc)])
+
+    @app.post("/add-all", response_class=HTMLResponse)
+    async def add_all_rows(request: Request) -> HTMLResponse:
+        body = (await request.body()).decode("utf-8")
+        fields = parse_qs(body, keep_blank_values=True)
+        try:
+            added = rows_from_all_filled_markets(fields, output_path)
+            app.state.rows.extend(added)
+            app.state.form_values = preserved_form_values(fields)
+            markets = ", ".join(sorted({row.market_id for row in added}))
+            return page(
+                message=(
+                    f"Added {len(added)} row(s) from filled market cards "
+                    f"({markets}). Unsaved total: {len(app.state.rows)}."
+                )
+            )
+        except Exception as exc:
+            app.state.form_values = preserved_form_values(fields)
             return page(errors=[str(exc)])
 
     @app.post("/save", response_class=HTMLResponse)
@@ -793,6 +1053,9 @@ def create_fastapi_app(start: date, end: date, output_path: Path, append: bool =
             message = f"Saved {len(app.state.rows)} row(s) to {csv_path}; provenance: {provenance_path}."
             if warnings:
                 message += " Warnings: " + " ".join(warnings)
+            app.state.rows.clear()
+            app.state.form_values = {}
+            message += " Cleared the input buffer for the next match."
             return page(message=message)
         except Exception as exc:
             return page(errors=[str(exc)])
@@ -802,6 +1065,11 @@ def create_fastapi_app(start: date, end: date, output_path: Path, append: bool =
         count = len(app.state.rows)
         app.state.rows.clear()
         return page(message=f"Cleared {count} unsaved row(s).")
+
+    @app.post("/reset-form", response_class=HTMLResponse)
+    async def reset_form() -> HTMLResponse:
+        app.state.form_values = {}
+        return page(message="Reset the upper input section. Existing unsaved rows are still below.")
 
     @app.get("/download")
     async def download():

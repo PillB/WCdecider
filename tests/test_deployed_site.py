@@ -1,4 +1,4 @@
-"""Live GitHub Pages validation for the exact June 22–27 artifact."""
+"""Live GitHub Pages validation for the exact active-batch artifact."""
 
 from __future__ import annotations
 
@@ -25,8 +25,8 @@ def test_live_site_matches_expected_commit_and_json():
         page.on("requestfailed", lambda request: failures.append(request.url))
         page.goto(url, wait_until="networkidle")
         page.wait_for_selector("#cards article")
-        assert page.locator("#cards article").count() == 32
-        assert len(set(page.locator("#cards article").evaluate_all("els => els.map(e => e.dataset.fixtureId)"))) == 32
+        assert page.locator("#cards article").count() == local["batch"]["fixture_count"]
+        assert len(set(page.locator("#cards article").evaluate_all("els => els.map(e => e.dataset.fixtureId)"))) == local["batch"]["fixture_count"]
         assert failures == []
         if expected_sha:
             assert page.locator('meta[name="wcdecider-build"]').get_attribute("content") == expected_sha

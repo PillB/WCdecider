@@ -1,6 +1,6 @@
 # WCdecider
 
-Reproducible FIFA World Cup 2026 probability and betting-market analysis. The current production batch covers **June 22–27, 2026**: 32 fixtures and 216 Betano/Betsson screenshots.
+Reproducible FIFA World Cup 2026 probability and betting-market analysis. The current active batch covers **June 27–29, 2026**: 10 fixtures with expert-entered Betano/Betsson odds in `manual_odds_20260627_20260629.csv`.
 
 The code-linked production/research walkthrough and validation design are in
 [`MODEL_PIPELINE_EXPLAINED.md`](MODEL_PIPELINE_EXPLAINED.md).
@@ -43,11 +43,12 @@ Open http://127.0.0.1:8765/.
 
 The pipeline requires:
 
-- `wc_2026_matches_june_22-27.csv`
-- `wc_2026_results_through_june24.csv`
+- `wc_2026_matches_june_27-29.csv`
+- `wc_2026_results_through_june26.csv`
 - `wc_team_elo_baseline_june11.csv`
 - `wc_backtest_historical_dataset.csv`
-- `odds_june22_23.csv`, `odds_june24.csv`, `odds_june25_26.csv`, `odds_june27.csv`
+- `manual_odds_20260627_20260629.csv` plus `manual_odds_20260627_20260629.provenance.json`
+- Archived screenshot odds files remain available for provenance and fallback checks: `odds_june22_23.csv`, `odds_june24.csv`, `odds_june25_26.csv`, `odds_june27.csv`
 - `research_june22_23.csv`, `research_june24_25.csv`, `research_june26_27.csv`
 - The referenced files under `Screenshots/`
 

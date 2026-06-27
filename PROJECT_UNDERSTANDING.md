@@ -17,7 +17,7 @@ and deployment.
 
 The project is being consolidated around these canonical artifacts:
 
-1. `wc_2026_matches_june_22-27.csv` — fixture identity and timezone-aware kickoff data.
+1. `wc_2026_matches_june_27-29.csv` — active fixture identity and timezone-aware kickoff data.
 2. `Screenshots/*.PNG` — immutable Betano/Betsson source evidence.
 3. `wc_odds_june_22-27.csv` — normalized odds transcribed from screenshots; no live odds belong in Python.
 4. Dataset A — historical World Cup/results/odds/features used for chronological training and backtesting.

@@ -1,0 +1,37 @@
+{
+  "append_mode": false,
+  "created_at": "2026-06-27T14:34:17.919512+00:00",
+  "fields": [
+    "fixture_id",
+    "fixture_display",
+    "kickoff_local",
+    "app",
+    "market_original",
+    "market_id",
+    "selection_original",
+    "selection_id",
+    "line",
+    "odds",
+    "promo",
+    "source_image",
+    "capture_time",
+    "notes"
+  ],
+  "notes": [
+    "Rows are manually entered user observations, not screenshot OCR.",
+    "source_image preserves the user's evidence label, which may be a screenshot filename or a manual session token.",
+    "Pipeline ingestion hashes this CSV/provenance pair as source evidence for every manual row."
+  ],
+  "output_csv": "manual_odds_20260627_20260629.csv",
+  "required_minimum": "complete 1X2 rows per fixture/app: home, draw, away",
+  "row_count_written": 497,
+  "schema": "manual_wcdecider_odds_v1",
+  "supported_markets": [
+    "asian_handicap",
+    "both_teams_to_score",
+    "double_chance",
+    "match_result",
+    "total_goals"
+  ],
+  "warnings": []
+}

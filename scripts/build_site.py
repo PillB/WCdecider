@@ -12,6 +12,8 @@ import os
 import shutil
 import subprocess
 import csv
+import hashlib
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -29,7 +31,7 @@ def build() -> Path:
         ROOT / "wc_june22_27_model_metrics.json",
         ROOT / "wc_june22_27_model_dataset.csv",
         ROOT / "wc_odds_june_22-27.csv",
-        ROOT / "wc_2026_matches_june_22-27.csv",
+        ROOT / "wc_2026_matches_june_27-29.csv",
         ROOT / "wc_june22_27_provenance.txt",
         ROOT / "wc_screenshot_manifest_june22_27.csv",
         ROOT / "wc_research_june22_27.csv",
@@ -49,6 +51,22 @@ def build() -> Path:
         audit_rows = list(csv.DictReader(handle))
     if not audit_rows or any(row.get("final_status") != "PASS" for row in audit_rows):
         raise ValueError("Datapoint audit is empty or contains non-PASS rows")
+    summary_path = ROOT / "wc_june22_27_datapoint_audit_summary.json"
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    expected_hashes = {
+        "predictions_sha256": ROOT / "wc_june22_27_predictions.json",
+        "metrics_sha256": ROOT / "wc_june22_27_model_metrics.json",
+        "artifact_sha256": audit_path,
+    }
+    for key, path in expected_hashes.items():
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if summary.get(key) != actual:
+            raise ValueError(
+                f"Datapoint audit summary hash mismatch for {key}: "
+                f"{summary.get(key)} != {actual}"
+            )
+    if summary.get("blocked_rows") != 0 or summary.get("final_status") != "PASS":
+        raise ValueError("Datapoint audit summary is not PASS")
 
     # Destructive replacement happens only after every release gate passes, so
     # a blocked build cannot erase the last known-good local site artifact.

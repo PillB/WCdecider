@@ -1,0 +1,498 @@
+fixture_id,fixture_display,kickoff_local,app,market_original,market_id,selection_original,selection_id,line,odds,promo,source_image,capture_time,notes
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Match Result,match_result,Panama,home,,22.0,False,IMG_7775.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,7.5,False,IMG_7775.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Match Result,match_result,England,away,,1.16,False,IMG_7775.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,1.42,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,2.92,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,2.18,False,IMG_7777.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,1.65,False,IMG_7777.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Double Chance,double_chance,Panama or Draw,home_or_draw,,5.3,False,IMG_7777.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Double Chance,double_chance,Panama or England,home_or_away,,1.08,False,IMG_7777.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Panama,home,1.75,2.43,False,IMG_7778.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,England,away,-1.75,1.56,False,IMG_7778.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Panama,home,2.0,2.13,False,IMG_7778.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,England,away,-2.0,1.71,False,IMG_7778.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Panama,home,2.25,1.86,False,IMG_7778.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,England,away,-2.25,1.95,False,IMG_7778.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Panama,home,2.5,1.68,False,IMG_7778.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,England,away,-2.5,2.18,False,IMG_7778.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Panama,home,2.75,1.52,False,IMG_7778.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,England,away,-2.75,2.52,False,IMG_7778.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Double Chance,double_chance,Panama or Draw,home_or_draw,,5.65,True,IMG_7775.jpg,2026-06-27 10:10 -05:00,SUPER BOOST - promo
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Match Result,match_result,Colombia,home,,3.65,False,IMG_7770.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Match Result,match_result,Draw,draw,,3.85,False,IMG_7770.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Match Result,match_result,Portugal,away,,1.98,False,IMG_7770.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,1.78,False,IMG_7770.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,2.05,False,IMG_7770.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,1.68,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,2.18,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Double Chance,double_chance,Colombia or Portugal,home_or_away,,1.26,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Double Chance,double_chance,Colombia or Draw,home_or_draw,,1.9,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Double Chance,double_chance,Draw or Portugal,draw_or_away,,1.29,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Colombia,home,0.25,2.17,False,IMG_7772.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Portugal,away,-0.25,1.69,False,IMG_7772.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Colombia,home,0.5,1.86,False,IMG_7772.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Portugal,away,-0.5,1.94,False,IMG_7772.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Colombia,home,0.75,1.65,False,IMG_7772.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Portugal,away,-0.75,2.24,False,IMG_7772.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Colombia,home,1.0,1.43,False,IMG_7772.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Portugal,away,-1.0,2.82,False,IMG_7772.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Match Result,match_result,Jordan,home,,25.0,False,IMG_7779.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,9.2,False,IMG_7779.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Match Result,match_result,Argentina,away,,1.13,False,IMG_7779.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,1.5,False,IMG_7779.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,2.62,False,IMG_7779.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,2.55,False,IMG_7770.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,1.5,False,IMG_7770.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Double Chance,double_chance,Jordan or Argentina,home_or_away,,1.06,False,IMG_7770.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Double Chance,double_chance,Jordan or Draw,home_or_draw,,6.2,False,IMG_7770.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Jordan,home,1.75,2.47,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Argentina,away,-1.75,1.54,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Jordan,home,2.0,2.14,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Argentina,away,-2.0,1.71,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Jordan,home,2.25,1.84,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Argentina,away,-2.25,1.97,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Jordan,home,2.5,1.65,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Argentina,away,-2.5,2.23,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Jordan,home,2.75,1.49,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Argentina,away,-2.75,2.61,False,IMG_7771.jpg,2026-06-27 10:10 -05:00,main market
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.02,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,22.0,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.12,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,6.3,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,2.05,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.78,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,3.3,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.34,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,5.5,6.1,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,5.5,1.13,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,6.5,11.0,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,6.5,1.05,False,IMG_7776.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.04,False,IMG_7780.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,14.0,False,IMG_7780.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.26,False,IMG_7780.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,3.95,False,IMG_7780.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,3.05,False,IMG_7780.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.39,False,IMG_7780.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,5.95,False,IMG_7780.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.14,False,IMG_7780.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,5.5,12.0,False,IMG_7780.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,5.5,1.05,False,IMG_7780.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.01,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,25.0,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.14,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,5.9,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,2.32,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.62,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,4.0,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.25,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,5.5,7.9,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,5.5,1.09,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,6.5,17.0,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,6.5,1.02,False,IMG_7789.jpg,2026-06-27 10:10 -05:00,from Number of Goals section
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Match Result,match_result,Algeria,home,,3.7,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,2.15,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Match Result,match_result,Austria,away,,3.35,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,3.1,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,1.38,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.27,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,3.9,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.68,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,2.2,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,5.9,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.14,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,13.0,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.04,False,IMG_7793.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,2.25,False,IMG_7794.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,1.62,False,IMG_7794.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Double Chance,double_chance,Algeria or Austria,home_or_away,,1.37,False,IMG_7794.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Double Chance,double_chance,Algeria or Draw,home_or_draw,,1.67,False,IMG_7794.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Austria,draw_or_away,,1.33,False,IMG_7794.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Algeria,home,-0.5,3.49,False,IMG_7795.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Austria,away,0.5,1.31,False,IMG_7795.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Algeria,home,-0.25,2.74,False,IMG_7795.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Austria,away,0.25,1.45,False,IMG_7795.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Algeria,home,0.25,1.53,False,IMG_7795.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Austria,away,-0.25,2.5,False,IMG_7795.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Algeria,home,0.5,1.35,False,IMG_7795.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Austria,away,-0.5,3.22,False,IMG_7795.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Match Result,match_result,South Africa,home,,5.25,False,IMG_7797.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,3.6,False,IMG_7797.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Match Result,match_result,Canada,away,,1.75,False,IMG_7797.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,2.3,False,IMG_7797.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,1.65,False,IMG_7797.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.08,False,IMG_7798.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,8.3,False,IMG_7798.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.42,False,IMG_7798.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,2.9,False,IMG_7798.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,4.35,False,IMG_7798.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.22,False,IMG_7798.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,9.3,False,IMG_7798.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.06,False,IMG_7798.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,5.5,20.0,False,IMG_7798.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,5.5,1.01,False,IMG_7798.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,2.12,False,IMG_7799.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,1.7,False,IMG_7799.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Double Chance,double_chance,South Africa or Canada,home_or_away,,2.15,False,IMG_7799.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Double Chance,double_chance,South Africa or Draw,home_or_draw,,1.29,False,IMG_7799.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Canada,draw_or_away,,1.17,False,IMG_7799.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Asian Handicap,asian_handicap,South Africa,home,0.25,2.59,False,IMG_7800.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Canada,away,-0.25,1.5,False,IMG_7800.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Asian Handicap,asian_handicap,South Africa,home,0.5,2.1,False,IMG_7800.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Canada,away,-0.5,1.73,False,IMG_7800.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Asian Handicap,asian_handicap,South Africa,home,0.75,1.85,False,IMG_7800.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Canada,away,-0.75,1.96,False,IMG_7800.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Asian Handicap,asian_handicap,South Africa,home,1.0,1.56,False,IMG_7800.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Canada,away,-1.0,2.42,False,IMG_7800.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Asian Handicap,asian_handicap,South Africa,home,1.25,1.43,False,IMG_7800.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Canada,away,-1.25,2.82,False,IMG_7800.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Match Result,match_result,Brazil,home,,1.72,False,IMG_7802.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,3.75,False,IMG_7802.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Match Result,match_result,Japan,away,,5.25,False,IMG_7802.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,2.05,False,IMG_7802.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,1.78,False,IMG_7802.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.06,False,IMG_7803.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,9.7,False,IMG_7803.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.35,False,IMG_7803.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,3.25,False,IMG_7803.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,3.7,False,IMG_7803.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.28,False,IMG_7803.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,7.5,False,IMG_7803.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.09,False,IMG_7803.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,5.5,17.0,False,IMG_7803.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,5.5,1.02,False,IMG_7803.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,1.95,False,IMG_7804.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,1.82,False,IMG_7804.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Double Chance,double_chance,Brazil or Draw,home_or_draw,,1.17,False,IMG_7804.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Double Chance,double_chance,Brazil or Japan,home_or_away,,1.27,False,IMG_7804.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Japan,draw_or_away,,2.21,False,IMG_7804.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Brazil,home,-1.25,2.67,False,IMG_7805.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Japan,away,1.25,1.47,False,IMG_7805.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Brazil,home,-1.0,2.28,False,IMG_7805.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Japan,away,1.0,1.63,False,IMG_7805.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Brazil,home,-0.75,1.9,False,IMG_7805.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Japan,away,0.75,1.9,False,IMG_7805.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Brazil,home,-0.5,1.7,False,IMG_7805.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Japan,away,0.5,2.16,False,IMG_7805.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Brazil,home,-0.25,1.47,False,IMG_7805.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Japan,away,0.25,2.67,False,IMG_7805.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Match Result,match_result,Germany,home,,1.37,False,IMG_7806.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Match Result,match_result,Draw,draw,,4.95,False,IMG_7806.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Match Result,match_result,Paraguay,away,,9.5,False,IMG_7806.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,1.75,False,IMG_7806.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,2.1,False,IMG_7806.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.04,False,IMG_7807.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,14.0,False,IMG_7807.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.24,False,IMG_7807.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,4.1,False,IMG_7807.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,2.92,False,IMG_7807.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.42,False,IMG_7807.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,5.55,False,IMG_7807.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.15,False,IMG_7807.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Over,over,5.5,11.0,False,IMG_7807.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Total Goals,total_goals,Under,under,5.5,1.05,False,IMG_7807.jpg,2026-06-27 10:15 -05:00,from Number of Goals
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,2.08,False,IMG_7808.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,1.72,False,IMG_7808.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Double Chance,double_chance,Germany or Paraguay,home_or_away,,1.06,False,IMG_7808.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Double Chance,double_chance,Germany or Draw,home_or_draw,,1.17,False,IMG_7808.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Double Chance,double_chance,Draw or Paraguay,draw_or_away,,3.2,False,IMG_7808.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Germany,home,-1.75,2.37,False,IMG_7809.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Paraguay,away,1.75,1.58,False,IMG_7809.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Germany,home,-1.5,2.04,False,IMG_7809.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Paraguay,away,1.5,1.78,False,IMG_7809.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Germany,home,-1.25,1.79,False,IMG_7809.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Paraguay,away,1.25,2.03,False,IMG_7809.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Germany,home,-1.0,1.54,False,IMG_7809.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Paraguay,away,1.0,2.47,False,IMG_7809.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Germany,home,-0.75,1.42,False,IMG_7809.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betsson,Asian Handicap,asian_handicap,Paraguay,away,0.75,2.85,False,IMG_7809.jpg,2026-06-27 10:15 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Match Result,match_result,Netherlands,home,,2.15,False,IMG_7810.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,3.3,False,IMG_7810.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Match Result,match_result,Morocco,away,,3.75,False,IMG_7810.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,2.22,False,IMG_7810.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,1.68,False,IMG_7810.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.08,False,IMG_7811.jpg,2026-06-27 10:16 -05:00,from Number of Goals
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,8.2,False,IMG_7811.jpg,2026-06-27 10:16 -05:00,from Number of Goals
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.41,False,IMG_7811.jpg,2026-06-27 10:16 -05:00,from Number of Goals
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,2.98,False,IMG_7811.jpg,2026-06-27 10:16 -05:00,from Number of Goals
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,4.1,False,IMG_7811.jpg,2026-06-27 10:16 -05:00,from Number of Goals
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.24,False,IMG_7811.jpg,2026-06-27 10:16 -05:00,from Number of Goals
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,8.6,False,IMG_7811.jpg,2026-06-27 10:16 -05:00,from Number of Goals
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.07,False,IMG_7811.jpg,2026-06-27 10:16 -05:00,from Number of Goals
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,5.5,20.0,False,IMG_7811.jpg,2026-06-27 10:16 -05:00,from Number of Goals
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,5.5,1.01,False,IMG_7811.jpg,2026-06-27 10:16 -05:00,from Number of Goals
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,1.92,False,IMG_7812.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,1.85,False,IMG_7812.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Double Chance,double_chance,Netherlands or Morocco,home_or_away,,1.29,False,IMG_7812.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Double Chance,double_chance,Netherlands or Draw,home_or_draw,,1.34,False,IMG_7812.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Morocco,draw_or_away,,1.75,False,IMG_7812.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Netherlands,home,-0.75,2.5,False,IMG_7813.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Morocco,away,0.75,1.53,False,IMG_7813.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Netherlands,home,-0.5,2.13,False,IMG_7813.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Morocco,away,0.5,1.72,False,IMG_7813.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Netherlands,home,-0.25,1.81,False,IMG_7813.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Morocco,away,0.25,2.0,False,IMG_7813.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Netherlands,home,0.25,1.38,False,IMG_7813.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Morocco,away,-0.25,3.06,False,IMG_7813.jpg,2026-06-27 10:16 -05:00,main market
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,Croatia,home,,1.98,True,IMG_7817.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.1,True,IMG_7817.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,Ghana,away,,5.0,True,IMG_7817.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,Croatia,home,,1.95,False,IMG_7817.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.0,False,IMG_7817.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,Ghana,away,,4.85,False,IMG_7817.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Double Chance,double_chance,Croatia or Draw,home_or_draw,,1.2,False,IMG_7817.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Double Chance,double_chance,Croatia or Ghana,home_or_away,,1.36,False,IMG_7817.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Double Chance,double_chance,Ghana or Draw,draw_or_away,,1.88,False,IMG_7817.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,2.42,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,1.57,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.47,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,2.67,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,4.45,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.21,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.12,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,6.4,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,8.75,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.07,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,14.0,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.02,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,2.05,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.72,False,IMG_7818.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Croatia,home,-0.5,1.95,False,IMG_7819.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Ghana,away,0.5,1.9,False,IMG_7819.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Croatia,home,-1.0,2.95,False,IMG_7819.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Ghana,away,1.0,1.42,False,IMG_7819.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Croatia,home,0.0,1.36,False,IMG_7819.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Ghana,away,0.0,3.3,False,IMG_7819.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Croatia,home,-1.5,3.9,False,IMG_7819.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-cro-gha,Croatia vs Ghana,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Ghana,away,1.5,1.27,False,IMG_7819.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,Panama,home,,17.5,True,IMG_7820.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,8.0,True,IMG_7820.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,England,away,,1.18,True,IMG_7820.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,Panama,home,,15.5,False,IMG_7820.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,7.4,False,IMG_7820.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Match Result,match_result,England,away,,1.18,False,IMG_7820.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Double Chance,double_chance,Panama or Draw,home_or_draw,,5.6,False,IMG_7820.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Double Chance,double_chance,Panama or England,home_or_away,,1.08,False,IMG_7820.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Double Chance,double_chance,England or Draw,draw_or_away,,1.04,False,IMG_7820.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,1.45,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,2.77,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,2.1,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.75,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,3.4,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.32,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.02,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,13.5,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.14,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,5.7,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,5.9,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.13,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,6.5,10.0,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,6.5,1.05,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,7.5,15.0,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,7.5,1.02,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,2.27,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.6,False,IMG_7821.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Panama,home,2.0,2.18,False,IMG_7822.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,England,away,-2.0,1.72,False,IMG_7822.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Panama,home,1.5,2.75,False,IMG_7822.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,England,away,-1.5,1.47,False,IMG_7822.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Panama,home,2.5,1.72,False,IMG_7822.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,England,away,-2.5,2.18,False,IMG_7822.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Panama,home,3.0,1.4,False,IMG_7822.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-pan-eng,Panama vs England,2026-06-27T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,England,away,-3.0,3.05,False,IMG_7822.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Colombia,home,,3.55,True,IMG_7823.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.9,True,IMG_7823.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Portugal,away,,2.05,True,IMG_7823.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Colombia,home,,3.45,False,IMG_7823.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.8,False,IMG_7823.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Portugal,away,,2.02,False,IMG_7823.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Double Chance,double_chance,Colombia or Draw,home_or_draw,,1.83,False,IMG_7823.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Double Chance,double_chance,Colombia or Portugal,home_or_away,,1.26,False,IMG_7823.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Double Chance,double_chance,Portugal or Draw,draw_or_away,,1.33,False,IMG_7823.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,1.8,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,2.02,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.27,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,3.8,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,2.95,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.4,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.05,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,10.0,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,5.4,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.16,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,9.75,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.06,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,6.5,15.0,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,6.5,1.02,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,1.7,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-col-por,Colombia vs Portugal,2026-06-27T18:30:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,2.07,False,IMG_7824.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Congo Democratic Republic,home,,1.8,True,IMG_7825.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.8,True,IMG_7825.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Uzbekistan,away,,4.85,True,IMG_7825.jpg,2026-06-27 10:28 -05:00,SuperCuotas promo
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Congo Democratic Republic,home,,1.78,False,IMG_7825.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.65,False,IMG_7825.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Match Result,match_result,Uzbekistan,away,,4.65,False,IMG_7825.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Double Chance,double_chance,Congo Democratic Republic or Draw,home_or_draw,,1.21,False,IMG_7825.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Double Chance,double_chance,Congo Democratic Republic or Uzbekistan,home_or_away,,1.26,False,IMG_7825.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Double Chance,double_chance,Uzbekistan or Draw,draw_or_away,,2.12,False,IMG_7825.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,2.18,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,1.7,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.4,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,3.0,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,3.9,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.26,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.08,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,7.9,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,7.4,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.09,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,13.0,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.03,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,2.07,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-con-uzb,Congo Democratic Republic vs Uzbekistan,2026-06-27T18:30:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.7,False,IMG_7826.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Match Result,match_result,Algeria,home,,3.8,False,IMG_7828.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,2.22,False,IMG_7828.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Match Result,match_result,Austria,away,,3.2,False,IMG_7828.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Double Chance,double_chance,Algeria or Draw,home_or_draw,,1.44,False,IMG_7828.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Double Chance,double_chance,Algeria or Austria,home_or_away,,1.5,False,IMG_7828.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Double Chance,double_chance,Austria or Draw,draw_or_away,,1.35,False,IMG_7828.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,3.15,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,1.36,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.72,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,2.15,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.19,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,4.7,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,6.2,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.13,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,11.75,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.04,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,2.2,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-alg-aut,Algeria vs Austria,2026-06-27T21:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.62,False,IMG_7829.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Match Result,match_result,Jordan,home,,21.0,False,IMG_7831.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,8.25,False,IMG_7831.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Match Result,match_result,Argentina,away,,1.17,False,IMG_7831.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Double Chance,double_chance,Jordan or Draw,home_or_draw,,6.1,False,IMG_7831.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Double Chance,double_chance,Jordan or Argentina,home_or_away,,1.08,False,IMG_7831.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Double Chance,double_chance,Argentina or Draw,draw_or_away,,1.02,False,IMG_7831.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,1.52,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,2.55,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,2.27,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.65,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,3.8,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.27,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.03,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,12.5,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.17,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,5.1,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,6.7,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.11,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,6.5,11.25,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,6.5,1.04,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Over,over,7.5,16.0,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Total Goals,total_goals,Under,under,7.5,1.01,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,2.62,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-27-jor-arg,Jordan vs Argentina,2026-06-27T21:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.45,False,IMG_7833.jpg,2026-06-27 10:28 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Match Result,match_result,South Africa,home,,5.2,True,IMG_7835.jpg,2026-06-27 10:30 -05:00,SuperCuotas promo
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.6,True,IMG_7835.jpg,2026-06-27 10:30 -05:00,SuperCuotas promo
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Match Result,match_result,Canada,away,,1.8,True,IMG_7835.jpg,2026-06-27 10:30 -05:00,SuperCuotas promo
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Match Result,match_result,South Africa,home,,5.0,False,IMG_7835.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.5,False,IMG_7835.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Match Result,match_result,Canada,away,,1.78,False,IMG_7835.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Double Chance,double_chance,South Africa or Draw,home_or_draw,,2.12,False,IMG_7835.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Double Chance,double_chance,South Africa or Canada,home_or_away,,1.28,False,IMG_7835.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Double Chance,double_chance,Canada or Draw,draw_or_away,,1.19,False,IMG_7835.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,2.25,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,1.65,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.42,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,2.9,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,4.05,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.24,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.09,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,7.4,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,7.8,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.08,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,13.5,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.02,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,2.07,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-28-zaf-can,South Africa vs Canada,2026-06-28T14:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.7,False,IMG_7836.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Match Result,match_result,Brazil,home,,1.78,True,IMG_7837.jpg,2026-06-27 10:30 -05:00,SuperCuotas promo
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.8,True,IMG_7837.jpg,2026-06-27 10:30 -05:00,SuperCuotas promo
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Match Result,match_result,Japan,away,,5.0,True,IMG_7837.jpg,2026-06-27 10:30 -05:00,SuperCuotas promo
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Match Result,match_result,Brazil,home,,1.75,False,IMG_7837.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.7,False,IMG_7837.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Match Result,match_result,Japan,away,,4.85,False,IMG_7837.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Double Chance,double_chance,Brazil or Draw,home_or_draw,,1.2,False,IMG_7837.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Double Chance,double_chance,Brazil or Japan,home_or_away,,1.27,False,IMG_7837.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Double Chance,double_chance,Japan or Draw,draw_or_away,,2.12,False,IMG_7837.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,2.05,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,1.78,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.35,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,3.2,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,3.6,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.3,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.07,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,8.5,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,6.7,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.11,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,11.75,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.04,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Over,over,6.5,16.5,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Total Goals,total_goals,Under,under,6.5,1.01,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,1.95,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.8,False,IMG_7838.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Brazil,home,-0.5,1.75,False,IMG_7839.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Japan,away,0.5,2.15,False,IMG_7839.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Brazil,home,-1.0,2.35,False,IMG_7839.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Japan,away,1.0,1.62,False,IMG_7839.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Brazil,home,0.0,1.32,False,IMG_7839.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Japan,away,0.0,3.55,False,IMG_7839.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Brazil,home,-1.5,3.1,False,IMG_7839.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-bra-jpn,Brazil vs Japan,2026-06-29T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Japan,away,1.5,1.4,False,IMG_7839.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Match Result,match_result,Germany,home,,1.4,False,IMG_7840.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Match Result,match_result,Draw,draw,,4.8,False,IMG_7840.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Match Result,match_result,Paraguay,away,,8.0,False,IMG_7840.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Double Chance,double_chance,Germany or Draw,home_or_draw,,1.1,False,IMG_7840.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Double Chance,double_chance,Germany or Paraguay,home_or_away,,1.18,False,IMG_7840.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Double Chance,double_chance,Paraguay or Draw,draw_or_away,,3.05,False,IMG_7840.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,1.72,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,2.12,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.24,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,4.1,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,2.75,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.45,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.05,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,10.5,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,4.9,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.18,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,8.75,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.07,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Over,over,6.5,14.0,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Total Goals,total_goals,Under,under,6.5,1.02,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,1.98,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.78,False,IMG_7841.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Asian Handicap,asian_handicap,Germany,home,-1.5,2.1,False,IMG_7842.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Asian Handicap,asian_handicap,Paraguay,away,1.5,1.78,False,IMG_7842.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Asian Handicap,asian_handicap,Germany,home,-2.0,3.0,False,IMG_7842.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Asian Handicap,asian_handicap,Paraguay,away,2.0,1.42,False,IMG_7842.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Asian Handicap,asian_handicap,Germany,home,-1.0,1.6,False,IMG_7842.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Asian Handicap,asian_handicap,Paraguay,away,1.0,2.4,False,IMG_7842.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Asian Handicap,asian_handicap,Germany,home,-0.5,1.39,False,IMG_7842.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-deu-pry,Germany vs Paraguay,2026-06-29T15:30:00-05:00,Betano,Asian Handicap,asian_handicap,Paraguay,away,0.5,3.1,False,IMG_7842.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Match Result,match_result,Netherlands,home,,2.1,False,IMG_7843.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.2,False,IMG_7843.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Match Result,match_result,Morocco,away,,3.85,False,IMG_7843.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Double Chance,double_chance,Netherlands or Draw,home_or_draw,,1.28,False,IMG_7843.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Double Chance,double_chance,Netherlands or Morocco,home_or_away,,1.33,False,IMG_7843.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Double Chance,double_chance,Morocco or Draw,draw_or_away,,1.78,False,IMG_7843.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,2.22,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,1.67,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.42,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,2.9,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,4.0,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.25,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.1,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,7.3,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,7.6,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.09,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,13.0,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.03,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,1.9,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
+2026-06-29-nld-mar,Netherlands vs Morocco,2026-06-29T20:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.83,False,IMG_7844.jpg,2026-06-27 10:30 -05:00,standard
