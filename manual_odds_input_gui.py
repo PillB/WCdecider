@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Manual Betsson/Betano odds entry GUI for WCdecider.
+"""Manual Betsson/Betano odds entry tool for WCdecider.
 
-This standalone script creates a small Tkinter GUI for entering current
+This standalone script creates a local FastAPI web form for entering current
 Betsson/Betano odds when screenshots are not available or are stale. It writes
 CSV files using the same *raw odds input* columns already used by the
 June 22–27 pipeline:
@@ -33,11 +33,11 @@ Optional supported markets:
 
 Examples
 --------
-Launch GUI with default next three days from today:
+Launch local web form with default next three days from today:
 
     python3 manual_odds_input_gui.py
 
-Launch GUI for June 27–29, 2026:
+Launch local web form for June 27–29, 2026:
 
     python3 manual_odds_input_gui.py --start 2026-06-27 --end 2026-06-29
 
@@ -55,14 +55,20 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import html
 import json
 import re
-import sys
 import tempfile
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Iterable, List, Mapping, Optional, Sequence, Tuple
+from urllib.parse import parse_qs
+
+try:
+    from starlette.requests import Request
+except ModuleNotFoundError:  # FastAPI web dependencies are optional for simulation/self-test.
+    Request = object  # type: ignore[assignment]
 
 RAW_FIELDS = [
     "fixture_id",
@@ -119,38 +125,33 @@ MARKET_PRESETS = {
     },
 }
 
-GUI_SECTIONS = (
+FORM_SECTIONS = (
     "Date range and output",
     "Fixture",
     "Market odds",
     "Rows to save",
     "Actions",
 )
-GUI_DEFAULT_GEOMETRY = "1180x820"
-GUI_MIN_SIZE = (980, 680)
+WEB_DEFAULT_HOST = "127.0.0.1"
+WEB_DEFAULT_PORT = 8765
 
 
-def gui_layout_spec() -> Mapping[str, object]:
-    """Return the expected visible GUI sections without opening Tk.
-
-    This is intentionally headless-testable. The Tk implementation uses this
-    as a contract: if a user sees an empty window, these sections are the
-    minimum that must be visible after layout.
+def web_layout_spec() -> Mapping[str, object]:
+    """Return the expected local web form sections without importing FastAPI.
 
     Example
     -------
-    >>> spec = gui_layout_spec()
-    >>> "Fixture" in spec["sections"]
+    >>> spec = web_layout_spec()
+    >>> spec["default_url"].endswith(":8765/")
     True
     """
     return {
         "title": "WCdecider manual Betsson/Betano odds input",
-        "geometry": GUI_DEFAULT_GEOMETRY,
-        "min_width": GUI_MIN_SIZE[0],
-        "min_height": GUI_MIN_SIZE[1],
-        "sections": list(GUI_SECTIONS),
+        "default_url": f"http://{WEB_DEFAULT_HOST}:{WEB_DEFAULT_PORT}/",
+        "sections": list(FORM_SECTIONS),
         "supported_apps": list(APPS),
         "supported_markets": sorted(MARKET_PRESETS),
+        "save_format": "manual_wcdecider_odds_v1 CSV plus provenance JSON",
     }
 
 
@@ -228,6 +229,22 @@ def make_manual_source_token(capture_time: str, output_path: Path) -> str:
     return f"manual_user_input_{digest}"
 
 
+def selection_display_name(selection_id: str, home: str, away: str, fallback: str) -> str:
+    """Return the canonical display label for a market selection."""
+    return {
+        "home": home,
+        "away": away,
+        "draw": "Draw",
+        "over": "Over",
+        "under": "Under",
+        "yes": "Yes",
+        "no": "No",
+        "home_or_draw": f"{home} or Draw",
+        "home_or_away": f"{home} or {away}",
+        "draw_or_away": f"Draw or {away}",
+    }.get(selection_id, fallback)
+
+
 def validate_decimal_odds(value: str) -> float:
     """Validate decimal odds and return as float."""
     try:
@@ -237,6 +254,83 @@ def validate_decimal_odds(value: str) -> float:
     if number <= 1.0 or number > 1000.0:
         raise ValueError(f"Odds must be > 1.00 and realistic: {value!r}")
     return number
+
+
+def rows_from_form_fields(
+    fields: Mapping[str, str],
+    output_path: Path,
+) -> List[ManualOddsRow]:
+    """Build validated odds rows from local web form fields.
+
+    The function is deliberately framework-free. FastAPI, tests, and any future
+    UI can call this exact conversion path, which prevents the web form from
+    saving a subtly different schema than the pipeline expects.
+
+    Required keys are ``home``, ``away``, ``kickoff_local``, ``app`` and
+    ``market_id``. Odds are read from keys named ``odds_<selection_id>``.
+
+    Example
+    -------
+    >>> rows = rows_from_form_fields({
+    ...     "home": "Peru", "away": "Japan",
+    ...     "kickoff_local": "2026-06-27T15:00:00-05:00",
+    ...     "app": "Betsson", "market_id": "match_result",
+    ...     "odds_home": "2.20", "odds_draw": "3.10", "odds_away": "3.40",
+    ... }, Path("manual_odds_demo.csv"))
+    >>> len(rows)
+    3
+    """
+    home = fields.get("home", "").strip()
+    away = fields.get("away", "").strip()
+    kickoff = fields.get("kickoff_local", "").strip()
+    if not home or not away:
+        raise ValueError("Home/Team 1 and Away/Team 2 are required.")
+    if not kickoff:
+        raise ValueError("Kickoff Lima ISO is required.")
+    app = fields.get("app", "").strip() or APPS[0]
+    if app not in APPS:
+        raise ValueError(f"Unsupported app: {app!r}")
+    market_id = fields.get("market_id", "").strip() or "match_result"
+    if market_id not in MARKET_PRESETS:
+        raise ValueError(f"Unsupported market_id: {market_id!r}")
+    preset = MARKET_PRESETS[market_id]
+    line = fields.get("line", "").strip()
+    if preset["line_required"] and not line:
+        raise ValueError(f"Line is required for {market_id}.")
+    fixture_id = fields.get("fixture_id", "").strip() or make_fixture_id(kickoff, home, away)
+    fixture_display = f"{home} vs {away}"
+    capture = normalize_capture_time(fields.get("capture_time", ""))
+    source = make_manual_source_token(capture, output_path)
+    notes = fields.get("notes", "manual user input").strip()
+
+    rows: List[ManualOddsRow] = []
+    for selection_id, label in preset["selections"]:
+        odds = fields.get(f"odds_{selection_id}", "").strip()
+        if not odds:
+            continue
+        validate_decimal_odds(odds)
+        rows.append(
+            ManualOddsRow(
+                fixture_id=fixture_id,
+                fixture_display=fixture_display,
+                kickoff_local=kickoff,
+                app=app,
+                market_original=preset["market_original"],
+                market_id=market_id,
+                selection_original=selection_display_name(selection_id, home, away, label),
+                selection_id=selection_id,
+                line=line,
+                odds=odds,
+                promo="false",
+                source_image=source,
+                capture_time=capture,
+                notes=notes,
+            )
+        )
+    if not rows:
+        raise ValueError("Enter at least one decimal odds value for the selected market.")
+    validate_rows(rows)
+    return rows
 
 
 def validate_rows(rows: Sequence[ManualOddsRow]) -> List[str]:
@@ -411,270 +505,283 @@ def run_self_test() -> None:
     print("manual_odds_input_gui.py self-test passed")
 
 
-class ManualOddsGui:
-    """Tkinter GUI controller."""
+def _html_attrs(options: Iterable[str], selected: str) -> str:
+    """Return escaped HTML option tags."""
+    parts = []
+    for option in options:
+        chosen = " selected" if option == selected else ""
+        parts.append(f'<option value="{html.escape(option)}"{chosen}>{html.escape(option)}</option>')
+    return "\n".join(parts)
 
-    def __init__(self, start: date, end: date, output_path: Path, append: bool = False):
-        import tkinter as tk
-        from tkinter import ttk
 
-        self.tk = tk
-        self.ttk = ttk
-        self.root = tk.Tk()
-        self.root.title("WCdecider manual Betsson/Betano odds input")
-        self.output_path = output_path
-        self.append = tk.BooleanVar(value=append)
-        self.rows: List[ManualOddsRow] = []
-        self.start_var = tk.StringVar(value=start.isoformat())
-        self.end_var = tk.StringVar(value=end.isoformat())
-        self.capture_var = tk.StringVar(value=normalize_capture_time(""))
-        self.fixture_id_var = tk.StringVar()
-        self.home_var = tk.StringVar()
-        self.away_var = tk.StringVar()
-        self.kickoff_var = tk.StringVar(value=f"{start.isoformat()}T15:00:00-05:00")
-        self.app_var = tk.StringVar(value="Betsson")
-        self.market_var = tk.StringVar(value="match_result")
-        self.line_var = tk.StringVar()
-        self.notes_var = tk.StringVar(value="manual user input")
-        self.odds_vars = {}
-        self._build()
-
-    def _build(self) -> None:
-        tk = self.tk
-        ttk = self.ttk
-        root = self.root
-        pad = {"padx": 6, "pady": 4}
-
-        root.geometry(GUI_DEFAULT_GEOMETRY)
-        root.minsize(*GUI_MIN_SIZE)
-        root.columnconfigure(0, weight=1)
-        root.rowconfigure(0, weight=1)
-
-        canvas = tk.Canvas(root, borderwidth=0, highlightthickness=0)
-        scrollbar = ttk.Scrollbar(root, orient="vertical", command=canvas.yview)
-        canvas.configure(yscrollcommand=scrollbar.set)
-        canvas.grid(row=0, column=0, sticky="nsew")
-        scrollbar.grid(row=0, column=1, sticky="ns")
-
-        content = ttk.Frame(canvas, padding=8)
-        content_window = canvas.create_window((0, 0), window=content, anchor="nw")
-        content.columnconfigure(0, weight=1)
-
-        def sync_scroll_region(_event=None) -> None:
-            canvas.configure(scrollregion=canvas.bbox("all"))
-
-        def sync_content_width(event) -> None:
-            canvas.itemconfigure(content_window, width=event.width)
-
-        content.bind("<Configure>", sync_scroll_region)
-        canvas.bind("<Configure>", sync_content_width)
-        canvas.bind_all(
-            "<MouseWheel>",
-            lambda event: canvas.yview_scroll(int(-1 * (event.delta / 120)), "units"),
+def _rows_table_html(rows: Sequence[ManualOddsRow]) -> str:
+    """Return a compact HTML table for in-memory rows."""
+    if not rows:
+        return "<p class='muted'>No rows added yet.</p>"
+    body = []
+    for idx, row in enumerate(rows):
+        body.append(
+            "<tr>"
+            f"<td>{idx + 1}</td>"
+            f"<td>{html.escape(row.fixture_display)}</td>"
+            f"<td>{html.escape(row.app)}</td>"
+            f"<td>{html.escape(row.market_id)}</td>"
+            f"<td>{html.escape(row.selection_original)}</td>"
+            f"<td>{html.escape(row.line)}</td>"
+            f"<td>{html.escape(row.odds)}</td>"
+            "</tr>"
         )
-        self.content_frame = content
+    return (
+        "<table><thead><tr><th>#</th><th>Fixture</th><th>App</th><th>Market</th>"
+        "<th>Selection</th><th>Line</th><th>Odds</th></tr></thead><tbody>"
+        + "\n".join(body)
+        + "</tbody></table>"
+    )
 
-        header = tk.Label(
-            content,
-            text=(
-                "WCdecider manual odds input — fill fixture, select app/market, "
-                "enter decimal odds, then Add market rows."
-            ),
-            anchor="w",
-            justify="left",
-            bg="#0f172a",
-            fg="#e2e8f0",
-            padx=10,
-            pady=8,
+
+def build_web_form_html(
+    start: date,
+    end: date,
+    output_path: Path,
+    rows: Sequence[ManualOddsRow],
+    append: bool = False,
+    message: str = "",
+    errors: Sequence[str] = (),
+) -> str:
+    """Build the complete manual odds web form HTML.
+
+    The HTML is intentionally server-rendered and dependency-light: no bundled
+    JS framework and no remote assets. That keeps the local data-entry tool
+    usable on locked-down machines and easy to regression-test as plain text.
+    """
+    market_cards = []
+    for market_id, preset in MARKET_PRESETS.items():
+        inputs = []
+        for selection_id, label in preset["selections"]:
+            inputs.append(
+                "<label>"
+                f"<span>{html.escape(label)} odds</span>"
+                f"<input name='odds_{html.escape(selection_id)}' inputmode='decimal' "
+                "placeholder='e.g. 1.91'>"
+                "</label>"
+            )
+        requires_line = "Line required" if preset["line_required"] else "No line required"
+        market_cards.append(
+            f"<details class='market-card' data-market-card='{html.escape(market_id)}'>"
+            f"<summary>{html.escape(market_id)} — {html.escape(preset['market_original'])} "
+            f"<small>{requires_line}</small></summary>"
+            "<div class='grid'>"
+            + "\n".join(inputs)
+            + "</div></details>"
         )
-        header.grid(row=0, column=0, sticky="ew", **pad)
+    alerts = ""
+    if message:
+        alerts += f"<div class='alert ok'>{html.escape(message)}</div>"
+    for error in errors:
+        alerts += f"<div class='alert error'>{html.escape(error)}</div>"
+    checked = " checked" if append else ""
+    market_options = _html_attrs(MARKET_PRESETS.keys(), "match_result")
+    app_options = _html_attrs(APPS, APPS[0])
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WCdecider manual Betsson/Betano odds input</title>
+  <style>
+    :root {{ color-scheme: dark; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }}
+    body {{ margin: 0; background: #020617; color: #e2e8f0; }}
+    main {{ max-width: 1180px; margin: 0 auto; padding: 18px; }}
+    h1 {{ font-size: 1.45rem; margin: 0 0 8px; }}
+    h2 {{ font-size: 1rem; margin: 0 0 12px; color: #bfdbfe; }}
+    .card {{ background: #0f172a; border: 1px solid #334155; border-radius: 14px; padding: 14px; margin: 12px 0; }}
+    .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }}
+    label span {{ display: block; font-size: .82rem; color: #94a3b8; margin-bottom: 5px; }}
+    input, select {{ width: 100%; box-sizing: border-box; border-radius: 10px; border: 1px solid #475569; background: #020617; color: #e2e8f0; padding: 9px; }}
+    button {{ border: 0; border-radius: 999px; background: #22c55e; color: #052e16; font-weight: 700; padding: 10px 16px; cursor: pointer; }}
+    button.secondary {{ background: #38bdf8; color: #082f49; }}
+    .actions {{ display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }}
+    .muted, small {{ color: #94a3b8; }}
+    .alert {{ border-radius: 10px; padding: 10px 12px; margin: 10px 0; }}
+    .ok {{ background: #064e3b; color: #d1fae5; }}
+    .error {{ background: #7f1d1d; color: #fee2e2; }}
+    details {{ border: 1px solid #334155; border-radius: 12px; padding: 10px; margin: 8px 0; }}
+    summary {{ cursor: pointer; color: #e0f2fe; font-weight: 700; }}
+    table {{ width: 100%; border-collapse: collapse; font-size: .88rem; }}
+    th, td {{ border-bottom: 1px solid #334155; padding: 8px; text-align: left; vertical-align: top; }}
+    .hidden {{ display: none; }}
+    @media (max-width: 720px) {{ main {{ padding: 10px; }} table {{ display: block; overflow-x: auto; }} }}
+  </style>
+</head>
+<body>
+<main>
+  <section class="card">
+    <h1>WCdecider manual odds input</h1>
+    <p class="muted">Local-only FastAPI form. Add one market at a time, then Save / Done to write the raw CSV and provenance JSON used by the model pipeline.</p>
+    {alerts}
+  </section>
 
-        top = ttk.LabelFrame(content, text="Date range and output")
-        top.grid(row=1, column=0, sticky="ew", **pad)
-        for i in range(6):
-            top.columnconfigure(i, weight=1)
-        ttk.Label(top, text="Start").grid(row=0, column=0, sticky="w", **pad)
-        ttk.Entry(top, textvariable=self.start_var, width=12).grid(row=0, column=1, sticky="ew", **pad)
-        ttk.Label(top, text="End").grid(row=0, column=2, sticky="w", **pad)
-        ttk.Entry(top, textvariable=self.end_var, width=12).grid(row=0, column=3, sticky="ew", **pad)
-        ttk.Label(top, text="Output").grid(row=0, column=4, sticky="w", **pad)
-        ttk.Label(top, text=str(self.output_path)).grid(row=0, column=5, sticky="w", **pad)
-        ttk.Checkbutton(top, text="Append to existing CSV", variable=self.append).grid(row=1, column=0, columnspan=2, sticky="w", **pad)
-        ttk.Label(top, text="Capture time").grid(row=1, column=2, sticky="w", **pad)
-        ttk.Entry(top, textvariable=self.capture_var, width=24).grid(row=1, column=3, columnspan=3, sticky="ew", **pad)
+  <form method="post" action="/add" class="card">
+    <h2>Date range and output</h2>
+    <div class="grid">
+      <label><span>Start</span><input name="start" value="{start.isoformat()}"></label>
+      <label><span>End</span><input name="end" value="{end.isoformat()}"></label>
+      <label><span>Output CSV</span><input name="output_path" value="{html.escape(str(output_path))}" readonly></label>
+      <label><span>Capture time</span><input name="capture_time" value="{html.escape(normalize_capture_time(''))}"></label>
+    </div>
 
-        fixture = ttk.LabelFrame(content, text="Fixture")
-        fixture.grid(row=2, column=0, sticky="ew", **pad)
-        for i in range(6):
-            fixture.columnconfigure(i, weight=1)
-        ttk.Label(fixture, text="Home/Team 1").grid(row=0, column=0, sticky="w", **pad)
-        ttk.Entry(fixture, textvariable=self.home_var).grid(row=0, column=1, sticky="ew", **pad)
-        ttk.Label(fixture, text="Away/Team 2").grid(row=0, column=2, sticky="w", **pad)
-        ttk.Entry(fixture, textvariable=self.away_var).grid(row=0, column=3, sticky="ew", **pad)
-        ttk.Label(fixture, text="Kickoff Lima ISO").grid(row=0, column=4, sticky="w", **pad)
-        ttk.Entry(fixture, textvariable=self.kickoff_var).grid(row=0, column=5, sticky="ew", **pad)
-        ttk.Label(fixture, text="Fixture ID optional").grid(row=1, column=0, sticky="w", **pad)
-        ttk.Entry(fixture, textvariable=self.fixture_id_var).grid(row=1, column=1, columnspan=2, sticky="ew", **pad)
-        ttk.Label(fixture, text="App").grid(row=1, column=3, sticky="w", **pad)
-        ttk.Combobox(fixture, textvariable=self.app_var, values=APPS, state="readonly", width=10).grid(row=1, column=4, sticky="w", **pad)
+    <h2>Fixture</h2>
+    <div class="grid">
+      <label><span>Home/Team 1</span><input name="home" required></label>
+      <label><span>Away/Team 2</span><input name="away" required></label>
+      <label><span>Kickoff Lima ISO</span><input name="kickoff_local" value="{start.isoformat()}T15:00:00-05:00" required></label>
+      <label><span>Fixture ID optional</span><input name="fixture_id" placeholder="auto-generated if blank"></label>
+      <label><span>App</span><select name="app">{app_options}</select></label>
+      <label><span>Market to add</span><select name="market_id">{market_options}</select></label>
+      <label><span>Line, if market needs it</span><input name="line" placeholder="2.5, -0.5, +0.5"></label>
+      <label><span>Notes</span><input name="notes" value="manual user input"></label>
+    </div>
 
-        market = ttk.LabelFrame(content, text="Market odds")
-        market.grid(row=3, column=0, sticky="ew", **pad)
-        for i in range(6):
-            market.columnconfigure(i, weight=1)
-        ttk.Label(market, text="Market").grid(row=0, column=0, sticky="w", **pad)
-        combo = ttk.Combobox(market, textvariable=self.market_var, values=list(MARKET_PRESETS), state="readonly")
-        combo.grid(row=0, column=1, sticky="ew", **pad)
-        combo.bind("<<ComboboxSelected>>", lambda _event: self._refresh_selection_inputs())
-        ttk.Label(market, text="Line").grid(row=0, column=2, sticky="w", **pad)
-        ttk.Entry(market, textvariable=self.line_var, width=8).grid(row=0, column=3, sticky="w", **pad)
-        ttk.Label(market, text="Notes").grid(row=0, column=4, sticky="w", **pad)
-        ttk.Entry(market, textvariable=self.notes_var).grid(row=0, column=5, sticky="ew", **pad)
-        self.selection_frame = ttk.Frame(market)
-        self.selection_frame.grid(row=1, column=0, columnspan=6, sticky="ew", **pad)
-        self._refresh_selection_inputs()
-        ttk.Button(market, text="Add market rows", command=self.add_market_rows).grid(row=2, column=0, sticky="w", **pad)
+    <h2>Market odds</h2>
+    <p class="muted">Fill only the odds boxes for the selected market. Complete 1X2 needs home, draw, and away.</p>
+    {''.join(market_cards)}
+    <div class="actions"><button type="submit">Add market rows</button></div>
+  </form>
 
-        table_frame = ttk.LabelFrame(content, text="Rows to save")
-        table_frame.grid(row=4, column=0, sticky="nsew", **pad)
-        content.rowconfigure(4, weight=1)
-        columns = ("fixture", "app", "market", "selection", "line", "odds")
-        self.tree = ttk.Treeview(table_frame, columns=columns, show="headings", height=12)
-        for col in columns:
-            self.tree.heading(col, text=col)
-            self.tree.column(col, width=130)
-        self.tree.grid(row=0, column=0, sticky="nsew")
-        table_frame.rowconfigure(0, weight=1)
-        table_frame.columnconfigure(0, weight=1)
-        ttk.Button(table_frame, text="Delete selected", command=self.delete_selected).grid(row=1, column=0, sticky="w", **pad)
+  <section class="card">
+    <h2>Rows to save</h2>
+    {_rows_table_html(rows)}
+  </section>
 
-        actions = ttk.LabelFrame(content, text="Actions")
-        actions.grid(row=5, column=0, sticky="ew", **pad)
-        ttk.Button(actions, text="Save / Done", command=self.save_done).grid(row=0, column=0, sticky="w", **pad)
-        ttk.Button(actions, text="Quit without saving", command=root.destroy).grid(row=0, column=1, sticky="w", **pad)
-        self.status = ttk.Label(actions, text="Enter fixture + odds. Minimum complete 1X2 per app is recommended.")
-        self.status.grid(row=0, column=2, sticky="w", **pad)
-        root.after(50, sync_scroll_region)
+  <section class="card">
+    <h2>Actions</h2>
+    <form method="post" action="/save" class="actions">
+      <label style="width:auto"><input style="width:auto" type="checkbox" name="append"{checked}> Append to existing CSV</label>
+      <button type="submit">Save / Done</button>
+      <button class="secondary" formaction="/clear" formmethod="post">Clear unsaved rows</button>
+      <a class="muted" href="/download">Download saved CSV</a>
+    </form>
+  </section>
+</main>
+<script>
+  function syncMarketCards() {{
+    const selected = document.querySelector("select[name='market_id']").value;
+    document.querySelectorAll("[data-market-card]").forEach((card) => {{
+      const active = card.dataset.marketCard === selected;
+      card.classList.toggle("hidden", !active);
+      card.open = active;
+      card.querySelectorAll("input").forEach((input) => input.disabled = !active);
+    }});
+  }}
+  document.querySelector("select[name='market_id']").addEventListener("change", syncMarketCards);
+  syncMarketCards();
+</script>
+</body>
+</html>
+"""
 
-    def _refresh_selection_inputs(self) -> None:
-        for child in self.selection_frame.winfo_children():
-            child.destroy()
-        self.odds_vars.clear()
-        preset = MARKET_PRESETS[self.market_var.get()]
-        for idx, (selection_id, label) in enumerate(preset["selections"]):
-            var = self.tk.StringVar()
-            self.odds_vars[selection_id] = var
-            self.ttk.Label(self.selection_frame, text=f"{label} odds").grid(row=0, column=idx * 2, sticky="w", padx=6, pady=4)
-            self.ttk.Entry(self.selection_frame, textvariable=var, width=10).grid(row=0, column=idx * 2 + 1, sticky="w", padx=6, pady=4)
 
-    def _fixture_values(self) -> Tuple[str, str, str, str]:
-        home = self.home_var.get().strip()
-        away = self.away_var.get().strip()
-        kickoff = self.kickoff_var.get().strip()
-        if not home or not away:
-            raise ValueError("Home and away teams are required.")
-        if not kickoff:
-            raise ValueError("Kickoff is required.")
-        fixture_id = self.fixture_id_var.get().strip() or make_fixture_id(kickoff, home, away)
-        fixture_display = f"{home} vs {away}"
-        return fixture_id, fixture_display, home, away
+def create_fastapi_app(start: date, end: date, output_path: Path, append: bool = False):
+    """Create the local FastAPI manual odds app.
 
-    def add_market_rows(self) -> None:
+    FastAPI is imported lazily so headless tests and simulation still work in
+    environments that have not installed web dependencies yet.
+    """
+    try:
+        from fastapi import FastAPI
+        from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+    except ModuleNotFoundError as exc:
+        raise RuntimeError(
+            "FastAPI web mode requires dependencies: python3 -m pip install fastapi uvicorn"
+        ) from exc
+
+    app = FastAPI(title="WCdecider manual odds input", version="1.0")
+    app.state.rows = []
+    app.state.append = append
+
+    def page(message: str = "", errors: Sequence[str] = ()) -> HTMLResponse:
+        return HTMLResponse(
+            build_web_form_html(
+                start=start,
+                end=end,
+                output_path=output_path,
+                rows=app.state.rows,
+                append=app.state.append,
+                message=message,
+                errors=errors,
+            )
+        )
+
+    @app.get("/", response_class=HTMLResponse)
+    async def index() -> HTMLResponse:
+        return page()
+
+    @app.get("/health")
+    async def health() -> JSONResponse:
+        return JSONResponse({**web_layout_spec(), "rows_in_memory": len(app.state.rows)})
+
+    @app.post("/add", response_class=HTMLResponse)
+    async def add_rows(request: Request) -> HTMLResponse:
+        body = (await request.body()).decode("utf-8")
+        fields = {key: values[-1] for key, values in parse_qs(body, keep_blank_values=True).items()}
         try:
-            fixture_id, fixture_display, home, away = self._fixture_values()
-            market_id = self.market_var.get()
-            preset = MARKET_PRESETS[market_id]
-            capture = normalize_capture_time(self.capture_var.get())
-            source = make_manual_source_token(capture, self.output_path)
-            added = 0
-            for selection_id, label in preset["selections"]:
-                odds = self.odds_vars[selection_id].get().strip()
-                if not odds:
-                    continue
-                validate_decimal_odds(odds)
-                selection_original = {
-                    "home": home,
-                    "away": away,
-                    "draw": "Draw",
-                    "over": "Over",
-                    "under": "Under",
-                    "yes": "Yes",
-                    "no": "No",
-                    "home_or_draw": f"{home} or Draw",
-                    "home_or_away": f"{home} or {away}",
-                    "draw_or_away": f"Draw or {away}",
-                }.get(selection_id, label)
-                row = ManualOddsRow(
-                    fixture_id=fixture_id,
-                    fixture_display=fixture_display,
-                    kickoff_local=self.kickoff_var.get().strip(),
-                    app=self.app_var.get(),
-                    market_original=preset["market_original"],
-                    market_id=market_id,
-                    selection_original=selection_original,
-                    selection_id=selection_id,
-                    line=self.line_var.get().strip(),
-                    odds=odds,
-                    promo="false",
-                    source_image=source,
-                    capture_time=capture,
-                    notes=self.notes_var.get().strip(),
-                )
-                # Validate row-level requirements before appending.
-                validate_rows([row])
-                self.rows.append(row)
-                self.tree.insert(
-                    "",
-                    "end",
-                    values=(
-                        row.fixture_display,
-                        row.app,
-                        row.market_id,
-                        row.selection_original,
-                        row.line,
-                        row.odds,
-                    ),
-                )
-                added += 1
-            if not added:
-                raise ValueError("Enter at least one odds value for this market.")
-            self.status.configure(text=f"Added {added} row(s). Total rows: {len(self.rows)}")
-        except Exception as exc:  # GUI boundary: show clear user error.
-            from tkinter import messagebox
+            added = rows_from_form_fields(fields, output_path)
+            app.state.rows.extend(added)
+            return page(message=f"Added {len(added)} row(s). Unsaved total: {len(app.state.rows)}.")
+        except Exception as exc:
+            return page(errors=[str(exc)])
 
-            messagebox.showerror("Cannot add rows", str(exc))
-
-    def delete_selected(self) -> None:
-        selected = list(self.tree.selection())
-        if not selected:
-            return
-        indices = [self.tree.index(item) for item in selected]
-        for item in selected:
-            self.tree.delete(item)
-        for index in sorted(indices, reverse=True):
-            del self.rows[index]
-        self.status.configure(text=f"Deleted {len(selected)} row(s). Total rows: {len(self.rows)}")
-
-    def save_done(self) -> None:
+    @app.post("/save", response_class=HTMLResponse)
+    async def save(request: Request) -> HTMLResponse:
+        body = (await request.body()).decode("utf-8")
+        fields = {key: values[-1] for key, values in parse_qs(body, keep_blank_values=True).items()}
+        app.state.append = "append" in fields
         try:
             csv_path, provenance_path, warnings = write_rows(
-                self.rows, self.output_path, append=self.append.get()
+                app.state.rows,
+                output_path,
+                append=app.state.append,
             )
-            message = f"Saved {len(self.rows)} row(s) to {csv_path}\nProvenance: {provenance_path}"
+            message = f"Saved {len(app.state.rows)} row(s) to {csv_path}; provenance: {provenance_path}."
             if warnings:
-                message += "\n\nWarnings:\n" + "\n".join(warnings)
-            from tkinter import messagebox
-
-            messagebox.showinfo("Saved manual odds", message)
-            self.root.destroy()
+                message += " Warnings: " + " ".join(warnings)
+            return page(message=message)
         except Exception as exc:
-            from tkinter import messagebox
+            return page(errors=[str(exc)])
 
-            messagebox.showerror("Cannot save", str(exc))
+    @app.post("/clear", response_class=HTMLResponse)
+    async def clear() -> HTMLResponse:
+        count = len(app.state.rows)
+        app.state.rows.clear()
+        return page(message=f"Cleared {count} unsaved row(s).")
 
-    def run(self) -> None:
-        """Start the GUI main loop."""
-        self.root.mainloop()
+    @app.get("/download")
+    async def download():
+        if output_path.exists():
+            return FileResponse(output_path, filename=output_path.name)
+        return page(errors=[f"No saved CSV exists yet at {output_path}."])
+
+    return app
+
+
+def run_web_app(
+    start: date,
+    end: date,
+    output_path: Path,
+    append: bool = False,
+    host: str = WEB_DEFAULT_HOST,
+    port: int = WEB_DEFAULT_PORT,
+) -> None:
+    """Run the local FastAPI manual odds server."""
+    try:
+        import uvicorn
+    except ModuleNotFoundError as exc:
+        raise RuntimeError(
+            "FastAPI web mode requires dependencies: python3 -m pip install fastapi uvicorn"
+        ) from exc
+    app = create_fastapi_app(start, end, output_path, append=append)
+    print(f"Open manual odds form: http://{host}:{port}/")
+    uvicorn.run(app, host=host, port=port, log_level="info")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -687,7 +794,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--append", action="store_true", help="Append to existing output CSV.")
     parser.add_argument("--simulate", action="store_true", help="Write deterministic sample rows without opening GUI.")
     parser.add_argument("--self-test", action="store_true", help="Run built-in headless tests and exit.")
-    parser.add_argument("--diagnose-gui", action="store_true", help="Print expected GUI layout without opening a window.")
+    parser.add_argument("--host", default=WEB_DEFAULT_HOST, help="FastAPI host; default 127.0.0.1.")
+    parser.add_argument("--port", type=int, default=WEB_DEFAULT_PORT, help="FastAPI port; default 8765.")
+    parser.add_argument("--diagnose-web", action="store_true", help="Print expected web form contract without starting the server.")
     return parser
 
 
@@ -698,8 +807,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.self_test:
         run_self_test()
         return 0
-    if args.diagnose_gui:
-        print(json.dumps(gui_layout_spec(), indent=2, sort_keys=True))
+    if args.diagnose_web:
+        print(json.dumps(web_layout_spec(), indent=2, sort_keys=True))
         return 0
     if args.end < args.start:
         parser.error("--end must be on or after --start")
@@ -716,8 +825,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             for warning in warnings:
                 print(f"- {warning}")
         return 0
-    gui = ManualOddsGui(args.start, args.end, output, append=args.append)
-    gui.run()
+    try:
+        run_web_app(
+            args.start,
+            args.end,
+            output,
+            append=args.append,
+            host=args.host,
+            port=args.port,
+        )
+    except RuntimeError as exc:
+        parser.exit(2, f"{exc}\n")
     return 0
 
 

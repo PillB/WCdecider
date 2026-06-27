@@ -5,6 +5,7 @@ import json
 from datetime import date
 
 import pytest
+from fastapi.testclient import TestClient
 
 import manual_odds_input_gui as manual
 
@@ -48,12 +49,10 @@ def test_manual_odds_validation_rejects_bad_prices_and_flags_partial_1x2(tmp_pat
     ]
 
 
-def test_manual_gui_layout_spec_has_visible_sections():
-    spec = manual.gui_layout_spec()
+def test_manual_web_layout_spec_has_visible_sections():
+    spec = manual.web_layout_spec()
 
     assert spec["title"] == "WCdecider manual Betsson/Betano odds input"
-    assert spec["min_width"] >= 900
-    assert spec["min_height"] >= 600
     assert spec["sections"] == [
         "Date range and output",
         "Fixture",
@@ -63,13 +62,97 @@ def test_manual_gui_layout_spec_has_visible_sections():
     ]
     assert "match_result" in spec["supported_markets"]
     assert spec["supported_apps"] == ["Betsson", "Betano"]
+    assert spec["default_url"] == "http://127.0.0.1:8765/"
 
 
-def test_manual_gui_diagnose_cli_prints_layout_spec(capsys):
-    exit_code = manual.main(["--diagnose-gui"])
+def test_manual_web_diagnose_cli_prints_layout_spec(capsys):
+    exit_code = manual.main(["--diagnose-web"])
     captured = capsys.readouterr()
     payload = json.loads(captured.out)
 
     assert exit_code == 0
-    assert payload["geometry"] == manual.GUI_DEFAULT_GEOMETRY
+    assert payload["default_url"] == "http://127.0.0.1:8765/"
     assert "Fixture" in payload["sections"]
+
+
+def test_manual_web_form_renders_required_sections_and_market_switching(tmp_path):
+    output = tmp_path / "manual_odds.csv"
+    html = manual.build_web_form_html(
+        date(2026, 6, 27),
+        date(2026, 6, 29),
+        output,
+        rows=[],
+    )
+
+    assert "WCdecider manual odds input" in html
+    assert "Date range and output" in html
+    assert "data-market-card='match_result'" in html
+    assert "data-market-card='asian_handicap'" in html
+    assert "syncMarketCards" in html
+    assert "Tkinter" not in html
+
+
+def test_rows_from_form_fields_match_pipeline_schema(tmp_path):
+    output = tmp_path / "manual_odds.csv"
+    rows = manual.rows_from_form_fields(
+        {
+            "home": "Peru",
+            "away": "Japan",
+            "kickoff_local": "2026-06-27T15:00:00-05:00",
+            "app": "Betano",
+            "market_id": "match_result",
+            "odds_home": "2.20",
+            "odds_draw": "3.10",
+            "odds_away": "3.40",
+            "notes": "web form test",
+        },
+        output,
+    )
+
+    assert len(rows) == 3
+    assert [row.selection_id for row in rows] == ["home", "draw", "away"]
+    assert rows[0].fixture_id == "2026-06-27-per-jap"
+    assert rows[0].source_image.startswith("manual_user_input_")
+    assert rows[0].as_dict().keys() == set(manual.RAW_FIELDS)
+
+
+def test_fastapi_manual_odds_add_save_and_download(tmp_path):
+    output = tmp_path / "manual_odds.csv"
+    app = manual.create_fastapi_app(
+        date(2026, 6, 27),
+        date(2026, 6, 29),
+        output,
+    )
+    client = TestClient(app)
+
+    health = client.get("/health")
+    assert health.status_code == 200
+    assert health.json()["rows_in_memory"] == 0
+
+    add = client.post(
+        "/add",
+        data={
+            "home": "Peru",
+            "away": "Japan",
+            "kickoff_local": "2026-06-27T15:00:00-05:00",
+            "app": "Betsson",
+            "market_id": "match_result",
+            "odds_home": "2.20",
+            "odds_draw": "3.10",
+            "odds_away": "3.40",
+            "notes": "route test",
+        },
+    )
+    assert add.status_code == 200
+    assert "Added 3 row(s)" in add.text
+    assert client.get("/health").json()["rows_in_memory"] == 3
+
+    save = client.post("/save", data={})
+    assert save.status_code == 200
+    assert "Saved 3 row(s)" in save.text
+    assert output.exists()
+    assert output.with_suffix(".provenance.json").exists()
+
+    download = client.get("/download")
+    assert download.status_code == 200
+    assert "Peru vs Japan" in download.text
