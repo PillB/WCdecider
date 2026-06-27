@@ -9,7 +9,7 @@ End-to-end, fully documented pipeline that a student or peer reviewer can run us
 ONLY the CSV datasets + provenance TXT files + this script to reproduce:
 
   1. June 15-16 2026 slate predictions (6 matches, OSINT-enriched inputs)
-  2. Expanded backtest metrics (N=222, real closing odds)
+  2. Expanded backtest metrics (N=217, real closing odds)
   3. Production v4.1 classifications (MOD 70/30 stack + Rule 24)
   4. Locked regression outputs verified by tests/test_peer_replication.py
 
@@ -17,7 +17,7 @@ ARTIFACTS REQUIRED (all in this directory)
 ------------------------------------------
   wc_2026_model_dataset.csv          — June slate with per-column source_* provenance
   wc_2026_dataset_provenance.txt     — Column instructions for June CSV
-  wc_backtest_historical_dataset.csv — N=222 backtest (or rebuild via loader)
+  wc_backtest_historical_dataset.csv — N=217 backtest (or rebuild via loader)
   wc_backtest_dataset_provenance.txt — Column instructions for backtest CSV
   wc_model_master_provenance.txt     — Manifest linking all datasets
 
@@ -67,10 +67,10 @@ MASTER_PROVENANCE = ROOT / "wc_model_master_provenance.txt"
 
 # Locked regression targets (from executed backtest 2026-06-15)
 LOCKED_BACKTEST = {
-    "n_matches": 222,
-    "v4_elo_brier": 0.6157,
-    "v4_1_stack_brier": 0.6039,
-    "market_implied_brier": 0.5956,
+    "n_matches": 217,
+    "v4_elo_brier": 0.6293,
+    "v4_1_stack_brier": 0.6048,
+    "market_implied_brier": 0.5852,
     "trap_count_v41": 0,
     "brier_tolerance": 0.003,
 }
@@ -143,7 +143,7 @@ def load_june_slate() -> List[Dict]:
 
 def load_backtest_slate() -> List[Dict]:
     """
-    Step 1b — Load N=222 expanded backtest.
+    Step 1b — Load N=217 expanded backtest.
 
     Rebuild command (if missing): python3 wc_backtest_historical_loader.py
     See wc_backtest_dataset_provenance.txt for column definitions.
@@ -221,7 +221,7 @@ def run_june_slate_v41(rows: List[Dict]) -> List[PipelineRow]:
 
     WHY v4.1 run_match_v41?
       Iteration 5 Bayesian search confirmed MOD 70/30 pre-stack improves calibration
-      while preserving trap discipline (0 MOD favorites would-bet on N=222).
+      while preserving trap discipline (0 MOD favorites would-bet on N=217).
     """
     from wc_model_v4_1_ensemble import run_match_v41
 
@@ -258,7 +258,7 @@ def run_june_slate_v41(rows: List[Dict]) -> List[PipelineRow]:
 
 def run_backtest_evaluation(rows: List[Dict]) -> Dict:
     """
-    Step 3b — Compute locked backtest metrics on N=222.
+    Step 3b — Compute locked backtest metrics on N=217.
 
     Uses wc_backtest_framework.evaluate_all_models() — the same functions
     peer reviewers must reproduce.
@@ -291,7 +291,7 @@ def validate_locked_metrics(metrics: Dict) -> List[str]:
 
     Example
     -------
-    >>> errs = validate_locked_metrics({"n": 222, "results": {...}, "trap_count": 0})
+    >>> errs = validate_locked_metrics({"n": 217, "results": {...}, "trap_count": 0})
     >>> assert errs == []
     """
     errors = []
@@ -355,7 +355,7 @@ def save_production_csv(rows: List[PipelineRow], backtest_rows: List[Dict]) -> N
 
     fields = list(asdict(all_rows[0]).keys()) if all_rows else []
     with open(OUTPUT_CSV, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=fields)
+        w = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
         w.writeheader()
         for r in all_rows:
             w.writerow(asdict(r))
@@ -384,7 +384,7 @@ def print_student_report(
         ev = f"{r.ev_rule14:+.1f}%" if r.ev_rule14 is not None else "N/A"
         print(f"{r.match_name:<35} {r.tier:<5} {r.p_model_d:>5.1%} {ev:>8} {r.classification:<10} {r.stake_conservative:>6.2f}")
 
-    print("\n--- STEP 3: Backtest N=222 (locked metrics) ---")
+    print("\n--- STEP 3: Backtest N=217 (locked metrics) ---")
     res = metrics["results"]
     for name in ["market_implied", "v4_1_stack", "v4_elo", "v31_elo"]:
         if name in res:

@@ -58,8 +58,8 @@ Historical-market and championship artifacts:
 - `historical_odds_pipeline.py` segregates timestamp-verified closes from
   timestampless and unknown-timestamp proxies. Authenticated raw provider data
   remains private when redistribution is restricted.
-- `historical_odds_coverage.json` currently records 222 legacy proxy events,
-  666 selections, and zero primary-validation-eligible rows.
+- `historical_odds_coverage.json` currently records 217 legacy proxy events,
+  651 selections, and zero primary-validation-eligible rows.
 - `model_championship.py` performs nested rolling-origin Elo/market comparisons;
   its small holdout advantage is statistically insecure.
 - `HISTORICAL_ODDS_MODEL_CHAMPIONSHIP_PLAN.md` defines the completion and

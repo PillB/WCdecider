@@ -736,7 +736,7 @@
   "mu_dataset_a": 2.6866666666666665,
   "mu_dataset_b": 2.4441964285714297,
   "mu_production": 2.75,
-  "pipeline_sha256": "9e13a74a4d0bb6708086fae5d020c8d6a708c4358182ee6eedd9870f1dd801c1",
+  "pipeline_sha256": "8e51c1faf24576b4e3a390d68265dd2e23b88a004a9e0ecde45900f4ef1b0607",
   "research_mode_policy": {
     "default_state": "off_production_mode",
     "production_recommendations_unchanged": true,

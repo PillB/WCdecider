@@ -9,9 +9,9 @@ DATASET INDEX
 | File | Rows | Role | Provenance doc |
 |------|------|------|----------------|
 | wc_2026_model_dataset.csv | 6 | June 15-16 slate (OSINT inputs) | wc_2026_dataset_provenance.txt |
-| wc_backtest_historical_dataset.csv | 222 | Expanded backtest N=222 | wc_backtest_dataset_provenance.txt |
+| wc_backtest_historical_dataset.csv | 217 | Expanded backtest N=217 | wc_backtest_dataset_provenance.txt |
 | wc_bayesian_search_results.json | 102 | Iteration 6 search outputs | MODEL_ITERATION_V6.md |
-| wc_model_production_results.csv | 228 | Pipeline output (6+222 predictions) | Built by replicable pipeline |
+| wc_model_production_results.csv | 223 | Pipeline output (6+217 predictions) | Built by replicable pipeline |
 
 PRIMARY REAL-WORLD SOURCES (verified URLs)
 ------------------------------------------
@@ -46,10 +46,10 @@ REPLICATION WORKFLOW (student checklist)
 EXPECTED LOCKED OUTPUTS (regression)
 ------------------------------------
 June slate (6 matches): see tests/test_wc_pipeline.py EXPECTED_RESULTS
-Backtest N=222:
-  - v4_elo weighted Brier: 0.6157 (±0.002)
-  - v4_1_stack weighted Brier: 0.6039 (±0.002)
-  - market_implied Brier: 0.5956 (±0.002)
+Backtest N=217:
+  - v4_elo weighted Brier: 0.6293 (±0.003)
+  - v4_1_stack weighted Brier: 0.6048 (±0.003)
+  - market_implied Brier: 0.5852 (±0.003)
   - MOD trap count v4.1: 0
 
 WHY TWO INPUT DATASETS?

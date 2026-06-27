@@ -18,7 +18,7 @@ import pytest
 
 pytestmark = pytest.mark.skip(
     reason=(
-        "Archived v4.1 replication contract locked to the retired 222-row "
+        "Archived v4.1 replication contract is retained for historical "
         "dataset and funded recommendation policy; current release validation "
         "is covered by test_june22_27_pipeline.py."
     )
@@ -110,4 +110,4 @@ def test_production_csv_written_on_full_run():
     run_full_v41_pipeline(save_output=True)
     assert OUTPUT_CSV.exists()
     lines = OUTPUT_CSV.read_text().strip().splitlines()
-    assert len(lines) >= 228  # header + 6 june + 222 backtest
+    assert len(lines) >= 224  # header + 6 june + 217 backtest

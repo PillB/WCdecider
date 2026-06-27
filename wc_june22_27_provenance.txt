@@ -6,6 +6,7 @@ Elapsed outcomes: wc_2026_results_through_june24.csv
 Pre-tournament Elo: wc_team_elo_baseline_june11.csv
 Historical Dataset A/B source: wc_backtest_historical_dataset.csv
 Screenshot-derived odds: odds_june22_23.csv, odds_june24.csv, odds_june25_26.csv, odds_june27.csv
+Manual odds overrides: root-level manual_odds_*.csv files with matching .provenance.json sidecars are preferred for fixtures after 2026-06-26 at the normalized row key fixture_id/app/market_id/selection_canonical/line.
 Complete screenshot inventory: wc_screenshot_manifest_june22_27.csv
 Verified sportsbook UI boundary: IMG_7523–IMG_7614 = Betsson; IMG_7615–IMG_7745 = Betano.
 OSINT notes: research_june22_23.csv, research_june24_25.csv, research_june26_27.csv
@@ -26,6 +27,7 @@ Column derivations:
 - Asian settlement: integer/half lines settle directly; quarter lines split the stake equally across adjacent half-lines and preserve win/push/loss equivalents.
 - handicap-plus-total combos: retained as source evidence but disabled from completeness, EV, rankings, and recommendations until app-specific push/void/half-result contracts are documented and exhaustively tested.
 - normalized odds schema: market family, period, settlement rule, selected team, canonical selection, handicap/total lines, combo legs, market group, completeness, transcription status, and confidence.
+- odds source_kind/source_file: screenshot rows point to the original odds_june*.csv extraction and manual_user_input rows point to the manual_odds_*.csv file entered through the GUI.
 - unsupported or ambiguous markets: result handicap, early payout, corners, heterogeneous boosts, and incomplete/truncated selections are retained as source rows but excluded from evaluation.
 - double-chance consistency: displayed fair prices and screenshot EV both use the same production score grid.
 - quote evaluation: structural forecast probabilities remain independent of the quoted price; de-vigged market probabilities are used only for disagreement/risk diagnostics.
@@ -38,7 +40,7 @@ Column derivations:
 - bankroll simulation: only ACTIONABLE rows may receive a stake; every ABSTAIN row receives S/0 and unallocated app budget is preserved.
 - stress EV: subtract 3 percentage points from selected win probability and add 3 points to loss probability.
 - classification: divergence >15pp or EV >25% HALT; all other selections PASS until recommendation-policy profitability is validated out of sample.
-- source_sha256: SHA-256 of the exact screenshot containing the price.
+- source_sha256: screenshot rows use the SHA-256 of the exact screenshot containing the price; manual rows use one combined SHA-256 over the manual CSV and its provenance JSON.
 
 Model selection:
 - Hyperparameters are selected on chronological development windows. The final development-validation block is descriptive only; a new prospective sealed holdout is required.
@@ -57,14 +59,14 @@ Input hashes:
 - wc_2026_results_through_june24.csv: 24276c96e32542f2145c91e60b878e1d98536032850006a460642bc99b256a50
 - wc_backtest_historical_dataset.csv: beee227402f102b146f785dc77d92a00863b9c5090f7de4ff6d7baaa9f75683a
 - wc_team_elo_baseline_june11.csv: f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b
-- pipeline: 9e13a74a4d0bb6708086fae5d020c8d6a708c4358182ee6eedd9870f1dd801c1
+- pipeline: 8e51c1faf24576b4e3a390d68265dd2e23b88a004a9e0ecde45900f4ef1b0607
 
 Generated artifact hashes:
 - wc_dataset_a_world_cups.csv: 6293c0b6989bc7f4b8bc778ce6b85d327dfd43dd47b820612f6cc5a3045a6831
 - wc_dataset_b_supplementary.csv: 8f76eb0bb1fff775cf6de0c989173724b65daef41fac14ce03b7c0ea83c8945a
 - wc_june22_27_model_dataset.csv: 750360eda1e668216a11860c1a94c1019eaf8afc14332aeb097043fb36801f52
-- wc_june22_27_model_metrics.json: dc52760da9e0b143dd9156dc69319bb3897a7fcad85d8307a963e1f8a42f3d79
-- wc_june22_27_predictions.json: 1c644cf808fb9824f67c4d0829d52bb94bb06bd040242039a2a0b4ba31834b9f
-- wc_odds_june_22-27.csv: bf5a0239e6b5b062b541de77382acb7453bb6f4f151a96be339d99d61a5a88b3
+- wc_june22_27_model_metrics.json: 6f37a1f112122a4db133b60d700c517dcf9df615ba4a1cd3b612dc1c06f7e2ba
+- wc_june22_27_predictions.json: 82a429ea643ab51752239931d6b1c271caaa8b96231184ec8e284608114333ae
+- wc_odds_june_22-27.csv: 080ec6eabf04e1b479dda39b2aebbbd5149d3e28e9bf25addbed8e4512c9509a
 - wc_research_june22_27.csv: 1e7310c443256c70a9c31afebda811a04c557f7f88c59f5514da49128b88d22d
 - wc_screenshot_manifest_june22_27.csv: ab5671e938fe7ea7989256993f5cadb6450609dd496ac206a00b29ffc6cfd0be

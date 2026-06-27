@@ -2,12 +2,12 @@
   "git_commit": "PENDING_SAFETY_RELEASE_COMMIT",
   "reviewed_model_version": "june22_27_v5_fail_closed_development_only",
   "reviewed_artifact_hashes": {
-    "wc_june22_27_model_metrics.json": "dc52760da9e0b143dd9156dc69319bb3897a7fcad85d8307a963e1f8a42f3d79",
-    "wc_june22_27_predictions.json": "1c644cf808fb9824f67c4d0829d52bb94bb06bd040242039a2a0b4ba31834b9f"
+    "wc_june22_27_model_metrics.json": "6f37a1f112122a4db133b60d700c517dcf9df615ba4a1cd3b612dc1c06f7e2ba",
+    "wc_june22_27_predictions.json": "82a429ea643ab51752239931d6b1c271caaa8b96231184ec8e284608114333ae"
   },
   "reviewed_semantic_hashes": {
-    "wc_june22_27_model_metrics.json": "179d5f0997889994c744b0adcad325f6f9d791f7744513bb7c3dd19d6bfed795",
-    "wc_june22_27_predictions.json": "5da4a47d533d33edc9369234d064cc8f7878d83b40ee10e1fdaf2078aaff03be"
+    "wc_june22_27_model_metrics.json": "c694bb540bb3ad81beb9de27c8ced2d2a0a4763a2d92afeb0faf223a1fe13868",
+    "wc_june22_27_predictions.json": "e839fee116e5623d93a28536c70480bf130836fa7f264788f3ef0971922b636b"
   },
   "global": {
     "owner": {

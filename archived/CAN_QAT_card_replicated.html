@@ -1,0 +1,299 @@
+<div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden mb-6">
+  <!-- Header -->
+  <div class="px-6 py-4 border-b border-slate-800 bg-slate-950/50 flex items-center justify-between">
+    <div>
+      <div class="font-semibold text-lg">
+        <span class="en">Canada vs Qatar • June 18, 2026</span>
+        <span class="es">Canadá vs Qatar • 18 de junio de 2026</span>
+      </div>
+      <div class="text-xs text-slate-400">
+        <span class="en">Betsson screenshot IMG_7475.PNG • Pre-match</span>
+        <span class="es">Captura Betsson IMG_7475.PNG • Pre-partido</span>
+      </div>
+    </div>
+    <div class="text-right text-sm">
+      <div class="font-mono text-emerald-400 font-semibold">+12.8% EV • STRONG</div>
+      <div class="text-[10px] text-slate-500">
+        <span class="en">Replicated from wc_june17_21_model_dataset.csv + wc_replicable_pipeline.py</span>
+        <span class="es">Replicado desde wc_june17_21_model_dataset.csv + wc_replicable_pipeline.py</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Data section -->
+    <div>
+      <div class="uppercase tracking-[1px] text-[10px] text-slate-400 mb-2">
+        <span class="en">Data (from allowed CSV row + provenance)</span>
+        <span class="es">Datos (de fila CSV permitida + provenance)</span>
+      </div>
+      <table class="w-full text-sm border border-slate-800 rounded-xl overflow-hidden">
+        <tbody class="divide-y divide-slate-800">
+          <tr>
+            <td class="px-3 py-2 text-slate-400 w-1/3">
+              <span class="en">Elo (A / B)</span>
+              <span class="es">Elo (A / B)</span>
+            </td>
+            <td class="px-3 py-2 font-mono">
+              <span class="en">CAN 1860 (host) / QAT 1570</span>
+              <span class="es">CAN 1860 (local) / QAT 1570</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">Elo Sources</span>
+              <span class="es">Fuentes Elo</span>
+            </td>
+            <td class="px-3 py-2 text-xs">
+              <span class="en">eloratings.net / international-football 2026-06-17 snapshot (host) + eloratings.net Jun17</span>
+              <span class="es">eloratings.net / international-football instantánea 17-06-2026 (local) + eloratings.net Jun17</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">Home Adv (Ha)</span>
+              <span class="es">Ventaja local (Ha)</span>
+            </td>
+            <td class="px-3 py-2 font-mono">+40 <span class="text-[10px] text-slate-500">(host per rules)</span></td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">Form + Injury (Fa)</span>
+              <span class="es">Forma + Lesiones (Fa)</span>
+            </td>
+            <td class="px-3 py-2 font-mono">+10 (CAN previews + host) −5 (QAT limited)</td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">μ_total (expected goals)</span>
+              <span class="es">μ_total (goles esperados)</span>
+            </td>
+            <td class="px-3 py-2 font-mono">2.45 <span class="text-[10px] text-slate-500">(v4.1 host mismatch)</span></td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">Screenshot / Odds</span>
+              <span class="es">Captura / Cuotas</span>
+            </td>
+            <td class="px-3 py-2">
+              <span class="en">Betsson IMG_7475.PNG: Handicap −1 CAN @ 1.87</span>
+              <span class="es">Betsson IMG_7475.PNG: Hándicap −1 CAN @ 1.87</span>
+              <div class="text-[10px] text-slate-500 mt-0.5">BTTS 2.30 • DC 1.03 (for reference)</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="px-3 py-2 text-slate-400">
+              <span class="en">Finetunes Applied</span>
+              <span class="es">Ajustes aplicados</span>
+            </td>
+            <td class="px-3 py-2 text-xs font-mono">Rule 21 + host adj + Rule 24 → opener_draw_boost=0.055, minnow_resilience_mult=1.16</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Executed Model section -->
+    <div>
+      <div class="uppercase tracking-[1px] text-[10px] text-slate-400 mb-2">
+        <span class="en">Executed Model (from wc_replicable_pipeline.py)</span>
+        <span class="es">Modelo ejecutado (desde wc_replicable_pipeline.py)</span>
+      </div>
+      <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono space-y-1.5">
+        <div>
+          <span class="text-slate-400">apply_finetunes(row)</span> → 
+          <span class="en">opener=0.055, minnow=1.16</span>
+          <span class="es">apertura=0.055, minnow=1.16</span>
+        </div>
+        <div>
+          <span class="text-slate-400">two_way_win_prob(1860+40+5, 1570)</span> = <span class="text-emerald-400">0.873</span>
+        </div>
+        <div>
+          <span class="text-slate-400">three_way_1x2(0.873, +0.055)</span> → 
+          <span class="en">pCAN=64.1%, Draw=26.5%, QAT=9.4%</span>
+          <span class="es">pCAN=64.1%, Empate=26.5%, QAT=9.4%</span>
+        </div>
+        <div>
+          <span class="text-slate-400">expected_lambdas(..., minnow=1.16)</span> → 
+          <span class="en">λ_CAN=2.246, λ_QAT=0.204</span>
+          <span class="es">λ_CAN=2.246, λ_QAT=0.204</span>
+        </div>
+        <div class="pt-1 border-t border-slate-800">
+          <span class="text-slate-400">compute_margin_prob(la, lb, margin=2)</span> = 
+          <span class="font-semibold text-emerald-400">0.603</span> 
+          <span class="en">(p_margin2 ≈ 60.3%)</span>
+          <span class="es">(p_margin2 ≈ 60.3%)</span>
+        </div>
+        <div>
+          <span class="text-slate-400">EV = (0.603 × 1.87 − 1) × 100</span> = 
+          <span class="font-semibold text-emerald-400">+12.8%</span>
+        </div>
+        <div class="text-[10px] text-slate-500 pt-1">
+          <span class="en">All functions called exactly as defined in wc_replicable_pipeline.py. p_margin2 &amp; EV match JSON target 60.3 / +12.8.</span>
+          <span class="es">Todas las funciones llamadas exactamente como definidas en wc_replicable_pipeline.py. p_margin2 y EV coinciden con objetivo JSON 60.3 / +12.8.</span>
+        </div>
+      </div>
+      <div class="mt-2 text-[10px]">
+        <span class="en">Sensitivity: processing_notes state “ROBUST MOD (all sens +)” — classified STRONG in JSON per ev≥8 rule.</span>
+        <span class="es">Sensibilidad: processing_notes indica “ROBUST MOD (all sens +)” — clasificado STRONG en JSON según regla ev≥8.</span>
+      </div>
+    </div>
+
+    <!-- Top Recommendation -->
+    <div class="bg-slate-950 border border-emerald-900/60 rounded-2xl p-4">
+      <div class="uppercase text-emerald-400 text-xs tracking-widest mb-1">
+        <span class="en">Top Recommendation</span>
+        <span class="es">Recomendación principal</span>
+      </div>
+      <div class="text-2xl font-semibold mb-1">
+        <span class="en">Handicap −1 CAN @ 1.87</span>
+        <span class="es">Hándicap −1 CAN @ 1.87</span>
+      </div>
+      <div class="font-mono text-lg text-emerald-400">+12.8% EV • STRONG</div>
+      <div class="mt-2 text-sm">
+        <span class="en">Source: Betsson IMG_7475.PNG (Handicap market)</span>
+        <span class="es">Fuente: Betsson IMG_7475.PNG (mercado Hándicap)</span>
+      </div>
+      <div class="mt-3 text-xs border-t border-slate-800 pt-3 text-slate-400">
+        <span class="en">Model p for selection (p_margin2): 60.3%. Fair odds ≈ 1/0.603 ≈ 1.66. Live 1.87 offers +12.8% edge.</span>
+        <span class="es">p modelo para la selección (p_margin2): 60.3%. Cuota justa ≈ 1/0.603 ≈ 1.66. La cuota 1.87 ofrece +12.8% de valor.</span>
+      </div>
+      <div class="mt-2 text-[10px] text-slate-500">
+        <span class="en">¼ Kelly suggestion per AGENT framework (user decides stake). Max 1.5% bankroll for STRONG.</span>
+        <span class="es">Sugerencia ¼ Kelly según marco AGENT (el usuario decide la apuesta). Máx 1.5% del bankroll para STRONG.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ELI5 ultra-detailed bilingual -->
+  <div class="px-6 pb-6">
+    <div class="uppercase tracking-[1px] text-[10px] text-slate-400 mb-2">
+      <span class="en">ELI5 — What the bet is &amp; exactly how to place it in the apps (from screenshot UI)</span>
+      <span class="es">ELI5 — Qué es la apuesta y cómo colocarla exactamente en las apps (de la UI de la captura)</span>
+    </div>
+
+    <div class="prose prose-invert text-sm space-y-4 text-slate-200">
+      <!-- What is it -->
+      <div>
+        <div class="font-semibold mb-1">
+          <span class="en">What is “Handicap −1 CAN”?</span>
+          <span class="es">¿Qué es “Hándicap −1 CAN”?</span>
+        </div>
+        <div>
+          <span class="en">You win only if Canada wins the match by 2 or more goals. If Canada wins by exactly 1 goal, the bet is a push (stake returned). If Canada draws or loses, you lose the stake. This is the Asian/3-way Handicap −1 market visible on the Betsson screenshot.</span>
+          <span class="es">Ganas solo si Canadá gana el partido por 2 o más goles. Si Canadá gana por exactamente 1 gol, la apuesta se anula (se devuelve la apuesta). Si Canadá empata o pierde, pierdes la apuesta. Este es el mercado de Hándicap −1 asiático/3-vías visible en la captura de Betsson.</span>
+        </div>
+        <div class="text-xs mt-1">
+          <span class="en">Model says Canada has 60.3% chance of winning by 2+ goals (p_margin2 executed via Poisson on λ_CAN=2.246 / λ_QAT=0.204).</span>
+          <span class="es">El modelo dice que Canadá tiene 60.3% de probabilidad de ganar por 2+ goles (p_margin2 ejecutado vía Poisson con λ_CAN=2.246 / λ_QAT=0.204).</span>
+        </div>
+      </div>
+
+      <!-- EV explained -->
+      <div>
+        <div class="font-semibold mb-1">
+          <span class="en">Why +12.8% EV?</span>
+          <span class="es">¿Por qué +12.8% EV?</span>
+        </div>
+        <div>
+          <span class="en">Model probability for the selection (60.3%) × live decimal odds (1.87) − 1 = +0.128 or +12.8% expected value per unit staked. This is the edge vs the book price. Fair odds implied by model ≈1.66.</span>
+          <span class="es">Probabilidad del modelo para la selección (60.3%) × cuota decimal en vivo (1.87) − 1 = +0.128 o +12.8% de valor esperado por unidad apostada. Es el edge vs el precio de la casa. La cuota justa según el modelo ≈1.66.</span>
+        </div>
+      </div>
+
+      <!-- Step-by-step app instructions (Betsson / Betano) -->
+      <div>
+        <div class="font-semibold mb-1">
+          <span class="en">Exact app steps (Betsson mobile screenshot style)</span>
+          <span class="es">Pasos exactos en la app (estilo captura Betsson móvil)</span>
+        </div>
+        <ol class="list-decimal ml-5 space-y-1">
+          <li>
+            <span class="en">Open the Betsson (or Betano) app and ensure you are logged in.</span>
+            <span class="es">Abre la app de Betsson (o Betano) e inicia sesión.</span>
+          </li>
+          <li>
+            <span class="en">Go to the main menu → “Sports” or “Fútbol” → “World Cup 2026” or upcoming fixtures list. Locate “Canada vs Qatar” (or CAN vs QAT) scheduled for 2026-06-18.</span>
+            <span class="es">Ve al menú principal → “Deportes” o “Fútbol” → “Copa Mundial 2026” o lista de partidos próximos. Localiza “Canadá vs Qatar” (o CAN vs QAT) programado para 2026-06-18.</span>
+          </li>
+          <li>
+            <span class="en">Tap the match to open the detailed markets. Scroll or swipe to the “Handicap”, “Asian Handicap”, or “Hándicap Asiático” section (not the main 1X2 win/draw/win).</span>
+            <span class="es">Toca el partido para abrir los mercados detallados. Desplázate o desliza hasta la sección “Handicap”, “Asian Handicap” o “Hándicap Asiático” (no el 1X2 principal).</span>
+          </li>
+          <li>
+            <span class="en">Find the line “Canada −1” (or “CAN −1” / “Canadá -1”). Confirm the decimal odds read 1.87 exactly as in IMG_7475.PNG. (If a “boost” is shown, verify it is the same selection.)</span>
+            <span class="es">Busca la línea “Canada −1” (o “CAN −1” / “Canadá -1”). Confirma que las cuotas decimales muestren exactamente 1.87 como en IMG_7475.PNG. (Si aparece un “boost”, verifica que sea la misma selección.)</span>
+          </li>
+          <li>
+            <span class="en">Tap the 1.87 price. The selection appears in your bet slip / boleto at the bottom or right side of the screen.</span>
+            <span class="es">Toca el precio 1.87. La selección aparece en tu boleto de apuestas en la parte inferior o lateral derecha de la pantalla.</span>
+          </li>
+          <li>
+            <span class="en">Enter your stake amount in the boleto field. The app instantly shows estimated ganancia (potential winnings) = stake × 1.87. Review the total return (ganancia neta + devolución de stake) before confirming.</span>
+            <span class="es">Ingresa el monto de tu apuesta en el campo del boleto. La app muestra instantáneamente la ganancia estimada = apuesta × 1.87. Revisa el retorno total (ganancia neta + devolución de la apuesta) antes de confirmar.</span>
+          </li>
+          <li>
+            <span class="en">Double-check: selection = Canada Handicap −1, odds = 1.87, stake amount correct. Tap “Place bet”, “Confirmar apuesta” or equivalent green button to submit. Wait for the confirmation ticket number.</span>
+            <span class="es">Verifica doble: selección = Canadá Hándicap −1, cuota = 1.87, monto correcto. Toca “Place bet”, “Confirmar apuesta” o el botón verde equivalente para enviar. Espera el número de ticket de confirmación.</span>
+          </li>
+        </ol>
+        <div class="text-xs mt-2 text-amber-400">
+          <span class="en">Note: Markets can move or be suspended. Always verify the live price on screen matches the analyzed 1.87 before confirming the boleto.</span>
+          <span class="es">Nota: Los mercados pueden moverse o suspenderse. Siempre verifica que el precio en vivo en pantalla coincida con el 1.87 analizado antes de confirmar el boleto.</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="font-semibold mb-1">
+          <span class="en">If something goes wrong (after the game / settlement)</span>
+          <span class="es">Si algo sale mal (después del partido / liquidación)</span>
+        </div>
+        <ul class="list-disc ml-5 text-xs space-y-0.5">
+          <li><span class="en">Canada wins 1-0 or 2-1 → push, stake returned (no win/loss on the handicap bet).</span><span class="es">Canadá gana 1-0 o 2-1 → push, se devuelve la apuesta (sin ganancia/pérdida en la apuesta de hándicap).</span></li>
+          <li><span class="en">Canada wins 2-0, 3-1 etc. → bet wins at 1.87 (full payout).</span><span class="es">Canadá gana 2-0, 3-1 etc. → la apuesta gana a 1.87 (pago completo).</span></li>
+          <li><span class="en">Draw or Qatar win → full loss of stake.</span><span class="es">Empate o victoria de Qatar → pérdida total de la apuesta.</span></li>
+          <li><span class="en">Check settlement in “My Bets” / “Mis apuestas”. Contact support if the result is mis-settled vs final score.</span><span class="es">Revisa la liquidación en “My Bets” / “Mis apuestas”. Contacta soporte si el resultado se liquida mal vs el marcador final.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Self-critique + Sources + Responsible -->
+  <div class="border-t border-slate-800 px-6 py-4 bg-slate-950/40 text-xs">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <div class="font-semibold mb-1 text-slate-300">
+          <span class="en">Top risks (what could make this wrong)</span>
+          <span class="es">Principales riesgos (qué podría hacer que esto falle)</span>
+        </div>
+        <ul class="list-disc ml-4 space-y-0.5 text-slate-400">
+          <li><span class="en">Qatar organizes a low-block and Canada fails to convert chances (high variance in single match).</span><span class="es">Qatar organiza un bloque bajo y Canadá falla en convertir oportunidades (alta varianza en un solo partido).</span></li>
+          <li><span class="en">Key Canada attacker injured or rested before kickoff (lineup gate); model used pre-match host/form assumptions.</span><span class="es">Delantero clave de Canadá lesionado o descansado antes del pitido inicial (puerta de alineaciones); el modelo usó suposiciones de local/forma pre-partido.</span></li>
+          <li><span class="en">Weather or pitch conditions at BC Place reduce total goals below 2.45 μ (model λs become less favorable for win-by-2+).</span><span class="es">Condiciones climáticas o de cancha en BC Place reducen los goles totales por debajo de μ=2.45 (las λ del modelo se vuelven menos favorables para ganar por 2+).</span></li>
+        </ul>
+        <div class="mt-1 text-[10px] text-slate-500">
+          <span class="en">Confidence: ≤70% (per AGENT.md). Football is high-variance; edge &lt;3% is marginal.</span>
+          <span class="es">Confianza: ≤70% (según AGENT.md). El fútbol tiene alta varianza; un edge &lt;3% es marginal.</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="font-semibold mb-1 text-slate-300">
+          <span class="en">Sources (verbatim from allowed files only)</span>
+          <span class="es">Fuentes (textual solo de archivos permitidos)</span>
+        </div>
+        <ul class="text-[10px] text-slate-400 space-y-0.5">
+          <li>CSV row: Canada vs Qatar 2026-06-18 — elo_a=1860 (eloratings.net / international-football 2026-06-17 snapshot (host)), elo_b=1570 (eloratings.net Jun17), home_adv=40, form_adjust_a=10, injury_adjust_a=-5, mu_total=2.45, finetune_applied="Rule 21 + host adj + Rule 24", screenshot_source_odds="IMG_7475.PNG (Betsson Handicap CAN-1 1.87; BTTS 2.30 DC 1.03)", rec_odds=1.87, model_p_win_or_sel=0.603, ev_pct=+12.8</li>
+          <li>wc_june17_21_dataset_provenance.txt: processing steps, Rule 21 minnow_resilience, host adj, screenshot transcription rules.</li>
+          <li>wc_replicable_pipeline.py: two_way_win_prob, three_way_1x2, expected_lambdas, compute_margin_prob, apply_finetunes — executed live.</li>
+          <li>wc_june17_21_predictions.json: match entry confirms ev_pct=12.8, rec_odds=1.87, strength=STRONG, recommendation=handicap_minus1, screenshot_source={'handicap_minus1': 1.87}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Responsible gambling block verbatim per AGENT.md -->
+    <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-400">
+      Betting carries real risk of financial loss. This is analysis only, not financial advice or a guarantee of outcomes. Past form and model edges do not predict individual match results. If gambling is no longer recreational, contact Peru's <a href="https://www.gob.pe/mincetur" class="underline">Línea 0800-1-3232 (MINCETUR)</a> or <a href="https://jugadoresanonimos.org/" class="underline">Jugadores Anónimos Perú</a>.
+      <span class="es">Las apuestas conllevan riesgo real de pérdida financiera. Esto es solo análisis, no consejo financiero ni garantía de resultados. El rendimiento pasado y los edges del modelo no predicen resultados individuales. Si el juego ya no es recreativo, contacta la Línea 0800-1-3232 (MINCETUR) de Perú o Jugadores Anónimos Perú.</span>
+    </div>
+  </div>
+</div>
