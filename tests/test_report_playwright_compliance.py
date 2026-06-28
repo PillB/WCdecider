@@ -296,6 +296,7 @@ def test_mobile_page_uses_audit_summary_not_large_csv():
         page.goto(url, wait_until="networkidle")
         page.wait_for_selector("#cards article", timeout=15000)
         assert any(url.endswith("wc_june22_27_datapoint_audit_summary.json") for url in requested)
+        assert any(url.endswith("release_validation_june22_27.json") for url in requested)
         assert not any(url.endswith("wc_june22_27_datapoint_audit.csv") for url in requested)
         payload = json.loads((SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8"))
         assert page.locator("#cards article").count() == payload["batch"]["fixture_count"]

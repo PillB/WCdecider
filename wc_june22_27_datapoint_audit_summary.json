@@ -1,33 +1,33 @@
 {
   "artifact": "wc_june22_27_datapoint_audit.csv",
-  "artifact_bytes": 39585996,
+  "artifact_bytes": 39586632,
   "artifact_counts": {
     "wc_june22_27_model_metrics.json": 114,
     "wc_june22_27_predictions.json": 35761
   },
-  "artifact_sha256": "95e28d64ef4b492acd35edd3cdfb06cc0acdb5d9ea22e92b5c65bdde0045cb54",
+  "artifact_sha256": "4a800e025ac5fcfd0d2ca3cb40537f2a18d9e245d2f527714d135c39e4f1c086",
   "audit_paths_sha256": "3f66a6ea66f0805e8f502359aff700a27df63dadbeaaa3eba5157ad22c61ba4f",
   "audit_rows": 35875,
   "blocked_rows": 0,
   "blocking_reason": "",
   "current_artifact_hashes": {
-    "wc_june22_27_model_metrics.json": "2931b0404e17f8209a907b64bc7f16026f2ce691771cd3c7ed2321669b6f0f0d",
-    "wc_june22_27_predictions.json": "59c17d5bc58bedf8853ee830876be954864d14063ecbbcb289b296547282b8b4"
+    "wc_june22_27_model_metrics.json": "8204b62c1202eb093406c0290f9f0948da8cb5271754373d543f83db7f828fed",
+    "wc_june22_27_predictions.json": "03ac70921ff5a2f287377d5f1c46fd135f430ead50c72339e11d5d3ee6682d8e"
   },
   "current_model_version": "june22_27_v5_fail_closed_development_only",
   "current_semantic_hashes": {
-    "wc_june22_27_model_metrics.json": "c5690a97e1110b57954c156601c48786090e69b073b1fa729daa0585f8e2e38e",
-    "wc_june22_27_predictions.json": "9565f4f28a468942af631898f51790e19e6b1ae42c637ae2355dcca11c1a23a5"
+    "wc_june22_27_model_metrics.json": "f6524c4c7b9cedc92740554c89276fb95d6d1441a2620a4e0624ad876e2d6dee",
+    "wc_june22_27_predictions.json": "4739c9c667627056b020f68bbf979c0a155d8a1f80391122edc03b878fe8faab"
   },
   "expected_json_leaf_count": 35875,
   "expected_paths_sha256": "3f66a6ea66f0805e8f502359aff700a27df63dadbeaaa3eba5157ad22c61ba4f",
   "final_status": "PASS",
-  "metrics_sha256": "2931b0404e17f8209a907b64bc7f16026f2ce691771cd3c7ed2321669b6f0f0d",
-  "predictions_sha256": "59c17d5bc58bedf8853ee830876be954864d14063ecbbcb289b296547282b8b4",
+  "metrics_sha256": "8204b62c1202eb093406c0290f9f0948da8cb5271754373d543f83db7f828fed",
+  "predictions_sha256": "03ac70921ff5a2f287377d5f1c46fd135f430ead50c72339e11d5d3ee6682d8e",
   "review_binding_valid": true,
   "reviewed_artifact_hashes": {
-    "wc_june22_27_model_metrics.json": "c5690a97e1110b57954c156601c48786090e69b073b1fa729daa0585f8e2e38e",
-    "wc_june22_27_predictions.json": "9565f4f28a468942af631898f51790e19e6b1ae42c637ae2355dcca11c1a23a5"
+    "wc_june22_27_model_metrics.json": "f6524c4c7b9cedc92740554c89276fb95d6d1441a2620a4e0624ad876e2d6dee",
+    "wc_june22_27_predictions.json": "4739c9c667627056b020f68bbf979c0a155d8a1f80391122edc03b878fe8faab"
   },
   "reviewed_model_version": "june22_27_v5_fail_closed_development_only",
   "schema_version": "1.0",

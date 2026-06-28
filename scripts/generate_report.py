@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "index.html"
 AUDIT = ROOT / "wc_june22_27_datapoint_audit.csv"
 AUDIT_SUMMARY = ROOT / "wc_june22_27_datapoint_audit_summary.json"
+RELEASE_VALIDATION = ROOT / "governance" / "release_validation_june22_27.json"
 
 HTML = r"""<!doctype html>
 <html lang="en">
@@ -266,7 +267,7 @@ HTML = r"""<!doctype html>
 <script>
 const $=s=>document.querySelector(s);
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let DATA=null,METRICS=null,AUDIT_COUNT=0,APP_READY=false;
+let DATA=null,METRICS=null,RELEASE_VALIDATION=null,AUDIT_COUNT=0,APP_READY=false;
 const DIAGNOSTICS=[];
 const setText=(selector,value)=>{const el=$(selector);if(el)el.textContent=value};
 const setHtml=(selector,value)=>{const el=$(selector);if(el)el.innerHTML=value};
@@ -309,6 +310,8 @@ function renderSummary(rows){
  const halted=rows.filter(x=>x.rank_one_comparison?.strength==='HALT').length;
  const champ=METRICS.model_championship||{registered_variants:[],benchmark_champion:'unavailable',deep_learning_research:{candidate_families:[]}};
  const oddsInventory=METRICS.historical_closing_odds||{events:0,rows:0,primary_validation_rows:0,primary_validation_events:0};
+ const releaseRoles=RELEASE_VALIDATION?.roles||{};
+ const releaseRoleCount=Object.keys(releaseRoles).length;
  $('#summary').innerHTML=metric('<span class="en">Fixtures</span><span class="es">Partidos</span>',rows.length)+metric('<span class="en">Authorized bets</span><span class="es">Apuestas autorizadas</span>',rows.filter(x=>x.recommendation?.decision_status==='ACTIONABLE').length)+metric('<span class="en">Abstentions</span><span class="es">Abstenciones</span>',rows.filter(x=>x.rank_one_comparison?.decision_status==='ABSTAIN').length)+metric('<span class="en">Score NLL</span><span class="es">NLL de marcador</span>',Number(METRICS.score_market_calibration.production_holdout.score_nll).toFixed(4));
  const historicalRows=Number(METRICS.dataset_a_rows||0)+Number(METRICS.dataset_b_rows||0);
  setText('#production-history-count',`${historicalRows} rows`);
@@ -321,6 +324,7 @@ function renderSummary(rows){
  <p class="mt-2"><span class="en">Deep-learning research track: ${escapeHtml(champ.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registered but gated')}. These variants need the published promotion gate before production use: more timestamped fixtures, enough repeated temporal edges per team, nested walk-forward selection, calibration checks, and closing-line profitability validation.</span><span class="es">Línea de investigación deep learning: ${escapeHtml(champ.deep_learning_research?.candidate_families?.map(x=>x.name).join(' · ')||'registrada pero limitada')}. Estas variantes requieren la puerta de promoción publicada antes de usarse en producción: más partidos con marca de tiempo, suficientes aristas temporales repetidas por equipo, selección walk-forward anidada, calibración y validación de rentabilidad con líneas de cierre.</span></p>
  <p class="mt-2 text-violet-200"><span class="en">Research-mode toggle: ${escapeHtml(METRICS.research_mode_policy?.selected_candidate||'not available')} is available as a gated shadow view. Production authorization remains blocked unless a candidate passes the published promotion gate.</span><span class="es">Toggle de modo investigación: ${escapeHtml(METRICS.research_mode_policy?.selected_candidate||'no disponible')} está disponible como vista sombra limitada. La autorización de producción sigue bloqueada salvo que una candidata supere la puerta de promoción publicada.</span></p>
  <p class="mt-2"><span class="en">Historical odds inventory: ${oddsInventory.events} events and ${oddsInventory.rows} selection rows retained as timestamp-unknown proxies; primary timestamp-verified validation rows: ${oddsInventory.primary_validation_rows}.</span><span class="es">Inventario histórico de cuotas: ${oddsInventory.events} eventos y ${oddsInventory.rows} filas de selecciones conservadas como proxies sin hora verificable; filas primarias verificadas por tiempo: ${oddsInventory.primary_validation_rows}.</span></p>
+ <p class="mt-2 text-emerald-200"><span class="en">Release validation: ${escapeHtml(RELEASE_VALIDATION?.final_status||'unavailable')} across ${releaseRoleCount} research-agent roles; prompt pack hash ${escapeHtml(RELEASE_VALIDATION?.prompt_pack?.sha256?.slice(0,12)||'missing')}.</span><span class="es">Validación de versión: ${escapeHtml(RELEASE_VALIDATION?.final_status||'no disponible')} en ${releaseRoleCount} roles de agentes de investigación; hash del paquete de prompts ${escapeHtml(RELEASE_VALIDATION?.prompt_pack?.sha256?.slice(0,12)||'faltante')}.</span></p>
  <p class="mt-2 text-red-200"><span class="en">Production authorization remains blocked: all decisions are ABSTAIN and authorized stakes are zero. The separate stake simulator is hypothetical and does not claim validated profit.</span><span class="es">La autorización de producción sigue bloqueada: todas las decisiones son ABSTAIN y los montos autorizados son cero. El simulador separado es hipotético y no afirma beneficio validado.</span></p>`;
 }
 function comparisonBar(label,value,maxValue,color,detail=''){
@@ -965,16 +969,19 @@ function setResearchMode(enabled){
 async function load(){
  try{
   recordDiagnostic('load_start');
-  const [predictionText,metricsText,auditSummaryText]=await Promise.all([
+  const [predictionText,metricsText,auditSummaryText,releaseValidationText]=await Promise.all([
     fetchTextArtifact('wc_june22_27_predictions.json'),
     fetchTextArtifact('wc_june22_27_model_metrics.json'),
-    fetchTextArtifact('wc_june22_27_datapoint_audit_summary.json')
+    fetchTextArtifact('wc_june22_27_datapoint_audit_summary.json'),
+    fetchTextArtifact('release_validation_june22_27.json')
   ]);
   DATA=JSON.parse(predictionText); METRICS=JSON.parse(metricsText);
   const auditSummary=JSON.parse(auditSummaryText);
+  RELEASE_VALIDATION=JSON.parse(releaseValidationText);
   if(!DATA||!DATA.batch||!Array.isArray(DATA.predictions))throw new Error('Predictions JSON schema is invalid');
   if(!METRICS||!METRICS.calibration||!METRICS.score_market_calibration)throw new Error('Metrics JSON schema is invalid');
   if(!auditSummary||auditSummary.final_status!=='PASS'||auditSummary.blocked_rows!==0)throw new Error('Datapoint audit summary is incomplete or blocked');
+  if(!RELEASE_VALIDATION||RELEASE_VALIDATION.final_status!=='PASS')throw new Error('Release validation is incomplete or blocked');
   const expectedPaths=new Set([
    ...jsonLeaves(DATA).map(pointer=>`wc_june22_27_predictions.json:${pointer}`),
    ...jsonLeaves(METRICS).map(pointer=>`wc_june22_27_model_metrics.json:${pointer}`)
@@ -987,6 +994,9 @@ async function load(){
   if(predictionHash&&auditSummary.predictions_sha256!==predictionHash)throw new Error('Predictions JSON hash does not match audit summary');
   if(metricsHash&&auditSummary.metrics_sha256!==metricsHash)throw new Error('Metrics JSON hash does not match audit summary');
   if(expectedPathHash&&auditSummary.expected_paths_sha256!==expectedPathHash)throw new Error('Current JSON leaf hash does not match audit summary');
+  if(predictionHash&&RELEASE_VALIDATION.current_artifact_hashes?.['wc_june22_27_predictions.json']!==predictionHash)throw new Error('Predictions JSON hash does not match release validation');
+  if(metricsHash&&RELEASE_VALIDATION.current_artifact_hashes?.['wc_june22_27_model_metrics.json']!==metricsHash)throw new Error('Metrics JSON hash does not match release validation');
+  if(RELEASE_VALIDATION.current_artifact_hashes?.['wc_june22_27_datapoint_audit_summary.json']&&RELEASE_VALIDATION.current_artifact_hashes['wc_june22_27_datapoint_audit_summary.json']!==auditSummary.artifact_sha256&&RELEASE_VALIDATION.current_artifact_hashes['wc_june22_27_datapoint_audit_summary.json']!==await sha256Hex(auditSummaryText))throw new Error('Audit summary hash does not match release validation');
   AUDIT_COUNT=auditSummary.audit_rows;
   if(DATA.predictions.length!==DATA.batch.fixture_count)throw new Error('Prediction count does not match batch metadata');
   const ids=new Set(DATA.predictions.map(x=>x.fixture_id)); if(ids.size!==DATA.predictions.length)throw new Error('Duplicate fixture IDs');
@@ -1034,6 +1044,8 @@ def main() -> None:
         raise FileNotFoundError(f"Audit manifest not found: {AUDIT}")
     if not AUDIT_SUMMARY.exists():
         raise FileNotFoundError(f"Audit summary not found: {AUDIT_SUMMARY}")
+    if not RELEASE_VALIDATION.exists():
+        raise FileNotFoundError(f"Release validation not found: {RELEASE_VALIDATION}")
     audit_hash = hashlib.sha256(AUDIT.read_bytes()).hexdigest()
     OUT.write_text(HTML.replace("__AUDIT_SHA__", audit_hash), encoding="utf-8")
     print(f"Wrote {OUT} ({OUT.stat().st_size:,} bytes)")

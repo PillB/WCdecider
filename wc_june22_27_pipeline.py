@@ -291,6 +291,9 @@ def selection_bucket(odd: Mapping[str, str], team_a: str, team_b: str) -> str:
     """Map a standard 1X2 selection to A/D/B using IDs or visible team labels."""
     sid = normalize_text(odd.get("selection_id", ""))
     label = normalize_text(odd.get("selection_original", ""))
+    canonical = normalize_text(odd.get("selection_canonical", ""))
+    if canonical in {"home", "draw", "away"}:
+        return {"home": "A", "draw": "D", "away": "B"}[canonical]
     code = TEAM_ALIASES.get(label)
     if sid in {"home", "1", "visible_home"} or code == team_a:
         return "A"
@@ -299,6 +302,23 @@ def selection_bucket(odd: Mapping[str, str], team_a: str, team_b: str) -> str:
     if sid in {"away", "2", "visible_away"} or code == team_b:
         return "B"
     return ""
+
+
+def one_x_two_canonical(bucket: str) -> str:
+    """Return persisted semantic label for an internal A/D/B result bucket."""
+    return {"A": "home", "D": "draw", "B": "away"}.get(bucket, "")
+
+
+def double_chance_code(canonical: str) -> str:
+    """Return internal AD/AB/DB code for a persisted double-chance label."""
+    return {
+        "home_or_draw": "AD",
+        "home_or_away": "AB",
+        "draw_or_away": "DB",
+        "AD": "AD",
+        "AB": "AB",
+        "DB": "DB",
+    }.get(canonical, "")
 
 
 def outcome_code(score_a: int, score_b: int) -> str:
@@ -1280,7 +1300,7 @@ def probability_and_ev(
                 p_loss += prob
 
     elif family == "double_chance":
-        canonical = odd.get("selection_canonical")
+        canonical = double_chance_code(str(odd.get("selection_canonical") or ""))
         p_home = event_probability(matrix, lambda ga, gb: ga > gb)
         p_draw = event_probability(matrix, lambda ga, gb: ga == gb)
         p_away = event_probability(matrix, lambda ga, gb: ga < gb)
@@ -1376,7 +1396,7 @@ def normalize_market_schema(
         if bucket:
             row["market_family"] = "1x2"
             row["settlement_rule_id"] = "full_time_1x2_v1"
-            row["selection_canonical"] = bucket
+            row["selection_canonical"] = one_x_two_canonical(bucket)
             if row["promo"] == "false":
                 row["market_group_id"] = (
                     f"{row['fixture_id']}|{row['app']}|{promo_group}|"
@@ -1417,7 +1437,12 @@ def normalize_market_schema(
         has_a = name_a in selection or normalize_text(CODE_NAMES[team_a][1]) in selection
         has_b = name_b in selection or normalize_text(CODE_NAMES[team_b][1]) in selection
         has_draw = "draw" in selection or "empate" in selection
-        canonical = "AB" if has_a and has_b else "AD" if has_a and has_draw else "DB" if has_b and has_draw else ""
+        canonical = (
+            "home_or_away" if has_a and has_b
+            else "home_or_draw" if has_a and has_draw
+            else "draw_or_away" if has_b and has_draw
+            else ""
+        )
         if canonical:
             row["market_family"] = "double_chance"
             row["settlement_rule_id"] = "double_chance_1x2_v1"
@@ -1496,10 +1521,15 @@ def mark_complete_markets(rows: List[Dict[str, str]]) -> None:
         family = group[0]["market_family"]
         selections = {row["selection_canonical"] for row in group}
         complete = (
-            (family == "1x2" and selections == {"A", "D", "B"})
+            (family == "1x2" and selections == {"home", "draw", "away"})
             or (family == "total_goals" and selections == {"over", "under"})
             or (family == "btts" and selections == {"yes", "no"})
-            or (family == "double_chance" and selections == {"AD", "AB", "DB"})
+            or (
+                family == "double_chance"
+                and selections == {
+                    "home_or_draw", "home_or_away", "draw_or_away",
+                }
+            )
             or (
                 family == "asian_handicap"
                 and len(group) == 2
@@ -3117,23 +3147,31 @@ def recommendation_display_labels(
         "A": team_a_en,
         "D": "Draw",
         "B": team_b_en,
+        "home": team_a_en,
+        "draw": "Draw",
+        "away": team_b_en,
+        "home_or_draw": f"{team_a_en} or Draw",
+        "home_or_away": f"{team_a_en} or {team_b_en}",
+        "draw_or_away": f"Draw or {team_b_en}",
         "yes": "Yes",
         "no": "No",
         "over": f"Over {line}".strip(),
         "under": f"Under {line}".strip(),
-        "home": team_a_en,
-        "away": team_b_en,
     }.get(canonical, selection_with_line)
     selection_es = {
         "A": team_a_es,
         "D": "Empate",
         "B": team_b_es,
+        "home": team_a_es,
+        "draw": "Empate",
+        "away": team_b_es,
+        "home_or_draw": f"{team_a_es} o empate",
+        "home_or_away": f"{team_a_es} o {team_b_es}",
+        "draw_or_away": f"Empate o {team_b_es}",
         "yes": "Sí",
         "no": "No",
         "over": f"Más de {line}".strip(),
         "under": f"Menos de {line}".strip(),
-        "home": team_a_es,
-        "away": team_b_es,
     }.get(canonical, selection_with_line)
     return {
         "market": {"en": market_en, "es": market_es},

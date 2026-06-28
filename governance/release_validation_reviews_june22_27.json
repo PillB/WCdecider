@@ -1,0 +1,50 @@
+{
+  "git_commit": "PENDING_RELEASE_VALIDATION_COMMIT",
+  "reviewed_artifact_hashes": {
+    "research_agent_prompt_pack_v1.md": "2c42f7503f131c5916ac0dffe7f40f33c74d9d78f5284356d3c27107dd545f66",
+    "wc_june22_27_datapoint_audit_summary.json": "7a7627c5f7c8d18e2f9969af685d94b0ee37cc5650715a86446384a00629ce7b",
+    "wc_june22_27_model_metrics.json": "8204b62c1202eb093406c0290f9f0948da8cb5271754373d543f83db7f828fed",
+    "wc_june22_27_predictions.json": "03ac70921ff5a2f287377d5f1c46fd135f430ead50c72339e11d5d3ee6682d8e"
+  },
+  "reviewed_semantic_hashes": {
+    "wc_june22_27_model_metrics.json": "f6524c4c7b9cedc92740554c89276fb95d6d1441a2620a4e0624ad876e2d6dee",
+    "wc_june22_27_predictions.json": "4739c9c667627056b020f68bbf979c0a155d8a1f80391122edc03b878fe8faab"
+  },
+  "roles": {
+    "storm_moderator": {
+      "agent_id": "019f0b4a-e4ec-7971-a361-82294043f627",
+      "status": "PASS",
+      "evidence": "Design covers seven required perspectives, exact byte/semantic hash binding, fail-closed missing-role/non-PASS/duplicate-role checks, audit-summary binding, and profitability fail-closed checks. Moderator initially BLOCKED only because this registry was absent."
+    },
+    "data_lineage": {
+      "agent_id": "019f0b7f-a92d-7112-83fb-abc5b000964c",
+      "status": "PASS",
+      "evidence": "Manual odds 497 rows match provenance; fixture/result/odds/prediction coverage all align; manual rows preserve source hash; promo values normalized true/false; 268 complete market groups have zero duplicate or invalid selection sets; 1X2 canonical values are home/draw/away and double-chance values are home_or_draw/home_or_away/draw_or_away."
+    },
+    "ml_methodology": {
+      "agent_id": "019f0b4b-9ff0-7eb3-bbf0-47205d19a209",
+      "status": "PASS",
+      "evidence": "Chronological date-block split, proper-score metrics, model comparison/promotion gates, and research-mode limits are acceptable only for fail-closed development publication. Actionable betting, profitability, model promotion, and confirmatory performance claims remain blocked."
+    },
+    "profitability_staking": {
+      "agent_id": "019f0b4b-a043-7123-9a90-44c3df938932",
+      "status": "PASS",
+      "evidence": "Historical closing-odds primary validation rows/events are zero; ROI/CLV/profitability are blocked. Metrics mark recommendations blocked and bankroll prohibited_zero_allocation; all 40 ranked comparisons are ABSTAIN; recommendation fields are null; production bankroll stakes are zero. Educational stake simulation is hypothetical only."
+    },
+    "clean_room_replication": {
+      "agent_id": "019f0b7f-a987-7e12-b656-bfb9b9bbd022",
+      "status": "PASS",
+      "evidence": "Clean-room temp run reproduced pipeline outputs, 10 predictions, 0 recommendations, and 35,875 datapoint audit rows with blocked=0. Prior BLOCKED status was solely due to missing role-review registry and generated release-validation artifact."
+    },
+    "report_ui_editor": {
+      "agent_id": "019f0b7f-a9db-77c2-8670-520a02e2a864",
+      "status": "PASS",
+      "evidence": "JSON/audit parity, top-four comparisons, bilingual report assumptions, newbie tooltips, mobile diagnostics, and Playwright coverage are sound. Prior BLOCKED status was solely due to missing role-validation registry/generated artifact and stale site before regeneration."
+    },
+    "deployment_reliability": {
+      "agent_id": "019f0b88-e2cb-7451-b819-5bcb72fadae8",
+      "status": "PASS",
+      "evidence": "CI order is structurally correct: field audit, role release validation, report generation, site build, pytest, Pages deploy, then live validation. Report fetch path and build copy path for release_validation_june22_27.json are consistent. Prior BLOCKED status was solely due to missing registry/generated artifact and uncommitted local changes."
+    }
+  }
+}

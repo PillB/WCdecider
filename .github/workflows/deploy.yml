@@ -95,6 +95,9 @@ jobs:
       - name: Generate field-level subagent audit manifest
         run: python3 scripts/generate_datapoint_audit.py
 
+      - name: Generate role-level research-agent release validation
+        run: python3 scripts/generate_release_validation.py
+
       - name: Generate JSON-driven report
         run: python3 scripts/generate_report.py
 

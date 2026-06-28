@@ -508,7 +508,7 @@ def test_manual_odds_replace_matching_screenshot_rows_after_june26(tmp_path, mon
         if row["fixture_id"] == "2026-06-27-cro-gha"
         and row["app"] == "Betano"
         and row["market_id"] == "match_result"
-        and row["selection_canonical"] == "A"
+        and row["selection_canonical"] == "home"
     ]
 
     assert len(croatia_home) == 1
@@ -566,7 +566,11 @@ def test_ci_builds_site_before_browser_tests():
     assert "actions/configure-pages@v5" in build_test_job
     assert "actions/upload-pages-artifact@v4" in build_test_job
     assert build_test_job.count("scripts/build_site.py") == 1
+    assert build_test_job.count("scripts/generate_release_validation.py") == 1
     assert build_test_job.index("- name: Generate field-level subagent audit manifest") < build_test_job.index(
+        "- name: Generate role-level research-agent release validation"
+    )
+    assert build_test_job.index("- name: Generate role-level research-agent release validation") < build_test_job.index(
         "- name: Generate JSON-driven report"
     )
     assert build_test_job.index("- name: Generate JSON-driven report") < build_test_job.index(
@@ -694,6 +698,35 @@ def test_datapoint_audit_summary_matches_full_manifest_and_current_json():
     assert summary["expected_paths_sha256"] == hashlib.sha256(
         "\n".join(expected_paths).encode("utf-8")
     ).hexdigest()
+
+
+def test_release_validation_binds_research_agents_to_current_artifacts():
+    path = ROOT / "governance" / "release_validation_june22_27.json"
+    assert path.exists()
+    record = json.loads(path.read_text(encoding="utf-8"))
+    assert record["final_status"] == "PASS"
+    assert record["blockers"] == []
+    assert record["release_checks"]["artifact_binding_valid"] is True
+    assert record["release_checks"]["semantic_binding_valid"] is True
+    assert record["release_checks"]["audit_summary_valid"] is True
+    assert record["release_checks"]["profitability_fail_closed"] is True
+    assert record["current_artifact_hashes"]["wc_june22_27_predictions.json"] == hashlib.sha256(
+        (ROOT / "wc_june22_27_predictions.json").read_bytes()
+    ).hexdigest()
+    assert record["current_artifact_hashes"]["wc_june22_27_model_metrics.json"] == hashlib.sha256(
+        (ROOT / "wc_june22_27_model_metrics.json").read_bytes()
+    ).hexdigest()
+    assert record["current_semantic_hashes"]["wc_june22_27_predictions.json"] == semantic_json_sha256(
+        json.loads((ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8"))
+    )
+    roles = record["roles"]
+    assert set(roles) == {
+        "storm_moderator", "data_lineage", "ml_methodology",
+        "profitability_staking", "clean_room_replication",
+        "report_ui_editor", "deployment_reliability",
+    }
+    assert all(role["status"] == "PASS" for role in roles.values())
+    assert len({role["agent_id"] for role in roles.values()}) == len(roles)
 
 
 def pipeline_json_leaves(value, pointer=""):
@@ -901,9 +934,9 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
             if comparison["market_family"] != "double_chance":
                 continue
             expected = {
-                "AD": common_dc["home_or_draw_probability"],
-                "AB": common_dc["home_or_away_probability"],
-                "DB": common_dc["draw_or_away_probability"],
+                "home_or_draw": common_dc["home_or_draw_probability"],
+                "home_or_away": common_dc["home_or_away_probability"],
+                "draw_or_away": common_dc["draw_or_away_probability"],
             }[comparison["selection_canonical"]]
             assert comparison["p_win"] == pytest.approx(expected, abs=2e-6)
     assert priced == 10

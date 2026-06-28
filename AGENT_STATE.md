@@ -24,6 +24,9 @@
 - 585 | Completed validator loop and governance binding | Data validator passed; model, replication, and editor validators confirmed content readiness after final hashes; updated `governance/subagent_reviews_june22_27.json` to final byte and semantic hashes | Success
 - 586 | Regenerated release artifacts | `scripts/generate_datapoint_audit.py` wrote 35,875 datapoints with blocked=0; regenerated `index.html`; `scripts/build_site.py` rebuilt the deployable `site/` bundle after summary hash checks | Success
 - 587 | Ran local validation | Manual odds GUI/build/pipeline tests passed 54/54; Playwright report/translation tests passed 30/30 with local-server permission escalation; audit summary validates current JSON/metrics byte hashes | Success
+- 588 | Began role-level research-agent validation implementation | Added prompt pack and release-validation generator; wired CI, report loader, build gate, and tests to require `release_validation_june22_27.json`; STORM moderator, ML methodology, and profitability agents returned PASS-eligible/PASS evidence; data, replication, and editor reviewer streams disconnected and require replacement | Diverged
+- 589 | Repaired role-validation blockers | Replaced disconnected reviewers, fixed persisted selection canonical labels for 1X2/double-chance complete markets, reran pipeline, rebound field-level review registry, regenerated datapoint audit, created seven-role release-validation registry, and generated `governance/release_validation_june22_27.json` with final_status PASS | Success
+- 590 | Regenerated and tested release-validation-gated site | Report now fetches release-validation JSON; build gate verifies audit and release-validation hashes; CI includes release-validation step; local tests passed 55/55 and browser/report tests passed 30/30 | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - External result evidence is mixed-source because official FIFA search results were not consistently accessible through search; each added score has a direct URL and retrieval timestamp.
@@ -31,8 +34,10 @@
 - Manual odds provenance mismatch is repaired; the CSV/provenance pair is still the hashable source artifact for manual rows.
 - Subagent validation correctly found a half-migrated release layer; regeneration and deployment must remain blocked until governance hashes, audit artifacts, root HTML, tests, and site bundle are synchronized to the current 10-fixture JSON.
 - Current release is fail-closed: every fixture has four ranked comparisons and zero authorized recommendations/stakes because profitability promotion remains blocked.
+- Role-level validation must not pass until all seven required roles have unique agent IDs, PASS evidence, and exact current artifact hash bindings.
+- Release-validation role registry is now hash-bound to current predictions, metrics, audit summary, and prompt pack; deployment still requires pushing and live Pages parity validation.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Commit and push the validated June 27–29 release artifacts.
-- [ ] Next Step: Confirm GitHub CI/Pages deploy status.
-- [ ] Future Milestone: Validate live GitHub Pages JSON/DOM parity against the local 10-fixture bundle.
+- [ ] Active Step: Commit and push the release-validation-gated artifact set.
+- [ ] Next Step: Push main to trigger GitHub Pages workflow and monitor deploy status.
+- [ ] Future Milestone: Validate live JSON/DOM parity and exact release-validation artifact availability.

@@ -28,6 +28,7 @@ def test_blocked_audit_preserves_existing_site(tmp_path, monkeypatch):
         "wc_research_june22_27.csv",
         "wc_june22_27_datapoint_audit.csv",
         "wc_june22_27_datapoint_audit_summary.json",
+        "release_validation_june22_27.json",
         "historical_closing_odds_canonical_coverage.json",
         "historical_closing_odds_canonical_provenance.txt",
         "historical_closing_odds_sources.json",
@@ -35,7 +36,11 @@ def test_blocked_audit_preserves_existing_site(tmp_path, monkeypatch):
         "HISTORICAL_ODDS_MODEL_CHAMPIONSHIP_PLAN.md",
     ]
     for name in required_names:
-        (tmp_path / name).write_text("{}\n", encoding="utf-8")
+        path = tmp_path / name
+        if name == "release_validation_june22_27.json":
+            path = tmp_path / "governance" / name
+            path.parent.mkdir()
+        path.write_text("{}\n", encoding="utf-8")
     with (tmp_path / "wc_june22_27_datapoint_audit.csv").open(
         "w", newline="", encoding="utf-8"
     ) as handle:

@@ -37,6 +37,7 @@ def build() -> Path:
         ROOT / "wc_research_june22_27.csv",
         ROOT / "wc_june22_27_datapoint_audit.csv",
         ROOT / "wc_june22_27_datapoint_audit_summary.json",
+        ROOT / "governance" / "release_validation_june22_27.json",
         ROOT / "historical_closing_odds_canonical_coverage.json",
         ROOT / "historical_closing_odds_canonical_provenance.txt",
         ROOT / "historical_closing_odds_sources.json",
@@ -67,6 +68,25 @@ def build() -> Path:
             )
     if summary.get("blocked_rows") != 0 or summary.get("final_status") != "PASS":
         raise ValueError("Datapoint audit summary is not PASS")
+    release_validation_path = ROOT / "governance" / "release_validation_june22_27.json"
+    release_validation = json.loads(
+        release_validation_path.read_text(encoding="utf-8")
+    )
+    if release_validation.get("final_status") != "PASS":
+        raise ValueError("Release validation is not PASS")
+    release_hashes = release_validation.get("current_artifact_hashes", {})
+    release_expected = {
+        "wc_june22_27_predictions.json": ROOT / "wc_june22_27_predictions.json",
+        "wc_june22_27_model_metrics.json": ROOT / "wc_june22_27_model_metrics.json",
+        "wc_june22_27_datapoint_audit_summary.json": summary_path,
+    }
+    for name, path in release_expected.items():
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if release_hashes.get(name) != actual:
+            raise ValueError(
+                f"Release validation hash mismatch for {name}: "
+                f"{release_hashes.get(name)} != {actual}"
+            )
 
     # Destructive replacement happens only after every release gate passes, so
     # a blocked build cannot erase the last known-good local site artifact.
