@@ -1,15 +1,8 @@
 {
-  "version": "june22_27_v5_fail_closed_development_only",
-  "seed": 42,
-  "dataset_a_rows": 162,
-  "dataset_b_rows": 121,
-  "elapsed_wc2026_rows": 66,
   "calibration": {
     "divisor": 350.0,
     "draw_base": 0.22,
     "draw_slope": 0.12,
-    "mean_brier": 0.6507549436914782,
-    "mean_log_loss": 1.06466468479244,
     "folds": [
       {
         "brier": 0.6580549057063872,
@@ -28,129 +21,809 @@
         "log_loss": 0.9911177569830786
       }
     ],
-    "selection_rows": 241,
-    "holdout_rows": 42,
     "holdout_brier": 0.4785465702562671,
-    "holdout_log_loss": 0.8202616887087706
-  },
-  "score_market_calibration": {
-    "mu_total": 2.75,
-    "allocation": 0.4,
-    "gap_scale": 350.0,
-    "gap_intensity": 0.15,
-    "mean_score_nll": 3.092970220134323,
-    "mean_over_2_5_brier": 0.2523574416460518,
-    "mean_btts_brier": 0.2576067240602384,
-    "tuning_status": "proper_score_tuned_not_empirically_calibrated",
-    "selection_rows": 241,
+    "holdout_log_loss": 0.8202616887087706,
     "holdout_rows": 42,
-    "production_model": "tuned_elo_independent_poisson",
-    "production_holdout": {
-      "score_nll": 2.885082760631986,
-      "over_2_5_brier": 0.24254077349369435,
-      "btts_brier": 0.23877503465441793
-    },
-    "shadow_model": "dixon_coles_low_score_correction",
-    "shadow_rho": -0.15,
-    "shadow_selection": {
-      "rho": -0.15,
-      "mean_score_nll": 3.069853397262695,
-      "mean_over_2_5_brier": 0.2523574416460518,
-      "mean_btts_brier": 0.25918702283051975
-    },
-    "shadow_holdout": {
-      "score_nll": 2.8798205345061936,
-      "over_2_5_brier": 0.24254077349369435,
-      "btts_brier": 0.24048769597343822
-    },
-    "holdout_selection_rate_baselines": {
-      "selection_over_2_5_rate": 0.44489503816793996,
-      "selection_btts_rate": 0.4661259541984744,
-      "over_2_5_brier": 0.2609086942230928,
-      "btts_brier": 0.2463083015787458
-    },
-    "shadow_paired_bootstrap": {
-      "score_nll": {
-        "challenger_minus_production_mean": -0.005262226126,
-        "ci_95_lower": -0.038374355113,
-        "ci_95_upper": 0.034381357022,
-        "iterations": 2000,
-        "resampling_method": "weighted_date_block_percentile_bootstrap",
-        "block_count": 9,
-        "numeric_tolerance": 1e-12,
-        "statistically_secure_improvement": false
-      },
-      "over_2_5_brier": {
-        "challenger_minus_production_mean": -0.0,
-        "ci_95_lower": -0.0,
-        "ci_95_upper": 0.0,
-        "iterations": 2000,
-        "resampling_method": "weighted_date_block_percentile_bootstrap",
-        "block_count": 9,
-        "numeric_tolerance": 1e-12,
-        "statistically_secure_improvement": false
-      },
-      "btts_brier": {
-        "challenger_minus_production_mean": 0.001712661319,
-        "ci_95_lower": -0.001679889626,
-        "ci_95_upper": 0.006137877567,
-        "iterations": 2000,
-        "resampling_method": "weighted_date_block_percentile_bootstrap",
-        "block_count": 9,
-        "numeric_tolerance": 1e-12,
-        "statistically_secure_improvement": false
-      }
-    },
-    "policy_status": "experimental_non_actionable_no_historical_market_odds"
+    "mean_brier": 0.6507549436914782,
+    "mean_log_loss": 1.06466468479244,
+    "selection_rows": 241
   },
-  "mu_dataset_a": 2.7037037037037037,
-  "mu_dataset_b": 2.4441964285714297,
-  "mu_production": 2.75,
-  "expanded_market_policy": {
-    "status": "abstain_no_validated_recommendation_policy",
-    "reason": "Historical profitability is unvalidated, the nominal holdout has been used for development feedback, source prices are stale, and conditional fixtures require intervening results.",
-    "priced_fixtures": 10,
-    "all_fixture_probability_coverage": 10,
-    "recommendations_required": 0,
-    "selection_rule": "rank independent structural-model EV and stressed EV; use market-implied probability only as a disagreement/risk diagnostic, never as an input to the probability evaluating that same quote"
-  },
-  "research_mode_policy": {
-    "toggle_available": true,
-    "default_state": "off_production_mode",
-    "selected_candidate": "dixon_coles_low_score_correction_shadow",
-    "selected_family": "hierarchical_dynamic_poisson_score_research",
-    "status": "research_gated_not_production",
-    "production_recommendations_unchanged": true,
-    "why_selected": "Dixon-Coles is the selected tested shadow candidate because it is football-specific, low-parameter, and reproducible with the available score data. Other registered candidates have not all been fit and compared, so this is not a claim that Dixon-Coles is globally best. High-capacity temporal graph and sequence models remain blocked by the sample-size/edge-count promotion gate.",
-    "why_not_promoted": "Shadow paired-bootstrap intervals cross zero and no timestamp-verified historical closing odds exist for profitability validation.",
-    "promotion_requirements": {
-      "minimum_timestamped_fixtures": 2000,
-      "minimum_temporal_edges_per_team": 30,
-      "validation": "nested walk-forward selection, untouched holdout superiority, calibration checks, multiple-testing control, and closing-line ROI/CLV validation"
-    }
-  },
+  "dataset_a_rows": 162,
+  "dataset_b_rows": 121,
+  "elapsed_wc2026_rows": 66,
   "evaluation_governance": {
+    "bankroll_release_status": "prohibited_zero_allocation",
     "current_holdout_status": "development_validation_only_not_confirmatory",
-    "reason": "The nominal holdout informed prior development decisions and cannot be described as untouched or confirmatory.",
     "new_sealed_holdout_required": true,
     "probability_release_status": "development_only",
-    "recommendation_release_status": "blocked",
-    "bankroll_release_status": "prohibited_zero_allocation"
+    "reason": "The nominal holdout informed prior development decisions and cannot be described as untouched or confirmatory.",
+    "recommendation_release_status": "blocked"
+  },
+  "expanded_market_policy": {
+    "all_fixture_probability_coverage": 10,
+    "priced_fixtures": 10,
+    "reason": "Historical profitability is unvalidated, the nominal holdout has been used for development feedback, source prices are stale, and conditional fixtures require intervening results.",
+    "recommendations_required": 0,
+    "selection_rule": "rank independent structural-model EV and stressed EV; use market-implied probability only as a disagreement/risk diagnostic, never as an input to the probability evaluating that same quote",
+    "status": "abstain_no_validated_recommendation_policy"
+  },
+  "historical_closing_odds": {
+    "by_bookmaker": {
+      "bet365": 62350,
+      "betfair_exchange": 23749,
+      "pinnacle": 56250
+    },
+    "by_competition": {
+      "English Premier League": 30550,
+      "French Ligue 1": 26560,
+      "German Bundesliga": 24385,
+      "Italian Serie A": 30499,
+      "Spanish La Liga": 30355
+    },
+    "by_evidence_class": {
+      "published_close_without_quote_timestamp": 142349
+    },
+    "by_market_family": {
+      "1x2": 61065,
+      "asian_handicap": 40706,
+      "total_goals": 40578
+    },
+    "by_provider": {
+      "Football-Data": 142349
+    },
+    "close_window_minutes": 120.0,
+    "events": 8908,
+    "primary_validation_events": 0,
+    "primary_validation_rows": 0,
+    "profitability_validation_status": "blocked_no_timestamp_verified_closing_rows",
+    "restricted_validation_sources": {
+      "events": 38,
+      "included_in_public_csv": false,
+      "provider": "The Odds API",
+      "reason": "Provider terms prohibit downloadable redistribution.",
+      "rows": 1311
+    },
+    "rows": 142349,
+    "schema_version": "historical_closing_odds_v1"
   },
   "input_hashes": {
-    "wc_backtest_historical_dataset.csv": "beee227402f102b146f785dc77d92a00863b9c5090f7de4ff6d7baaa9f75683a",
-    "wc_2026_results_through_june26.csv": "a14f85c0bd2d4440179e26189bbcea0b1d4b47aa1180ce9697845fc45a513076",
-    "wc_team_elo_baseline_june11.csv": "f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b",
-    "wc_2026_matches_june_27-29.csv": "917a17f6a7d6c054a5f755767832bc5ce88d3e300e8f1b11b3968b6d1a071df2",
+    "manual_odds_20260627_20260629.csv": "472ba29089c9f20b37f4daa3f17e3222f5240c2d29aa9740e7ecc992090b73fd",
+    "manual_odds_20260627_20260629.provenance.json": "7ad0adae2e61ea11934ccf1403a478b89b5d1507b972e9bfcb17886db8607111",
     "odds_june22_23.csv": "817aa26510205feffc7b74780059a83268fc48efc08b887763d9b0776049ce9a",
     "odds_june24.csv": "3fd7247e0240f651d0bbd46a25ffaf90773b025d465c2d496130c517b58565de",
     "odds_june25_26.csv": "31a8964d1ad9277dda6ac875b1787e51e84eb96d44654470f3d7ee63e0c04a88",
     "odds_june27.csv": "a452dd19faf1e529989a8090d98afb52692d7197f56102881e1dafb81646b710",
-    "manual_odds_20260627_20260629.csv": "472ba29089c9f20b37f4daa3f17e3222f5240c2d29aa9740e7ecc992090b73fd",
-    "manual_odds_20260627_20260629.provenance.json": "7ad0adae2e61ea11934ccf1403a478b89b5d1507b972e9bfcb17886db8607111",
     "research_june22_23.csv": "73e84dac2994f81848af66a83db2bc41f7215576feac06d1bb06ed410e0fb606",
     "research_june24_25.csv": "d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517",
-    "research_june26_27.csv": "5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60"
+    "research_june26_27.csv": "5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60",
+    "wc_2026_matches_june_27-29.csv": "917a17f6a7d6c054a5f755767832bc5ce88d3e300e8f1b11b3968b6d1a071df2",
+    "wc_2026_results_through_june26.csv": "a14f85c0bd2d4440179e26189bbcea0b1d4b47aa1180ce9697845fc45a513076",
+    "wc_backtest_historical_dataset.csv": "beee227402f102b146f785dc77d92a00863b9c5090f7de4ff6d7baaa9f75683a",
+    "wc_team_elo_baseline_june11.csv": "f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b"
   },
-  "pipeline_sha256": "97ffcb37c9a65dc0e82f3d0cdae9d569f28f47a51620a9dcc7d13120e418ca38"
+  "model_championship": {
+    "benchmark_champion": "market_devigged_proxy",
+    "benchmark_champion_is_deployment_decision": false,
+    "capacity_rejections": {
+      "graphmixer_or_dygformer": "Efficient temporal graph architectures are appropriate once the graph has enough repeated pre-event interactions; current outer folds still favor the de-vigged market proxy.",
+      "temporal_graph_neural_network": "283 matches and sparse team histories are insufficient for a credible high-capacity chronological comparison. Production gate requires at least 2000 timestamped fixtures and roughly 30 temporal edges per team.",
+      "transformer_sequence_model": "Effective sample size is orders of magnitude below a defensible sequence-model benchmark; fitting would invite leakage and variance-driven selection."
+    },
+    "challenger_vs_market_paired_bootstrap": {
+      "block_count": 13,
+      "challenger": "elo_tuned_nested",
+      "challenger_minus_market_log_loss": -0.001385938933597222,
+      "ci_95_lower": -0.2055418341648799,
+      "ci_95_upper": 0.2160729942799684,
+      "iterations": 5000,
+      "market_benchmark": "market_devigged_proxy",
+      "method": "weighted_paired_bootstrap_by_fixture_date",
+      "secure_improvement": false
+    },
+    "deep_learning_research": {
+      "candidate_families": [
+        {
+          "current_status": "Registered as regularized_multinomial_research; not promoted because market proxy dominates outer folds.",
+          "name": "CatBoost/LightGBM tabular rating model",
+          "use_when": "Hundreds to thousands of fixtures with stable engineered features; strong baseline before neural models."
+        },
+        {
+          "current_status": "Dixon-Coles is shadow-only; paired-bootstrap improvement is not statistically secure.",
+          "name": "Hierarchical dynamic Poisson / Dixon-Coles",
+          "use_when": "Goal-score modeling with team attack/defense partial pooling and enough repeated team histories."
+        },
+        {
+          "current_status": "Rejected by evidence gate; current graph has too few temporal edges per team for credible fitting.",
+          "name": "Temporal Graph Network / TGAT-style dynamic graph",
+          "use_when": "Thousands of time-stamped team/player/match edges, node features, and strictly pre-event labels."
+        },
+        {
+          "current_status": "Research registry only; no production weight without outer-fold improvement over market baselines.",
+          "name": "GraphMixer / DyGFormer-style efficient temporal graph",
+          "use_when": "Large temporal interaction graphs where memory/lightweight mixing architectures can be compared out of sample."
+        },
+        {
+          "current_status": "Rejected by sample-size gate; likely overfits current sparse World Cup/qualifier history.",
+          "name": "Sequence transformer over team histories",
+          "use_when": "Long sequential histories with lineup/player/context tokens and a separate untouched tournament holdout."
+        }
+      ],
+      "pitfalls_controlled": [
+        "look-ahead leakage from using future ratings or post-kickoff prices",
+        "same-day split leakage across matches in one matchday",
+        "winner's curse from trying many architectures on a tiny holdout",
+        "probability calibration ignored in favor of accuracy",
+        "profitability inferred without executable timestamped closing odds",
+        "naive stacking weights selected outside chronological folds"
+      ],
+      "promotion_gate": {
+        "actual_fixture_count": 283,
+        "actual_team_count": 65,
+        "actual_temporal_edges_per_team": {
+          "ALG": 2,
+          "ARG": 22,
+          "AUS": 13,
+          "AUT": 4,
+          "BEL": 11,
+          "BIH": 7,
+          "BRA": 23,
+          "CAN": 6,
+          "CHI": 14,
+          "CIV": 3,
+          "CMR": 5,
+          "COD": 2,
+          "COL": 19,
+          "CPV": 5,
+          "CRC": 6,
+          "CRO": 10,
+          "CUR": 3,
+          "CZE": 7,
+          "DEN": 11,
+          "ECU": 20,
+          "EGY": 6,
+          "ENG": 10,
+          "ESP": 11,
+          "FIN": 4,
+          "FRA": 13,
+          "GER": 9,
+          "GHA": 5,
+          "GRE": 4,
+          "HAI": 3,
+          "HUN": 4,
+          "IRL": 5,
+          "IRN": 11,
+          "IRQ": 8,
+          "ISL": 7,
+          "ITA": 3,
+          "JOR": 8,
+          "JPN": 13,
+          "KOR": 13,
+          "KSA": 16,
+          "MAR": 9,
+          "MEX": 9,
+          "NED": 10,
+          "NGA": 5,
+          "NOR": 5,
+          "NZL": 3,
+          "PAN": 5,
+          "PAR": 17,
+          "PER": 17,
+          "POL": 11,
+          "POR": 12,
+          "QAT": 8,
+          "RSA": 5,
+          "RUS": 3,
+          "SCO": 7,
+          "SEN": 9,
+          "SRB": 8,
+          "SUI": 11,
+          "SWE": 10,
+          "TUN": 9,
+          "TUR": 5,
+          "UKR": 5,
+          "URU": 23,
+          "USA": 6,
+          "UZB": 2,
+          "WAL": 6
+        },
+        "fixture_count_gate_passed": false,
+        "minimum_temporal_edges_per_team": 30,
+        "minimum_timestamped_fixtures": 2000,
+        "required_validation": "nested walk-forward model selection, final untouched holdout, paired bootstrap for proper scores, calibration plots, profitability/CLV only against timestamp-verified closing odds, and multiple-testing correction across searched variants",
+        "research_promotion_gate_passed": false,
+        "teams_meeting_temporal_edge_minimum": 0,
+        "temporal_edge_gate_passed": false
+      },
+      "research_sources": [
+        {
+          "applies_to": "TGN candidate registry and temporal-edge data requirements",
+          "title": "Temporal Graph Networks for Deep Learning on Dynamic Graphs",
+          "url": "https://arxiv.org/abs/2006.10637"
+        },
+        {
+          "applies_to": "efficient temporal graph research-track architecture",
+          "title": "GraphMixer: Efficient Temporal Graph Learning with MLP-Mixer",
+          "url": "https://arxiv.org/abs/2302.11636"
+        },
+        {
+          "applies_to": "reporting limitations, intended use, and validation status",
+          "title": "Model Cards for Model Reporting",
+          "url": "https://arxiv.org/abs/1810.03993"
+        }
+      ],
+      "summary": "Deep and graph models remain research-track only. The available complete 1X2 proxy-market corpus has 217 complete matches after filtering and 283 total historical match rows, far below the prespecified evidence gate for a production temporal GNN or sequence transformer."
+    },
+    "excluded_missing_complete_1x2": 66,
+    "holdout_challenger": "elo_tuned_nested",
+    "holdout_metrics": {
+      "elo_fixed_400": {
+        "brier": 0.6773923378394026,
+        "log_loss": 1.1174200734331552,
+        "rows": 29
+      },
+      "elo_market_stack_nested": {
+        "brier": 0.6779875845728588,
+        "log_loss": 1.0906638800715345,
+        "rows": 29
+      },
+      "elo_tuned_nested": {
+        "brier": 0.6606150934349363,
+        "log_loss": 1.0892779411379374,
+        "rows": 29
+      },
+      "market_devigged_proxy": {
+        "brier": 0.6779875845728588,
+        "log_loss": 1.0906638800715345,
+        "rows": 29
+      },
+      "uniform": {
+        "brier": 0.6666666666666664,
+        "log_loss": 1.098612288668109,
+        "rows": 29
+      }
+    },
+    "legacy_schema_aliases": {
+      "nested_outer_championship": "nested_outer_benchmark"
+    },
+    "nested_outer_benchmark": {
+      "benchmark_champion": "market_devigged_proxy",
+      "folds": [
+        {
+          "fold": 1,
+          "metrics": {
+            "elo_market_stack_nested": {
+              "brier": 0.594936314553507,
+              "log_loss": 0.9812915975429686,
+              "rows": 13
+            },
+            "elo_tuned_nested": {
+              "brier": 0.6864542908798584,
+              "log_loss": 1.1345048538934412,
+              "rows": 13
+            },
+            "market_devigged_proxy": {
+              "brier": 0.594936314553507,
+              "log_loss": 0.9812915975429686,
+              "rows": 13
+            },
+            "uniform": {
+              "brier": 0.6666666666666669,
+              "log_loss": 1.09861228866811,
+              "rows": 13
+            }
+          },
+          "selected_elo": {
+            "divisor": 500.0,
+            "draw_base": 0.14,
+            "draw_slope": 0.06
+          },
+          "selected_stack": {
+            "elo_weight": 0.0,
+            "market_weight": 1.0
+          },
+          "test_end": "2024-10-10",
+          "test_rows": 13,
+          "test_start": "2024-06-07",
+          "train_end": "2023-11-22",
+          "train_rows": 115
+        },
+        {
+          "fold": 2,
+          "metrics": {
+            "elo_market_stack_nested": {
+              "brier": 0.5998486947023851,
+              "log_loss": 0.9933114003550236,
+              "rows": 16
+            },
+            "elo_tuned_nested": {
+              "brier": 0.6833620331380238,
+              "log_loss": 1.1254391706947928,
+              "rows": 16
+            },
+            "market_devigged_proxy": {
+              "brier": 0.5998486947023851,
+              "log_loss": 0.9933114003550236,
+              "rows": 16
+            },
+            "uniform": {
+              "brier": 0.6666666666666669,
+              "log_loss": 1.0986122886681098,
+              "rows": 16
+            }
+          },
+          "selected_elo": {
+            "divisor": 500.0,
+            "draw_base": 0.14,
+            "draw_slope": 0.12
+          },
+          "selected_stack": {
+            "elo_weight": 0.0,
+            "market_weight": 1.0
+          },
+          "test_end": "2024-11-20",
+          "test_rows": 16,
+          "test_start": "2024-10-11",
+          "train_end": "2024-10-10",
+          "train_rows": 128
+        },
+        {
+          "fold": 3,
+          "metrics": {
+            "elo_market_stack_nested": {
+              "brier": 0.606724949611161,
+              "log_loss": 0.9823781718252387,
+              "rows": 19
+            },
+            "elo_tuned_nested": {
+              "brier": 0.6586502632224527,
+              "log_loss": 1.0877265512105705,
+              "rows": 19
+            },
+            "market_devigged_proxy": {
+              "brier": 0.606724949611161,
+              "log_loss": 0.9823781718252387,
+              "rows": 19
+            },
+            "uniform": {
+              "brier": 0.6666666666666671,
+              "log_loss": 1.09861228866811,
+              "rows": 19
+            }
+          },
+          "selected_elo": {
+            "divisor": 500.0,
+            "draw_base": 0.16,
+            "draw_slope": 0.14
+          },
+          "selected_stack": {
+            "elo_weight": 0.0,
+            "market_weight": 1.0
+          },
+          "test_end": "2025-06-09",
+          "test_rows": 19,
+          "test_start": "2025-03-20",
+          "train_end": "2024-11-20",
+          "train_rows": 144
+        },
+        {
+          "fold": 4,
+          "metrics": {
+            "elo_market_stack_nested": {
+              "brier": 0.5404037760095313,
+              "log_loss": 0.9038245302666722,
+              "rows": 25
+            },
+            "elo_tuned_nested": {
+              "brier": 0.6605234054369089,
+              "log_loss": 1.0894710525537317,
+              "rows": 25
+            },
+            "market_devigged_proxy": {
+              "brier": 0.5404037760095313,
+              "log_loss": 0.9038245302666722,
+              "rows": 25
+            },
+            "uniform": {
+              "brier": 0.6666666666666664,
+              "log_loss": 1.0986122886681091,
+              "rows": 25
+            }
+          },
+          "selected_elo": {
+            "divisor": 325.0,
+            "draw_base": 0.22,
+            "draw_slope": 0.08
+          },
+          "selected_stack": {
+            "elo_weight": 0.0,
+            "market_weight": 1.0
+          },
+          "test_end": "2025-09-10",
+          "test_rows": 25,
+          "test_start": "2025-06-10",
+          "train_end": "2025-06-09",
+          "train_rows": 163
+        }
+      ],
+      "means": {
+        "elo_market_stack_nested": {
+          "mean_brier": 0.5854784337191461,
+          "mean_log_loss": 0.9652014249974757,
+          "positive_log_loss_folds_vs_market": 0
+        },
+        "elo_tuned_nested": {
+          "mean_brier": 0.672247498169311,
+          "mean_log_loss": 1.1092854070881342,
+          "positive_log_loss_folds_vs_market": 0
+        },
+        "market_devigged_proxy": {
+          "mean_brier": 0.5854784337191461,
+          "mean_log_loss": 0.9652014249974757,
+          "positive_log_loss_folds_vs_market": 0
+        },
+        "uniform": {
+          "mean_brier": 0.6666666666666669,
+          "mean_log_loss": 1.0986122886681098,
+          "positive_log_loss_folds_vs_market": 0
+        }
+      }
+    },
+    "nested_outer_championship": {
+      "benchmark_champion": "market_devigged_proxy",
+      "folds": [
+        {
+          "fold": 1,
+          "metrics": {
+            "elo_market_stack_nested": {
+              "brier": 0.594936314553507,
+              "log_loss": 0.9812915975429686,
+              "rows": 13
+            },
+            "elo_tuned_nested": {
+              "brier": 0.6864542908798584,
+              "log_loss": 1.1345048538934412,
+              "rows": 13
+            },
+            "market_devigged_proxy": {
+              "brier": 0.594936314553507,
+              "log_loss": 0.9812915975429686,
+              "rows": 13
+            },
+            "uniform": {
+              "brier": 0.6666666666666669,
+              "log_loss": 1.09861228866811,
+              "rows": 13
+            }
+          },
+          "selected_elo": {
+            "divisor": 500.0,
+            "draw_base": 0.14,
+            "draw_slope": 0.06
+          },
+          "selected_stack": {
+            "elo_weight": 0.0,
+            "market_weight": 1.0
+          },
+          "test_end": "2024-10-10",
+          "test_rows": 13,
+          "test_start": "2024-06-07",
+          "train_end": "2023-11-22",
+          "train_rows": 115
+        },
+        {
+          "fold": 2,
+          "metrics": {
+            "elo_market_stack_nested": {
+              "brier": 0.5998486947023851,
+              "log_loss": 0.9933114003550236,
+              "rows": 16
+            },
+            "elo_tuned_nested": {
+              "brier": 0.6833620331380238,
+              "log_loss": 1.1254391706947928,
+              "rows": 16
+            },
+            "market_devigged_proxy": {
+              "brier": 0.5998486947023851,
+              "log_loss": 0.9933114003550236,
+              "rows": 16
+            },
+            "uniform": {
+              "brier": 0.6666666666666669,
+              "log_loss": 1.0986122886681098,
+              "rows": 16
+            }
+          },
+          "selected_elo": {
+            "divisor": 500.0,
+            "draw_base": 0.14,
+            "draw_slope": 0.12
+          },
+          "selected_stack": {
+            "elo_weight": 0.0,
+            "market_weight": 1.0
+          },
+          "test_end": "2024-11-20",
+          "test_rows": 16,
+          "test_start": "2024-10-11",
+          "train_end": "2024-10-10",
+          "train_rows": 128
+        },
+        {
+          "fold": 3,
+          "metrics": {
+            "elo_market_stack_nested": {
+              "brier": 0.606724949611161,
+              "log_loss": 0.9823781718252387,
+              "rows": 19
+            },
+            "elo_tuned_nested": {
+              "brier": 0.6586502632224527,
+              "log_loss": 1.0877265512105705,
+              "rows": 19
+            },
+            "market_devigged_proxy": {
+              "brier": 0.606724949611161,
+              "log_loss": 0.9823781718252387,
+              "rows": 19
+            },
+            "uniform": {
+              "brier": 0.6666666666666671,
+              "log_loss": 1.09861228866811,
+              "rows": 19
+            }
+          },
+          "selected_elo": {
+            "divisor": 500.0,
+            "draw_base": 0.16,
+            "draw_slope": 0.14
+          },
+          "selected_stack": {
+            "elo_weight": 0.0,
+            "market_weight": 1.0
+          },
+          "test_end": "2025-06-09",
+          "test_rows": 19,
+          "test_start": "2025-03-20",
+          "train_end": "2024-11-20",
+          "train_rows": 144
+        },
+        {
+          "fold": 4,
+          "metrics": {
+            "elo_market_stack_nested": {
+              "brier": 0.5404037760095313,
+              "log_loss": 0.9038245302666722,
+              "rows": 25
+            },
+            "elo_tuned_nested": {
+              "brier": 0.6605234054369089,
+              "log_loss": 1.0894710525537317,
+              "rows": 25
+            },
+            "market_devigged_proxy": {
+              "brier": 0.5404037760095313,
+              "log_loss": 0.9038245302666722,
+              "rows": 25
+            },
+            "uniform": {
+              "brier": 0.6666666666666664,
+              "log_loss": 1.0986122886681091,
+              "rows": 25
+            }
+          },
+          "selected_elo": {
+            "divisor": 325.0,
+            "draw_base": 0.22,
+            "draw_slope": 0.08
+          },
+          "selected_stack": {
+            "elo_weight": 0.0,
+            "market_weight": 1.0
+          },
+          "test_end": "2025-09-10",
+          "test_rows": 25,
+          "test_start": "2025-06-10",
+          "train_end": "2025-06-09",
+          "train_rows": 163
+        }
+      ],
+      "means": {
+        "elo_market_stack_nested": {
+          "mean_brier": 0.5854784337191461,
+          "mean_log_loss": 0.9652014249974757,
+          "positive_log_loss_folds_vs_market": 0
+        },
+        "elo_tuned_nested": {
+          "mean_brier": 0.672247498169311,
+          "mean_log_loss": 1.1092854070881342,
+          "positive_log_loss_folds_vs_market": 0
+        },
+        "market_devigged_proxy": {
+          "mean_brier": 0.5854784337191461,
+          "mean_log_loss": 0.9652014249974757,
+          "positive_log_loss_folds_vs_market": 0
+        },
+        "uniform": {
+          "mean_brier": 0.6666666666666669,
+          "mean_log_loss": 1.0986122886681098,
+          "positive_log_loss_folds_vs_market": 0
+        }
+      }
+    },
+    "profitability_status": "blocked_no_timestamp_verified_closing_odds",
+    "registered_variants": [
+      "uniform",
+      "market_devigged_proxy",
+      "elo_fixed_400",
+      "elo_tuned_nested",
+      "elo_market_stack_nested",
+      "catboost_lightgbm_tabular_research",
+      "independent_poisson_score_model",
+      "dixon_coles_shadow",
+      "hierarchical_dynamic_poisson_research",
+      "regularized_multinomial_research",
+      "bayesian_model_averaging_research",
+      "temporal_graph_network_research_gate",
+      "graphmixer_temporal_graph_research_gate",
+      "dygformer_temporal_graph_research_gate",
+      "temporal_graph_neural_network_rejected_low_sample",
+      "transformer_sequence_model_rejected_low_sample"
+    ],
+    "rival_500_percent_claim_status": "unverified_requires_complete_timestamped_executable_bet_ledger",
+    "rows": 217,
+    "selection_rows": 188,
+    "selection_rule": "inner rolling-origin tuning inside four expanding outer folds; minimum outer mean log loss then Brier; final holdout is evaluation-only",
+    "source_rows": 283,
+    "tuned_elo": {
+      "divisor": 325.0,
+      "draw_base": 0.24,
+      "draw_slope": 0.12,
+      "folds": [
+        {
+          "brier": 0.6716742966797874,
+          "log_loss": 1.1052885320823458,
+          "rows": 10
+        },
+        {
+          "brier": 0.6744774401133755,
+          "log_loss": 1.1115333902051712,
+          "rows": 17
+        },
+        {
+          "brier": 0.6423381214564414,
+          "log_loss": 1.061271253505618,
+          "rows": 18
+        },
+        {
+          "brier": 0.6613341412183911,
+          "log_loss": 1.089957478481649,
+          "rows": 28
+        }
+      ],
+      "mean_brier": 0.6624559998669988,
+      "mean_log_loss": 1.092012663568696
+    },
+    "tuned_stack": {
+      "elo_weight": 0.0,
+      "folds": [
+        {
+          "brier": 0.6194664675561268,
+          "log_loss": 1.0249828861126933,
+          "rows": 10
+        },
+        {
+          "brier": 0.5990869761662794,
+          "log_loss": 0.992876842934671,
+          "rows": 17
+        },
+        {
+          "brier": 0.650174049597003,
+          "log_loss": 1.033881557221315,
+          "rows": 18
+        },
+        {
+          "brier": 0.5137255962877115,
+          "log_loss": 0.8673983659728618,
+          "rows": 28
+        }
+      ],
+      "market_weight": 1.0,
+      "mean_brier": 0.5956132724017802,
+      "mean_log_loss": 0.9797849130603853
+    },
+    "untouched_holdout_rows": 29,
+    "version": "nested_chronological_benchmark_v2"
+  },
+  "mu_dataset_a": 2.7037037037037037,
+  "mu_dataset_b": 2.4441964285714297,
+  "mu_production": 2.75,
+  "pipeline_sha256": "97ffcb37c9a65dc0e82f3d0cdae9d569f28f47a51620a9dcc7d13120e418ca38",
+  "research_mode_policy": {
+    "default_state": "off_production_mode",
+    "production_recommendations_unchanged": true,
+    "promotion_requirements": {
+      "minimum_temporal_edges_per_team": 30,
+      "minimum_timestamped_fixtures": 2000,
+      "validation": "nested walk-forward selection, untouched holdout superiority, calibration checks, multiple-testing control, and closing-line ROI/CLV validation"
+    },
+    "selected_candidate": "dixon_coles_low_score_correction_shadow",
+    "selected_family": "hierarchical_dynamic_poisson_score_research",
+    "status": "research_gated_not_production",
+    "toggle_available": true,
+    "why_not_promoted": "Shadow paired-bootstrap intervals cross zero and no timestamp-verified historical closing odds exist for profitability validation.",
+    "why_selected": "Dixon-Coles is the selected tested shadow candidate because it is football-specific, low-parameter, and reproducible with the available score data. Other registered candidates have not all been fit and compared, so this is not a claim that Dixon-Coles is globally best. High-capacity temporal graph and sequence models remain blocked by the sample-size/edge-count promotion gate."
+  },
+  "score_market_calibration": {
+    "allocation": 0.4,
+    "gap_intensity": 0.15,
+    "gap_scale": 350.0,
+    "holdout_rows": 42,
+    "holdout_selection_rate_baselines": {
+      "btts_brier": 0.2463083015787458,
+      "over_2_5_brier": 0.2609086942230928,
+      "selection_btts_rate": 0.4661259541984744,
+      "selection_over_2_5_rate": 0.44489503816793996
+    },
+    "mean_btts_brier": 0.2576067240602384,
+    "mean_over_2_5_brier": 0.2523574416460518,
+    "mean_score_nll": 3.092970220134323,
+    "mu_total": 2.75,
+    "policy_status": "experimental_non_actionable_no_historical_market_odds",
+    "production_holdout": {
+      "btts_brier": 0.23877503465441793,
+      "over_2_5_brier": 0.24254077349369435,
+      "score_nll": 2.885082760631986
+    },
+    "production_model": "tuned_elo_independent_poisson",
+    "selection_rows": 241,
+    "shadow_holdout": {
+      "btts_brier": 0.24048769597343822,
+      "over_2_5_brier": 0.24254077349369435,
+      "score_nll": 2.8798205345061936
+    },
+    "shadow_model": "dixon_coles_low_score_correction",
+    "shadow_paired_bootstrap": {
+      "btts_brier": {
+        "block_count": 9,
+        "challenger_minus_production_mean": 0.001712661319,
+        "ci_95_lower": -0.001679889626,
+        "ci_95_upper": 0.006137877567,
+        "iterations": 2000,
+        "numeric_tolerance": 1e-12,
+        "resampling_method": "weighted_date_block_percentile_bootstrap",
+        "statistically_secure_improvement": false
+      },
+      "over_2_5_brier": {
+        "block_count": 9,
+        "challenger_minus_production_mean": -0.0,
+        "ci_95_lower": -0.0,
+        "ci_95_upper": 0.0,
+        "iterations": 2000,
+        "numeric_tolerance": 1e-12,
+        "resampling_method": "weighted_date_block_percentile_bootstrap",
+        "statistically_secure_improvement": false
+      },
+      "score_nll": {
+        "block_count": 9,
+        "challenger_minus_production_mean": -0.005262226126,
+        "ci_95_lower": -0.038374355113,
+        "ci_95_upper": 0.034381357022,
+        "iterations": 2000,
+        "numeric_tolerance": 1e-12,
+        "resampling_method": "weighted_date_block_percentile_bootstrap",
+        "statistically_secure_improvement": false
+      }
+    },
+    "shadow_rho": -0.15,
+    "shadow_selection": {
+      "mean_btts_brier": 0.25918702283051975,
+      "mean_over_2_5_brier": 0.2523574416460518,
+      "mean_score_nll": 3.069853397262695,
+      "rho": -0.15
+    },
+    "tuning_status": "proper_score_tuned_not_empirically_calibrated"
+  },
+  "seed": 42,
+  "version": "june22_27_v5_fail_closed_development_only"
 }

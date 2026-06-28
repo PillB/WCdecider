@@ -3,12 +3,12 @@
   "blockers": [],
   "current_artifact_hashes": {
     "research_agent_prompt_pack_v1.md": "2c42f7503f131c5916ac0dffe7f40f33c74d9d78f5284356d3c27107dd545f66",
-    "wc_june22_27_datapoint_audit_summary.json": "7a7627c5f7c8d18e2f9969af685d94b0ee37cc5650715a86446384a00629ce7b",
-    "wc_june22_27_model_metrics.json": "8204b62c1202eb093406c0290f9f0948da8cb5271754373d543f83db7f828fed",
+    "wc_june22_27_datapoint_audit_summary.json": "956f3a74f33dbe4e7322314d3eafbe4a97c4334f51de5e4b8b89e6d2ae302d02",
+    "wc_june22_27_model_metrics.json": "bd482f67053bcdd0c96726f93d4304fbc19fb8f90086622129a4278bf2896c04",
     "wc_june22_27_predictions.json": "03ac70921ff5a2f287377d5f1c46fd135f430ead50c72339e11d5d3ee6682d8e"
   },
   "current_semantic_hashes": {
-    "wc_june22_27_model_metrics.json": "f6524c4c7b9cedc92740554c89276fb95d6d1441a2620a4e0624ad876e2d6dee",
+    "wc_june22_27_model_metrics.json": "b1b7ec8d00c7368e0160a87b4f18007f3292e79e78be6e48867ff96e30524714",
     "wc_june22_27_predictions.json": "4739c9c667627056b020f68bbf979c0a155d8a1f80391122edc03b878fe8faab"
   },
   "final_status": "PASS",
@@ -29,16 +29,16 @@
   },
   "review_registry": {
     "path": "governance/release_validation_reviews_june22_27.json",
-    "sha256": "0a8063140bc4d8a75dcdc71d8763483966b8520e765afcff801c6ebe66406af0"
+    "sha256": "9340119a8b93a1335195da36c203ce83c3373089f3a797910b50ed147b7cab31"
   },
   "reviewed_artifact_hashes": {
     "research_agent_prompt_pack_v1.md": "2c42f7503f131c5916ac0dffe7f40f33c74d9d78f5284356d3c27107dd545f66",
-    "wc_june22_27_datapoint_audit_summary.json": "7a7627c5f7c8d18e2f9969af685d94b0ee37cc5650715a86446384a00629ce7b",
-    "wc_june22_27_model_metrics.json": "8204b62c1202eb093406c0290f9f0948da8cb5271754373d543f83db7f828fed",
+    "wc_june22_27_datapoint_audit_summary.json": "956f3a74f33dbe4e7322314d3eafbe4a97c4334f51de5e4b8b89e6d2ae302d02",
+    "wc_june22_27_model_metrics.json": "bd482f67053bcdd0c96726f93d4304fbc19fb8f90086622129a4278bf2896c04",
     "wc_june22_27_predictions.json": "03ac70921ff5a2f287377d5f1c46fd135f430ead50c72339e11d5d3ee6682d8e"
   },
   "reviewed_semantic_hashes": {
-    "wc_june22_27_model_metrics.json": "f6524c4c7b9cedc92740554c89276fb95d6d1441a2620a4e0624ad876e2d6dee",
+    "wc_june22_27_model_metrics.json": "b1b7ec8d00c7368e0160a87b4f18007f3292e79e78be6e48867ff96e30524714",
     "wc_june22_27_predictions.json": "4739c9c667627056b020f68bbf979c0a155d8a1f80391122edc03b878fe8faab"
   },
   "roles": {
