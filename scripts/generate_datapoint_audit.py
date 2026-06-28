@@ -14,7 +14,6 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
-import os
 import sys
 from pathlib import Path
 from typing import Any, Iterator, Tuple
@@ -189,7 +188,12 @@ def main() -> None:
     )
     pipeline_hash = metrics["pipeline_sha256"]
     mission_hash = sha256(MISSION)
-    git_commit = os.environ.get("GITHUB_SHA", registry.get("git_commit", "LOCAL_UNCOMMITTED"))
+    # Keep the audit artifact byte-stable across local and CI runs. The
+    # deploy workflow already records the live GitHub SHA at the workflow
+    # level; embedding the ephemeral CI SHA in every datapoint row would make
+    # the audit CSV and audit-summary hashes differ between local validation
+    # and GitHub Actions, which would break the role-level release gate.
+    git_commit = registry.get("git_commit", "LOCAL_UNCOMMITTED")
     input_hashes = metrics["input_hashes"]
     research_rows = {}
     with (ROOT / "wc_research_june22_27.csv").open(newline="", encoding="utf-8") as handle:

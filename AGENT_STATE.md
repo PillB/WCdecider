@@ -31,6 +31,8 @@
 - 592 | Reproduced CI generation order locally | `merge_research_metrics.py` changed `wc_june22_27_model_metrics.json` after the previous hash bindings, causing field audit review-binding mismatch | Success
 - 593 | Rebound governance to final post-merge metrics artifact | Updated field-level and role-level review registries to metrics byte hash `bd482f...` and semantic hash `b1b7ec...`; regenerated field audit with 36,304 datapoints and blocked=0 | Success
 - 594 | Regenerated release/report/site and reran validation | `generate_release_validation.py` PASS; report and site build PASS; focused tests passed 55/55; browser/report tests passed 30/30; full pytest passed 144 with 14 skipped | Success
+- 595 | Pushed commit `f38128d` and monitored Pages workflow | Workflow run `28324386673` passed field audit but failed role-level release validation because CI `GITHUB_SHA` changed every audit row and therefore the audit-summary byte hash | Blocked
+- 596 | Made field audit deterministic across local and CI | `scripts/generate_datapoint_audit.py` now uses the stable review-registry commit marker instead of environment `GITHUB_SHA`; simulated-CI audit hash returned to `956f3a...`; release validation, site build, and focused tests passed 43/43 | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - External result evidence is mixed-source because official FIFA search results were not consistently accessible through search; each added score has a direct URL and retrieval timestamp.
@@ -41,8 +43,9 @@
 - Role-level validation must not pass until all seven required roles have unique agent IDs, PASS evidence, and exact current artifact hash bindings.
 - Release-validation role registry is now hash-bound to current predictions, metrics, audit summary, and prompt pack; deployment still requires pushing and live Pages parity validation.
 - CI failure root cause was not modeling logic; it was artifact-order drift. The authoritative release artifact is the post-`merge_research_metrics.py` metrics JSON because the deploy workflow runs that merge before the field audit.
+- CI-specific audit drift was caused by embedding `GITHUB_SHA` in every datapoint row. Governance artifacts that are hash-bound before deployment must be byte-stable across local and CI environments.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Commit and push the post-merge hash-binding fix.
+- [ ] Active Step: Commit and push the deterministic-audit CI fix.
 - [ ] Next Step: Monitor GitHub Pages workflow for the new commit.
 - [ ] Future Milestone: Validate live JSON/DOM parity and exact release-validation artifact availability.
