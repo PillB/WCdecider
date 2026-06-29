@@ -21,9 +21,7 @@
   },
   "release_checks": {
     "artifact_binding_scope": [
-      "research_agent_prompt_pack_v1.md",
-      "wc_june22_27_model_metrics.json",
-      "wc_june22_27_predictions.json"
+      "research_agent_prompt_pack_v1.md"
     ],
     "artifact_binding_valid": true,
     "audit_summary_valid": true,

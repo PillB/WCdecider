@@ -40,6 +40,9 @@
 - 601 | Implemented reviewer safety fixes | Reframed app/watchlist language as source-audit only, added human-readable S/0 exclusion reasons, renamed 1X2 dutching/arbitrage copy to coverage math audit, bounded simulator allocator rounding, removed dead legacy simulator function, and removed stale audit-summary hash from release review registry | Success
 - 602 | Regenerated artifacts and ran focused/browser gates | CI-order regeneration produced 10 predictions, 0 recommendations, audit blocked=0, release validation PASS, synchronized root/site HTML; focused tests passed 43/43 and browser/translation tests passed 30/30 | Success
 - 603 | Ran full local validation | Full escalated pytest suite passed 144/144 with 14 skipped; non-escalated full run only failed browser localhost binding due sandbox permissions | Success
+- 604 | Committed and pushed validated release | Commit `19376d7` pushed to `codex/june23-safety-model-update` and fast-forwarded to `main`, triggering the Pages workflow; `gh auth status` is invalid but git push credentials work | Success
+- 605 | Diagnosed failed Pages workflow `28343166599` | Build failed at role-level release validation because release validation still byte-bound regenerated prediction/metrics artifacts while field audit correctly uses semantic hashes for platform-stable validation | Blocked
+- 606 | Fixed release-validation binding policy | `scripts/generate_release_validation.py` now byte-binds only the prompt pack and relies on semantic hashes plus audit summary for predictions/metrics; release validation PASS, site build PASS, focused tests passed 43/43 | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - External result evidence is mixed-source because official FIFA search results were not consistently accessible through search; each added score has a direct URL and retrieval timestamp.
@@ -53,6 +56,6 @@
 - CI-specific audit drift was caused by embedding `GITHUB_SHA` in every datapoint row. Governance artifacts that are hash-bound before deployment must be byte-stable across local and CI environments.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Review diff and stage intended deployment files.
-- [ ] Next Step: Commit and push with GitHub flow.
-- [ ] Future Milestone: Monitor Pages CI and validate live JSON/DOM parity.
+- [ ] Active Step: Commit and push release-validation byte/semantic binding fix.
+- [ ] Next Step: Monitor the new GitHub Pages workflow.
+- [ ] Future Milestone: Validate live JSON/DOM parity once Pages deploy completes.

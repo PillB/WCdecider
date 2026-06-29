@@ -90,16 +90,13 @@ def main() -> None:
         agent_id for agent_id in role_ids
         if agent_id and role_ids.count(agent_id) > 1
     })
-    # The field-level audit summary is generated immediately before this gate
-    # and is validated below against the current prediction/metrics hashes.
-    # Do not require its byte hash to be pre-bound in the role-review registry:
-    # the audit CSV also records hashes of regenerated side artifacts, so a CI
-    # rebuild can legitimately change the audit-summary byte hash while still
-    # proving that all current prediction/metrics datapoints are reviewed.
+    # The field-level audit validates prediction/metrics semantic hashes, not
+    # raw bytes, because platform BLAS/Python differences can change JSON byte
+    # representation without changing reviewed values. Keep byte binding for
+    # the prompt pack only; prediction/metrics exactness is enforced by
+    # ``semantic_binding_valid`` and the audit summary below.
     prebound_artifact_hashes = {
-        key: value
-        for key, value in current_artifact_hashes.items()
-        if key != AUDIT_SUMMARY.name
+        PROMPT_PACK.name: current_artifact_hashes[PROMPT_PACK.name],
     }
     artifact_binding_valid = all(
         reviewed_artifact_hashes.get(key) == value
