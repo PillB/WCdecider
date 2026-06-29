@@ -33,6 +33,13 @@
 - 594 | Regenerated release/report/site and reran validation | `generate_release_validation.py` PASS; report and site build PASS; focused tests passed 55/55; browser/report tests passed 30/30; full pytest passed 144 with 14 skipped | Success
 - 595 | Pushed commit `f38128d` and monitored Pages workflow | Workflow run `28324386673` passed field audit but failed role-level release validation because CI `GITHUB_SHA` changed every audit row and therefore the audit-summary byte hash | Blocked
 - 596 | Made field audit deterministic across local and CI | `scripts/generate_datapoint_audit.py` now uses the stable review-registry commit marker instead of environment `GITHUB_SHA`; simulated-CI audit hash returned to `956f3a...`; release validation, site build, and focused tests passed 43/43 | Success
+- 597 | Read state and began stake-simulation gate repair | Confirmed deploy request uses GitHub publish flow; found active simulator still used per-app forced single coverage and accumulator fields | Success
+- 598 | Replaced forced simulator gate with safety-filtered educational simulation | `wc_june22_27_pipeline.py` now allocates hypothetical stakes only to current rows passing strength, EV, stressed-EV, fair-price, and selected risk-profile filters; production stake authorization remains separate | Success
+- 599 | Switched report simulator UI to safety-filtered schema | Removed active per-app accumulator renderer/refresh path and made the JSON-driven educational simulator the active UI path | Success
+- 600 | Ran strict platform/product/STORM reviewer subagents | Reviewers blocked deployment pending safer audit-only copy, stale audit-summary registry cleanup, bounded allocator rounding, legacy simulator removal, live profile summary, mobile grid fix, and completed browser/full gates | Blocked
+- 601 | Implemented reviewer safety fixes | Reframed app/watchlist language as source-audit only, added human-readable S/0 exclusion reasons, renamed 1X2 dutching/arbitrage copy to coverage math audit, bounded simulator allocator rounding, removed dead legacy simulator function, and removed stale audit-summary hash from release review registry | Success
+- 602 | Regenerated artifacts and ran focused/browser gates | CI-order regeneration produced 10 predictions, 0 recommendations, audit blocked=0, release validation PASS, synchronized root/site HTML; focused tests passed 43/43 and browser/translation tests passed 30/30 | Success
+- 603 | Ran full local validation | Full escalated pytest suite passed 144/144 with 14 skipped; non-escalated full run only failed browser localhost binding due sandbox permissions | Success
 
 ## 🧠 Retrospective & Post-Mortem Notes
 - External result evidence is mixed-source because official FIFA search results were not consistently accessible through search; each added score has a direct URL and retrieval timestamp.
@@ -46,6 +53,6 @@
 - CI-specific audit drift was caused by embedding `GITHUB_SHA` in every datapoint row. Governance artifacts that are hash-bound before deployment must be byte-stable across local and CI environments.
 
 ## 📋 The Execution Pipeline
-- [ ] Active Step: Commit and push the deterministic-audit CI fix.
-- [ ] Next Step: Monitor GitHub Pages workflow for the new commit.
-- [ ] Future Milestone: Validate live JSON/DOM parity and exact release-validation artifact availability.
+- [ ] Active Step: Review diff and stage intended deployment files.
+- [ ] Next Step: Commit and push with GitHub flow.
+- [ ] Future Milestone: Monitor Pages CI and validate live JSON/DOM parity.

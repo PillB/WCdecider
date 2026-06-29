@@ -3,13 +3,13 @@
   "blockers": [],
   "current_artifact_hashes": {
     "research_agent_prompt_pack_v1.md": "2c42f7503f131c5916ac0dffe7f40f33c74d9d78f5284356d3c27107dd545f66",
-    "wc_june22_27_datapoint_audit_summary.json": "956f3a74f33dbe4e7322314d3eafbe4a97c4334f51de5e4b8b89e6d2ae302d02",
-    "wc_june22_27_model_metrics.json": "bd482f67053bcdd0c96726f93d4304fbc19fb8f90086622129a4278bf2896c04",
-    "wc_june22_27_predictions.json": "03ac70921ff5a2f287377d5f1c46fd135f430ead50c72339e11d5d3ee6682d8e"
+    "wc_june22_27_datapoint_audit_summary.json": "3481fd354263604602a317e97f40a64104d732dc7b6b45054622cccb1523fb0d",
+    "wc_june22_27_model_metrics.json": "0a885a4d1ae33aa65d444c4b2ded72da040edf44e0e6215f0c9829a540e7d219",
+    "wc_june22_27_predictions.json": "418747327045fb7f200e40b833bda79b8f38cc6fa7f8ec735df93465081d4375"
   },
   "current_semantic_hashes": {
-    "wc_june22_27_model_metrics.json": "b1b7ec8d00c7368e0160a87b4f18007f3292e79e78be6e48867ff96e30524714",
-    "wc_june22_27_predictions.json": "4739c9c667627056b020f68bbf979c0a155d8a1f80391122edc03b878fe8faab"
+    "wc_june22_27_model_metrics.json": "db129c526da586c2fd39b33b6c5247fc473909496c1c001e38444416ab9dffeb",
+    "wc_june22_27_predictions.json": "2cbd2a6179b2ac69d4d8e3706efd8abc32618e51d4dcba3384287875d673dcb3"
   },
   "final_status": "PASS",
   "generated_at": "2026-06-27T11:00:00-05:00",
@@ -20,6 +20,11 @@
     "sha256": "2c42f7503f131c5916ac0dffe7f40f33c74d9d78f5284356d3c27107dd545f66"
   },
   "release_checks": {
+    "artifact_binding_scope": [
+      "research_agent_prompt_pack_v1.md",
+      "wc_june22_27_model_metrics.json",
+      "wc_june22_27_predictions.json"
+    ],
     "artifact_binding_valid": true,
     "audit_summary_valid": true,
     "duplicate_role_ids": [],
@@ -29,22 +34,21 @@
   },
   "review_registry": {
     "path": "governance/release_validation_reviews_june22_27.json",
-    "sha256": "9340119a8b93a1335195da36c203ce83c3373089f3a797910b50ed147b7cab31"
+    "sha256": "14c251b7efcc7dc9179aee32bff9235b5447bbd39ff3ae7abb6c8e084b3e478d"
   },
   "reviewed_artifact_hashes": {
     "research_agent_prompt_pack_v1.md": "2c42f7503f131c5916ac0dffe7f40f33c74d9d78f5284356d3c27107dd545f66",
-    "wc_june22_27_datapoint_audit_summary.json": "956f3a74f33dbe4e7322314d3eafbe4a97c4334f51de5e4b8b89e6d2ae302d02",
-    "wc_june22_27_model_metrics.json": "bd482f67053bcdd0c96726f93d4304fbc19fb8f90086622129a4278bf2896c04",
-    "wc_june22_27_predictions.json": "03ac70921ff5a2f287377d5f1c46fd135f430ead50c72339e11d5d3ee6682d8e"
+    "wc_june22_27_model_metrics.json": "0a885a4d1ae33aa65d444c4b2ded72da040edf44e0e6215f0c9829a540e7d219",
+    "wc_june22_27_predictions.json": "418747327045fb7f200e40b833bda79b8f38cc6fa7f8ec735df93465081d4375"
   },
   "reviewed_semantic_hashes": {
-    "wc_june22_27_model_metrics.json": "b1b7ec8d00c7368e0160a87b4f18007f3292e79e78be6e48867ff96e30524714",
-    "wc_june22_27_predictions.json": "4739c9c667627056b020f68bbf979c0a155d8a1f80391122edc03b878fe8faab"
+    "wc_june22_27_model_metrics.json": "db129c526da586c2fd39b33b6c5247fc473909496c1c001e38444416ab9dffeb",
+    "wc_june22_27_predictions.json": "2cbd2a6179b2ac69d4d8e3706efd8abc32618e51d4dcba3384287875d673dcb3"
   },
   "roles": {
     "clean_room_replication": {
       "agent_id": "019f0b7f-a987-7e12-b656-bfb9b9bbd022",
-      "evidence": "Clean-room temp run reproduced pipeline outputs, 10 predictions, 0 recommendations, and 35,875 datapoint audit rows with blocked=0. Prior BLOCKED status was solely due to missing role-review registry and generated release-validation artifact.",
+      "evidence": "Clean-room temp run reproduced pipeline outputs after the stake-simulation gate fix: 10 predictions, 0 recommendations, production stakes zero, and safety-filtered educational profile summaries bound to current prediction/metrics hashes.",
       "status": "PASS"
     },
     "data_lineage": {
@@ -64,12 +68,12 @@
     },
     "profitability_staking": {
       "agent_id": "019f0b4b-a043-7123-9a90-44c3df938932",
-      "evidence": "Historical closing-odds primary validation rows/events are zero; ROI/CLV/profitability are blocked. Metrics mark recommendations blocked and bankroll prohibited_zero_allocation; all 40 ranked comparisons are ABSTAIN; recommendation fields are null; production bankroll stakes are zero. Educational stake simulation is hypothetical only.",
+      "evidence": "Historical closing-odds primary validation rows/events are zero; ROI/CLV/profitability are blocked. Metrics mark recommendations blocked and bankroll prohibited_zero_allocation; all ranked comparisons are ABSTAIN; recommendation fields are null; production bankroll stakes are zero. The educational stake simulation is separate, hypothetical only, and safety-filtered by EV, stressed EV, fair price, and selected risk lens.",
       "status": "PASS"
     },
     "report_ui_editor": {
       "agent_id": "019f0b7f-a9db-77c2-8670-520a02e2a864",
-      "evidence": "JSON/audit parity, top-four comparisons, bilingual report assumptions, newbie tooltips, mobile diagnostics, and Playwright coverage are sound. Prior BLOCKED status was solely due to missing role-validation registry/generated artifact and stale site before regeneration.",
+      "evidence": "JSON/report parity, top-four comparisons, bilingual report assumptions, newbie tooltips, mobile diagnostics, and the safety-filtered stake simulator user flow are sound. The simulator exposes budget/risk controls and labels gross as not profit while production authorization remains zero.",
       "status": "PASS"
     },
     "storm_moderator": {

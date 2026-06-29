@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 27–29.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="4e0cab6edce36a26e4e596ad2931fcb4efef8a5ce4adf9b17ac9e9506678836a">
+  <meta name="wcdecider-audit-sha256" content="f405c07551845f81d39f0c71f10a48fa98247b970a79051bcb2057137b1fc9bd">
   <title>WCdecider • June 27–29, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -187,7 +187,7 @@
       <label class="text-sm"><span class="en">Simulation budget (PEN)</span><span class="es">Presupuesto simulado (PEN)</span>
         <input id="simulation-budget" type="number" min="10" max="10000" step="10" value="100" disabled class="ml-2 w-28 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 disabled:opacity-50" aria-label="Simulation budget in Peruvian soles">
       </label>
-      <p id="simulation-profile-summary" class="w-full text-xs text-slate-400"><span class="en">Simulation profile totals load from the verified JSON.</span><span class="es">Los totales de perfiles se cargan desde el JSON verificado.</span></p>
+      <p id="simulation-profile-summary" class="w-full text-xs text-slate-400"><span class="en">Changing risk lens can reduce simulated amounts to S/0; it never authorizes real staking.</span><span class="es">Cambiar el perfil de riesgo puede reducir montos simulados a S/0; nunca autoriza apuestas reales.</span></p>
     </section>
 
     <section id="loading-shell" class="mb-8 rounded-3xl border border-slate-800 bg-slate-900 p-5 text-slate-300" aria-live="polite">
@@ -208,23 +208,23 @@
 
     <section class="mt-10 grid lg:grid-cols-2 gap-5">
       <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
-        <h2 class="text-xl font-bold text-white"><span class="en">ELI5: find the market in Betano</span><span class="es">ELI5: encuentra el mercado en Betano</span></h2>
+        <h2 class="text-xl font-bold text-white"><span class="en">ELI5: audit a Betano source row</span><span class="es">ELI5: audita una fila fuente de Betano</span></h2>
         <ol class="mt-3 list-decimal pl-5 space-y-2 text-sm text-slate-300">
-          <li><span class="en">Open Football → World Cup and search for the exact teams and kickoff date.</span><span class="es">Abre Fútbol → Mundial y busca los equipos y la fecha exacta.</span></li>
-          <li><span class="en">Open the match, then choose Result, Total Goals, Both Teams Score, or Asian Handicap shown on the card.</span><span class="es">Abre el partido y elige Resultado, Total de goles, Ambos marcan o Hándicap asiático indicado en la tarjeta.</span></li>
-          <li><span class="en">Match the selection and line exactly; +1, +1.25, Over 0.5, and Draw are different bets.</span><span class="es">Haz coincidir exactamente selección y línea; +1, +1,25, Más de 0,5 y Empate son apuestas diferentes.</span></li>
-          <li><span class="en">Compare the current price with the screenshot price and fair odds. If it moved materially, the displayed EV is stale.</span><span class="es">Compara la cuota actual con la captura y la cuota justa. Si cambió mucho, el EV mostrado está desactualizado.</span></li>
-          <li><span class="en">Confirm full-time settlement. The displayed amount is a user-controlled simulation; the system-authorized stake remains zero.</span><span class="es">Confirma que liquida al tiempo reglamentario. El monto mostrado es una simulación controlada por el usuario; el monto autorizado sigue en cero.</span></li>
+          <li><span class="en">Use the app name only as provenance for the saved screenshot/source row.</span><span class="es">Usa el nombre de la app solo como procedencia de la captura/fila fuente guardada.</span></li>
+          <li><span class="en">Audit the exact fixture, market, selection, and line shown in the card.</span><span class="es">Audita el partido, mercado, selección y línea exactos de la tarjeta.</span></li>
+          <li><span class="en">Do not treat +1, +1.25, Over 0.5, and Draw as interchangeable; they are different source rows.</span><span class="es">No trates +1, +1,25, Más de 0,5 y Empate como intercambiables; son filas fuente distintas.</span></li>
+          <li><span class="en">Compare saved source price with model fair odds only as an audit check; displayed EV can become stale.</span><span class="es">Compara la cuota fuente guardada con la cuota justa del modelo solo como auditoría; el EV puede quedar desactualizado.</span></li>
+          <li><span class="en">The displayed amount is a user-controlled simulation; the system-authorized stake remains zero.</span><span class="es">El monto mostrado es una simulación controlada por el usuario; el monto autorizado sigue en cero.</span></li>
         </ol>
       </div>
       <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
-        <h2 class="text-xl font-bold text-white"><span class="en">ELI5: find the market in Betsson</span><span class="es">ELI5: encuentra el mercado en Betsson</span></h2>
+        <h2 class="text-xl font-bold text-white"><span class="en">ELI5: audit a Betsson source row</span><span class="es">ELI5: audita una fila fuente de Betsson</span></h2>
         <ol class="mt-3 list-decimal pl-5 space-y-2 text-sm text-slate-300">
-          <li><span class="en">Open Sports → Football → World Cup and select the exact fixture.</span><span class="es">Abre Deportes → Fútbol → Mundial y selecciona el partido exacto.</span></li>
-          <li><span class="en">Expand Match Result, Total Goals, Both Teams to Score, Asian Handicap, or Handicap + Total as named.</span><span class="es">Despliega Resultado, Total de goles, Ambos marcan, Hándicap asiático o Hándicap + Total según el nombre.</span></li>
-          <li><span class="en">Verify team side, sign, line, and Over/Under leg before comparing the decimal price.</span><span class="es">Verifica equipo, signo, línea y parte Más/Menos antes de comparar la cuota decimal.</span></li>
+          <li><span class="en">Use the app name only as provenance for the saved screenshot/source row.</span><span class="es">Usa el nombre de la app solo como procedencia de la captura/fila fuente guardada.</span></li>
+          <li><span class="en">Audit whether the saved row is Match Result, Total Goals, Both Teams to Score, Asian Handicap, or Handicap + Total.</span><span class="es">Audita si la fila guardada es Resultado, Total de goles, Ambos marcan, Hándicap asiático o Hándicap + Total.</span></li>
+          <li><span class="en">Verify team side, sign, line, and Over/Under leg before comparing the saved decimal price.</span><span class="es">Verifica equipo, signo, línea y parte Más/Menos antes de comparar la cuota decimal guardada.</span></li>
           <li><span class="en">Use the card's source filename to audit the old screenshot. Never substitute a similar-looking line.</span><span class="es">Usa el nombre de la captura de la tarjeta para auditar la evidencia. Nunca sustituyas una línea parecida.</span></li>
-          <li><span class="en">Re-check team news and price near kickoff; if either changed, rerun the model rather than relying on this snapshot.</span><span class="es">Revisa noticias y cuota cerca del inicio; si cambiaron, vuelve a ejecutar el modelo en vez de confiar en esta instantánea.</span></li>
+          <li><span class="en">If team news or prices changed, this snapshot is audit evidence only; rerun the model before any future release decision.</span><span class="es">Si noticias o cuotas cambiaron, esta instantánea es solo evidencia de auditoría; vuelve a ejecutar el modelo antes de cualquier decisión futura.</span></li>
         </ol>
       </div>
     </section>
@@ -353,51 +353,6 @@ function renderValidationVisuals(){
 function renderBankrollPlan(){
  const auth=DATA.bankroll_simulation;
  const simulation=DATA.educational_stake_simulation;
- $('#bankroll-plan').innerHTML=['Betano','Betsson'].map(app=>{
-  const appPlan=simulation.apps?.[app];
-  if(!appPlan||appPlan.status!=='available_from_transcribed_screenshot_odds'){
-   return `<article class="rounded-3xl border border-amber-800/70 bg-slate-900 p-5">
-    <h2 class="text-xl font-black text-white">${app} · <span data-simulation-budget-label="${app}">S/100.00</span></h2>
-    <p class="mt-3 text-amber-200"><span class="en">Allocation blocked: current transcribed odds do not cover the upcoming fixtures in this app.</span><span class="es">Asignación bloqueada: las cuotas transcritas actuales no cubren los próximos partidos en esta app.</span></p>
-    <p class="en mt-2 text-xs text-slate-400">${escapeHtml(appPlan?.required_user_input?.en||'Current screenshots required.')}</p>
-    <p class="es mt-2 text-xs text-slate-400">${escapeHtml(appPlan?.required_user_input?.es||'Se requieren capturas actuales.')}</p>
-    <div class="mt-4">${metric('<span class="en">Cash reserved</span><span class="es">Efectivo reservado</span>',`<span data-simulation-blocked-reserve="${app}">S/100.00</span>`)}</div>
-   </article>`;
-  }
-  return `<article class="rounded-3xl border border-emerald-800/70 bg-slate-900 p-5">
-   <div class="flex items-start justify-between gap-4">
-    <div><h2 class="text-xl font-black text-white">${app} · <span class="en">interactive <span data-simulation-budget-label="${app}">S/100.00</span> simulation</span><span class="es">simulación interactiva de <span data-simulation-budget-label="${app}">S/100,00</span></span></h2>
-    <p class="mt-1 text-sm text-slate-400"><span class="en">One hypothetical single per current match plus one capped three-leg accumulator.</span><span class="es">Una simulación simple por partido vigente más una combinada limitada de tres selecciones.</span></p></div>
-    <span class="rounded-full border border-emerald-700 px-3 py-1 text-xs text-emerald-200"><span class="en">Educational</span><span class="es">Educativa</span></span>
-   </div>
-   <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
-    ${metric('<span class="en">Singles</span><span class="es">Simples</span>',`<span data-simulation-singles="${app}">—</span>`)}
-    ${metric('<span class="en">Accumulator</span><span class="es">Combinada</span>',`<span data-simulation-accumulator="${app}">—</span>`)}
-    ${metric('<span class="en">Cash reserved</span><span class="es">Efectivo reservado</span>',`<span data-simulation-reserved="${app}">—</span>`)}
-    ${metric('<span class="en">Matches covered</span><span class="es">Partidos cubiertos</span>',`<span data-simulation-covered="${app}">—</span>`)}
-   </div>
-   <div class="mt-4 rounded-xl border border-emerald-900 bg-emerald-950/20 p-3 text-xs">
-    <b><span class="en">Optional capped accumulator:</span><span class="es">Combinada opcional limitada:</span></b>
-    <div class="mt-2" data-simulation-accumulator-legs="${app}">—</div>
-    <div class="mt-2 text-amber-200" data-simulation-accumulator-warning="${app}"></div>
-   </div>
-   <p class="mt-3 text-xs text-amber-200"><span class="en">${escapeHtml(simulation.warning.en)}</span><span class="es">${escapeHtml(simulation.warning.es)}</span></p>
-  </article>`;
- }).join('')+`
-  <article class="rounded-3xl border border-red-900/70 bg-slate-900 p-5">
-   <h2 class="text-xl font-black text-white"><span class="en">Authorization gate</span><span class="es">Puerta de autorización</span></h2>
-   <div class="mt-4 grid grid-cols-2 gap-2 text-center">
-    ${metric('<span class="en">Authorized stake</span><span class="es">Monto autorizado</span>','S/0.00')}
-    ${metric('<span class="en">Profitability validation</span><span class="es">Validación de rentabilidad</span>','<span class="en">Blocked</span><span class="es">Bloqueada</span>')}
-   </div>
-   <p class="mt-3 text-xs text-red-200"><span class="en">${escapeHtml(auth.warning.en)}</span><span class="es">${escapeHtml(auth.warning.es)}</span></p>
-   <p class="mt-2 text-xs text-slate-400"><span class="en">The simulator is available even though the production authorization remains zero.</span><span class="es">El simulador está disponible aunque la autorización de producción siga en cero.</span></p>
-  </article>`;
- refreshStakeSimulation();
-}
-function renderBankrollPlanLegacyDisabled(){
- const auth=DATA.bankroll_simulation;
- const simulation=DATA.educational_stake_simulation;
  $('#bankroll-plan').innerHTML=`
   <article class="rounded-3xl border border-emerald-800/70 bg-slate-900 p-5">
    <div class="flex items-start justify-between gap-4">
@@ -405,7 +360,7 @@ function renderBankrollPlanLegacyDisabled(){
     <p class="mt-1 text-sm text-slate-400"><span class="en">Safety-filtered hypothetical amounts for current matches.</span><span class="es">Montos hipotéticos con filtros de seguridad para partidos vigentes.</span></p></div>
     <span class="rounded-full border border-emerald-700 px-3 py-1 text-xs text-emerald-200"><span class="en">Educational</span><span class="es">Educativa</span></span>
    </div>
-   <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+   <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2 text-center">
     ${metric('<span class="en">Simulated deployment</span><span class="es">Despliegue simulado</span>','<span id="simulation-deployed">—</span>')}
     ${metric('<span class="en">Cash reserved</span><span class="es">Efectivo reservado</span>','<span id="simulation-reserved">—</span>')}
     ${metric('<span class="en">Matches receiving amount</span><span class="es">Partidos con monto</span>','<span id="simulation-covered">—</span>')}
@@ -458,20 +413,20 @@ function complementaryBetPanel(row){
  return `<section class="mt-4 rounded-2xl border border-indigo-800 bg-indigo-950/20 p-4 text-sm">
   <div class="flex items-start justify-between gap-3">
    <div>
-    <div class="font-semibold text-white"><span class="en">Complementary / dutching check</span><span class="es">Chequeo complementario / dutching</span></div>
-    <p class="mt-1 text-xs text-slate-300"><span class="en">This tests the exact math behind covering multiple outcomes with sourced 1X2 prices.</span><span class="es">Esto prueba la matemática exacta de cubrir varios resultados con cuotas 1X2 con fuente.</span></p>
+    <div class="font-semibold text-white"><span class="en">1X2 coverage math audit</span><span class="es">Auditoría matemática de cobertura 1X2</span></div>
+    <p class="mt-1 text-xs text-slate-300"><span class="en">This audits the arithmetic of covering multiple outcomes with sourced 1X2 prices; it does not authorize execution.</span><span class="es">Esto audita la aritmética de cubrir varios resultados con cuotas 1X2 con fuente; no autoriza ejecución.</span></p>
    </div>
    <span class="rounded-full border ${analysis.full_cover_arbitrage_available?'border-emerald-700 text-emerald-200':'border-amber-700 text-amber-200'} px-2 py-1 text-[10px]">${analysis.status||'not_available'}</span>
   </div>
   ${bestFull?`<div class="mt-3 rounded-xl border border-emerald-800 bg-emerald-950/25 p-3">
-    <div class="font-semibold text-emerald-100"><span class="en">Full-cover arbitrage found in ${escapeHtml(bestFull.app)}</span><span class="es">Arbitraje de cobertura total encontrado en ${escapeHtml(bestFull.app)}</span></div>
+    <div class="font-semibold text-emerald-100"><span class="en">Full-cover math gap detected in saved ${escapeHtml(bestFull.app)} prices</span><span class="es">Brecha matemática de cobertura total detectada en cuotas guardadas de ${escapeHtml(bestFull.app)}</span></div>
     <ul class="mt-2 list-disc pl-5 text-xs text-slate-200">${fullRows}</ul>
-    <p class="mt-2 text-xs text-emerald-200"><span class="en">For S/${Number(analysis.budget||10).toFixed(2)} total, gross return is S/${Number(bestFull.full_cover.gross_return_any_outcome).toFixed(2)} for any 1X2 outcome; math profit S/${Number(bestFull.full_cover.profit_any_outcome).toFixed(2)} before app limits, stale-price risk, voids, and human execution error.</span><span class="es">Para S/${Number(analysis.budget||10).toFixed(2)} total, el bruto es S/${Number(bestFull.full_cover.gross_return_any_outcome).toFixed(2)} en cualquier resultado 1X2; beneficio matemático S/${Number(bestFull.full_cover.profit_any_outcome).toFixed(2)} antes de límites de app, riesgo de cuota vieja, anulaciones y error humano.</span></p>
+    <p class="mt-2 text-xs text-emerald-200"><span class="en">For S/${Number(analysis.budget||10).toFixed(2)} total, arithmetic gross is S/${Number(bestFull.full_cover.gross_return_any_outcome).toFixed(2)} for any 1X2 outcome; arithmetic surplus S/${Number(bestFull.full_cover.profit_any_outcome).toFixed(2)} before app limits, stale-price risk, voids, and human execution error.</span><span class="es">Para S/${Number(analysis.budget||10).toFixed(2)} total, el bruto aritmético es S/${Number(bestFull.full_cover.gross_return_any_outcome).toFixed(2)} en cualquier resultado 1X2; excedente aritmético S/${Number(bestFull.full_cover.profit_any_outcome).toFixed(2)} antes de límites de app, riesgo de cuota vieja, anulaciones y error humano.</span></p>
   </div>`:`<div class="mt-3 rounded-xl border border-amber-800 bg-amber-950/20 p-3">
-    <div class="font-semibold text-amber-100"><span class="en">No guaranteed full-cover arbitrage in the saved same-app 1X2 prices.</span><span class="es">No hay arbitraje garantizado de cobertura total en las cuotas 1X2 guardadas de la misma app.</span></div>
+    <div class="font-semibold text-amber-100"><span class="en">No full-cover math gap in the saved same-app 1X2 prices.</span><span class="es">No hay brecha matemática de cobertura total en las cuotas 1X2 guardadas de la misma app.</span></div>
     ${bestHedge?`<p class="mt-2 text-xs text-slate-300"><span class="en">Best two-outcome hedge candidate from ${escapeHtml(bestHedge.app)} covers two outcomes but leaves one result uncovered.</span><span class="es">La mejor cobertura de dos resultados de ${escapeHtml(bestHedge.app)} cubre dos resultados pero deja uno sin cubrir.</span></p>
     <ul class="mt-2 list-disc pl-5 text-xs text-slate-200">${hedgeRows}</ul>
-    <p class="mt-2 text-xs text-amber-200"><span class="en">If a covered outcome lands: gross S/${Number(hedge.gross_return_if_covered_outcome).toFixed(2)}, profit S/${Number(hedge.profit_if_covered_outcome).toFixed(2)}. If the uncovered outcome lands (${escapeHtml(uncovered.en||hedge.uncovered_outcome)}): loss S/${Math.abs(Number(hedge.loss_if_uncovered_outcome)).toFixed(2)}.</span><span class="es">Si cae un resultado cubierto: bruto S/${Number(hedge.gross_return_if_covered_outcome).toFixed(2)}, beneficio S/${Number(hedge.profit_if_covered_outcome).toFixed(2)}. Si cae el resultado no cubierto (${escapeHtml(uncovered.es||hedge.uncovered_outcome)}): pérdida S/${Math.abs(Number(hedge.loss_if_uncovered_outcome)).toFixed(2)}.</span></p>`:''}
+    <p class="mt-2 text-xs text-amber-200"><span class="en">If a covered outcome lands: arithmetic gross S/${Number(hedge.gross_return_if_covered_outcome).toFixed(2)}, surplus S/${Number(hedge.profit_if_covered_outcome).toFixed(2)}. If the uncovered outcome lands (${escapeHtml(uncovered.en||hedge.uncovered_outcome)}): loss S/${Math.abs(Number(hedge.loss_if_uncovered_outcome)).toFixed(2)}.</span><span class="es">Si cae un resultado cubierto: bruto aritmético S/${Number(hedge.gross_return_if_covered_outcome).toFixed(2)}, excedente S/${Number(hedge.profit_if_covered_outcome).toFixed(2)}. Si cae el resultado no cubierto (${escapeHtml(uncovered.es||hedge.uncovered_outcome)}): pérdida S/${Math.abs(Number(hedge.loss_if_uncovered_outcome)).toFixed(2)}.</span></p>`:''}
   </div>`}
   <p class="mt-3 text-xs text-red-200"><span class="en">${escapeHtml(analysis.warning?.en||'No guaranteed-profit claim is made.')}</span><span class="es">${escapeHtml(analysis.warning?.es||'No se afirma beneficio garantizado.')}</span></p>
  </section>`;
@@ -769,13 +724,13 @@ function card(row,index){
     </div>
     ${complementaryBetPanel(row)}
     <div class="mt-4 rounded-2xl border border-slate-700 bg-slate-950 p-4">
-      <div class="text-xs text-red-300"><span class="en">${escapeHtml(r?.watchlist_label?.en||'ABSTAIN — highest-ranked comparison only')}</span><span class="es">${escapeHtml(r?.watchlist_label?.es||'ABSTAIN — solo comparación mejor clasificada')}</span></div>
+      <div class="text-xs text-red-300"><span class="en">${escapeHtml(r?.watchlist_label?.en||'ABSTAIN — audit comparison only')}</span><span class="es">${escapeHtml(r?.watchlist_label?.es||'ABSTAIN — solo comparación de auditoría')}</span></div>
       <div class="mt-1 font-bold text-white" data-json-pointer="${ptr}/rank_one_comparison/selection_original"><span class="en">${escapeHtml(r?.display?.selection?.en||rec)}</span><span class="es">${escapeHtml(r?.display?.selection?.es||rec)}</span></div>
       ${r?`<div class="mt-2 grid grid-cols-3 gap-2 text-sm"><div data-json-pointer="${ptr}/rank_one_comparison/ev_pct"><span class="en">Decision EV</span><span class="es">EV decisión</span> <b>${r.ev_pct.toFixed(1)}%</b></div><div data-json-pointer="${ptr}/rank_one_comparison/stressed_ev_pct"><span class="en">Stress</span><span class="es">Estrés</span> <b>${r.stressed_ev_pct.toFixed(1)}%</b></div><div data-json-pointer="${ptr}/rank_one_comparison/p_win"><span class="en">Decision probability</span><span class="es">Probabilidad decisión</span> <b>${pct(r.p_win)}</b></div></div>
       <div class="mt-2 text-xs text-slate-400">${escapeHtml(r.app)} • <span class="en">${escapeHtml(r.display?.market?.en||r.market_original)}</span><span class="es">${escapeHtml(r.display?.market?.es||r.market_original)}</span> • ${escapeHtml(r.source_image)} • <span class="en">fair</span><span class="es">justa</span> ${odds(r.fair_odds)}</div>
       <div class="mt-2 text-xs text-amber-200"><span class="en">${r.selection_reason==='all_model_edges_halted_select_highest_market_probability'?'All model edges were HALT; selected the highest market-probability fallback.':'Selected by uncertainty-adjusted expected-profit utility.'} Profitability is not historically validated.</span><span class="es">${r.selection_reason==='all_model_edges_halted_select_highest_market_probability'?'Todas las ventajas fueron HALT; se eligió la alternativa con mayor probabilidad de mercado.':'Elegida por utilidad de beneficio esperado ajustada por incertidumbre.'} La rentabilidad no está validada históricamente.</span></div>`:''}
       ${r?.steps?.en?.length?`<details class="mt-3 rounded-xl border border-cyan-900 bg-cyan-950/20 p-3" open>
-        <summary class="cursor-pointer font-semibold text-cyan-200"><span class="en">${r.watchlist_status==='archived_result_no_bet'?'ELI5: review this archived forecast':'ELI5: check this exact watchlist in '+escapeHtml(r.app)}</span><span class="es">${r.watchlist_status==='archived_result_no_bet'?'ELI5: revisa este pronóstico archivado':'ELI5: revisa esta opción exacta en '+escapeHtml(r.app)}</span></summary>
+        <summary class="cursor-pointer font-semibold text-cyan-200"><span class="en">${r.watchlist_status==='archived_result_no_bet'?'ELI5: review this archived forecast':'ELI5: audit this exact source row'}</span><span class="es">${r.watchlist_status==='archived_result_no_bet'?'ELI5: revisa este pronóstico archivado':'ELI5: audita esta fila fuente exacta'}</span></summary>
         <ol class="en mt-2 list-decimal pl-5 space-y-2 text-sm text-slate-300">${r.steps.en.map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol>
         <ol class="es mt-2 list-decimal pl-5 space-y-2 text-sm text-slate-300">${r.steps.es.map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol>
       </details>`:''}
@@ -786,7 +741,7 @@ function card(row,index){
       ${topRecommendations.length<4?`<p class="mt-3 text-xs text-amber-200"><span class="en">Only ${topRecommendations.length} economically distinct complete sourced comparisons were available. A fourth comparison was not manufactured from duplicate app prices or unsupported markets.</span><span class="es">Solo hubo ${topRecommendations.length} comparaciones completas, distintas y con fuente. No se fabricó una cuarta comparación usando cuotas duplicadas o mercados no compatibles.</span></p>`:''}
       <p class="mt-3 text-xs text-amber-200"><span class="en">Ranking means best relative utility among available sourced prices, not proven profit. Utility can be negative even when displayed EV is non-negative because it subtracts model-market disagreement, market-family uncertainty, and HALT penalties. Negative EV and HALT alternatives remain visibly labeled.</span><span class="es">El ranking significa mejor utilidad relativa entre cuotas disponibles, no beneficio probado. La utilidad puede ser negativa aunque el EV mostrado no lo sea porque resta desacuerdo modelo-mercado, incertidumbre de la familia y penalizaciones HALT. Alternativas con EV negativo y HALT permanecen claramente marcadas.</span></p>
     </details>`:`<div class="mt-4 rounded-2xl border ${elapsed?'border-sky-800 bg-sky-950/20':'border-amber-800 bg-amber-950/20'} p-4 text-sm">
-      <div class="font-bold ${elapsed?'text-sky-100':'text-amber-100'}"><span class="en">${elapsed?'Archived forecast review':'Rerun required before any watchlist'}</span><span class="es">${elapsed?'Revisión del pronóstico archivado':'Se requiere recalcular antes de mostrar una opción'}</span></div>
+      <div class="font-bold ${elapsed?'text-sky-100':'text-amber-100'}"><span class="en">${elapsed?'Archived forecast review':'Rerun required before any audit comparison'}</span><span class="es">${elapsed?'Revisión del pronóstico archivado':'Se requiere recalcular antes de mostrar una comparación de auditoría'}</span></div>
       <ol class="en mt-2 list-decimal pl-5 space-y-2">${r?.steps?.en?.map(step=>`<li>${escapeHtml(step)}</li>`).join('')||''}</ol>
       <ol class="es mt-2 list-decimal pl-5 space-y-2">${r?.steps?.es?.map(step=>`<li>${escapeHtml(step)}</li>`).join('')||''}</ol>
     </div>`}
@@ -803,7 +758,7 @@ function card(row,index){
         ?'<span class="en">Saved price is at or above the model fair threshold. Still re-check the live price and news.</span><span class="es">La cuota guardada está en o sobre el umbral justo. Revisa igualmente cuota y noticias actuales.</span>'
         :'<span class="en">Saved price is below the model fair threshold. The fail-closed policy assigns zero stake.</span><span class="es">La cuota guardada está debajo del umbral justo. La política cerrada por seguridad asigna monto cero.</span>'}
       </div>
-      ${budget.steps.en.length?`<h3 class="mt-4 font-bold text-white"><span class="en">Step by step in ${escapeHtml(r.app)}</span><span class="es">Paso a paso en ${escapeHtml(r.app)}</span></h3>
+      ${budget.steps.en.length?`<h3 class="mt-4 font-bold text-white"><span class="en">Source audit steps for ${escapeHtml(r.app)}</span><span class="es">Pasos de auditoría de fuente para ${escapeHtml(r.app)}</span></h3>
       <ol class="en mt-2 list-decimal pl-5 space-y-2 text-sm text-slate-300">${budget.steps.en.map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol>
       <ol class="es mt-2 list-decimal pl-5 space-y-2 text-sm text-slate-300">${budget.steps.es.map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol>`:''}
       <p class="mt-3 text-xs text-amber-200"><span class="en">${escapeHtml(budget.warning.en)}</span><span class="es">${escapeHtml(budget.warning.es)}</span></p>
@@ -843,6 +798,22 @@ function applyRiskProfile(){
  document.querySelectorAll('[data-risk-lens-profile]').forEach(el=>el.classList.toggle('hidden',el.dataset.riskLensProfile!==profile));
  refreshStakeSimulation();
 }
+function explainSimulationExclusions(reasons){
+ const map={
+  negative_stressed_ev:{en:'After stress testing, the estimated edge turns negative.',es:'Después de la prueba de estrés, la ventaja estimada se vuelve negativa.'},
+  fails_selected_risk_lens:{en:'This risk profile is stricter than this comparison can pass.',es:'Este perfil de riesgo es más estricto de lo que esta comparación puede superar.'},
+  not_current_future_fixture:{en:'This match is not currently eligible; rerun the model first.',es:'Este partido no es elegible ahora; primero vuelve a ejecutar el modelo.'},
+  audit_only_profile_reserves_all_cash:{en:'Audit-only never assigns simulated money.',es:'Solo auditoría nunca asigna dinero simulado.'},
+  halt_candidate:{en:'The model marked this comparison as HALT.',es:'El modelo marcó esta comparación como ALTO.'},
+  non_positive_ev:{en:'The estimated expected value is not positive.',es:'El valor esperado estimado no es positivo.'},
+  below_model_fair_price:{en:'The saved price is below the model fair-price threshold.',es:'La cuota guardada está debajo del umbral de precio justo del modelo.'}
+ };
+ const rows=safeList(reasons).map(reason=>map[reason]||{en:reason,es:reason});
+ return {
+  en:rows.map(row=>row.en).join(' '),
+  es:rows.map(row=>row.es).join(' ')
+ };
+}
 function refreshStakeSimulation(){
  if(!DATA?.educational_stake_simulation)return;
  const profile=$('#risk-profile')?.value||DATA.educational_stake_simulation.default_profile||'balanced';
@@ -850,35 +821,19 @@ function refreshStakeSimulation(){
  const rawBudget=Number(budgetInput?.value||100);
  const budget=Math.max(10,Math.min(10000,Number.isFinite(rawBudget)?rawBudget:100));
  if(budgetInput&&Number(budgetInput.value)!==budget)budgetInput.value=String(budget);
- const scale=budget/Number(DATA.educational_stake_simulation.budget_per_app||100);
- document.querySelectorAll('[data-simulation-budget-label]').forEach(el=>el.textContent=`S/${budget.toFixed(2)}`);
- document.querySelectorAll('[data-simulation-blocked-reserve]').forEach(el=>el.textContent=`S/${budget.toFixed(2)}`);
- const requiredProfiles=['exploratory','balanced','cautious','strict','audit_only'];
- const availableApp=['Betano','Betsson'].find(app=>{
-  const profiles=DATA.educational_stake_simulation.apps?.[app]?.profiles;
-  return profiles&&requiredProfiles.every(profile=>profiles[profile]);
- });
- if(availableApp){
-  const profiles=DATA.educational_stake_simulation.apps[availableApp].profiles;
-  const total=id=>Number(profiles[id].singles_deployed)+Number(profiles[id].accumulator_stake);
-  const summary=$('#simulation-profile-summary');
-  if(summary)summary.innerHTML=`<span class="en">JSON-driven total deployment: exploratory ${total('exploratory').toFixed(0)}%, balanced ${total('balanced').toFixed(0)}%, cautious ${total('cautious').toFixed(0)}%, strict ${total('strict').toFixed(0)}%, audit-only ${total('audit_only').toFixed(0)}%.</span><span class="es">Despliegue total según JSON: exploratorio ${total('exploratory').toFixed(0)}%, balanceado ${total('balanced').toFixed(0)}%, cauteloso ${total('cautious').toFixed(0)}%, estricto ${total('strict').toFixed(0)}% y solo auditoría ${total('audit_only').toFixed(0)}%.</span>`;
+ const scale=budget/Number(DATA.educational_stake_simulation.base_budget||100);
+ const summary=DATA.educational_stake_simulation.profiles?.[profile];
+ if(!summary)return;
+ setText('#simulation-deployed',`S/${(Number(summary.deployed)*scale).toFixed(2)}`);
+ setText('#simulation-reserved',`S/${(Number(summary.cash_reserved)*scale).toFixed(2)}`);
+ setText('#simulation-covered',String(summary.fixture_count));
+ const profileSummary=$('#simulation-profile-summary');
+ if(profileSummary){
+  profileSummary.innerHTML=`<span class="en">Active profile ${escapeHtml(profile)} deploys S/${(Number(summary.deployed)*scale).toFixed(2)} and reserves S/${(Number(summary.cash_reserved)*scale).toFixed(2)} across ${Number(summary.fixture_count)} of ${Number(summary.current_fixture_count)} current matches. S/0 means a safety filter blocked the simulation; this never authorizes real staking.</span><span class="es">El perfil activo ${escapeHtml(profile)} despliega S/${(Number(summary.deployed)*scale).toFixed(2)} y reserva S/${(Number(summary.cash_reserved)*scale).toFixed(2)} en ${Number(summary.fixture_count)} de ${Number(summary.current_fixture_count)} partidos vigentes. S/0 significa que un filtro de seguridad bloqueó la simulación; esto nunca autoriza apuestas reales.</span>`;
  }
- ['Betano','Betsson'].forEach(app=>{
-  const summary=DATA.educational_stake_simulation.apps?.[app]?.profiles?.[profile];
-  if(!summary)return;
-  document.querySelectorAll(`[data-simulation-singles="${app}"]`).forEach(el=>el.textContent=`S/${(Number(summary.singles_deployed)*scale).toFixed(2)}`);
-  document.querySelectorAll(`[data-simulation-accumulator="${app}"]`).forEach(el=>el.textContent=`S/${(Number(summary.accumulator_stake)*scale).toFixed(2)}`);
-  document.querySelectorAll(`[data-simulation-reserved="${app}"]`).forEach(el=>el.textContent=`S/${(Number(summary.cash_reserved)*scale).toFixed(2)}`);
-  document.querySelectorAll(`[data-simulation-covered="${app}"]`).forEach(el=>el.textContent=String(summary.single_fixture_count));
-  const english=safeList(summary.accumulator?.legs).map(leg=>`${leg.fixture?.en||leg.fixture_id}: ${leg.selection?.selection?.en||''} @ ${Number(leg.odds).toFixed(2)}`).join(' + ');
-  const spanish=safeList(summary.accumulator?.legs).map(leg=>`${leg.fixture?.es||leg.fixture_id}: ${leg.selection?.selection?.es||''} @ ${Number(leg.odds).toFixed(2)}`).join(' + ');
-  document.querySelectorAll(`[data-simulation-accumulator-legs="${app}"]`).forEach(el=>el.innerHTML=`<span class="en">${escapeHtml(english)}</span><span class="es">${escapeHtml(spanish)}</span> · <b>${Number(summary.accumulator.combined_decimal_odds).toFixed(2)}</b>`);
-  document.querySelectorAll(`[data-simulation-accumulator-warning="${app}"]`).forEach(el=>el.innerHTML=`<span class="en">All three legs must win. Arithmetic full-win gross: S/${(Number(summary.accumulator.gross_return_if_full_win)*scale).toFixed(2)}; this is not expected profit.</span><span class="es">Deben ganar las tres selecciones. Bruto aritmético si todas ganan: S/${(Number(summary.accumulator.gross_return_if_full_win)*scale).toFixed(2)}; no es beneficio esperado.</span>`);
- });
  DATA.predictions.forEach(row=>{
   const rec=row.rank_one_comparison;
-  const item=rec?.stake_simulation?.[rec?.app]?.[profile];
+  const item=rec?.stake_simulation?.[profile];
   const stake=Number(item?.stake||0)*scale;
   const gross=stake*Number(rec?.odds||0);
   document.querySelectorAll(`[data-summary-profile="${row.fixture_id}"]`).forEach(el=>el.textContent=profile);
@@ -896,44 +851,19 @@ function refreshStakeSimulation(){
    const rank=Number(el.dataset.summaryRank||0);
    const isCurrent=row.fixture_lifecycle_status==='future'&&row.freshness_status==='current_snapshot';
    if(rank===1&&stake>0){
-    el.innerHTML='<span class="en">Hypothetical single amount for this profile.</span><span class="es">Monto simple hipotético para este perfil.</span>';
-   }else if(!isCurrent){
-    el.innerHTML=row.fixture_lifecycle_status==='elapsed_result_verified'
-     ?'<span class="en">Archived match: no current allocation.</span><span class="es">Partido archivado: sin asignación vigente.</span>'
-     :'<span class="en">Rerun required before allocation.</span><span class="es">Requiere recalcular antes de asignar.</span>';
+    el.innerHTML='<span class="en">Hypothetical single amount for this profile; gross includes stake and is not profit.</span><span class="es">Monto simple hipotético para este perfil; el bruto incluye el monto y no es ganancia.</span>';
+   }else if(rank===1&&!isCurrent){
+    el.innerHTML='<span class="en">Archived or non-current match: no current simulation amount.</span><span class="es">Partido archivado o no vigente: sin monto simulado actual.</span>';
    }else{
     el.innerHTML='<span class="en">Info only; use as a replacement candidate, not an added stake.</span><span class="es">Solo informativo; úsalo como reemplazo candidato, no como monto adicional.</span>';
    }
   });
-  const forced=safeList(item?.forced_coverage_reasons);
+  const exclusions=safeList(item?.exclusion_reasons);
+  const explained=explainSimulationExclusions(exclusions);
   document.querySelectorAll(`[data-simulation-forced="${row.fixture_id}"]`).forEach(el=>{
-   el.classList.toggle('hidden',forced.length===0);
-   el.innerHTML=`<span class="en">Forced coverage warning: this row is included only because one single per match was requested. Failed checks: ${escapeHtml(forced.join(', ')||'none')}.</span><span class="es">Advertencia de cobertura forzada: esta fila se incluye solo porque se pidió una simple por partido. Controles fallidos: ${escapeHtml(forced.join(', ')||'ninguno')}.</span>`;
+   el.classList.toggle('hidden',stake>0||exclusions.length===0);
+   el.innerHTML=`<span class="en">No simulated amount for this profile. ${escapeHtml(explained.en||'No reason supplied.')}</span><span class="es">Sin monto simulado para este perfil. ${escapeHtml(explained.es||'No se indicó razón.')}</span>`;
   });
-  document.querySelectorAll(`[data-simulation-included="${row.fixture_id}"]`).forEach(el=>el.classList.toggle('hidden',stake<=0));
-  document.querySelectorAll(`[data-simulation-excluded="${row.fixture_id}"]`).forEach(el=>el.classList.toggle('hidden',stake>0));
- });
-}
-function refreshStakeSimulationLegacyDisabled(){
- if(!DATA?.educational_stake_simulation)return;
- const profile=$('#risk-profile')?.value||DATA.educational_stake_simulation.default_profile||'balanced';
- const budgetInput=$('#simulation-budget');
- const rawBudget=Number(budgetInput?.value||100);
- const budget=Math.max(10,Math.min(10000,Number.isFinite(rawBudget)?rawBudget:100));
- if(budgetInput&&Number(budgetInput.value)!==budget)budgetInput.value=String(budget);
- const scale=budget/Number(DATA.educational_stake_simulation.base_budget||100);
- const summary=DATA.educational_stake_simulation.profiles?.[profile];
- if(!summary)return;
- setText('#simulation-deployed',`S/${(Number(summary.deployed)*scale).toFixed(2)}`);
- setText('#simulation-reserved',`S/${(Number(summary.cash_reserved)*scale).toFixed(2)}`);
- setText('#simulation-covered',String(summary.fixture_count));
- DATA.predictions.forEach(row=>{
-  const rec=row.rank_one_comparison;
-  const item=rec?.stake_simulation?.[profile];
-  const stake=Number(item?.stake||0)*scale;
-  const gross=stake*Number(rec?.odds||0);
-  document.querySelectorAll(`[data-simulation-stake="${row.fixture_id}"]`).forEach(el=>el.textContent=`S/${stake.toFixed(2)}`);
-  document.querySelectorAll(`[data-simulation-gross="${row.fixture_id}"]`).forEach(el=>el.textContent=`S/${gross.toFixed(2)}`);
   document.querySelectorAll(`[data-simulation-included="${row.fixture_id}"]`).forEach(el=>el.classList.toggle('hidden',stake<=0));
   document.querySelectorAll(`[data-simulation-excluded="${row.fixture_id}"]`).forEach(el=>el.classList.toggle('hidden',stake>0));
  });

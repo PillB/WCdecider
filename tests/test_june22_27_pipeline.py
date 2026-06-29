@@ -975,67 +975,61 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
     assert plan["apps"]["Betsson"]["unallocated_budget"] == 100.0
 
 
-def test_educational_stake_simulation_is_per_app_and_covers_current_matches():
+def test_educational_stake_simulation_is_separate_and_safety_filtered():
     payload = json.loads(
         (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
     )
     simulation = payload["educational_stake_simulation"]
     assert simulation["policy"] == "educational_hypothetical_not_authorized"
-    assert simulation["budget_per_app"] == 100.0
+    assert simulation["base_budget"] == 100.0
     current_ids = {
         row["fixture_id"] for row in payload["predictions"]
         if row["fixture_lifecycle_status"] == "future"
         and row["freshness_status"] == "current_snapshot"
     }
     assert len(current_ids) == 7
-    betsson = simulation["apps"]["Betsson"]
-    assert betsson["status"] == "available_from_transcribed_screenshot_odds"
-    assert betsson["current_fixture_count"] == 5
-    betano = simulation["apps"]["Betano"]
-    assert betano["status"] == "available_from_transcribed_screenshot_odds"
-    assert betano["current_fixture_count"] == 2
     expected = {
-        "exploratory": (90.0, 10.0, 20.0, 5),
-        "balanced": (75.0, 5.0, 15.0, 5),
-        "cautious": (60.0, 3.0, 12.0, 5),
-        "strict": (50.0, 2.0, 10.0, 5),
-        "audit_only": (25.0, 0.0, 8.0, 5),
+        "exploratory": (50.0, 50.0, 6, 12.5),
+        "balanced": (30.0, 70.0, 6, 7.5),
+        "cautious": (15.0, 85.0, 3, 5.0),
+        "strict": (7.5, 92.5, 3, 2.5),
+        "audit_only": (0.0, 100.0, 0, 0.0),
     }
-    betsson_ids = {
-        row["fixture_id"] for row in payload["predictions"]
-        if row["rank_one_comparison"]["app"] == "Betsson"
-        and row["fixture_lifecycle_status"] == "future"
-        and row["freshness_status"] == "current_snapshot"
-    }
-    for profile, (singles, accumulator, max_single_pct, fixture_count) in expected.items():
-        summary = betsson["profiles"][profile]
-        assert summary["singles_deployed"] == singles
-        assert summary["accumulator_stake"] == accumulator
-        assert summary["cash_reserved"] == 100.0 - singles - accumulator
-        assert summary["single_fixture_count"] == fixture_count
-        assert summary["max_single_pct"] == max_single_pct
-        assert summary["accumulator"]["leg_count"] == 3
+    for profile, (deployed, reserved, fixture_count, max_stake) in expected.items():
+        summary = simulation["profiles"][profile]
+        assert summary["deployed"] == deployed
+        assert summary["cash_reserved"] == reserved
+        assert summary["fixture_count"] == fixture_count
+        assert summary["current_fixture_count"] == len(current_ids)
+        assert summary["max_fixture_stake"] == max_stake
         stakes = {
             row["fixture_id"]:
-                row["rank_one_comparison"]["stake_simulation"]["Betsson"][
-                    profile
-                ]["stake"]
+                row["rank_one_comparison"]["stake_simulation"][profile][
+                    "stake"
+                ]
             for row in payload["predictions"]
         }
-        assert sum(stakes.values()) == pytest.approx(singles)
-        assert all(stakes[fixture_id] > 0 for fixture_id in betsson_ids)
-        assert all(stake <= max_single_pct for stake in stakes.values())
+        assert sum(stakes.values()) == pytest.approx(deployed)
+        assert sum(1 for stake in stakes.values() if stake > 0) == fixture_count
+        assert all(stake <= max_stake for stake in stakes.values())
         assert all(
             stake == 0 for fixture_id, stake in stakes.items()
             if fixture_id not in current_ids
         )
-        assert all(
-            row["rank_one_comparison"]["stake_simulation"]["Betsson"][profile][
-                "coverage_policy"
-            ]
-            for row in payload["predictions"]
-            if row["fixture_id"] in current_ids
-        )
+        for row in payload["predictions"]:
+            rec = row["rank_one_comparison"]
+            item = rec["stake_simulation"][profile]
+            if item["stake"] > 0:
+                assert rec["strength"] != "HALT"
+                assert rec["ev_pct"] > 0.0
+                assert rec["stressed_ev_pct"] >= 0.0
+                assert rec["price_gate_status"] == "at_or_above_model_fair_price"
+                assert rec["risk_lens"][profile]["status"] == "PASS"
+                assert item["eligible_current_fixture"] is True
+                assert item["exclusion_reasons"] == []
+            else:
+                assert item["eligible_current_fixture"] is False
+                assert item["exclusion_reasons"]
     assert all(row["recommendation"] is None for row in payload["predictions"])
     assert all(
         row["rank_one_comparison"]["budget_simulation"]["stake"] == 0.0

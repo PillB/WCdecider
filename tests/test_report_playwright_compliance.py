@@ -95,7 +95,7 @@ def test_elapsed_cards_show_verified_results_and_future_cards_do_not(page):
         assert "Final result:" not in text
 
 
-def test_every_future_card_has_best_watchlist_and_eli5_zero_stake_flow(page):
+def test_every_future_card_has_audit_comparison_and_zero_authorized_stake_flow(page):
     browser_page, _ = page
     payload = json.loads(
         (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
@@ -120,8 +120,11 @@ def test_every_future_card_has_best_watchlist_and_eli5_zero_stake_flow(page):
             assert "Top ranked sourced comparisons" not in text
             assert card.locator("[data-recommendation-rank]").count() == 0
         else:
-            assert "Best available watchlist" in text
-            assert "ELI5: check this exact watchlist" in text
+            assert "Top audit comparison" in text
+            assert "ELI5: audit this exact source row" in text
+            assert "ELI5: check this exact watchlist" not in text
+            assert "Open Football → World Cup" not in text
+            assert "Open Sports → Football → World Cup" not in text
         assert "System stake: S/0.00" in text
 
 
@@ -207,7 +210,7 @@ def test_current_page_layout_contract_and_user_journey(page):
 
     assert browser_page.locator("#production-workflow").is_visible()
     assert browser_page.locator("#research-workflow").is_hidden()
-    assert browser_page.locator("#bankroll-plan article").count() >= 3
+    assert browser_page.locator("#bankroll-plan article").count() >= 2
     payload = json.loads(
         (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
     )
@@ -251,8 +254,8 @@ def test_top_summary_table_links_top_two_and_allocations(page):
         summary_row.inner_text()
     )
     balanced_stake = first_current["rank_one_comparison"]["stake_simulation"][
-        "Betsson"
-    ]["balanced"]["stake"]
+        "balanced"
+    ]["stake"]
     assert f"S/{balanced_stake:.2f}" in summary_row.inner_text()
     assert summary_row.locator('a[href="#match-' + first_current["fixture_id"] + '"]').count() >= 1
     assert browser_page.locator(f'#match-{first_current["fixture_id"]}').count() == 1
@@ -263,16 +266,17 @@ def test_top_summary_table_links_top_two_and_allocations(page):
     assert browser_page.evaluate("location.hash") == f"#match-{first_current['fixture_id']}"
 
 
-def test_blocked_app_empty_profiles_do_not_break_stake_simulator(page):
+def test_profile_schema_stake_simulator_renders_without_dynamic_failures(page):
     browser_page, failed = page
     payload = json.loads(
         (SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
     )
-    assert payload["educational_stake_simulation"]["apps"]["Betano"]["profiles"]
+    assert payload["educational_stake_simulation"]["profiles"]["balanced"]
+    assert "apps" not in payload["educational_stake_simulation"]
     assert browser_page.locator("#status").inner_text() == "Verified JSON loaded"
     plan_text = browser_page.locator("#bankroll-plan").inner_text()
     assert "Authorized stake" in plan_text
-    assert "interactive S/100.00 simulation" in plan_text
+    assert "Interactive stake simulation" in plan_text
     assert failed == []
 
 
@@ -327,7 +331,7 @@ def test_rendered_recommendations_match_json(page):
         assert float(displayed.group(1)) == pytest.approx(rec["ev_pct"], abs=0.11)
         assert rec["strength"] in text
         assert f"risk grade {rec['risk_grade']}" in text
-        assert "Best available watchlist" in text
+        assert "Top audit comparison" in text
 
 
 def test_top_ranked_recommendations_match_json_and_disclose_shortfalls(page):
@@ -465,16 +469,14 @@ def test_interactive_stake_simulation_scales_and_preserves_authorization(page):
     browser_page, _ = page
     payload = json.loads((SITE / "wc_june22_27_predictions.json").read_text(encoding="utf-8"))
     plan_text = browser_page.locator("#bankroll-plan").inner_text()
-    assert "interactive S/100.00 simulation" in plan_text
+    assert "Interactive stake simulation" in plan_text
     assert "Authorized stake" in plan_text
     assert "S/0.00" in plan_text
-    balanced = payload["educational_stake_simulation"]["apps"]["Betsson"][
-        "profiles"
-    ]["balanced"]
-    assert f"S/{balanced['singles_deployed']:.2f}" in plan_text
+    balanced = payload["educational_stake_simulation"]["profiles"]["balanced"]
+    assert f"S/{balanced['deployed']:.2f}" in plan_text
     assert f"S/{balanced['cash_reserved']:.2f}" in plan_text
-    assert "The simulator is available even though the production authorization remains zero." in plan_text
-    assert "All three legs must win" in plan_text
+    assert "Hypothetical budgeting aid only" in plan_text
+    assert "Profitability validation" in plan_text
 
     for item in payload["predictions"]:
         card = browser_page.locator(f'[data-fixture-id="{item["fixture_id"]}"]')
@@ -492,10 +494,13 @@ def test_interactive_stake_simulation_scales_and_preserves_authorization(page):
             item["fixture_lifecycle_status"] == "future"
             and item["freshness_status"] == "current_snapshot"
         ):
-            simulated = rec["stake_simulation"]["Betsson"]["balanced"]["stake"]
+            simulated = rec["stake_simulation"]["balanced"]["stake"]
             assert f"S/{simulated:.2f}" in text
             assert simulated >= 0
-            assert "Comparison only" in text
+            if simulated > 0:
+                assert "Comparison only" in text
+            else:
+                assert "fails one or more simulation safety filters" in text
         else:
             assert card.locator(
                 f'[data-simulation-stake="{item["fixture_id"]}"]'
@@ -508,7 +513,7 @@ def test_interactive_stake_simulation_scales_and_preserves_authorization(page):
         and row["freshness_status"] == "current_snapshot"
     )
     expected = (
-        first["rank_one_comparison"]["stake_simulation"]["Betsson"]["balanced"][
+        first["rank_one_comparison"]["stake_simulation"]["balanced"][
             "stake"
         ] * 2
     )
@@ -517,7 +522,7 @@ def test_interactive_stake_simulation_scales_and_preserves_authorization(page):
     ).inner_text() == f"S/{expected:.2f}"
     browser_page.locator("#risk-profile").select_option("strict")
     strict_expected = (
-        first["rank_one_comparison"]["stake_simulation"]["Betsson"]["strict"][
+        first["rank_one_comparison"]["stake_simulation"]["strict"][
             "stake"
         ] * 2
     )
@@ -538,19 +543,19 @@ def test_complementary_betting_panel_discloses_dutching_math_and_risk(page):
     )
     card = browser_page.locator(f'[data-fixture-id="{first["fixture_id"]}"]')
     text = card.inner_text()
-    assert "Complementary / dutching check" in text
+    assert "1X2 coverage math audit" in text
     analysis = first["complementary_bet_analysis"]
     if analysis["full_cover_arbitrage_available"]:
-        assert "Full-cover arbitrage found" in text
+        assert "Full-cover math gap detected" in text
         assert "before app limits, stale-price risk" in text
     else:
-        assert "No guaranteed full-cover arbitrage" in text
+        assert "No full-cover math gap" in text
         assert "leaves one result uncovered" in text
         assert "loss S/10.00" in text
     assert "Two-outcome hedges can still lose" in text
     browser_page.locator("#lang").click()
     spanish = card.inner_text()
-    assert "Chequeo complementario / dutching" in spanish
+    assert "Auditoría matemática de cobertura 1X2" in spanish
     assert "resultado no cubierto" in spanish
 
 
