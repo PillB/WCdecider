@@ -80,8 +80,12 @@ def test_elapsed_cards_show_verified_results_and_future_cards_do_not(page):
         row for row in payload["predictions"]
         if row["fixture_lifecycle_status"] == "future"
     ]
+    unverified_elapsed = [
+        row for row in payload["predictions"]
+        if row["fixture_lifecycle_status"] == "elapsed_requires_verified_result"
+    ]
     assert len(elapsed) == 0
-    assert len(future) == payload["batch"]["fixture_count"]
+    assert len(future) + len(unverified_elapsed) == payload["batch"]["fixture_count"]
     for row in elapsed:
         text = browser_page.locator(
             f'[data-fixture-id="{row["fixture_id"]}"]'
@@ -93,6 +97,12 @@ def test_elapsed_cards_show_verified_results_and_future_cards_do_not(page):
             f'[data-fixture-id="{row["fixture_id"]}"]'
         ).inner_text()
         assert "Final result:" not in text
+    for row in unverified_elapsed:
+        text = browser_page.locator(
+            f'[data-fixture-id="{row["fixture_id"]}"]'
+        ).inner_text()
+        assert "Final result:" not in text
+        assert "S/0" in text
 
 
 def test_every_future_card_has_audit_comparison_and_zero_authorized_stake_flow(page):
@@ -104,7 +114,7 @@ def test_every_future_card_has_audit_comparison_and_zero_authorized_stake_flow(p
         row for row in payload["predictions"]
         if row["fixture_lifecycle_status"] == "future"
     ]
-    assert len(future) == payload["batch"]["fixture_count"]
+    assert len(future) <= payload["batch"]["fixture_count"]
     for row in future:
         rank_one = row["rank_one_comparison"]
         assert rank_one is not None
@@ -322,7 +332,7 @@ def test_rendered_recommendations_match_json(page):
             item["fixture_lifecycle_status"] == "future"
             and item["freshness_status"] == "current_snapshot"
         )
-        if not current:
+        if not current and item["fixture_lifecycle_status"] == "elapsed_result_verified":
             assert "Decision EV" not in text
             continue
         assert rec["display"]["selection"]["en"] in text
@@ -331,7 +341,8 @@ def test_rendered_recommendations_match_json(page):
         assert float(displayed.group(1)) == pytest.approx(rec["ev_pct"], abs=0.11)
         assert rec["strength"] in text
         assert f"risk grade {rec['risk_grade']}" in text
-        assert "Top audit comparison" in text
+        if current:
+            assert "Top audit comparison" in text
 
 
 def test_top_ranked_recommendations_match_json_and_disclose_shortfalls(page):
@@ -348,7 +359,7 @@ def test_top_ranked_recommendations_match_json_and_disclose_shortfalls(page):
             item["fixture_lifecycle_status"] == "future"
             and item["freshness_status"] == "current_snapshot"
         )
-        if not current:
+        if not current and item["fixture_lifecycle_status"] == "elapsed_result_verified":
             assert ranked.count() == 0
             continue
         assert ranked.count() == item["ranked_comparisons_available"]
@@ -501,10 +512,15 @@ def test_interactive_stake_simulation_scales_and_preserves_authorization(page):
                 assert "Comparison only" in text
             else:
                 assert "fails one or more simulation safety filters" in text
-        else:
+        elif item["fixture_lifecycle_status"] == "elapsed_result_verified":
             assert card.locator(
                 f'[data-simulation-stake="{item["fixture_id"]}"]'
             ).count() == 0
+        else:
+            assert card.locator(
+                f'[data-simulation-stake="{item["fixture_id"]}"]'
+            ).count() == 1
+            assert "S/0.00" in text
 
     browser_page.locator("#simulation-budget").fill("200")
     first = next(

@@ -1,0 +1,6 @@
+interface:
+  display_name: "WCdecider Manual Update Release"
+  short_description: "Validate and release manual odds updates."
+  default_prompt: "Use $wcdecider-manual-update-release to update WCdecider from a new manual odds CSV with provenance and full validation gates."
+policy:
+  allow_implicit_invocation: true

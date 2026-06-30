@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 27–29.">
+  <meta name="description" content="Replicable World Cup 2026 probability and betting-market analysis for June 30–July 1.">
   <meta name="wcdecider-build" content="__BUILD_SHA__">
-  <meta name="wcdecider-audit-sha256" content="f405c07551845f81d39f0c71f10a48fa98247b970a79051bcb2057137b1fc9bd">
-  <title>WCdecider • June 27–29, 2026</title>
+  <meta name="wcdecider-audit-sha256" content="f4058859ee69054afbb0103594cbd2bfeb03657d0600de1137d12ac1149a25e7">
+  <title>WCdecider • June 30–July 1, 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .lang-es .en,.lang-en .es{display:none!important}
@@ -31,8 +31,8 @@
       <div>
         <div class="font-black tracking-tight text-white">WCdecider</div>
         <div class="text-xs text-slate-400">
-          <span class="en">June 27–29 • reproducible probabilities</span>
-          <span class="es">27–29 de junio • probabilidades reproducibles</span>
+          <span class="en">June 30–July 1 • reproducible probabilities</span>
+          <span class="es">30 de junio–1 de julio • probabilidades reproducibles</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -53,8 +53,8 @@
             <span class="en">Integrity-first update</span><span class="es">Actualización con integridad primero</span>
           </p>
           <h1 class="text-3xl md:text-5xl font-black text-white mt-2">
-            <span class="en">10 active fixtures. One auditable pipeline.</span>
-            <span class="es">10 partidos activos. Un pipeline auditable.</span>
+            <span class="en">6 active fixtures. One auditable pipeline.</span>
+            <span class="es">6 partidos activos. Un pipeline auditable.</span>
           </h1>
           <p class="mt-4 text-slate-300 leading-7">
             <span class="en">Every displayed odd comes from the expert-entered Betano/Betsson manual odds file and its provenance. Probabilities are generated before market comparison, then tested for expected value, sensitivity and model-market disagreement.</span>
@@ -79,7 +79,7 @@
           <g fill="#e2e8f0" font-family="system-ui" font-size="13" text-anchor="middle">
             <text x="89" y="47"><tspan class="en">Dataset A/B</tspan><tspan class="es">Dataset A/B</tspan></text><text id="production-history-count" x="89" y="65">—</text>
             <text x="89" y="125"><tspan class="en">Elapsed WC</tspan><tspan class="es">Mundial jugado</tspan></text><text id="elapsed-results-count" x="89" y="143">—</text>
-            <text x="89" y="203"><tspan class="en">Screenshots</tspan><tspan class="es">Capturas</tspan></text><text x="89" y="221">Betano + Betsson</text>
+            <text x="89" y="203"><tspan class="en">Manual odds rows</tspan><tspan class="es">Filas manuales de cuotas</tspan></text><text x="89" y="221">Betano + Betsson</text>
             <text x="89" y="281"><tspan class="en">Historical odds</tspan><tspan class="es">Cuotas históricas</tspan></text><text x="89" y="299"><tspan class="en">proxy gated</tspan><tspan class="es">proxy limitado</tspan></text>
             <text x="280" y="60"><tspan class="en">Provenance</tspan><tspan class="es">Procedencia</tspan></text><text x="280" y="80"><tspan class="en">hashes + source IDs</tspan><tspan class="es">hashes + fuentes</tspan></text>
             <text x="280" y="157"><tspan class="en">Model championship</tspan><tspan class="es">Campeonato modelos</tspan></text><text x="280" y="177"><tspan class="en">nested chronology</tspan><tspan class="es">cronología anidada</tspan></text>
@@ -451,7 +451,7 @@ function renderTopSummaryTable(){
     <td class="py-3 min-w-[9rem] text-xs text-slate-300">
       <div><span class="en">Authorized</span><span class="es">Autorizado</span>: <b class="text-red-200">S/0.00</b></div>
       <div class="mt-1"><span class="en">Mode</span><span class="es">Modo</span>: <span data-summary-profile="${escapeHtml(row.fixture_id)}">balanced</span></div>
-      <a class="mt-2 inline-block rounded-lg border border-slate-700 px-2 py-1 text-cyan-300 hover:border-cyan-500" href="#match-${escapeHtml(row.fixture_id)}"><span class="en">Open card</span><span class="es">Abrir tarjeta</span></a>
+      <a class="mt-2 inline-block rounded-lg border border-slate-700 px-2 py-1 text-cyan-300 hover:border-cyan-500" href="#match-${escapeHtml(row.fixture_id)}"><span class="en">Card details</span><span class="es">Detalle de tarjeta</span></a>
     </td>
    </tr>`;
  }).join('');

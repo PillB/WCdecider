@@ -140,7 +140,10 @@ def main() -> None:
 
     record = {
         "schema_version": "1.0",
-        "batch_id": "2026-06-27_2026-06-29",
+        "batch_id": (
+            f"{predictions.get('batch', {}).get('start', 'unknown')}_"
+            f"{predictions.get('batch', {}).get('end', 'unknown')}"
+        ),
         "generated_at": predictions.get("generated_at", ""),
         "git_commit": os.environ.get(
             "GITHUB_SHA",

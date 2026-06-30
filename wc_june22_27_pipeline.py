@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Reproducible June 27–29, 2026 World Cup prediction pipeline.
+"""Reproducible active-batch 2026 World Cup prediction pipeline.
 
 This module is intentionally stdlib-only. It reads:
 
 * ``wc_backtest_historical_dataset.csv`` — historical Dataset A/B source.
 * ``wc_2026_results_through_june26.csv`` — elapsed 2026 World Cup results.
 * ``wc_team_elo_baseline_june11.csv`` — frozen pre-tournament Elo baseline.
-* ``wc_2026_matches_june_27-29.csv`` — canonical current fixtures.
-* ``manual_odds_20260627_20260629.csv`` — expert-entered current odds.
+* ``wc_2026_matches_june_30-july_01.csv`` — canonical current fixtures.
+* ``manual_odds_20260630_20260701.csv`` — expert-entered current odds.
 * ``odds_june*.csv`` — archived screenshot-derived odds, used only where no
   current manual row exists for an active fixture and normalized market key.
 
@@ -46,7 +46,7 @@ ROOT = Path(__file__).resolve().parent
 HISTORICAL = ROOT / "wc_backtest_historical_dataset.csv"
 RESULTS_2026 = ROOT / "wc_2026_results_through_june26.csv"
 ELO_BASELINE = ROOT / "wc_team_elo_baseline_june11.csv"
-FIXTURES = ROOT / "wc_2026_matches_june_27-29.csv"
+FIXTURES = ROOT / "wc_2026_matches_june_30-july_01.csv"
 ODDS_PARTS = (
     ROOT / "odds_june22_23.csv",
     ROOT / "odds_june24.csv",
@@ -54,6 +54,7 @@ ODDS_PARTS = (
     ROOT / "odds_june27.csv",
 )
 MANUAL_ODDS_PATTERN = "manual_odds_*.csv"
+ACTIVE_MANUAL_ODDS = ROOT / "manual_odds_20260630_20260701.csv"
 MANUAL_ODDS_PREFERRED_AFTER = date(2026, 6, 26)
 MANUAL_SOURCE_PREFIX = "manual_user_input_"
 RAW_ODDS_FIELDS = (
@@ -94,8 +95,8 @@ RESEARCH_OUT = ROOT / "wc_research_june22_27.csv"
 SEED = 42
 EPS = 1e-12
 BOOTSTRAP_NUMERIC_TOLERANCE = 1e-12
-DATA_CUTOFF = datetime.fromisoformat("2026-06-27T11:00:00-05:00")
-RELEASE_AS_OF = datetime.fromisoformat("2026-06-27T11:00:00-05:00")
+DATA_CUTOFF = datetime.fromisoformat("2026-06-30T12:21:00-05:00")
+RELEASE_AS_OF = datetime.fromisoformat("2026-06-30T12:21:00-05:00")
 FRESHNESS_HORIZON_HOURS = 48
 HOSTS = {"USA", "CAN", "MEX"}
 
@@ -1137,12 +1138,12 @@ def metric_explanations(
         }
 
     probability_action_en = (
-        "Use it to compare outcomes and fair prices. It is not certainty; "
-        "check the current app price and late team news before deciding."
+        "Use it as an audit comparison between model probabilities and "
+        "saved source prices. It is not certainty or an instruction."
     )
     probability_action_es = (
-        "Úsalo para comparar resultados y cuotas justas. No es certeza; "
-        "revisa la cuota actual y noticias tardías antes de decidir."
+        "Úsalo como comparación de auditoría entre probabilidades del modelo "
+        "y cuotas fuente guardadas. No es certeza ni instrucción."
     )
     team_a_en, team_a_es = team_a_names
     team_b_en, team_b_es = team_b_names
@@ -1177,8 +1178,8 @@ def metric_explanations(
             "Goles esperados es el promedio de goles del modelo para el primer equipo en muchas simulaciones de este partido.",
             f"{lambda_a:.2f} is an average, not a score prediction. For example, 0.51 means about half a goal per simulated match, so both 0 and 1 goal remain common outcomes.",
             f"{lambda_a:.2f} es un promedio, no un marcador exacto. Por ejemplo, 0,51 significa cerca de medio gol por simulación, por lo que 0 y 1 gol siguen siendo resultados comunes.",
-            "Use it to understand scoring strength and to inspect team-total, BTTS, or handicap markets. Do not read 0.51 as a 51% chance.",
-            "Úsalo para entender la capacidad goleadora y revisar totales de equipo, ambos marcan o hándicap. No interpretes 0,51 como 51% de probabilidad.",
+            "Use it to understand scoring strength when auditing team-total, BTTS, or handicap source rows. Do not read 0.51 as a 51% chance.",
+            "Úsalo para entender la capacidad goleadora al auditar filas fuente de totales de equipo, ambos marcan o hándicap. No interpretes 0,51 como 51% de probabilidad.",
         ),
         "expected_goals_team_b": entry(
             f"Expected goals: {team_b_en}", f"Goles esperados: {team_b_es}",
@@ -1186,8 +1187,8 @@ def metric_explanations(
             "Goles esperados es el promedio de goles del modelo para el segundo equipo en muchas simulaciones de este partido.",
             f"{lambda_b:.2f} is an average, not a score prediction. A value below 1.00 suggests a lower scoring outlook but does not mean the team cannot score.",
             f"{lambda_b:.2f} es un promedio, no un marcador exacto. Un valor menor que 1,00 sugiere menor expectativa goleadora, pero no significa que el equipo no pueda marcar.",
-            "Use it to understand the second team's scoring outlook and to inspect team-total, BTTS, or handicap markets. It is not a percentage.",
-            "Úsalo para entender la expectativa goleadora del segundo equipo y revisar totales, ambos marcan o hándicap. No es un porcentaje.",
+            "Use it to understand the second team's scoring outlook when auditing totals, BTTS, or handicap source rows. It is not a percentage.",
+            "Úsalo para entender la expectativa goleadora del segundo equipo al auditar totales, ambos marcan o hándicap. No es un porcentaje.",
         ),
         "over_2_5": entry(
             "Over 2.5 total goals", "Más de 2,5 goles totales",
@@ -1558,6 +1559,8 @@ def manual_odds_provenance_path(csv_path: Path) -> Path:
 
 def discover_manual_odds_files(root: Path = ROOT) -> List[Path]:
     """Discover root-level manual odds files created by the input GUI."""
+    if ACTIVE_MANUAL_ODDS.exists():
+        return [ACTIVE_MANUAL_ODDS]
     return sorted(root.glob(MANUAL_ODDS_PATTERN))
 
 
@@ -1703,7 +1706,18 @@ def load_and_merge_odds(fixtures: Sequence[Mapping[str, str]]) -> List[Dict[str,
             kickoff_day = date.fromisoformat(kickoff_by_id[fixture_id][:10])
             if kickoff_day <= MANUAL_ODDS_PREFERRED_AFTER:
                 continue
-            normalized = normalize_raw_row(row, path, "manual_user_input", source_sha)
+            try:
+                normalized = normalize_raw_row(
+                    row, path, "manual_user_input", source_sha
+                )
+            except ValueError as exc:
+                if "Odds captured at/after kickoff" in str(exc):
+                    # The raw manual CSV remains the complete source archive,
+                    # but the normalized evaluation odds file is pre-match
+                    # only. Post-kickoff prices would leak in-play information
+                    # and must not enter comparisons or recommendations.
+                    continue
+                raise
             manual_rows.append(normalized)
 
     manual_keys = {odds_preference_key(row) for row in manual_rows}
@@ -1771,9 +1785,9 @@ def load_research(fixtures: Sequence[Mapping[str, str]]) -> Dict[str, Dict[str, 
         merged[fixture_id] = {
             "fixture_id": fixture_id,
             "team_news_summary": (
-                "No fixture-specific OSINT note was available by the active "
-                "June 27 cutoff; report uses schedule and verified-result "
-                "context only."
+                "No fixture-specific OSINT note was available in the "
+                "canonical research files by this update cutoff; report uses "
+                "schedule and verified-result context only."
             ),
             "injuries_suspensions": "Unavailable in canonical research files by cutoff.",
             "predicted_lineup_notes": "Unavailable in canonical research files by cutoff.",
@@ -2285,18 +2299,19 @@ def attach_recommendation_context(
         )
         if int(item["rank"]) == 1:
             item["steps"]["en"][-1] = (
-                "Treat rank one as the primary comparison, not a mandatory "
-                "bet. Recheck the selection, line, 90-minute settlement, "
-                "current price, and team news before deciding."
+                "Treat rank one as the primary audit comparison, not a "
+                "mandatory bet. Selection, line, settlement, source price, "
+                "and team-news freshness are audit variables."
                 if mode == "production" else
                 "Treat this research-mode rank one as a sensitivity check "
                 "only. Do not replace the production recommendation unless "
                 "the model promotion gates are passed in a future release."
             )
             item["steps"]["es"][-1] = (
-                "Trata el rango uno como la comparación principal, no como "
-                "apuesta obligatoria. Revisa selección, línea, liquidación "
-                "a 90 minutos, cuota actual y noticias antes de decidir."
+                "Trata el rango uno como la comparación principal de "
+                "auditoría, no como apuesta obligatoria. Selección, línea, "
+                "liquidación, cuota fuente y noticias son variables de "
+                "auditoría."
                 if mode == "production" else
                 "Trata este rango uno de investigación solo como prueba de "
                 "sensibilidad. No reemplaza la recomendación de producción "
@@ -2363,10 +2378,10 @@ def authorize_recommendations(
         elif freshness != "current_snapshot":
             item["steps"] = {
                 "en": [
-                    "STOP: do not use the saved sportsbook steps or price. This forecast requires a rerun after intervening matches and current team-news checks.",
+                    "STOP: this saved source row is audit evidence only. This forecast requires a rerun after intervening matches and team-news refresh.",
                 ],
                 "es": [
-                    "ALTO: no uses los pasos ni la cuota guardada. Este pronóstico requiere una nueva ejecución tras partidos intermedios y revisión de noticias actuales.",
+                    "ALTO: esta fila fuente guardada es solo evidencia de auditoría. Este pronóstico requiere una nueva ejecución tras partidos intermedios y actualización de noticias.",
                 ],
             }
         item["watchlist_status"] = (
@@ -3567,14 +3582,14 @@ def build() -> Dict[str, object]:
             ),
             "required_checks": {
                 "en": [
-                    "Verify current app price and settlement line.",
-                    "Verify lineup, injury, motivation, and weather freshness.",
+                    "Audit the saved source price and settlement line.",
+                    "Audit lineup, injury, motivation, and weather freshness assumptions.",
                     "Compare production and research score distributions.",
                     "Require chronological out-of-sample evidence before changing production thresholds.",
                 ],
                 "es": [
-                    "Verifica cuota actual y línea de liquidación.",
-                    "Verifica vigencia de alineación, lesiones, motivación y clima.",
+                    "Audita la cuota fuente guardada y la línea de liquidación.",
+                    "Audita supuestos de alineación, lesiones, motivación y clima.",
                     "Compara distribuciones de marcador de producción e investigación.",
                     "Exige evidencia cronológica fuera de muestra antes de cambiar umbrales de producción.",
                 ],
@@ -3736,12 +3751,12 @@ def build() -> Dict[str, object]:
                 "en": [
                     "Football outcomes remain high variance even when expected value is positive.",
                     "Late lineup, injury, tactical, weather, or motivation changes can invalidate the estimate.",
-                    "Re-check the exact app price before any decision; moved odds change expected value.",
+                    "Odds movement changes expected value; the saved app price is audit evidence only.",
                 ],
                 "es": [
                     "Los resultados de fútbol siguen teniendo alta varianza aunque el valor esperado sea positivo.",
                     "Cambios tardíos de alineación, lesión, táctica, clima o motivación pueden invalidar la estimación.",
-                    "Vuelve a revisar la cuota exacta en la app; un cambio de cuota cambia el valor esperado.",
+                    "El movimiento de cuotas cambia el valor esperado; la cuota guardada en la app es solo evidencia de auditoría.",
                 ],
             },
             "research": {
@@ -3775,7 +3790,7 @@ def build() -> Dict[str, object]:
         )
     }
     metrics = {
-        "version": "june22_27_v5_fail_closed_development_only",
+        "version": "june30_july01_v1_fail_closed_development_only",
         "seed": SEED,
         "dataset_a_rows": len(dataset_a),
         "dataset_b_rows": len(dataset_b),
@@ -3863,11 +3878,11 @@ def build() -> Dict[str, object]:
         "release_as_of": RELEASE_AS_OF.isoformat(),
         "lifecycle_policy_version": "fail_closed_v1",
         "batch": {
-            "start": "2026-06-27",
-            "end": "2026-06-29",
+            "start": "2026-06-30",
+            "end": "2026-07-01",
             "fixture_count": len(fixtures),
             "active_fixture_file": FIXTURES.name,
-            "odds_source": "manual_odds_20260627_20260629.csv",
+            "odds_source": ACTIVE_MANUAL_ODDS.name,
         },
         "model": metrics,
         "bankroll_simulation": bankroll_simulation,
@@ -3893,15 +3908,15 @@ def build() -> Dict[str, object]:
     }
     PROVENANCE_OUT.write_text(
         "\n".join([
-            "WCdecider June 27–29, 2026 provenance",
-            "=======================================",
+            "WCdecider June 30–July 1, 2026 provenance",
+            "==========================================",
             "",
-            "Canonical fixtures: wc_2026_matches_june_27-29.csv",
-            "Elapsed outcomes: wc_2026_results_through_june26.csv with verified June 25–26 results retrieved by 2026-06-27T11:00:00-05:00",
+            "Canonical fixtures: wc_2026_matches_june_30-july_01.csv",
+            "Elapsed outcomes: wc_2026_results_through_june26.csv with verified June 25–26 results; no later results were added without explicit source evidence",
             "Pre-tournament Elo: wc_team_elo_baseline_june11.csv",
             "Historical Dataset A/B source: wc_backtest_historical_dataset.csv",
             "Screenshot-derived odds: odds_june22_23.csv, odds_june24.csv, odds_june25_26.csv, odds_june27.csv",
-            "Manual odds source: manual_odds_20260627_20260629.csv with matching .provenance.json sidecar is preferred for active fixtures after 2026-06-26 at the normalized row key fixture_id/app/market_id/selection_canonical/line.",
+            "Manual odds source: manual_odds_20260630_20260701.csv with matching .provenance.json sidecar is preferred for active fixtures after 2026-06-26 at the normalized row key fixture_id/app/market_id/selection_canonical/line.",
             "Complete screenshot inventory: wc_screenshot_manifest_june22_27.csv",
             "Verified sportsbook UI boundary: IMG_7523–IMG_7614 = Betsson; IMG_7615–IMG_7745 = Betano.",
             "OSINT notes: research_june22_23.csv, research_june24_25.csv, research_june26_27.csv",
@@ -3923,7 +3938,8 @@ def build() -> Dict[str, object]:
             "- handicap-plus-total combos: retained as source evidence but disabled from completeness, EV, rankings, and recommendations until app-specific push/void/half-result contracts are documented and exhaustively tested.",
             "- normalized odds schema: market family, period, settlement rule, selected team, canonical selection, handicap/total lines, combo legs, market group, completeness, transcription status, and confidence.",
             "- odds source_kind/source_file: screenshot rows point to the original odds_june*.csv extraction and manual_user_input rows point to the manual_odds_*.csv file entered through the GUI.",
-            "- unsupported or ambiguous markets: result handicap, early payout, corners, heterogeneous boosts, and incomplete/truncated selections are retained as source rows but excluded from evaluation.",
+            "- normalized odds row count: the evaluation odds file is a deduplicated normalized artifact, not a raw one-row-per-source archive; raw manual rows remain in manual_odds_20260630_20260701.csv.",
+            "- unsupported or ambiguous markets: result handicap, early payout, corners, shots, player props, method of qualification, heterogeneous boosts, and incomplete/truncated selections are retained as source evidence rows when not duplicate-collapsed, marked unsupported/incomplete, and excluded from evaluation/rankings/recommendations.",
             "- double-chance consistency: displayed fair prices and screenshot EV both use the same production score grid.",
             "- quote evaluation: structural forecast probabilities remain independent of the quoted price; de-vigged market probabilities are used only for disagreement/risk diagnostics.",
             "- recommendation utility: minimum(decision EV, stressed decision EV) minus 0.35*divergence, family uncertainty, and HALT penalties.",
@@ -3936,6 +3952,7 @@ def build() -> Dict[str, object]:
             "- stress EV: subtract 3 percentage points from selected win probability and add 3 points to loss probability.",
             "- classification: divergence >15pp or EV >25% HALT; all other selections PASS until recommendation-policy profitability is validated out of sample.",
             "- source_sha256: screenshot rows use the SHA-256 of the exact screenshot containing the price; manual rows use the SHA-256 of the manual CSV artifact.",
+            "- post-kickoff manual odds: raw rows remain archived in manual_odds_20260630_20260701.csv, but normalized evaluation rows exclude any price captured at or after the canonical kickoff to avoid in-play leakage.",
             "",
             "Model selection:",
             "- Hyperparameters are selected on chronological development windows. The final development-validation block is descriptive only; a new prospective sealed holdout is required.",

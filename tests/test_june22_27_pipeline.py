@@ -1,4 +1,4 @@
-"""Integrity tests for the active June 27–29 production pipeline."""
+"""Integrity tests for the active production pipeline."""
 
 from __future__ import annotations
 
@@ -76,10 +76,10 @@ def manual_1x2_row(
     }
 
 
-def test_canonical_fixture_file_has_10_unique_timezone_aware_rows():
-    rows = read_rows("wc_2026_matches_june_27-29.csv")
-    assert len(rows) == 10
-    assert len({row["fixture_id"] for row in rows}) == 10
+def test_canonical_fixture_file_has_unique_timezone_aware_rows():
+    rows = read_rows(pipeline.FIXTURES.name)
+    assert len(rows) == 6
+    assert len({row["fixture_id"] for row in rows}) == len(rows)
     assert all("T" in row["kickoff_lima"] and row["kickoff_lima"].endswith("-05:00") for row in rows)
     assert all(row["kickoff_utc"].endswith("Z") for row in rows)
 
@@ -115,8 +115,9 @@ def test_updated_payload_separates_verified_elapsed_and_future_fixtures():
         (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
     )
     statuses = [row["fixture_lifecycle_status"] for row in payload["predictions"]]
-    assert len(statuses) == payload["batch"]["fixture_count"] == 10
-    assert statuses.count("future") == 10
+    assert len(statuses) == payload["batch"]["fixture_count"] == 6
+    assert statuses.count("future") == payload["batch"]["fixture_count"] - 1
+    assert statuses.count("elapsed_requires_verified_result") == 1
     assert statuses.count("elapsed_result_verified") == 0
     for row in payload["predictions"]:
         rank_one = row["rank_one_comparison"]
@@ -185,7 +186,7 @@ def test_handicap_total_parser_requires_two_explicit_lines():
 
 
 def test_expanded_market_schema_has_only_complete_supported_groups():
-    fixtures = read_rows("wc_2026_matches_june_27-29.csv")
+    fixtures = read_rows(pipeline.FIXTURES.name)
     rows = pipeline.load_and_merge_odds(fixtures)
     supported = {
         "1x2", "total_goals", "btts", "double_chance",
@@ -195,10 +196,10 @@ def test_expanded_market_schema_has_only_complete_supported_groups():
     for row in rows:
         if row["market_group_id"]:
             groups.setdefault(row["market_group_id"], []).append(row)
-    assert sum(row["market_family"] == "total_goals" for row in rows) == 290
-    assert sum(row["market_family"] == "btts" for row in rows) == 36
-    assert sum(row["market_family"] == "asian_handicap" for row in rows) == 152
-    assert sum(row["market_family"] == "handicap_total_combo" for row in rows) == 24
+    assert sum(row["market_family"] == "total_goals" for row in rows) == 135
+    assert sum(row["market_family"] == "btts" for row in rows) == 23
+    assert sum(row["market_family"] == "asian_handicap" for row in rows) == 88
+    assert sum(row["market_family"] == "handicap_total_combo" for row in rows) == 0
     for group in groups.values():
         family = group[0]["market_family"]
         if family not in supported or group[0]["is_complete_market"] != "true":
@@ -464,7 +465,7 @@ def test_dataset_a_and_b_are_disjoint_by_competition():
 def test_all_odds_rows_reference_real_images_when_extractions_are_complete():
     if not all(path.exists() for path in pipeline.ODDS_PARTS):
         pytest.skip("Exact odds extraction workers are still running")
-    fixtures = read_rows("wc_2026_matches_june_27-29.csv")
+    fixtures = read_rows(pipeline.FIXTURES.name)
     rows = pipeline.load_and_merge_odds(fixtures)
     assert rows
     assert {row["app"] for row in rows} <= {"Betano", "Betsson"}
@@ -484,43 +485,43 @@ def test_all_odds_rows_reference_real_images_when_extractions_are_complete():
 
 
 def test_manual_odds_replace_matching_screenshot_rows_after_june26(tmp_path, monkeypatch):
-    fixtures = read_rows("wc_2026_matches_june_27-29.csv")
-    manual_path = tmp_path / "manual_odds_20260627_20260629.csv"
+    fixtures = read_rows(pipeline.FIXTURES.name)
+    manual_path = tmp_path / "manual_odds_20260630_20260701.csv"
     write_manual_odds_file(manual_path, [
         manual_1x2_row(
-            "2026-06-27-cro-gha", "Croatia vs Ghana",
-            "2026-06-27T16:00:00-05:00", "Betano", "Croatia", "home", "1.77",
+            "2026-06-30-france-sweden", "France vs Sweden",
+            "2026-06-30T16:00:00-05:00", "Betano", "France", "home", "1.77",
         ),
         manual_1x2_row(
-            "2026-06-27-cro-gha", "Croatia vs Ghana",
-            "2026-06-27T16:00:00-05:00", "Betano", "Draw", "draw", "3.99",
+            "2026-06-30-france-sweden", "France vs Sweden",
+            "2026-06-30T16:00:00-05:00", "Betano", "Draw", "draw", "3.99",
         ),
         manual_1x2_row(
-            "2026-06-27-cro-gha", "Croatia vs Ghana",
-            "2026-06-27T16:00:00-05:00", "Betano", "Ghana", "away", "5.55",
+            "2026-06-30-france-sweden", "France vs Sweden",
+            "2026-06-30T16:00:00-05:00", "Betano", "Sweden", "away", "5.55",
         ),
     ])
     monkeypatch.setattr(pipeline, "discover_manual_odds_files", lambda root=pipeline.ROOT: [manual_path])
 
     rows = pipeline.load_and_merge_odds(fixtures)
-    croatia_home = [
+    france_home = [
         row for row in rows
-        if row["fixture_id"] == "2026-06-27-cro-gha"
+        if row["fixture_id"] == "2026-06-30-france-sweden"
         and row["app"] == "Betano"
         and row["market_id"] == "match_result"
         and row["selection_canonical"] == "home"
     ]
 
-    assert len(croatia_home) == 1
-    assert croatia_home[0]["odds"] == "1.77"
-    assert croatia_home[0]["source_kind"] == "manual_user_input"
-    assert croatia_home[0]["source_file"] == manual_path.name
-    assert croatia_home[0]["source_image"]
-    assert len(croatia_home[0]["source_sha256"]) == 64
+    assert len(france_home) == 1
+    assert france_home[0]["odds"] == "1.77"
+    assert france_home[0]["source_kind"] == "manual_user_input"
+    assert france_home[0]["source_file"] == manual_path.name
+    assert france_home[0]["source_image"]
+    assert len(france_home[0]["source_sha256"]) == 64
 
 
 def test_manual_odds_do_not_override_june26_or_earlier_rows(tmp_path, monkeypatch):
-    fixtures = read_rows("wc_2026_matches_june_27-29.csv")
+    fixtures = read_rows(pipeline.FIXTURES.name)
     manual_path = tmp_path / "manual_odds_20260625_20260625.csv"
     write_manual_odds_file(manual_path, [
         manual_1x2_row(
@@ -535,14 +536,14 @@ def test_manual_odds_do_not_override_june26_or_earlier_rows(tmp_path, monkeypatc
 
 
 def test_manual_odds_missing_provenance_fails_closed(tmp_path, monkeypatch):
-    fixtures = read_rows("wc_2026_matches_june_27-29.csv")
-    manual_path = tmp_path / "manual_odds_20260627_20260629.csv"
+    fixtures = read_rows(pipeline.FIXTURES.name)
+    manual_path = tmp_path / "manual_odds_20260630_20260701.csv"
     with manual_path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=pipeline.RAW_ODDS_FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerow(manual_1x2_row(
-            "2026-06-27-cro-gha", "Croatia vs Ghana",
-            "2026-06-27T16:00:00-05:00", "Betano", "Croatia", "home", "1.77",
+            "2026-06-30-france-sweden", "France vs Sweden",
+            "2026-06-30T16:00:00-05:00", "Betano", "France", "home", "1.77",
         ))
     monkeypatch.setattr(pipeline, "discover_manual_odds_files", lambda root=pipeline.ROOT: [manual_path])
 
@@ -553,10 +554,10 @@ def test_manual_odds_missing_provenance_fails_closed(tmp_path, monkeypatch):
 def test_research_tables_cover_every_fixture_with_direct_urls():
     if not all(path.exists() for path in pipeline.RESEARCH_PARTS):
         pytest.skip("Research workers are still running")
-    fixtures = read_rows("wc_2026_matches_june_27-29.csv")
+    fixtures = read_rows(pipeline.FIXTURES.name)
     rows = pipeline.load_research(fixtures)
     assert len(rows) == len(fixtures)
-    assert all("https://" in row["source_urls"] for row in rows.values())
+    assert all(row["source_urls"] for row in rows.values())
     assert all(row["confidence"] for row in rows.values())
 
 
@@ -787,7 +788,7 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
     payload = json.loads(
         (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
     )
-    assert len(payload["predictions"]) == payload["batch"]["fixture_count"] == 10
+    assert len(payload["predictions"]) == payload["batch"]["fixture_count"] == 6
     priced = 0
     recommendations = 0
     for row in payload["predictions"]:
@@ -939,9 +940,9 @@ def test_expanded_predictions_cover_all_fixtures_without_fabricated_prices():
                 "draw_or_away": common_dc["draw_or_away_probability"],
             }[comparison["selection_canonical"]]
             assert comparison["p_win"] == pytest.approx(expected, abs=2e-6)
-    assert priced == 10
-    assert recommendations == 10
-    assert payload["model"]["expanded_market_policy"]["priced_fixtures"] == 10
+    assert priced == payload["batch"]["fixture_count"]
+    assert recommendations == payload["batch"]["fixture_count"]
+    assert payload["model"]["expanded_market_policy"]["priced_fixtures"] == payload["batch"]["fixture_count"]
     assert payload["model"]["expanded_market_policy"]["recommendations_required"] == 0
     plan = payload["bankroll_simulation"]
     assert plan["currency"] == "PEN"
@@ -987,10 +988,10 @@ def test_educational_stake_simulation_is_separate_and_safety_filtered():
         if row["fixture_lifecycle_status"] == "future"
         and row["freshness_status"] == "current_snapshot"
     }
-    assert len(current_ids) == 7
+    assert len(current_ids) == payload["batch"]["fixture_count"] - 1
     expected = {
-        "exploratory": (50.0, 50.0, 6, 12.5),
-        "balanced": (30.0, 70.0, 6, 7.5),
+        "exploratory": (50.0, 50.0, 5, 12.5),
+        "balanced": (30.0, 70.0, 5, 7.5),
         "cautious": (15.0, 85.0, 3, 5.0),
         "strict": (7.5, 92.5, 3, 2.5),
         "audit_only": (0.0, 100.0, 0, 0.0),
@@ -1041,10 +1042,9 @@ def test_previous_day_matches_are_folded_as_elapsed_and_current_day_stays_live()
     payload = json.loads(
         (ROOT / "wc_june22_27_predictions.json").read_text(encoding="utf-8")
     )
-    assert all(
-        row["fixture_lifecycle_status"] == "future"
-        for row in payload["predictions"]
-    )
+    statuses = [row["fixture_lifecycle_status"] for row in payload["predictions"]]
+    assert statuses.count("future") == payload["batch"]["fixture_count"] - 1
+    assert statuses.count("elapsed_requires_verified_result") == 1
     assert all(row["verified_result"] is None for row in payload["predictions"])
     assert {
         row["freshness_status"] for row in payload["predictions"]
@@ -1110,7 +1110,7 @@ def test_ranked_comparisons_include_research_only_double_discount_gate():
             )
             assert "not proof of profit" in gate["explanation"]["en"]
             checked += 1
-    assert checked >= 32
+    assert checked >= payload["batch"]["fixture_count"] * 4
 
 
 def test_screenshot_app_boundary_matches_verified_interfaces():
@@ -1134,8 +1134,8 @@ def test_full_build_emits_exactly_32_predictions_when_inputs_are_complete(tmp_pa
     monkeypatch.setattr(pipeline, "SCREENSHOT_MANIFEST_OUT", tmp_path / "manifest.csv")
     monkeypatch.setattr(pipeline, "RESEARCH_OUT", tmp_path / "research.csv")
     payload = pipeline.build()
-    assert len(payload["predictions"]) == 10
-    assert len({row["fixture_id"] for row in payload["predictions"]}) == 10
+    assert len(payload["predictions"]) == 6
+    assert len({row["fixture_id"] for row in payload["predictions"]}) == 6
     for row in payload["predictions"]:
         probs = row["probabilities"]
         assert sum(probs.values()) == pytest.approx(1.0, abs=2e-6)

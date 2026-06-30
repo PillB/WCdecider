@@ -1,13 +1,13 @@
 {
   "git_commit": "PENDING_SAFETY_RELEASE_COMMIT",
-  "reviewed_model_version": "june22_27_v5_fail_closed_development_only",
+  "reviewed_model_version": "june30_july01_v1_fail_closed_development_only",
   "reviewed_artifact_hashes": {
-    "wc_june22_27_model_metrics.json": "0a885a4d1ae33aa65d444c4b2ded72da040edf44e0e6215f0c9829a540e7d219",
-    "wc_june22_27_predictions.json": "418747327045fb7f200e40b833bda79b8f38cc6fa7f8ec735df93465081d4375"
+    "wc_june22_27_model_metrics.json": "4a64a41ae359dda3d0a2aa9956c2945d864e8bdd9d5631dc73fa777888fd7819",
+    "wc_june22_27_predictions.json": "4ea714e9b1ff6c0fffb3c9fcfcced17508c7e19e913fd7f44f50de746bff2816"
   },
   "reviewed_semantic_hashes": {
-    "wc_june22_27_model_metrics.json": "db129c526da586c2fd39b33b6c5247fc473909496c1c001e38444416ab9dffeb",
-    "wc_june22_27_predictions.json": "2cbd2a6179b2ac69d4d8e3706efd8abc32618e51d4dcba3384287875d673dcb3"
+    "wc_june22_27_model_metrics.json": "9e0cb2a096fc93400070b1468a4858a457e96abf822366562d2f9c20af33a88a",
+    "wc_june22_27_predictions.json": "d77099679b84675a33a2be5b1f506fcfb69d68f1fbddca2fecf499793e8eff45"
   },
   "global": {
     "owner": {

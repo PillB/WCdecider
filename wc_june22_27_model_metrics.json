@@ -40,8 +40,8 @@
     "recommendation_release_status": "blocked"
   },
   "expanded_market_policy": {
-    "all_fixture_probability_coverage": 10,
-    "priced_fixtures": 10,
+    "all_fixture_probability_coverage": 6,
+    "priced_fixtures": 6,
     "reason": "Historical profitability is unvalidated, the nominal holdout has been used for development feedback, source prices are stale, and conditional fixtures require intervening results.",
     "recommendations_required": 0,
     "selection_rule": "rank independent structural-model EV and stressed EV; use market-implied probability only as a disagreement/risk diagnostic, never as an input to the probability evaluating that same quote",
@@ -87,8 +87,8 @@
     "schema_version": "historical_closing_odds_v1"
   },
   "input_hashes": {
-    "manual_odds_20260627_20260629.csv": "472ba29089c9f20b37f4daa3f17e3222f5240c2d29aa9740e7ecc992090b73fd",
-    "manual_odds_20260627_20260629.provenance.json": "7ad0adae2e61ea11934ccf1403a478b89b5d1507b972e9bfcb17886db8607111",
+    "manual_odds_20260630_20260701.csv": "b6d09bca89e464b781a9870d4ba81779df354b3968bbac15997b82c39377aba1",
+    "manual_odds_20260630_20260701.provenance.json": "64de5cbd5d1e06bf548f0074b7ceacd6993be954973b198319f49942dcf00097",
     "odds_june22_23.csv": "817aa26510205feffc7b74780059a83268fc48efc08b887763d9b0776049ce9a",
     "odds_june24.csv": "3fd7247e0240f651d0bbd46a25ffaf90773b025d465c2d496130c517b58565de",
     "odds_june25_26.csv": "31a8964d1ad9277dda6ac875b1787e51e84eb96d44654470f3d7ee63e0c04a88",
@@ -96,7 +96,7 @@
     "research_june22_23.csv": "73e84dac2994f81848af66a83db2bc41f7215576feac06d1bb06ed410e0fb606",
     "research_june24_25.csv": "d3534ba26be6169c9772a0ff7b651677547ec78706ee33c0161cdea294d65517",
     "research_june26_27.csv": "5554b0544097d2a0b3d2c998e8e0832cad636f13fc19c67ac094145fde6fad60",
-    "wc_2026_matches_june_27-29.csv": "917a17f6a7d6c054a5f755767832bc5ce88d3e300e8f1b11b3968b6d1a071df2",
+    "wc_2026_matches_june_30-july_01.csv": "e5b545e2aaf7d6cd85f4f9ffced20d363a2c2401b39759bd4e6ef8ed9abbd823",
     "wc_2026_results_through_june26.csv": "a14f85c0bd2d4440179e26189bbcea0b1d4b47aa1180ce9697845fc45a513076",
     "wc_backtest_historical_dataset.csv": "beee227402f102b146f785dc77d92a00863b9c5090f7de4ff6d7baaa9f75683a",
     "wc_team_elo_baseline_june11.csv": "f7e4ff313d485e208ac5a00f9cc2b51adda1cb255414578ead094d37a584213b"
@@ -738,7 +738,7 @@
   "mu_dataset_a": 2.7037037037037037,
   "mu_dataset_b": 2.4441964285714297,
   "mu_production": 2.75,
-  "pipeline_sha256": "c63d90f43d46eb10b5fb9c0d2af65e15b29684917354c7f2a09bef4a38e9e211",
+  "pipeline_sha256": "2de6025a24a92855dc1315a44463c115635d678bfd76ba6f41a63a758fc593fd",
   "research_mode_policy": {
     "default_state": "off_production_mode",
     "production_recommendations_unchanged": true,
@@ -825,5 +825,5 @@
     "tuning_status": "proper_score_tuned_not_empirically_calibrated"
   },
   "seed": 42,
-  "version": "june22_27_v5_fail_closed_development_only"
+  "version": "june30_july01_v1_fail_closed_development_only"
 }

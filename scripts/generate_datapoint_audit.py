@@ -73,7 +73,12 @@ def leaves(value: Any, pointer: str = "") -> Iterator[Tuple[str, Any]]:
         yield pointer or "/", value
 
 
-def source_for(artifact: str, pointer: str, fixture_id: str) -> Tuple[str, str, str]:
+def source_for(
+    artifact: str,
+    pointer: str,
+    fixture_id: str,
+    active_fixture_file: str = "wc_2026_matches_june_27-29.csv",
+) -> Tuple[str, str, str]:
     """Map an output field to its strongest canonical source artifact."""
     if artifact == METRICS.name:
         if pointer.startswith("/model_championship/"):
@@ -122,7 +127,7 @@ def source_for(artifact: str, pointer: str, fixture_id: str) -> Tuple[str, str, 
     if any(token in pointer for token in (
         "/fixture", "/kickoff_", "/group", "/venue", "/fixture_id"
     )):
-        return "wc_2026_matches_june_27-29.csv", fixture_id, ""
+        return active_fixture_file, fixture_id, ""
     return "wc_june22_27_pipeline.py", pointer, "/model/pipeline_sha256"
 
 
@@ -168,6 +173,14 @@ def main() -> None:
 
     predictions = json.loads(PREDICTIONS.read_text(encoding="utf-8"))
     metrics = json.loads(METRICS.read_text(encoding="utf-8"))
+    batch_id = (
+        f"{predictions.get('batch', {}).get('start', 'unknown')}_"
+        f"{predictions.get('batch', {}).get('end', 'unknown')}"
+    )
+    active_fixture_file = predictions.get("batch", {}).get(
+        "active_fixture_file",
+        "wc_2026_matches_june_27-29.csv",
+    )
     registry = json.loads(REVIEWS.read_text(encoding="utf-8"))
     registry_hash = sha256(REVIEWS)
     current_artifact_hashes = {
@@ -211,7 +224,7 @@ def main() -> None:
                 fixture_id = fixture_by_index[int(parts[1])]
             review = review_for(registry, fixture_id)
             source_artifact, locator, upstream = source_for(
-                artifact_path.name, pointer, fixture_id
+                artifact_path.name, pointer, fixture_id, active_fixture_file
             )
             source_path = ROOT / source_artifact
             value_text = canonical(value)
@@ -251,7 +264,7 @@ def main() -> None:
                 source_accessed_at = research.get("accessed_at") or source_accessed_at
             rows.append({
                 "datapoint_id": datapoint_id,
-                "batch_id": "2026-06-27_2026-06-29",
+                "batch_id": batch_id,
                 "fixture_id": fixture_id,
                 "output_artifact": artifact_path.name,
                 "json_pointer": pointer,

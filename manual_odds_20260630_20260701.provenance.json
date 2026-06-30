@@ -1,0 +1,67 @@
+{
+  "append_mode": false,
+  "capture_window": {
+    "end": "2026-06-30 12:21 -05:00",
+    "start": "2026-06-30 11:50 -05:00"
+  },
+  "created_at": "2026-06-30T12:25:00-05:00",
+  "fields": [
+    "fixture_id",
+    "fixture_display",
+    "kickoff_local",
+    "app",
+    "market_original",
+    "market_id",
+    "selection_original",
+    "selection_id",
+    "line",
+    "odds",
+    "promo",
+    "source_image",
+    "capture_time",
+    "notes"
+  ],
+  "fixture_count_canonical": 6,
+  "known_alias_fixture_ids": {
+    "2026-06-30-civ-nor": "2026-06-30-ivorycoast-norway",
+    "2026-06-30-fra-swe": "2026-06-30-france-sweden",
+    "2026-06-30-mex-ecu": "2026-06-30-mexico-ecuador",
+    "2026-07-01-bel-sen": "2026-07-01-belgium-senegal",
+    "2026-07-01-eng-cod": "2026-07-01-england-congo"
+  },
+  "notes": [
+    "Generated after intake because the CSV was supplied without a sidecar.",
+    "The CSV is treated as manual_user_input source evidence; pipeline rows hash the CSV/provenance pair rather than missing source image files.",
+    "source_image values are source labels from the supplied CSV. Files IMG_8055.jpg through IMG_8111.jpg were not present in the repository at sidecar creation time.",
+    "Venue and schedule URLs are not inferred; canonical fixture file cites this manual odds CSV as fixture evidence."
+  ],
+  "operator_notes": "Manual Betsson/Betano odds update for June 30 and July 1, 2026 fixtures, including standard and promo market rows where supplied.",
+  "output_csv": "manual_odds_20260630_20260701.csv",
+  "output_sha256": "b6d09bca89e464b781a9870d4ba81779df354b3968bbac15997b82c39377aba1",
+  "required_minimum": "complete 1X2 rows per fixture/app where supplied; additional markets retained only when normalized and complete enough for the relevant market-family check",
+  "row_count_written": 420,
+  "schema": "manual_wcdecider_odds_v1",
+  "source_kind": "manual_user_input",
+  "supported_markets": [
+    "asian_handicap",
+    "asian_total_goals",
+    "both_teams_to_score",
+    "combo",
+    "correct_score",
+    "double_chance",
+    "half_result",
+    "match_result",
+    "method_of_qualification",
+    "player_props",
+    "to_qualify",
+    "total_corners",
+    "total_goals",
+    "total_shots"
+  ],
+  "warnings": [
+    "No source image files for IMG_8055.jpg through IMG_8111.jpg were found under Screenshots/ during validation.",
+    "Rows include abbreviated duplicate fixture IDs; canonical mapping is performed by fixture_display/team identity."
+    ,
+    "Rows captured at or after canonical kickoff are preserved in this raw source file but excluded from the normalized evaluation odds artifact."
+  ]
+}

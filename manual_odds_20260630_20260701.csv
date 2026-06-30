@@ -1,0 +1,421 @@
+fixture_id,fixture_display,kickoff_local,app,market_original,market_id,selection_original,selection_id,line,odds,promo,source_image,capture_time,notes
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Player Props,player_props,Romelu Lukaku Anytime Goalscorer,yes,,3.05,True,IMG_8075.jpg,2026-06-30 11:50 -05:00,SUPER BOOST
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Player Props,player_props,Jérémy Doku Player Total Assists Over 0.5,over,0.5,4.05,True,IMG_8075.jpg,2026-06-30 11:50 -05:00,SUPER BOOST
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,3.2,True,IMG_8075.jpg,2026-06-30 11:50 -05:00,SUPER BOOST (1st Half)
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Combo,combo,Belgium + Over 2.5 Total Goals,home_over,2.5,4.3,True,IMG_8075.jpg,2026-06-30 11:50 -05:00,SUPER BOOST
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Correct Score,correct_score,1-1,draw,,6.65,True,IMG_8075.jpg,2026-06-30 11:50 -05:00,SUPER BOOST
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,3.25,True,IMG_8076.jpg,2026-06-30 11:50 -05:00,SUPER BOOST (Senegal)
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Match Result,match_result,Belgium,home,,2.28,False,IMG_8076.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,3.25,False,IMG_8076.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Match Result,match_result,Senegal,away,,3.5,False,IMG_8076.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,To Qualify,to_qualify,Belgium,home,,1.63,False,IMG_8076.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,To Qualify,to_qualify,Senegal,away,,2.29,False,IMG_8076.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,2.12,False,IMG_8076.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,1.72,False,IMG_8076.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.07,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,8.6,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.37,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,3.15,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,3.8,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.27,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,8.1,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.08,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,5.5,17.0,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,5.5,1.02,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,1.85,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,1.92,False,IMG_8077.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Belgium,home,-0.75,2.64,False,IMG_8079.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Senegal,away,0.75,1.48,False,IMG_8079.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Belgium,home,-0.5,2.23,False,IMG_8079.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Senegal,away,0.5,1.66,False,IMG_8079.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Belgium,home,-0.25,1.89,False,IMG_8079.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Senegal,away,0.25,1.91,False,IMG_8079.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Belgium,home,0.25,1.42,False,IMG_8079.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Senegal,away,-0.25,2.89,False,IMG_8079.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Combo,combo,USA + BTTS Yes,home_yes,,4.15,True,IMG_8080.jpg,2026-06-30 11:50 -05:00,SUPER BOOST
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,2.85,True,IMG_8080.jpg,2026-06-30 11:50 -05:00,SUPER BOOST (1st Half)
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Player Props,player_props,Christian Pulisic Total Shots On Target Over 1.5,over,1.5,2.45,True,IMG_8080.jpg,2026-06-30 11:50 -05:00,SUPER BOOST
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Player Props,player_props,Folarin Balogun First Goalscorer,yes,,4.4,True,IMG_8080.jpg,2026-06-30 11:50 -05:00,SUPER BOOST
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Shots,total_shots,Over 10.5,over,10.5,3.7,True,IMG_8080.jpg,2026-06-30 11:50 -05:00,SUPER BOOST
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Corners,total_corners,Over 5.5,over,5.5,3.55,True,IMG_8080.jpg,2026-06-30 11:50 -05:00,SUPER BOOST (1st Half)
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Bosnia and Herzegovina,draw_or_away,,3.25,True,IMG_8081.jpg,2026-06-30 11:50 -05:00,SUPER BOOST
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Match Result,match_result,USA,home,,1.39,False,IMG_8081.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,4.75,False,IMG_8081.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Match Result,match_result,Bosnia and Herzegovina,away,,9.3,False,IMG_8081.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,To Qualify,to_qualify,USA,home,,1.16,False,IMG_8081.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,To Qualify,to_qualify,Bosnia and Herzegovina,away,,5.3,False,IMG_8081.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,1.85,False,IMG_8081.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,1.98,False,IMG_8081.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.05,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,12.0,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.27,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,3.8,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,3.15,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.37,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,6.1,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.13,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,5.5,13.0,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,5.5,1.04,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,2.12,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,1.7,False,IMG_8082.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Asian Handicap,asian_handicap,USA,home,-1.75,2.5,False,IMG_8085.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Bosnia and Herzegovina,away,1.75,1.53,False,IMG_8085.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Asian Handicap,asian_handicap,USA,home,-1.5,2.12,False,IMG_8085.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Bosnia and Herzegovina,away,1.5,1.72,False,IMG_8085.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Asian Handicap,asian_handicap,USA,home,-1.25,1.86,False,IMG_8085.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Bosnia and Herzegovina,away,1.25,1.95,False,IMG_8085.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Asian Handicap,asian_handicap,USA,home,-1.0,1.59,False,IMG_8085.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Bosnia and Herzegovina,away,1.0,2.36,False,IMG_8085.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Asian Handicap,asian_handicap,USA,home,-0.75,1.45,False,IMG_8085.jpg,2026-06-30 11:50 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Bosnia and Herzegovina,away,0.75,2.74,False,IMG_8085.jpg,2026-06-30 11:50 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Match Result,match_result,Ivory Coast,home,,3.55,True,IMG_8086.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.5,True,IMG_8086.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Match Result,match_result,Norway,away,,2.18,True,IMG_8086.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Match Result,match_result,Ivory Coast,home,,2.35,False,IMG_8087.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Match Result,match_result,Norway,away,,1.6,False,IMG_8087.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Double Chance,double_chance,Ivory Coast o Empate,home_or_draw,,1.75,False,IMG_8087.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Double Chance,double_chance,Ivory Coast o Norway,home_or_away,,1.31,False,IMG_8087.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Double Chance,double_chance,Norway o Empate,draw_or_away,,1.33,False,IMG_8087.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,1.88,False,IMG_8088.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,1.93,False,IMG_8088.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.3,False,IMG_8088.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,3.55,False,IMG_8088.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,3.15,False,IMG_8088.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.37,False,IMG_8088.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,1.7,False,IMG_8088.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,2.07,False,IMG_8088.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Ivory Coast,home,0.5,1.78,False,IMG_8089.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Norway,away,-0.5,2.1,False,IMG_8089.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Ivory Coast,home,0.0,2.55,False,IMG_8089.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Norway,away,0.0,1.55,False,IMG_8089.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Ivory Coast,home,1.0,1.38,False,IMG_8089.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betano,Asian Handicap,asian_handicap,Norway,away,-1.0,3.2,False,IMG_8089.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Match Result,match_result,France,home,,1.33,True,IMG_8090.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,6.0,True,IMG_8090.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Match Result,match_result,Sweden,away,,9.5,True,IMG_8090.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Match Result,match_result,France,home,,1.15,False,IMG_8090.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Match Result,match_result,Sweden,away,,5.5,False,IMG_8090.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Double Chance,double_chance,France o Empate,home_or_draw,,1.09,False,IMG_8091.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Double Chance,double_chance,France o Sweden,home_or_away,,1.14,False,IMG_8091.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Double Chance,double_chance,Sweden o Empate,draw_or_away,,3.55,False,IMG_8091.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,1.45,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,2.8,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,2.07,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.75,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,3.35,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.33,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.02,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,13.5,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.14,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,5.7,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,5.8,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.14,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,6.5,10.0,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,6.5,1.05,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Over,over,7.5,14.5,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Total Goals,total_goals,Under,under,7.5,1.02,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,1.75,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,2.02,False,IMG_8092.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,France,home,-1.5,1.83,False,IMG_8093.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Sweden,away,1.5,2.02,False,IMG_8093.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,France,home,-2.0,2.37,False,IMG_8093.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Sweden,away,2.0,1.62,False,IMG_8093.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,France,home,-1.0,1.45,False,IMG_8093.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betano,Asian Handicap,asian_handicap,Sweden,away,1.0,2.85,False,IMG_8093.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Match Result,match_result,Mexico,home,,2.27,True,IMG_8094.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,2.95,True,IMG_8094.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Match Result,match_result,Ecuador,away,,4.05,True,IMG_8094.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Match Result,match_result,Mexico,home,,1.57,False,IMG_8094.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Match Result,match_result,Ecuador,away,,2.4,False,IMG_8094.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Double Chance,double_chance,Mexico o Empate,home_or_draw,,1.27,False,IMG_8095.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Double Chance,double_chance,Mexico o Ecuador,home_or_away,,1.38,False,IMG_8095.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Double Chance,double_chance,Ecuador o Empate,draw_or_away,,1.67,False,IMG_8095.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.62,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,2.3,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.15,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,5.5,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,2.87,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,1.42,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,5.6,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.15,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,10.75,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.04,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,16.5,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.01,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,2.25,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.6,False,IMG_8096.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Asian Handicap,asian_handicap,Mexico,home,-0.5,2.22,False,IMG_8097.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Asian Handicap,asian_handicap,Ecuador,away,0.5,1.7,False,IMG_8097.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Asian Handicap,asian_handicap,Mexico,home,-1.0,3.75,False,IMG_8097.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Asian Handicap,asian_handicap,Ecuador,away,1.0,1.29,False,IMG_8097.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Asian Handicap,asian_handicap,Mexico,home,0.0,1.52,False,IMG_8097.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Asian Handicap,asian_handicap,Ecuador,away,0.0,2.65,False,IMG_8097.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Asian Handicap,asian_handicap,Mexico,home,0.5,1.29,False,IMG_8097.jpg,2026-06-30 11:53 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betano,Asian Handicap,asian_handicap,Ecuador,away,-0.5,3.8,False,IMG_8097.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Match Result,match_result,England,home,,1.32,True,IMG_8098.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,5.3,True,IMG_8098.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Match Result,match_result,Congo Democratic Republic,away,,12.5,True,IMG_8098.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Match Result,match_result,England,home,,1.11,False,IMG_8098.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Match Result,match_result,Congo Democratic Republic,away,,6.6,False,IMG_8098.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Double Chance,double_chance,England o Empate,home_or_draw,,1.05,False,IMG_8099.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Double Chance,double_chance,England o Congo Democratic Republic,home_or_away,,1.15,False,IMG_8099.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Double Chance,double_chance,Congo Democratic Republic o Empate,draw_or_away,,3.85,False,IMG_8099.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,1.98,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,1.85,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.33,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,3.35,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,3.4,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.33,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.07,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,8.75,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,6.3,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.12,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,11.25,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.04,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Over,over,6.5,16.0,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Total Goals,total_goals,Under,under,6.5,1.01,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,2.7,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.42,False,IMG_8100.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Asian Handicap,asian_handicap,England,home,-1.5,1.87,False,IMG_8101.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Asian Handicap,asian_handicap,Congo Democratic Republic,away,1.5,1.98,False,IMG_8101.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Asian Handicap,asian_handicap,England,home,-2.0,2.57,False,IMG_8101.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Asian Handicap,asian_handicap,Congo Democratic Republic,away,2.0,1.53,False,IMG_8101.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Asian Handicap,asian_handicap,England,home,-1.0,1.42,False,IMG_8101.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betano,Asian Handicap,asian_handicap,Congo Democratic Republic,away,1.0,3.0,False,IMG_8101.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Match Result,match_result,Belgium,home,,2.22,True,IMG_8102.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,3.35,True,IMG_8102.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Match Result,match_result,Senegal,away,,3.6,True,IMG_8102.jpg,2026-06-30 11:53 -05:00,SuperCuotas promo
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Match Result,match_result,Belgium,home,,1.62,False,IMG_8102.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Match Result,match_result,Senegal,away,,2.32,False,IMG_8102.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Double Chance,double_chance,Belgium o Empate,home_or_draw,,1.33,False,IMG_8103.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Double Chance,double_chance,Belgium o Senegal,home_or_away,,1.32,False,IMG_8103.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Double Chance,double_chance,Senegal o Empate,draw_or_away,,1.7,False,IMG_8103.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,2.12,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,1.72,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.38,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,3.05,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,3.75,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.28,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.08,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,7.8,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,7.1,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.1,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,12.5,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.03,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,1.83,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.91,False,IMG_8104.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Asian Handicap,asian_handicap,Belgium,home,-0.5,2.18,False,IMG_8105.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Asian Handicap,asian_handicap,Senegal,away,0.5,1.72,False,IMG_8105.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Asian Handicap,asian_handicap,Belgium,home,-1.0,3.45,False,IMG_8105.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Asian Handicap,asian_handicap,Senegal,away,1.0,1.34,False,IMG_8105.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Asian Handicap,asian_handicap,Belgium,home,0.0,1.57,False,IMG_8105.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Asian Handicap,asian_handicap,Senegal,away,0.0,2.47,False,IMG_8105.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Asian Handicap,asian_handicap,Belgium,home,0.5,1.34,False,IMG_8105.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-belgium-senegal,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betano,Asian Handicap,asian_handicap,Senegal,away,-0.5,3.4,False,IMG_8105.jpg,2026-06-30 11:53 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Match Result,match_result,USA,home,,1.42,True,IMG_8106.jpg,2026-06-30 11:55 -05:00,SuperCuotas promo
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Match Result,match_result,Draw,draw,,4.85,True,IMG_8106.jpg,2026-06-30 11:55 -05:00,SuperCuotas promo
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Match Result,match_result,Bosnia and Herzegovina,away,,9.0,True,IMG_8106.jpg,2026-06-30 11:55 -05:00,SuperCuotas promo
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Match Result,match_result,USA,home,,1.19,False,IMG_8107.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Match Result,match_result,Bosnia and Herzegovina,away,,4.85,False,IMG_8107.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Double Chance,double_chance,USA o Empate,home_or_draw,,1.1,False,IMG_8107.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Double Chance,double_chance,USA o Bosnia and Herzegovina,home_or_away,,1.19,False,IMG_8107.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Double Chance,double_chance,Bosnia and Herzegovina o Empate,draw_or_away,,3.05,False,IMG_8107.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Combo,combo,Tarjetas + Goles + BTTS (Mejoradas),combo,,3.87,True,IMG_8107.jpg,2026-06-30 11:55 -05:00,14% MEJORADAS promo
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Over,over,2.5,1.85,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Under,under,2.5,1.98,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Over,over,1.5,1.28,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Under,under,1.5,3.7,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Over,over,3.5,3.05,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Under,under,3.5,1.38,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Over,over,0.5,1.06,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Under,under,0.5,9.5,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Over,over,4.5,5.6,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Under,under,4.5,1.15,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Over,over,5.5,10.0,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Under,under,5.5,1.05,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Over,over,6.5,15.5,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Total Goals,total_goals,Under,under,6.5,1.01,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,Yes,yes,,2.12,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Both Teams To Score,both_teams_to_score,No,no,,1.67,False,IMG_8108.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Handicap,asian_handicap,USA,home,-1.5,2.15,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Handicap,asian_handicap,Bosnia and Herzegovina,away,1.5,1.75,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Handicap,asian_handicap,USA,home,-2.0,3.15,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Handicap,asian_handicap,Bosnia and Herzegovina,away,2.0,1.38,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Handicap,asian_handicap,USA,home,-1.0,1.62,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Handicap,asian_handicap,Bosnia and Herzegovina,away,1.0,2.35,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Handicap,asian_handicap,USA,home,-0.5,1.4,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Handicap,asian_handicap,Bosnia and Herzegovina,away,0.5,3.05,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Total Goals,asian_total_goals,Over,over,2.5,1.87,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Total Goals,asian_total_goals,Under,under,2.5,1.98,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Total Goals,asian_total_goals,Over,over,2.0,1.42,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Total Goals,asian_total_goals,Under,under,2.0,2.95,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Total Goals,asian_total_goals,Over,over,3.0,2.47,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Total Goals,asian_total_goals,Under,under,3.0,1.57,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Total Goals,asian_total_goals,Over,over,3.5,3.15,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betano,Asian Total Goals,asian_total_goals,Under,under,3.5,1.39,False,IMG_8109.jpg,2026-06-30 11:55 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Player Props,player_props,Erling Haaland First Goalscorer,yes,,3.85,True,IMG_8055.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,2.95,True,IMG_8055.jpg,2026-06-30 12:08 -05:00,SUPER BOOST (1st Half)
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Player Props,player_props,Amad Diallo Total Shots On Target Over 1.5,over,1.5,4.3,True,IMG_8055.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Player Props,player_props,Martin Ødegaard Total Assists Over 0.5,over,0.5,3.4,True,IMG_8055.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Combo,combo,Norway + Over 2.5 Total Goals,away_over,2.5,3.8,True,IMG_8055.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Half Result,half_result,Ivory Coast to Win Either Half: Yes,yes,,2.35,True,IMG_8055.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Shots,total_shots,Over 10.5,over,10.5,4.05,True,IMG_8056.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Match Result,match_result,Ivory Coast,home,,3.5,False,IMG_8056.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,3.4,False,IMG_8056.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Match Result,match_result,Norway,away,,2.2,False,IMG_8056.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,To Qualify,to_qualify,Ivory Coast,home,,2.34,False,IMG_8056.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,To Qualify,to_qualify,Norway,away,,1.61,False,IMG_8056.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,1.9,False,IMG_8056.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,1.92,False,IMG_8056.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.06,False,IMG_8057.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,9.9,False,IMG_8057.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.29,False,IMG_8057.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,3.65,False,IMG_8057.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,3.2,False,IMG_8057.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.36,False,IMG_8057.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,6.3,False,IMG_8057.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.12,False,IMG_8057.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,5.5,13.0,False,IMG_8057.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,5.5,1.04,False,IMG_8057.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,1.65,False,IMG_8058.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,2.2,False,IMG_8058.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Double Chance,double_chance,Ivory Coast or Draw,home_or_draw,,1.72,False,IMG_8058.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Double Chance,double_chance,Ivory Coast or Norway,home_or_away,,1.32,False,IMG_8058.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Norway,draw_or_away,,1.32,False,IMG_8058.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Ivory Coast,home,-0.25,2.89,False,IMG_8060.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Norway,away,0.25,1.41,False,IMG_8060.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Ivory Coast,home,0.25,1.95,False,IMG_8060.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Norway,away,-0.25,1.86,False,IMG_8060.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Ivory Coast,home,0.5,1.69,False,IMG_8060.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Norway,away,-0.5,2.17,False,IMG_8060.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Ivory Coast,home,0.75,1.52,False,IMG_8060.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-ivorycoast-norway,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Norway,away,-0.75,2.53,False,IMG_8060.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Player Props,player_props,Kylian Mbappe 2 or more Goals,yes,,3.6,True,IMG_8061.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,4.05,True,IMG_8061.jpg,2026-06-30 12:08 -05:00,SUPER BOOST (1st Half)
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Combo,combo,France + Over 3.5 Total Goals,home_over,3.5,2.7,True,IMG_8061.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Player Props,player_props,Alexander Isak Total Shots On Target Over 1.5,over,1.5,4.3,True,IMG_8061.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Shots,total_shots,Over 11.5,over,11.5,3.0,True,IMG_8061.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Corners,total_corners,Over 5.5,over,5.5,3.1,True,IMG_8061.jpg,2026-06-30 12:08 -05:00,SUPER BOOST (1st Half)
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Match Result,match_result,France,home,,1.3,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,5.95,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Match Result,match_result,Sweden,away,,9.9,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,To Qualify,to_qualify,France,home,,1.12,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,To Qualify,to_qualify,Sweden,away,,6.4,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,1.43,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,2.88,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.01,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,23.0,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.12,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,6.3,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,2.08,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.78,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,3.45,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.32,False,IMG_8062.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,1.75,False,IMG_8063.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,2.05,False,IMG_8063.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,France,home,-2.25,2.64,False,IMG_8064.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Sweden,away,2.25,1.48,False,IMG_8064.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,France,home,-2.0,2.32,False,IMG_8064.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Sweden,away,2.0,1.61,False,IMG_8064.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,France,home,-1.75,1.98,False,IMG_8064.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Sweden,away,1.75,1.83,False,IMG_8064.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,France,home,-1.5,1.78,False,IMG_8064.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Sweden,away,1.5,2.04,False,IMG_8064.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,France,home,-1.25,1.58,False,IMG_8064.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-france-sweden,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Sweden,away,1.25,2.38,False,IMG_8064.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Player Props,player_props,Julian Quiñones Anytime Goalscorer,yes,,3.85,True,IMG_8065.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,To Qualify,to_qualify,Ecuador in Regular Time,away,,4.3,True,IMG_8065.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Correct Score,correct_score,1-1,draw,,6.3,True,IMG_8065.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,2.95,True,IMG_8065.jpg,2026-06-30 12:08 -05:00,SUPER BOOST (Mexico)
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Player Props,player_props,Raúl Jiménez Total Shots On Target Over 1.5,over,1.5,2.8,True,IMG_8065.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Corners,total_corners,Over 5.5,over,5.5,5.7,True,IMG_8066.jpg,2026-06-30 12:08 -05:00,SUPER BOOST (1st Half)
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Match Result,match_result,Mexico,home,,2.28,False,IMG_8066.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,2.88,False,IMG_8066.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Match Result,match_result,Ecuador,away,,3.95,False,IMG_8066.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,To Qualify,to_qualify,Mexico,home,,1.57,False,IMG_8066.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,To Qualify,to_qualify,Ecuador,away,,2.41,False,IMG_8066.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,2.95,False,IMG_8066.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,1.41,False,IMG_8066.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.15,False,IMG_8067.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,5.65,False,IMG_8067.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.62,False,IMG_8067.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,2.3,False,IMG_8067.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,6.1,False,IMG_8067.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.13,False,IMG_8067.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,14.0,False,IMG_8067.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.03,False,IMG_8067.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,2.35,False,IMG_8068.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,1.58,False,IMG_8068.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,Mexico in Regular Time,home,,2.3,False,IMG_8068.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,Mexico in Extra time,home,,8.6,False,IMG_8068.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,Mexico by Penalties,home,,7.8,False,IMG_8068.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,Ecuador in Regular Time,away,,4.0,False,IMG_8068.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,Ecuador in Extra time,away,,13.0,False,IMG_8068.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,Ecuador by Penalties,away,,7.8,False,IMG_8068.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Mexico,home,-0.75,2.7,False,IMG_8069.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Ecuador,away,0.75,1.46,False,IMG_8069.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Mexico,home,-0.5,2.25,False,IMG_8069.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Ecuador,away,0.5,1.65,False,IMG_8069.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Mexico,home,-0.25,1.86,False,IMG_8069.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Ecuador,away,0.25,1.95,False,IMG_8069.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Mexico,home,0.25,1.35,False,IMG_8069.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-mexico-ecuador,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Ecuador,away,-0.25,3.19,False,IMG_8069.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Combo,combo,England + Over 3.5 Total Goals,home_over,3.5,4.8,True,IMG_8070.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Corners,total_corners,Over 5.5,over,5.5,3.25,True,IMG_8070.jpg,2026-06-30 12:08 -05:00,SUPER BOOST (1st Half)
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Player Props,player_props,Harry Kane Total Shots On Target Over 2.5,over,2.5,2.8,True,IMG_8070.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,3.1,True,IMG_8070.jpg,2026-06-30 12:08 -05:00,SUPER BOOST (1st Half)
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Shots,total_shots,Over 10.5,over,10.5,4.3,True,IMG_8070.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Player Props,player_props,Anthony Gordon Anytime Goalscorer,yes,,3.2,True,IMG_8070.jpg,2026-06-30 12:08 -05:00,SUPER BOOST
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Match Result,match_result,England,home,,1.3,False,IMG_8071.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Match Result,match_result,Draw,draw,,4.95,False,IMG_8071.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Match Result,match_result,Congo Democratic Republic,away,,14.5,False,IMG_8071.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,To Qualify,to_qualify,England,home,,1.1,False,IMG_8071.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,To Qualify,to_qualify,Congo Democratic Republic,away,,7.0,False,IMG_8071.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,2.5,2.05,False,IMG_8071.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,2.5,1.78,False,IMG_8071.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,0.5,1.06,False,IMG_8072.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,0.5,9.5,False,IMG_8072.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,1.5,1.34,False,IMG_8072.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,1.5,3.3,False,IMG_8072.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,3.5,3.65,False,IMG_8072.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,3.5,1.29,False,IMG_8072.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,4.5,7.5,False,IMG_8072.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,4.5,1.09,False,IMG_8072.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Over,over,5.5,17.0,False,IMG_8072.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Total Goals,total_goals,Under,under,5.5,1.02,False,IMG_8072.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,Yes,yes,,2.78,False,IMG_8073.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Both Teams To Score,both_teams_to_score,No,no,,1.43,False,IMG_8073.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,England in Regular Time,home,,1.31,False,IMG_8073.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,England in Extra time,home,,7.8,False,IMG_8073.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,England by Penalties,home,,15.0,False,IMG_8073.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,Congo Democratic Republic in Regular Time,away,,15.0,False,IMG_8073.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,Congo Democratic Republic in Extra time,away,,41.0,False,IMG_8073.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Method of Qualification,method_of_qualification,Congo Democratic Republic by Penalties,away,,15.0,False,IMG_8073.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Asian Handicap,asian_handicap,England,home,-2.0,2.73,False,IMG_8074.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Congo Democratic Republic,away,2.0,1.46,False,IMG_8074.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Asian Handicap,asian_handicap,England,home,-1.75,2.19,False,IMG_8074.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Congo Democratic Republic,away,1.75,1.68,False,IMG_8074.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Asian Handicap,asian_handicap,England,home,-1.5,1.9,False,IMG_8074.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Congo Democratic Republic,away,1.5,1.9,False,IMG_8074.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Asian Handicap,asian_handicap,England,home,-1.25,1.67,False,IMG_8074.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Congo Democratic Republic,away,1.25,2.2,False,IMG_8074.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Asian Handicap,asian_handicap,England,home,-1.0,1.44,False,IMG_8074.jpg,2026-06-30 12:08 -05:00,standard
+2026-07-01-england-congo,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Asian Handicap,asian_handicap,Congo Democratic Republic,away,1.0,2.81,False,IMG_8074.jpg,2026-06-30 12:08 -05:00,standard
+2026-06-30-civ-nor,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Double Chance,double_chance,Ivory Coast or Draw,home_or_draw,,1.6,False,IMG_8110.jpg,2026-06-30 12:21 -05:00,Live - 1st Half
+2026-06-30-civ-nor,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Double Chance,double_chance,Ivory Coast or Norway,home_or_away,,1.36,False,IMG_8110.jpg,2026-06-30 12:21 -05:00,Live - 1st Half
+2026-06-30-civ-nor,Ivory Coast vs Norway,2026-06-30T12:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Norway,draw_or_away,,1.3,False,IMG_8110.jpg,2026-06-30 12:21 -05:00,Live - 1st Half
+2026-06-30-fra-swe,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Double Chance,double_chance,France or Draw,home_or_draw,,1.05,False,IMG_8110.jpg,2026-06-30 12:21 -05:00,standard
+2026-06-30-fra-swe,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Double Chance,double_chance,France or Sweden,home_or_away,,1.13,False,IMG_8110.jpg,2026-06-30 12:21 -05:00,standard
+2026-06-30-fra-swe,France vs Sweden,2026-06-30T16:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Sweden,draw_or_away,,3.55,False,IMG_8110.jpg,2026-06-30 12:21 -05:00,standard
+2026-06-30-mex-ecu,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Double Chance,double_chance,Mexico or Draw,home_or_draw,,1.26,False,IMG_8110.jpg,2026-06-30 12:21 -05:00,standard
+2026-06-30-mex-ecu,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Double Chance,double_chance,Mexico or Ecuador,home_or_away,,1.41,False,IMG_8110.jpg,2026-06-30 12:21 -05:00,standard
+2026-06-30-mex-ecu,Mexico vs Ecuador,2026-06-30T20:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Ecuador,draw_or_away,,1.68,False,IMG_8110.jpg,2026-06-30 12:21 -05:00,standard
+2026-07-01-eng-cod,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Double Chance,double_chance,England or Draw,home_or_draw,,1.02,False,IMG_8111.jpg,2026-06-30 12:21 -05:00,standard
+2026-07-01-eng-cod,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Double Chance,double_chance,England or Congo Democratic Republic,home_or_away,,1.17,False,IMG_8111.jpg,2026-06-30 12:21 -05:00,standard
+2026-07-01-eng-cod,England vs Congo Democratic Republic,2026-07-01T11:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Congo Democratic Republic,draw_or_away,,3.6,False,IMG_8111.jpg,2026-06-30 12:21 -05:00,standard
+2026-07-01-bel-sen,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Double Chance,double_chance,Belgium or Draw,home_or_draw,,1.32,False,IMG_8111.jpg,2026-06-30 12:21 -05:00,standard
+2026-07-01-bel-sen,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Double Chance,double_chance,Belgium or Senegal,home_or_away,,1.34,False,IMG_8111.jpg,2026-06-30 12:21 -05:00,standard
+2026-07-01-bel-sen,Belgium vs Senegal,2026-07-01T15:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Senegal,draw_or_away,,1.69,False,IMG_8111.jpg,2026-06-30 12:21 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Double Chance,double_chance,USA or Draw,home_or_draw,,1.06,False,IMG_8111.jpg,2026-06-30 12:21 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Double Chance,double_chance,USA or Bosnia and Herzegovina,home_or_away,,1.19,False,IMG_8111.jpg,2026-06-30 12:21 -05:00,standard
+2026-07-01-usa-bih,USA vs Bosnia and Herzegovina,2026-07-01T19:00:00-05:00,Betsson,Double Chance,double_chance,Draw or Bosnia and Herzegovina,draw_or_away,,3.05,False,IMG_8111.jpg,2026-06-30 12:21 -05:00,standard

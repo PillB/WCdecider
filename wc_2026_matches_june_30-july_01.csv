@@ -1,0 +1,7 @@
+fixture_id,kickoff_lima,kickoff_utc,match,group,venue,venue_timezone,schedule_source
+2026-06-30-france-sweden,2026-06-30T16:00:00-05:00,2026-06-30T21:00:00Z,France vs Sweden,Round of 32,Venue not verified in supplied source,unknown,manual_odds_20260630_20260701.csv
+2026-06-30-ivorycoast-norway,2026-06-30T12:00:00-05:00,2026-06-30T17:00:00Z,Ivory Coast vs Norway,Round of 32,Venue not verified in supplied source,unknown,manual_odds_20260630_20260701.csv
+2026-06-30-mexico-ecuador,2026-06-30T20:00:00-05:00,2026-07-01T01:00:00Z,Mexico vs Ecuador,Round of 32,Venue not verified in supplied source,unknown,manual_odds_20260630_20260701.csv
+2026-07-01-belgium-senegal,2026-07-01T15:00:00-05:00,2026-07-01T20:00:00Z,Belgium vs Senegal,Round of 32,Venue not verified in supplied source,unknown,manual_odds_20260630_20260701.csv
+2026-07-01-england-congo,2026-07-01T11:00:00-05:00,2026-07-01T16:00:00Z,England vs Congo Democratic Republic,Round of 32,Venue not verified in supplied source,unknown,manual_odds_20260630_20260701.csv
+2026-07-01-usa-bih,2026-07-01T19:00:00-05:00,2026-07-02T00:00:00Z,USA vs Bosnia and Herzegovina,Round of 32,Venue not verified in supplied source,unknown,manual_odds_20260630_20260701.csv
